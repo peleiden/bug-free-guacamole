@@ -1,5 +1,27 @@
 # Teori og modeller
--- Yamada et al: ["LUKE: Deep Contextualized Entity Representations with Entity-aware Self-attention"](https://arxiv.org/abs/2010.01057).
+- Yamada et al: ["LUKE: Deep Contextualized Entity Representations with Entity-aware Self-attention"](https://www.aclweb.org/anthology/2020.emnlp-main.523/).
     Indfører nye, lærte representationer af ord og entiteter, som er lært ved en maskeret gætteopgave af en self-attention-mekanisme.
--- Hvingelby et al: ["DaNE: A Named Entity Resource for Danish"](https://www.aclweb.org/anthology/2020.lrec-1.565/).
+
+- Hvingelby et al: ["DaNE: A Named Entity Resource for Danish"](https://www.aclweb.org/anthology/2020.lrec-1.565/).
     Præsenterer selve annoteringerne og træner en række modeller herunder BERT på det nye data. Fokuserer både på flersproget og rent dansk.
+    Deres metode til annotering bygger på CoNLL-2003 (se Sang et al.) og har krævet en masse manuelt arbejde.
+
+- Derczynski et al: ["DKIE: Open Source Information Extraction for Danish"](https://www.aclweb.org/anthology/E14-2016/).
+    Præsenterer værktøjet DKIE, der ser ud til at være en altmulig-pipeline for NLP, men indeholder også NER-annoteringer og NER-modeller.
+    De NER-annoterer Copenhagen Dependency Treebank for person/lokation/organisation "i overenstemmelse med ACE-guidelines" (uklart).
+    De kalder annoteringen "ongoing" i 2014 og at de har 100 000 på dette tidspunkt tokens.
+
+- Derczynski: ["Simple Natural Language Processing Tools for Danish"](https://arxiv.org/abs/1906.11608).
+    Forklarer kort NLP-værktøjer; herunder NER-værktøjet `daner`, som bygger på DKIE-data og -pipeline.
+
+# Reviews/challenges
+- Pradhan et al: ["CoNLL-2012 Shared Task:ModelingMultilingual Unrestricted Coreference in OntoNotes"](http://disi.unitn.eu/moschitti/articles/2012/CONLL2012.pdf)
+    Handler om mange forskellige NLP-ting, men der er også en smule om NER, hvor de er gået op til 18 kategorier så vidt jeg kan se
+
+- Sang et al: ["Introduction to the CoNLL-2003 Shared Task: Language-Independent Named Entity Recognition"](https://arxiv.org/abs/cs/0306050)
+    Beskriver en NER-challenge med data på engelsk og tysk. Ser ud til, at de bruger 4 kategorier: LOC, MISC, ORG, PER.
+    Præsenterer også resultaterne på opgaven.
+
+# Mere uformelle forklaringer
+- Hofer: ["Deep Learning for Named Entity Recognition"](https://towardsdatascience.com/deep-learning-for-ner-1-public-datasets-and-annotation-methods-8b1ad5e98caf)
+    En artikel på towardsdatascience om NER
