@@ -4,6 +4,7 @@
 
 # Data
 - [Korpusset, som DKIE brugt til at annotere. Ikke direkte NER-relevant, som jeg ser det](https://github.com/mbkromann/copenhagen-dependency-treebank)
+- [NE-annoteret Wikipedia](https://github.com/alexandrainst/danlp/blob/master/docs/docs/datasets.md#wikiann)
 
 # Generelt teknisk magi
 - [Anvendelse af Multi-GPU til overkommelig træning](https://github.com/yifding/hetseq)
