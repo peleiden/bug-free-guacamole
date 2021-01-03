@@ -1,5 +1,6 @@
-# Script, der bygger pdf af vores artikel
-# Se: https://github.com/marketplace/actions/github-action-for-latex
+# Script, der bygger pdf af bachelor
+# Se: https://github.com/marketplace/actions/github-action-for-latex og
+# https://github.com/marketplace/actions/github-pages
 name: pdfbot
 
 on:
@@ -24,22 +25,22 @@ jobs:
         with:
           root_file: paper.tex
       - name: generate ma boi
-        run : |
-        mkdir public
-        mv paper.pdf public/paper.pdf
-        cat > public/index.html <<EOL
-        <!doctype html>
-          <html>
-            <head>
-              <title>Bachelor compil no. ${{github.run_number}}</title>
-            </head>
-            <body>
-                <iframe src="./paper.pdf" width="100% height=100%">
-                </iframe>
-            </body>
-          </html>
-        EOL
-    - name: deploy ma boi
+        run: |
+          mkdir public
+          mv paper.pdf public/paper.pdf
+          cat > public/index.html <<EOL
+          <!doctype html>
+            <html>
+              <head>
+                <title>Bachelor compil no. ${{github.run_number}}</title>
+              </head>
+              <body>
+                  <iframe src="./paper.pdf" width="100% height=100%">
+                  </iframe>
+              </body>
+            </html>
+          EOL
+      - name: deploy ma boi
         if: success()
         uses: crazy-max/ghaction-github-pages@v2
         with:
