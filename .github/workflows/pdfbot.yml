@@ -23,11 +23,11 @@ jobs:
       - name: compile ma boi
         uses: xu-cheng/latex-action@v2
         with:
-          root_file: paper.tex
+          root_file: main.tex
       - name: generate ma boi
         run: |
           mkdir public
-          mv paper.pdf public/paper.pdf
+          mv main.pdf public/main.pdf
           cat > public/index.html <<EOL
           <!doctype html>
             <html>
@@ -35,7 +35,7 @@ jobs:
                 <title>Bachelor compil no. ${{github.run_number}}</title>
               </head>
               <body>
-                  <iframe src="./paper.pdf" width="100% height=100%">
+                  <iframe src="./main.pdf" width="100% height=100%">
                   </iframe>
               </body>
             </html>
