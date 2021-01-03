@@ -36,7 +36,7 @@ jobs:
               </head>
               <body>
                 <p>
-                  <a href="{{ site.baseurl }}/main.pdf">
+                  <a href="${{ site.baseurl }}/main.pdf">
                     Compilation ${{ github.run_number }}
                   </a>
                 </p>
