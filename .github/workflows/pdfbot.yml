@@ -1,0 +1,49 @@
+# Script, der bygger pdf af vores artikel
+# Se: https://github.com/marketplace/actions/github-action-for-latex
+name: pdfbot
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - main.tex
+      - preambulum.tex
+      - imgs/
+      - sections/
+      - .github/workflows/pdfbot.yml
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: pull ma boi
+        uses: actions/checkout@v2
+      - name: compile ma boi
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: paper.tex
+      - name: generate ma boi
+        run : |
+        mkdir public
+        mv paper.pdf public/paper.pdf
+        cat > public/index.html <<EOL
+        <!doctype html>
+          <html>
+            <head>
+              <title>Bachelor compil no. ${{github.run_number}}</title>
+            </head>
+            <body>
+                <iframe src="./paper.pdf" width="100% height=100%">
+                </iframe>
+            </body>
+          </html>
+        EOL
+    - name: deploy ma boi
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: gh-pages
+          build_dir: public
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
