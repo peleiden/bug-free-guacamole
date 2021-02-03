@@ -14,6 +14,8 @@
 - Derczynski: ["Simple Natural Language Processing Tools for Danish"](https://arxiv.org/abs/1906.11608).
     Forklarer kort NLP-værktøjer; herunder NER-værktøjet `daner`, som bygger på DKIE-data og -pipeline.
 
+- Liu et al: [RoBERTa: A Robustly Optimized BERT Pretraining Approach](https://arxiv.org/abs/1907.11692)
+
 # Reviews/challenges
 - Pradhan et al: ["CoNLL-2012 Shared Task:ModelingMultilingual Unrestricted Coreference in OntoNotes"](http://disi.unitn.eu/moschitti/articles/2012/CONLL2012.pdf)
     Handler om mange forskellige NLP-ting, men der er også en smule om NER, hvor de er gået op til 18 kategorier så vidt jeg kan se
