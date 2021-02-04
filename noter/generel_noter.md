@@ -12,3 +12,8 @@
 - Også spændende arbejde med gener og kemi
 - Det er nyere at bruge Wikipedia, hvilket virker ret genialt. Her er en entitet=Wikipedia-side
 
+# Noter til reproduktion af dansk NER
+
+### Spørgsmål:
+- Hvilken rolle har "Finn's name list" og "Wikidata+Dannet" i projektplansforslaget? 
+

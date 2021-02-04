@@ -27,4 +27,6 @@
 # Mere uformelle forklaringer
 - Hofer: ["Deep Learning for Named Entity Recognition"](https://towardsdatascience.com/deep-learning-for-ner-1-public-datasets-and-annotation-methods-8b1ad5e98caf)
     En artikel på towardsdatascience om NER
--  Pascal Poupart: [CS480/680 Lecture 19: Attention and Transformer Networks](https://www.youtube.com/watch?v=OyFJWRnt_AY)
+- Pascal Poupart: [CS480/680 Lecture 19: Attention and Transformer Networks](https://www.youtube.com/watch?v=OyFJWRnt_AY)
+- Årup Nielsen: ["Awesome Danish NLP"](https://github.com/fnielsen/awesome-danish)
+    Kæmpe samling af kilder til dansk NLP
