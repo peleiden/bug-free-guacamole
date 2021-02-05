@@ -15,5 +15,5 @@
 # Noter til reproduktion af dansk NER
 
 ### Spørgsmål:
-- Hvilken rolle har "Finn's name list" og "Wikidata+Dannet" i projektplansforslaget? 
-
+- Hvilken rolle har "Finn's name list" og "Wikidata+Dannet" i projektplansforslaget? - De ser ikke ud til at være NER-modeller som resten (og jeg kan ikke finde dem)
+- Skal vi træne BERT, spaCy, flair osv. selv? Det antager jeg ikke - vi kan vel godt bruge færdigtrænede, offentliggjorte modeller og så selv udføre testen.
