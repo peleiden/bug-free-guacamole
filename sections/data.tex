@@ -5,9 +5,23 @@
 \lhead{Data}
 
 \section{Danish Named Entity Recognition}
+%TODO:
+\subsection{Danish Universal Dependencies}
+Danish Universal Dependencies of Danish Dependency Treebank (UD-DDT) \cite{johann2015udddt} is a grammatically annotated dataset consisting of 5512 sentences and 100,733 words from the Danish PAROLE corpus containing book, newspaper and journal literature from 1983-1992 \cite{christensen1998parole}.
+UD-DDT is split into training, development and test sets consisting of 4383, 564 and 565 sentences, respectively.
+Two Named Entity Recognition (NER) annotations of this dataset are considered.
+\begin{enumerate}
+    \item \emph{DaNE} is a 2020 NER annotation of the entire UD-DDT into four categories PER(son), ORG(anisation), LOC(ation), MISC(ellaneous) performed once by a linguist and once by non-linguists for the Alexandra Institute \cite[Sec. 4]{hvingelby2020dane}
+    \item A NER annotation of the development and test subsets of UD-DDT into the same four entity categories was performed by Barbara Plank in 2019 \cite{plank2019neural}.
+        This annotation will be called \emph{Plank}.
+\end{enumerate}
+
+\subsection{Wikipedia}
+Pan et al. performed a NER annotation of a Wikipedia corpus in 2017 by transferring English NER of the categories PER, ORG, LOC to 281 languages including Danish.
+In Danish, this dataset includes $N$ sentences and $M$ words.
 
 \section{English Named Entity Recognition}
 
-\section{Danish Pretraining Corpus}
+\section{Danish Pre-training Corpus}
 
 \end{document}
