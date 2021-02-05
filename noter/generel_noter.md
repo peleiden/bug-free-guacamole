@@ -22,3 +22,18 @@
 ### Spørgsmål:
 - Hvilken rolle har "Finn's name list" og "Wikidata+Dannet" i projektplansforslaget? - De ser ikke ud til at være NER-modeller som resten (og jeg kan ikke finde dem)
 - Skal vi træne BERT, spaCy, flair osv. selv? Det antager jeg ikke - vi kan vel godt bruge færdigtrænede, offentliggjorte modeller og så selv udføre testen.
+- Hvilken rolle har "Finn's name list" og "Wikidata+Dannet" i projektplansforslaget?
+
+# Noter til engelsk LUKE
+
+## Spørgsmål og undren
+
+- Hvor meget træning skal vi faktisk lave? Er det bare at hente deres ned og så køre inferens? I hvor høj grad kan vi bruges Johannes og Victors arbejde?
+- Vidensgrafen/-basen: Hvordan ser den faktisk ud, og hvor kommer den fra?
+- Sammenhæng mellem RoBERTa og LUKE? Starten på 3.4 er konfus
+- Hvad dækker prætræning helt præcist over? De bruger prætrænet RoBERTa, men det virker mere TL-agtigt
+- Forskel på prætræning og træning? Betyder træning tilpasning til hvert datasæt som antydet i bilag B?
+- Hvor har de deres ordforråd fra? Det lyder til at være det samme, som RoBERTa-papiret vagt hentyder til
+- Er det rigtigt forstået, at datasættet er hele wikipedia, hvor  hyperlinks <=> entiteter? Antydes i starten af 3.3. Altså at entitetsforekomster som ikke-hyperlinks tælles med, hvis >1% af forekomster er hyperlinks?
+- Hvor meget træning skal vi faktisk lave på den engelske? RoBERTa er jo implementeret i torch, men den videretrænes jo også
+
