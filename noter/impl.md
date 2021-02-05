@@ -8,6 +8,7 @@
 - [NE-annoteret Wikipedia](https://github.com/alexandrainst/danlp/blob/master/docs/docs/datasets.md#wikiann)
 - [DaNE: Alexandra-instittets NER](https://sprogteknologi.dk/dataset/danish-dependency-treebank-dane)
 - [Barbara Plancks annoterede NER](https://github.com/bplank/danish_ner_transfer)
+- [DaNLP-oversigt over data](https://github.com/alexandrainst/danlp/blob/master/docs/docs/datasets.md)
 
 # Generelt teknisk magi
 - [Anvendelse af Multi-GPU til overkommelig træning](https://github.com/yifding/hetseq)
