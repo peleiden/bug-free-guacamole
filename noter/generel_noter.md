@@ -12,6 +12,11 @@
 - Også spændende arbejde med gener og kemi
 - Det er nyere at bruge Wikipedia, hvilket virker ret genialt. Her er en entitet=Wikipedia-side
 
+# Bachelorformalia
+- [DTU's bachelorprojekt-side](https://www.inside.dtu.dk/Undervisning/Regler/Afsluttende-projekter/Bachelorprojekt)
+- [KID-studieordningens afsnit om bachelorprojekt](https://sdb.dtu.dk/myline#Bachelorprojekt)
+
+
 # Noter til reproduktion af dansk NER
 
 ### Spørgsmål:
