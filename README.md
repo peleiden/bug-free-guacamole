@@ -5,3 +5,5 @@
 2) Reproduce English LUKE NER based on Johannes and Victor results
 3) Train Danish LUKE for NER on benchmark data 
 4) Produce Danish open source LUKE with NER as example and comparison with existing NER benchmarks
+
+![Truth](https://i.kym-cdn.com/photos/images/original/001/855/895/6da.gif)
