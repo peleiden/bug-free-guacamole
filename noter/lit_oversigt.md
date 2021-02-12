@@ -30,3 +30,5 @@
 - Pascal Poupart: [CS480/680 Lecture 19: Attention and Transformer Networks](https://www.youtube.com/watch?v=OyFJWRnt_AY)
 - Årup Nielsen: ["Awesome Danish NLP"](https://github.com/fnielsen/awesome-danish)
     Kæmpe samling af kilder til dansk NLP
+- Jagtap: ["RoBERTa: Robustly Optimized BERT Pretraining Approach"](https://medium.com/dataseries/roberta-robustly-optimized-bert-pretraining-approach-d033464bd946)
+    En Medium-artikel om RoBERTa
