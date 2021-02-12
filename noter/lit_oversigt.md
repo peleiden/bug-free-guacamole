@@ -15,6 +15,8 @@
     NER-datasæt
 - Johannsen et al: [Universal Dependencies for Danish](http://tlt14.ipipan.waw.pl/files/4914/4974/3227/TLT14_proceedings.pdf#page=164).
     Generation af datasæt, som bruges af DaNE
+- Conneau et al: ["Unsupervised Cross-lingual Representation Learning at Scale"](https://www.aclweb.org/anthology/2020.acl-main.747/)
+   Multilingual RoBERTa
 
 # Reviews/challenges
 - Pradhan et al: ["CoNLL-2012 Shared Task:ModelingMultilingual Unrestricted Coreference in OntoNotes"](http://disi.unitn.eu/moschitti/articles/2012/CONLL2012.pdf)
