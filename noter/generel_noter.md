@@ -37,3 +37,8 @@
 - Er det rigtigt forstået, at datasættet er hele wikipedia, hvor  hyperlinks <=> entiteter? Antydes i starten af 3.3. Altså at entitetsforekomster som ikke-hyperlinks tælles med, hvis >1% af forekomster er hyperlinks?
 - Hvor meget træning skal vi faktisk lave på den engelske? RoBERTa er jo implementeret i torch, men den videretrænes jo også
 
+# Udkast til plan
+1) Reproduktion og analyse af Dansk NER: Udvælg eksisterende off-the-shelf danske NER-modeller (BERT, flair, spaCy, daner, polyglot ...) og test dem på eksisterende danske NER-datasæt (DaNE, WikiANN ...)
+2) Reproduktion og analyse af Engelsk LUKE: Hent den finetunede, engelske NER-LUKE og test den på CoNLL-2003 ligesom i artiklen.
+3) Træn en dansk LUKE baseret på botxo's Nordic BERT med entitetskodet dansk Wikipedia som træningsdata. Offentliggør den danske LUKE til generel open source-brug.
+4) Finetune den danske LUKE på samme NER-data som i 1) og sammenlign denne med de eksisterende resultater
