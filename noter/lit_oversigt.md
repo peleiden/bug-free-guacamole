@@ -32,3 +32,5 @@
     Kæmpe samling af kilder til dansk NLP
 - Jagtap: ["RoBERTa: Robustly Optimized BERT Pretraining Approach"](https://medium.com/dataseries/roberta-robustly-optimized-bert-pretraining-approach-d033464bd946)
     En Medium-artikel om RoBERTa
+- [Tokenization](https://huggingface.co/transformers/master/tokenizer_summary.html)
+- [Tokenization med Byte-level BPE](https://medium.com/@pierre_guillou/byte-level-bpe-an-universal-tokenizer-but-aff932332ffe)
