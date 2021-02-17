@@ -6,8 +6,34 @@
 
 \section{Existing Danish Named Entity Recognition}
 
-\section{LUKE}
+\section{Using LUKE for Named Entity Recognition}
+Yamada et al. benchmark their \emph{LUKE}, their new transformer-based model for contextualized entity representations on a number of Natural Language Processing tasks, including Named Entity Recognition on the CoNLL-2003 dataset \cite{yamada2020luke}.
 
+These results were reproduced by obtaining pretrained LUKE models from Yamada et al.'s software repository. \footnote{The software is available HERE}
+
+The model was then fine-tuned for NER by training a linear classifier over all $n$-grams in each sentence with the named entities as targets for cross-entropy loss, as described in \cite[4.3]{yamada2020luke}.
+The same hyper parameters as by Yamada et al. were used and are shown along with and technical details in Table~\ref{tab:params}.
+
+This procedure was repeated five times for each of the two released LUKE models, called \emph{large} and \emph{base}, to examine variability in the downstream training.
+\begin{table}
+    \begin{tabular}{l|cc}
+            & LUKE large & LUKE base\\\hline
+        Pretrained model  & LUKE-500K (large)
+        \protect\footnotemark& LUKE-500K (base)\textsuperscript{\ref{foot:fnt}}\\
+        %\protect\footnotemark[\value{footnote}]
+        Learning rate               & $10^{-5}$ & MANGLER\\
+        Batch size                  & 2    & MANGLER\\
+        Gradient accumulation steps & \multicolumn{2}{c}{2}\\
+        Numeric precision           & \multicolumn{2}{c}{Mixed precision (Nvidia APEX)}\\
+        GPU                         & \multicolumn{2}{c}{1x Tesla V100}
+    \end{tabular}
+    \label{tab:params}
+\end{table}
+
+\footnotetext{\label{foot:fnt}
+ The model was downloaded 17/02-2021 from the LUKE sotware repository:
+ \url{https://github.com/studio-ousia/luke/tree/6feefe657d97d2f847ace87f61f23b705f75d2aa\#released-models} } 
+\cite{yamada2020luke}
 \section{daLUKE}
 
 
