@@ -6,34 +6,39 @@
 
 \section{Existing Danish Named Entity Recognition}
 
-\section{Using LUKE for Named Entity Recognition}
-Yamada et al. benchmark their \emph{LUKE}, their new transformer-based model for contextualized entity representations on a number of Natural Language Processing tasks, including Named Entity Recognition on the CoNLL-2003 dataset \cite{yamada2020luke}.
+\section{English LUKE for Named Entity Recognition}
+Yamada et al. benchmark \emph{LUKE}, their new transformer-based model for contextualized entity representations on a number of Natural Language Processing tasks, including Named Entity Recognition on the CoNLL-2003 dataset \cite{yamada2020luke}.
 
-These results were reproduced by obtaining pretrained LUKE models from Yamada et al.'s software repository. \footnote{The software is available HERE}
+Reproduction of these results were performed by obtaining the pretrained LUKE models from Yamada et al.'s software repository.
 
-The model was then fine-tuned for NER by training a linear classifier over all $n$-grams in each sentence with the named entities as targets for cross-entropy loss, as described in \cite[4.3]{yamada2020luke}.
-The same hyper parameters as by Yamada et al. were used and are shown along with and technical details in Table~\ref{tab:params}.
+The model was then fine-tuned for NER by training a linear classifier over all $n$-grams in each sentence with the named entities as targets for cross-entropy loss, as described in \cite[Sec. 4.3]{yamada2020luke}.
+The same hyper-parameters as Yamada et al. were used and are shown along with and technical details in Table~\ref{tab:params}.
 
 This procedure was repeated five times for each of the two released LUKE models, called \emph{large} and \emph{base}, to examine variability in the downstream training.
-\begin{table}
+\begin{table}[H]
     \begin{tabular}{l|cc}
             & LUKE large & LUKE base\\\hline
-        Pretrained model  & LUKE-500K (large)
-        \protect\footnotemark& LUKE-500K (base)\textsuperscript{\ref{foot:fnt}}\\
-        %\protect\footnotemark[\value{footnote}]
-        Learning rate               & $10^{-5}$ & MANGLER\\
-        Batch size                  & 2    & MANGLER\\
+        Pretrained model  & LUKE RoBERTa large
+        \protect\footnotemark& LUKE RoBERTa base\textsuperscript{\ref{foot:fnt}}\\
+        Pretrained model parameters & $253\ctp 6$ & $483\ctp 6$\\
+        Prtrained model entity vocabulary & \multicolumn{2}{c}{$500\ctp3$}\\
+        Learning rate               & $10^{-5}$ & $5\ctp{-5}$\\
+        Batch size (effective)      & \multicolumn{2}{c}{8 (16)}\\
         Gradient accumulation steps & \multicolumn{2}{c}{2}\\
-        Numeric precision           & \multicolumn{2}{c}{Mixed precision (Nvidia APEX)}\\
-        GPU                         & \multicolumn{2}{c}{1x Tesla V100}
+        Numeric precision           & \multicolumn{2}{c}{Mixed FP16/FP32 (Nvidia APEX)}\\
+        Training software           & \multicolumn{2}{c}{PyTorch-based \code{luke}-repository \protect\footnotemark}
     \end{tabular}
     \label{tab:params}
 \end{table}
 
 \footnotetext{\label{foot:fnt}
- The model was downloaded 17/02-2021 from the LUKE sotware repository:
+ The pre-trained models were downloaded on 17/02-2021 from the LUKE software repository:
  \url{https://github.com/studio-ousia/luke/tree/6feefe657d97d2f847ace87f61f23b705f75d2aa\#released-models} } 
-\cite{yamada2020luke}
+\footnotetext{
+    The repository \url{github.com/studio-ousia/luke} was cloned at commit-SHA \code{6feefe6}, installed and used for the fine-tuning.
+}
+
+
 \section{daLUKE}
 
 
