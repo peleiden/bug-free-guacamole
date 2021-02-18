@@ -1,0 +1,51 @@
+Luke large 1
+
+ DEV
+ The number of labels: 51362
+           precision    recall  f1-score   support
+
+      LOC     0.9793    0.9809    0.9801      1830
+     MISC     0.9156    0.9136    0.9146       914
+      PER     0.9852    0.9809    0.9830      1832
+      ORG     0.9622    0.9672    0.9647      1341
+
+micro avg     0.9674    0.9674    0.9674      5917
+macro avg     0.9674    0.9674    0.9674      5917
+
+TEST
+The number of labels: 46435
+           precision    recall  f1-score   support
+
+     MISC     0.8569    0.8545    0.8557       701
+      ORG     0.9272    0.9429    0.9350      1647
+      LOC     0.9507    0.9490    0.9498      1666
+      PER     0.9731    0.9725    0.9728      1602
+
+micro avg     0.9385    0.9421    0.9403      5616
+macro avg     0.9385    0.9421    0.9403      5616
+
+Luke large 2
+
+ DEV
+ The number of labels: 51362
+           precision    recall  f1-score   support
+
+      PER     0.9869    0.9847    0.9858      1832
+      LOC     0.9782    0.9825    0.9804      1830
+      ORG     0.9672    0.9687    0.9680      1341
+     MISC     0.9164    0.9234    0.9199       914
+
+micro avg     0.9688    0.9709    0.9699      5917
+macro avg     0.9689    0.9709    0.9699      5917
+
+TEST
+The number of labels: 46435
+           precision    recall  f1-score   support
+
+      LOC     0.9491    0.9520    0.9506      1666
+      PER     0.9725    0.9725    0.9725      1602
+      ORG     0.9263    0.9393    0.9328      1647
+     MISC     0.8534    0.8474    0.8504       701
+
+micro avg     0.9372    0.9411    0.9391      5616
+macro avg     0.9372    0.9411    0.9391      5616
