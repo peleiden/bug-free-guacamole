@@ -1,0 +1,118 @@
+Five repetitions below; dev-set, test-set:
+ The number of labels: 51362
+           precision    recall  f1-score   support
+
+     MISC     0.9048    0.9256    0.9151       914
+      PER     0.9847    0.9825    0.9836      1832
+      LOC     0.9771    0.9787    0.9779      1830
+      ORG     0.9606    0.9627    0.9616      1341
+
+micro avg     0.9643    0.9681    0.9662      5917
+macro avg     0.9645    0.9681    0.9663      5917
+
+The number of labels: 46435
+           precision    recall  f1-score   support
+
+      ORG     0.9126    0.9314    0.9219      1647
+      LOC     0.9520    0.9406    0.9463      1666
+      PER     0.9617    0.9719    0.9668      1602
+     MISC     0.8310    0.8488    0.8398       701
+
+micro avg     0.9278    0.9354    0.9315      5616
+macro avg     0.9281    0.9354    0.9317      5616
+
+
+
+ The number of labels: 51362
+           precision    recall  f1-score   support
+
+      PER     0.9847    0.9847    0.9847      1832
+      LOC     0.9743    0.9754    0.9749      1830
+      ORG     0.9579    0.9672    0.9625      1341
+     MISC     0.9216    0.9256    0.9236       914
+
+micro avg     0.9656    0.9687    0.9672      5917
+macro avg     0.9657    0.9687    0.9672      5917
+
+The number of labels: 46435
+           precision    recall  f1-score   support
+
+      LOC     0.9544    0.9418    0.9480      1666
+      PER     0.9624    0.9744    0.9684      1602
+     MISC     0.8442    0.8502    0.8472       701
+      ORG     0.9120    0.9381    0.9249      1647
+
+micro avg     0.9303    0.9386    0.9344      5616
+macro avg     0.9305    0.9386    0.9345      5616
+
+
+
+ The number of labels: 51362
+           precision    recall  f1-score   support
+
+      PER     0.9869    0.9853    0.9861      1832
+      LOC     0.9771    0.9781    0.9776      1830
+     MISC     0.9070    0.9278    0.9173       914
+      ORG     0.9610    0.9545    0.9577      1341
+
+micro avg     0.9654    0.9672    0.9663      5917
+macro avg     0.9656    0.9672    0.9664      5917
+
+The number of labels: 46435
+           precision    recall  f1-score   support
+
+     MISC     0.8549    0.8488    0.8518       701
+      PER     0.9653    0.9719    0.9686      1602
+      ORG     0.9140    0.9362    0.9250      1647
+      LOC     0.9539    0.9436    0.9487      1666
+
+micro avg     0.9330    0.9377    0.9353      5616
+macro avg     0.9331    0.9377    0.9353      5616
+
+
+
+ The number of labels: 51362
+           precision    recall  f1-score   support
+
+      LOC     0.9792    0.9792    0.9792      1830
+      ORG     0.9600    0.9664    0.9632      1341
+     MISC     0.9108    0.9267    0.9187       914
+      PER     0.9868    0.9814    0.9841      1832
+
+micro avg     0.9665    0.9689    0.9677      5917
+macro avg     0.9666    0.9689    0.9678      5917
+
+The number of labels: 46435
+           precision    recall  f1-score   support
+
+      ORG     0.9083    0.9381    0.9229      1647
+      LOC     0.9530    0.9376    0.9452      1666
+      PER     0.9647    0.9738    0.9692      1602
+     MISC     0.8553    0.8602    0.8578       701
+
+micro avg     0.9308    0.9384    0.9346      5616
+macro avg     0.9311    0.9384    0.9346      5616
+
+
+
+ The number of labels: 51362
+           precision    recall  f1-score   support
+
+      PER     0.9842    0.9858    0.9850      1832
+      LOC     0.9798    0.9803    0.9801      1830
+      ORG     0.9551    0.9687    0.9619      1341
+     MISC     0.9048    0.9147    0.9097       914
+
+micro avg     0.9639    0.9692    0.9665      5917
+macro avg     0.9640    0.9692    0.9666      5917
+
+The number of labels: 46435
+           precision    recall  f1-score   support
+
+     MISC     0.8420    0.8588    0.8503       701
+      PER     0.9689    0.9738    0.9714      1602
+      LOC     0.9542    0.9370    0.9455      1666
+      ORG     0.9117    0.9399    0.9256      1647
+
+micro avg     0.9314    0.9386    0.9350      5616
+macro avg     0.9319    0.9386    0.9351      5616
