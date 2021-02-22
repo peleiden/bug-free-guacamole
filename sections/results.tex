@@ -5,6 +5,66 @@
 \lhead{Results}
 
 \section{Reproductions}
+\subsection{Danish NER benchmarks}
+\begin{table}
+	\begin{center}
+		\begin{tabular}{l l r r r r r r}
+			Model & Train data & Micro avg. & w/o MISC & LOC & PER & ORG & MISC \\
+			\hline
+			BERT &  & 73.59 & 84.04 & 83.90 & 92.82 & 72.98 & - \\
+			daner &  & 48.88 & 56.52 & 59.49 & 70.40 & 28.29 & - \\
+			Flair &  & 71.12 & 81.78 & 84.82 & 93.15 & 62.95 & - \\
+			mBERT &  & 79.22 & 81.71 & 83.50 & 92.61 & 66.90 & 70.34 \\
+			Polyglot &  & 55.78 & 64.18 & 64.95 & 78.74 & 39.30 & - \\
+			spaCy &  & 73.75 & 75.73 & 75.96 & 87.87 & 59.57 & 66.06 \\
+			Ælæctra &  & 70.58 & 74.54 & 77.32 & 86.93 & 56.18 & 56.39 \\
+			 &  &  &  &  &  &  &  \\
+			Support &  & 558 & 437 & 96 & 180 & 161 & 121 \\
+		\end{tabular}
+	\end{center}
+	\caption{F1\pro-scores of Danish NER models of the DaNE data-set consisting of 565 sentences.}
+	\label{tab:DaNE}
+\end{table}
+
+\begin{table}
+	\begin{center}
+		\begin{tabular}{l l r r r r r r}
+			Model & Train data & Micro avg. & w/o MISC & LOC & PER & ORG & MISC \\
+			\hline
+			BERT &  & 76.27 & 79.23 & 78.64 & 93.45 & 56.88 & - \\
+			daner &  & 57.42 & 59.89 & 58.16 & 73.63 & 26.09 & - \\
+			Flair &  & 73.16 & 76.16 & 80.21 & 94.35 & 36.96 & - \\
+			mBERT &  & 66.37 & 76.60 & 76.33 & 92.08 & 52.53 & 12.41 \\
+			Polyglot &  & 61.56 & 64.10 & 69.74 & 78.38 & 24.69 & - \\
+			spaCy &  & 64.11 & 72.70 & 72.73 & 88.33 & 46.51 & 12.31 \\
+			Ælæctra &  & 66.28 & 76.09 & 74.87 & 90.32 & 53.00 & 13.24 \\
+			 &  &  &  &  &  &  &  \\
+			Support &  & 390 & 360 & 97 & 169 & 94 & 30 \\
+		\end{tabular}
+	\end{center}
+	\caption{F1\pro-scores of Danish NER models of the Plank data-set consisting of 565 sentences.}
+	\label{tab:Plank}
+\end{table}
+
+\begin{table}
+	\begin{center}
+		\begin{tabular}{l l r r r r}
+			Model & Train data & Micro avg. & LOC & PER & ORG \\
+			\hline
+			BERT &  & 65.66 & 72.08 & 74.49 & 40.05 \\
+			daner &  & 46.59 & 56.15 & 54.51 & 14.76 \\
+			Flair &  & 65.04 & 70.08 & 74.36 & 43.67 \\
+			mBERT &  & 63.40 & 70.72 & 76.87 & 48.35 \\
+			Polyglot &  & 61.99 & 72.45 & 69.15 & 35.33 \\
+			spaCy &  & 59.55 & 68.68 & 71.63 & 38.76 \\
+			Ælæctra &  & 48.65 & 56.63 & 69.89 & 24.02 \\
+			 &  &  &  &  &  \\
+			Support &  & 13698 & 5242 & 4378 & 4078 \\
+		\end{tabular}
+	\end{center}
+	\caption{F1\pro-scores of Danish NER models of the WikiANN data-set consisting of 10000 sentences.}
+	\label{tab:WikiANN}
+\end{table}
 \subsection{English LUKE NER performance}
 \begin{table}[H]
     \begin{tabular}{ll}
@@ -13,7 +73,7 @@
         PER             & $\pro \pm \pro$      \\
         ORG             & $\pro \pm \pro$       \\
         MISC            & $\pro \pm \pro$           \\\hline
-        Micro Average   & $\pro \pm \pro$ 
+        Micro Average   & $\pro \pm \pro$
     \end{tabular}
     \quad
     \begin{tabular}{ll}
@@ -22,7 +82,7 @@
         PER             & $\pro \pm \pro$      \\
         ORG             & $\pro \pm \pro$       \\
         MISC            & $\pro \pm \pro$           \\\hline
-        Micro Average   & $\pro \pm \pro$ 
+        Micro Average   & $\pro \pm \pro$
     \end{tabular}
     \caption{
         Values are mean and standard deviance over five repetitions of the fine-tuning.
