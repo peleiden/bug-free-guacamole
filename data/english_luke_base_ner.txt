@@ -1,4 +1,3 @@
-Five repetitions below; dev-set, test-set:
  The number of labels: 51362
            precision    recall  f1-score   support
 
@@ -10,7 +9,7 @@ Five repetitions below; dev-set, test-set:
 micro avg     0.9643    0.9681    0.9662      5917
 macro avg     0.9645    0.9681    0.9663      5917
 
-The number of labels: 46435
+ The number of labels: 46435
            precision    recall  f1-score   support
 
       ORG     0.9126    0.9314    0.9219      1647
@@ -20,8 +19,6 @@ The number of labels: 46435
 
 micro avg     0.9278    0.9354    0.9315      5616
 macro avg     0.9281    0.9354    0.9317      5616
-
-
 
  The number of labels: 51362
            precision    recall  f1-score   support
@@ -34,7 +31,7 @@ macro avg     0.9281    0.9354    0.9317      5616
 micro avg     0.9656    0.9687    0.9672      5917
 macro avg     0.9657    0.9687    0.9672      5917
 
-The number of labels: 46435
+ The number of labels: 46435
            precision    recall  f1-score   support
 
       LOC     0.9544    0.9418    0.9480      1666
@@ -44,8 +41,6 @@ The number of labels: 46435
 
 micro avg     0.9303    0.9386    0.9344      5616
 macro avg     0.9305    0.9386    0.9345      5616
-
-
 
  The number of labels: 51362
            precision    recall  f1-score   support
@@ -93,8 +88,6 @@ The number of labels: 46435
 micro avg     0.9308    0.9384    0.9346      5616
 macro avg     0.9311    0.9384    0.9346      5616
 
-
-
  The number of labels: 51362
            precision    recall  f1-score   support
 
@@ -106,7 +99,7 @@ macro avg     0.9311    0.9384    0.9346      5616
 micro avg     0.9639    0.9692    0.9665      5917
 macro avg     0.9640    0.9692    0.9666      5917
 
-The number of labels: 46435
+ The number of labels: 46435
            precision    recall  f1-score   support
 
      MISC     0.8420    0.8588    0.8503       701

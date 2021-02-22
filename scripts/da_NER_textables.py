@@ -4,15 +4,12 @@ import json
 from latextable import Texttable, draw_latex
 import pyperclip
 
-
-
 DATASETS = ("DaNE", "Plank", "WikiANN")
 
 def f1f(f: float) -> str:
     """ Format F1-score """
     if f  == "-": return f
     return "%.2f" % (f*100)
-
 
 def build_main_table(dataset: str, experiment: dict) -> str:
     t = Texttable()

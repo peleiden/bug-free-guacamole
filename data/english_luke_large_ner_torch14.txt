@@ -1,6 +1,3 @@
-Luke large 1
-
- DEV
  The number of labels: 51362
            precision    recall  f1-score   support
 
@@ -12,7 +9,6 @@ Luke large 1
 micro avg     0.9674    0.9674    0.9674      5917
 macro avg     0.9674    0.9674    0.9674      5917
 
-TEST
 The number of labels: 46435
            precision    recall  f1-score   support
 
@@ -24,9 +20,6 @@ The number of labels: 46435
 micro avg     0.9385    0.9421    0.9403      5616
 macro avg     0.9385    0.9421    0.9403      5616
 
-Luke large 2
-
-DEV
 The number of labels: 51362
            precision    recall  f1-score   support
 
@@ -38,7 +31,6 @@ The number of labels: 51362
 micro avg     0.9688    0.9709    0.9699      5917
 macro avg     0.9689    0.9709    0.9699      5917
 
-TEST
 The number of labels: 46435
            precision    recall  f1-score   support
 
@@ -49,9 +41,6 @@ The number of labels: 46435
 
 micro avg     0.9372    0.9411    0.9391      5616
 macro avg     0.9372    0.9411    0.9391      5616
-
-Luke large 3
-DEV
 
  The number of labels: 51362
            precision    recall  f1-score   support
@@ -64,7 +53,6 @@ DEV
 micro avg     0.9679    0.9681    0.9680      5917
 macro avg     0.9679    0.9681    0.9680      5917
 
-TEST
 The number of labels: 46435
            precision    recall  f1-score   support
 
@@ -76,8 +64,6 @@ The number of labels: 46435
 micro avg     0.9350    0.9448    0.9399      5616
 macro avg     0.9353    0.9448    0.9400      5616
 
-Luke Large 4
-DEV
  The number of labels: 51362
            precision    recall  f1-score   support
 
@@ -88,8 +74,6 @@ DEV
 
 micro avg     0.9656    0.9687    0.9672      5917
 macro avg     0.9658    0.9687    0.9672      5917
-
-TEST
 
 The number of labels: 46435
            precision    recall  f1-score   support
@@ -102,10 +86,6 @@ The number of labels: 46435
 micro avg     0.9374    0.9436    0.9405      5616
 macro avg     0.9375    0.9436    0.9405      5616
 
-Luke Large 5
-
-DEV
-
 The number of labels: 51362
            precision    recall  f1-score   support
 
@@ -117,8 +97,6 @@ The number of labels: 51362
 micro avg     0.9668    0.9692    0.9680      5917
 macro avg     0.9669    0.9692    0.9681      5917
 
-TEST
-
 The number of labels: 46435
            precision    recall  f1-score   support
 
@@ -129,7 +107,3 @@ The number of labels: 46435
 
 micro avg     0.9356    0.9420    0.9388      5616
 macro avg     0.9359    0.9420    0.9389      5616
-
-
-
-
