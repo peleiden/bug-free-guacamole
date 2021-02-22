@@ -18,15 +18,16 @@ This procedure was repeated five times for each of the two released LUKE models,
 \begin{table}[H]
     \begin{tabular}{l|cc}
             & LUKE large & LUKE base\\\hline
-        Pretrained model  & LUKE RoBERTa large
+        Pre-trained model  & LUKE RoBERTa large
         \protect\footnotemark& LUKE RoBERTa base\textsuperscript{\ref{foot:fnt}}\\
-        Pretrained model parameters & $253\ctp 6$ & $483\ctp 6$\\
-        Prtrained model entity vocabulary & \multicolumn{2}{c}{$500\ctp3$}\\
+        Pre-trained model parameters & $253\ctp 6$ & $483\ctp 6$\\
+        Pre-trained model entity vocabulary & \multicolumn{2}{c}{$500\ctp3$}\\
         Learning rate               & $10^{-5}$ & $5\ctp{-5}$\\
         Batch size (effective)      & \multicolumn{2}{c}{8 (16)}\\
         Gradient accumulation steps & \multicolumn{2}{c}{2}\\
         Numeric precision           & \multicolumn{2}{c}{Mixed FP16/FP32 (Nvidia APEX)}\\
-        Training software           & \multicolumn{2}{c}{PyTorch-based \code{luke}-repository \protect\footnotemark}
+        Training routine            & \multicolumn{2}{c}{PyTorch-based \code{luke}-repository \protect\footnotemark}\\
+        Software version            & \multicolumn{2}{c}{Python 3.6, PyTorch 1.2}
     \end{tabular}
     \label{tab:params}
 \end{table}
