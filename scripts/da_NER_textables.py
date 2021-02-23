@@ -31,7 +31,7 @@ def build_main_table(dataset: str, experiment: dict) -> str:
         v = experiment[mname]
         row = [mname, ""]
         if miscdata:
-            row.append(f1f(v["stats"]["micro avg"]["f1-score"]) or "-")
+            row.append(f1f(v["stats"]["micro avg"]["f1-score"]) if v["stats"]["MISC"]["f1-score"] else "-")
         row.append(f1f(v["stats_nomisc"]["micro avg"]["f1-score"]))
         row += [f1f(v["stats"][c]["f1-score"] or "-") for c in cats]
         t.add_row(row)
