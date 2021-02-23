@@ -9,8 +9,8 @@ on:
     paths:
       - main.tex
       - preambulum.tex
-      - imgs/
-      - sections/
+      - imgs/*
+      - sections/*
       - .github/workflows/pdfbot.yml
 
 jobs:
