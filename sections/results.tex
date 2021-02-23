@@ -6,7 +6,7 @@
 
 \section{Reproductions}
 \subsection{Danish NER benchmarks}
-\begin{table}
+\begin{table}[H]
 	\begin{center}
 		\begin{tabular}{l l r r r r r r}
 			Model & Train data & Micro avg. & w/o MISC & LOC & PER & ORG & MISC \\
@@ -26,7 +26,7 @@
 	\label{tab:DaNE}
 \end{table}
 
-\begin{table}
+\begin{table}[H]
 	\begin{center}
 		\begin{tabular}{l l r r r r r r}
 			Model & Train data & Micro avg. & w/o MISC & LOC & PER & ORG & MISC \\
@@ -46,7 +46,7 @@
 	\label{tab:Plank}
 \end{table}
 
-\begin{table}
+\begin{table}[H]
 	\begin{center}
 		\begin{tabular}{l l r r r r}
 			Model & Train data & Micro avg. & LOC & PER & ORG \\
@@ -67,27 +67,18 @@
 \end{table}
 \subsection{English LUKE NER performance}
 \begin{table}[H]
-    \begin{tabular}{ll}
-        LUKE  large& F1\\\hline
-        LOC             & $\pro \pm \pro$       \\
-        PER             & $\pro \pm \pro$      \\
-        ORG             & $\pro \pm \pro$       \\
-        MISC            & $\pro \pm \pro$           \\\hline
-        Micro Average   & $\pro \pm \pro$
-    \end{tabular}
-    \quad
-    \begin{tabular}{ll}
-        LUKE base & F1\\\hline
-        LOC             & $\pro \pm \pro$       \\
-        PER             & $\pro \pm \pro$      \\
-        ORG             & $\pro \pm \pro$       \\
-        MISC            & $\pro \pm \pro$           \\\hline
-        Micro Average   & $\pro \pm \pro$
-    \end{tabular}
-    \caption{
-        Values are mean and standard deviance over five repetitions of the fine-tuning.
-    }
+	\begin{center}
+		\begin{tabular}{l r r r r r}
+			Model & Micro avg. & LOC & PER & ORG & MISC \\
+			\hline
+			LUKE large & $94.00 \pm  0.2$ & $94.99 \pm  0.09$ & $97.19 \pm  0.1$ & $93.63 \pm  0.3$ & $85.29 \pm  1$ \\
+			LUKE base & $93.42 \pm  0.2$ & $94.67 \pm  0.2$ & $96.89 \pm  0.2$ & $92.41 \pm  0.2$ & $84.94 \pm  0.7$ \\
+			 &  &  &  &  &  \\
+			Support & 5616 & 1666 & 1602 & 1647 & 701 \\
+		\end{tabular}
+	\end{center}
+	\caption{Mean F1\pro-scores and standard deviation over five repetitions of fine-tuning and evaluating LUKE on CoNLL2003 for each model size.}
+	\label{tab:lukeF1s}
 \end{table}
-
 
 \end{document}
