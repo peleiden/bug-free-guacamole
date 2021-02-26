@@ -5,6 +5,25 @@ from latextable import Texttable, draw_latex
 import pyperclip
 
 DATASETS = ("DaNE", "Plank", "WikiANN")
+MODEL_NAMES = {
+    "BERT":         "DaNLP da-BERT",
+    "mBERT":        "NERDA m-BERT",
+    "Ælæctra":      "NERDA da-Electra",
+    "Flair":        "Flair",
+    "spaCy":        "spaCy",
+    "Polyglot":     "Polyglot",
+    "daner":        "ITU Stanford CRF",
+}
+
+MODEL_TRAINDATA = {
+    "BERT":         "DaNE",
+    "mBERT":        "DaNE",
+    "Ælæctra":      "DaNE",
+    "Flair":        "DaNE",
+    "spaCy":        "DaNE",
+    "Polyglot":     "Wikipedia",
+    "daner":        "ITU CDT",
+}
 
 def f1f(f: float) -> str:
     """ Format F1-score """
@@ -19,7 +38,7 @@ def build_main_table(dataset: str, experiment: dict) -> str:
     # Fix miscfuckeri
     row = ["Model", "Train data", "Micro avg."]
     if miscdata:
-        row.append("w/o MISC")
+        row.append("$-$MISC")
         cats.append("MISC")
     row += cats
 
@@ -27,9 +46,9 @@ def build_main_table(dataset: str, experiment: dict) -> str:
     t.set_cols_dtype(["t"]*len(row)) # Dont overwrite my formatting pls
     t.header(row)
 
-    for mname in sorted(experiment, key=str.lower):
-        v = experiment[mname]
-        row = [mname, ""]
+    for m, mname in MODEL_NAMES.items():
+        v = experiment[m]
+        row = [mname, MODEL_TRAINDATA[m]]
         if miscdata:
             row.append(f1f(v["stats"]["micro avg"]["f1-score"]) if v["stats"]["MISC"]["f1-score"] else "-")
         row.append(f1f(v["stats_nomisc"]["micro avg"]["f1-score"]))
@@ -63,4 +82,3 @@ if __name__ == '__main__':
         build_main_table(data, exp) for data, exp in experiments.items()
         )
     )
-

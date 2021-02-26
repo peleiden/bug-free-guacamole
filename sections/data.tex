@@ -4,26 +4,75 @@
 \chapter{Data}
 \lhead{Data}
 
-\section{Danish Named Entity Recognition}
+\section{Entity-annotated Danish Wikipedia}
+
+
+\section{Named Entity Recognition}
 %TODO:
-\subsection{Danish Universal Dependencies}
-Danish Universal Dependencies of Danish Dependency Treebank (UD-DDT) \cite{johann2015udddt} is a grammatically annotated dataset consisting of 5512 sentences and 100,733 words from the Danish PAROLE corpus containing book, newspaper and journal literature from 1983-1992 \cite{christensen1998parole}.
+\subsection{Danish NER testing sets}
+For the task of evaluating existing Danish NER models, three publicly available datasets previously used in the literature were identified.
+
+\paragraph{Danish Universal Dependencies}
+Danish Universal Dependencies of Danish Dependency Treebank (UD-DDT) \cite{johann2015udddt} is a grammatically annotated dataset consisting of 5512 sentences and 100,733 tokens from the Danish PAROLE corpus containing book, newspaper and journal literature from 1983-1992 \cite{christensen1998parole}.
 UD-DDT is split into training, development and test sets consisting of 4383, 564 and 565 sentences, respectively.
 Two Named Entity Recognition (NER) annotations of this dataset are considered.
-\begin{enumerate}
+\begin{itemize}
     \item \emph{DaNE} is a 2020 NER annotation of the entire UD-DDT into four categories PER(son), ORG(anisation), LOC(ation), MISC(ellaneous) performed once by a linguist and once by non-linguists for the Alexandra Institute \cite[Sec. 4]{hvingelby2020dane}
     \item A NER annotation of the development and test subsets of UD-DDT into the same four entity categories was performed by Barbara Plank in 2019 \cite{plank2019neural}.
         This annotation will be called \emph{Plank}.
-\end{enumerate}
+\end{itemize}
 
-\subsection{Wikipedia}
-Pan et al. performed a NER annotation of a Wikipedia corpus in 2017 by transferring English NER of the categories PER, ORG, LOC to 281 languages including Danish.
-In Danish, this dataset includes $N$ sentences and $M$ words.
+\paragraph{Wikipedia Annotations}
+Pan et al. performed an automatic NER annotation of a Wikipedia corpus in 2017 by transferring English NER of the categories PER, ORG, LOC to 281 languages including Danish \cite{pan2017wikiann}.
+This dataset is known as \emph{Wiki-ANN} (Wikipedia Annotations) and the Danish version includes 40000 sentences.
+The balanced training, development and test splits from Rahimi et al. are used \cite{rahimi2019transfer}.
 
-\section{English Named Entity Recognition}
-CoNLL-2003
+\paragraph{Summary}
+The test sets of these three NER-annotated datasets were used and a summary of their counts is shown in Table~\ref{tab:daNERdata}.
+DaNE is considered the main public, Danish NER dataset as it is produced with the highest degree of expert supervision and used for training most of the models compared in Section~\ref{sec:exidan}.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|rrr|rrrr}
+        \multirow{2}{*}{Dataset} & \multicolumn{3}{c|}{Number of sentences} & \multicolumn{4}{c}{Test set entities}\\
+                                &Train. & Dev. & Test &LOC & PER & ORG & MISC \\\hline
+        DaNE        & 4383 & 564 & 565 & 101 & 318 & 221 & 159 \\
+        Plank       & 604  & 564 & 565 & 98  & 309 & 114 & 52 \\
+        Wiki-ANN (da.)   & $20\ctp3$ & $10\ctp3$ & $10\ctp3$ & 7458 & 10,660 & 10,876 & 0
+    \end{tabular}
+    \caption{
+        Counts of sentences and test set entities in the three Danish NER benchmarks.
+        Note the clear differences in annotations between DaNE and Plank, which use the same text corpus.
+    }
+    \label{tab:daNERdata}
+\end{table}
 
-\cite{tjang2003conll}
-\section{Danish Pre-training Corpus}
+\subsection{CoNLL-2003}
+The shared task for the 2003 Conference on Computational Natural Language Leanring (CoNLL) was language-independent NER for which annotations on English Reuters news wire articles were performed by researchers \cite{tjang2003conll}.
+This corpus consists of 1393 articles that were divided into training, development and test sets as seen in Table~\ref{tab:conll2003}.
+The dataset is the central benchmark in the field of Named Entity Recognition \cite[Sec. 4.3]{yamada2020luke} and has a competitive history with over 50 models submitted to the performance leaderboard at Papers With Code\footnotemark.
+\footnotetext{
+    See 
+    \url{
+        https://paperswithcode.com/sota/named-entity-recognition-ner-on-conll-2003
+    }.
+    As of 26/02, 2021, LUKE tops the leaderboard.
+}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|ccc|cccc}
+    CoNLL-2003 English  & Articles  & Sentences  & Tokens   & LOC   & PER   & ORG   & MISC  \\ \hline
+    Training set        & 946       & 14,987     & 203,621  & 7140  & 6600  & 6321  & 3438   \\
+    Development set     & 216       & 3466      & 51,362   & 1837  & 1842  & 1341  & 922    \\
+    Test set            & 231       & 3684      & 46,435   & 1668  & 1617  & 1661  & 702    \\
+    \end{tabular}
+    \caption{
+        Dataset counts for the canonical NER dataset CoNLL-2003.
+        Note the more even distribution of entities when compared to the Danish NER datasets shown at Table~\ref{tab:daNERdata}, highlighting the difference in entities between short news texts and more general-purpose literature.
+    }
+    \label{tab:conll2003}
+\end{table}
+
+\subsection{Annotation schemes}
+
 
 \end{document}
