@@ -8,9 +8,9 @@ DATASETS = ("DaNE", "Plank", "WikiANN")
 MODEL_NAMES = {
     "BERT":         "DaNLP da-BERT",
     "mBERT":        "NERDA m-BERT",
-    "Ælæctra":      "NERDA da-Electra",
-    "Flair":        "Flair",
-    "spaCy":        "spaCy",
+    "Ælæctra":      "NERDA Ælæctra",
+    "Flair":        "DaNLP Flair",
+    "spaCy":        "DaNLP spaCy",
     "Polyglot":     "Polyglot",
     "daner":        "ITU Stanford CRF",
 }

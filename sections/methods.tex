@@ -7,7 +7,21 @@
 \section{Benchmarking Named Entity Recognition}
 \subsection{Off-the-shelf, Danish models}
 \label{sec:exidan}
-A number of Danish 
+A number of Danish NER models that are publily available and usable by NLP practitioners are collected and evaluated on the testing datasets of three Danish NER annotations considered in \ref{subsec:daNERdata}: DaNE, Plank and Wiki-ANN.
+
+Most of the models are found through DaNLP\footnotemark, an open-source collection of Danish NLP software and references released by the Alexandra Institute which also released the DaNE dataset.
+\footnotetext{
+    The repository is at \url{https://github.com/alexandrainst/danlp} from which a collection of NER models can be found under \code{docs/docs/tasks/ner.md}.
+}
+\paragraph{DaNLP da-BERT}
+is an NER model produced by DaNLP by using the pre-trained, Danish \emph{BERT}, Bidirectional Encoder Representations from Transformers, \cite{devlin2019bert} released by the company BotXO \cite{botxo2019dabert}.
+The model is fine-tuned for NER on the DaNE test set \cite{hvingelby2020dane}.
+\paragraph{NERDA m-BERT}
+\paragraph{NERDA Ælæctra}
+\paragraph{DaNLP Flair}
+\paragraph{DaNLP spaCy}
+\paragraph{Polyglot}
+\paragraph{ITU Stanford CRF (daner)}
 
 \subsection{Fine-tuning English LUKE}
 Yamada et al. benchmark \emph{LUKE}, their new transformer-based model for contextualized entity representations on a number of Natural Language Processing tasks, including Named Entity Recognition on the CoNLL-2003 dataset \cite{yamada2020luke}.
