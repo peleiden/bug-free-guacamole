@@ -5,7 +5,20 @@
 \lhead{Data}
 
 \section{Entity-annotated Danish Wikipedia}
+For building the entity-annotated dataset, the dump of Danish Wikipedia from March 1st was used.
+It consists of 80,187,419 words spanning 265,196 content pages, each of which makes up an entity in the entity vocabulary.
+Due to the limited size of Danish Wikipedia, the limit on 500,000 entities from the English LUKE is not relevant.
 
+A page consists is essentiality a sequence of words, some of which are part of hyperlinks.
+These hyperlinks are treated as entity annotations, such that most articles contain a number of entity annotations.
+Two special entities are added: \texttt{[MASK]} and \texttt{[UNK]}.
+During training, 15\pro\ of entities are masked at random by replacing them with \texttt{[MASK]}.
+%TODO: Dynamically?
+\texttt{[UNK]} is used for hyperlinks that point to entities not in the vocabulary.
+%TODO Consider why, and check if ever used in Danish: In English, the vocab is larger, so usage is obvious, but does it also include red links?
+
+Every page is split into batches consisting of no more than 512 consecutive tokens and the contained hyperlinks with their entity annotations.
+The set of all such sequences over all pages makes up the pretraining dataset.
 
 \section{Named Entity Recognition}
 %TODO:
