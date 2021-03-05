@@ -14,14 +14,37 @@ Most of the models are found through DaNLP\footnotemark, an open-source collecti
     The repository is at \url{https://github.com/alexandrainst/danlp} from which a collection of NER models can be found under \code{docs/docs/tasks/ner.md}.
 }
 \paragraph{DaNLP da-BERT}
-is an NER model produced by DaNLP by using the pre-trained, Danish \emph{BERT}, Bidirectional Encoder Representations from Transformers, \cite{devlin2019bert} released by the company BotXO \cite{botxo2019dabert}.
+is an NER model produced by DaNLP by using the pre-trained, Danish BERT, \emph{Bidirectional Encoder Representations from Transformers}, \cite{devlin2019bert} released by the company BotXO \cite{botxo2019dabert}.
 The model is fine-tuned for NER on the DaNE test set \cite{hvingelby2020dane}.
 \paragraph{NERDA m-BERT}
+is a NER model fine-tuned by Ekstra Bladet Analyse in their repository NERDA\footnotemark, \emph{NER for Danish} using the pre-trained Multilingual BERT released by the original Google Research BERT team\cite{devlin2019bert}.
+The training data was also DaNE.
+\footnotetext{
+    The repository is at \url{https://github.com/ebanalyse/NERDA}.
+}
 \paragraph{NERDA Ælæctra}
+is also released in the NERDA repository and uses the Danish Transformer Ælæctra which has been pre-trained on the Danish Gigaword Corpus by Malte Højmark-Bertelsen at KMD \cite{bertelsen2020lctra}.
+The model is an adaption of the efficient BERT alternative Electra \cite{clark2020electra} and has been fine-tuned by NERDA on DaNE.
+
 \paragraph{DaNLP Flair}
+is a NER model based on the open-source contextual word embedding framework Flair \cite{akbik2019flair}, fine-tuned on DaNE by DaNLP.
+
 \paragraph{DaNLP spaCy}
+is a model released in DaNLP which is obtained by training the general, open-source NLP framework spaCy \cite{honnibal2020spacy} on the Universal Dependencies Danish Dependency Treebank (UD-DDT) Corpus\cite{johann2015udddt}.
+This Danish spaCy model was then fine-tuned for NER on DaNE.
+
 \paragraph{Polyglot}
-\paragraph{ITU Stanford CRF (daner)}
+is a NLP framework supporting a wide range of tasks in many languages including NER in 40 different languages.
+The NER model is produced using automatic, language-agnostic annotations generated from Wikipedia and Freebase link structures \cite{rfou2015polyglot}.
+
+\paragraph{DKIE Stanford CRF (daner)}
+is an application of the Stanford CoreNLP Conditional Random Field (CRF) NER classifier \cite{manning2014corenlp} released by IT University of Copenhagen (ITU).
+The model was trained on NER annotations produced at ITU on the Danish Dependency Treebank (DDT) corpus \cite{kromann2003ddt} as a part of the DKIE project \cite{derc2014dkie}.
+The released Java-based NER tool is called \code{daner}\footnotemark.
+\footnotetext{
+    The repository is at \url{https://github.com/ITUnlp/daner}
+}
+
 
 \subsection{Fine-tuning English LUKE}
 Yamada et al. benchmark \emph{LUKE}, their new transformer-based model for contextualized entity representations on a number of Natural Language Processing tasks, including Named Entity Recognition on the CoNLL-2003 dataset \cite{yamada2020luke}.
