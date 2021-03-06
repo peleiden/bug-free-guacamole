@@ -22,25 +22,6 @@ The set of all such sequences over all pages makes up the pretraining dataset.
 
 \section{Named Entity Recognition}
 
-\subsection{LUKE}
-LUKE (Language Understanding with Knowledge-based Embeddings) is a language model introduced by Yamada et al. in November of 2020. \cite{yamada2020luke}.
-
-The model produces contextualized representations of both words and entities which can then be used for fine-tuning it for specific tasks.
-This is unlike other models such as BERT \cite{devlin2019bert} and RoBERTa \cite{liu2019roberta} which produce only contextualized word representations (CWR).
-This allows fine-tuned tasks using LUKE to use the knowledge gained from entities, ideally improving results.
-
-\paragraph{Pretraining}
-BERT, RoBERTa, and similar models use only the token embeddings inferred directly from the given sequences when pretraining.
-LUKE, which uses RoBERTa's tokenizer, also receives this.
-However, the entities that Wikipedia provides as hyperlinks, are also embedded and fed to the model.
-
-%TODO: Output representations
-%TODO: Combination of LM and entity embeddings
-%TODO: Pretraining
-%TODO: Posttraining
-%TODO: Results here?
-%TODO: Entity-aware self-attention
-
 %TODO:
 \subsection{Danish NER testing sets}
 \label{subsec:daNERdata}

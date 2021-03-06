@@ -4,6 +4,41 @@
 \chapter{Methods}
 \lhead{Methods}
 
+\section{LUKE}
+LUKE (Language Understanding with Knowledge-based Embeddings) is a language model introduced by Yamada et al. in November of 2020. \cite{yamada2020luke}.
+While conteptually similar to models such as BERT \cite{devlin2019bert} and RoBERTa \cite{liu2019roberta}, LUKE not only produces contextualized word representations (CWR), but also contextualized entity representations (CER), which, as Yamada et al. show, leads to state-of-the-art results on a number of entity-related tasks.
+
+BERT \cite{devlin2019bert} and RoBERTa \cite{liu2019roberta} yield strong, general-purpose CWR's that are effective for many different NLP tasks but are often suboptimal for entity-related tasks.
+Yamada et al. suggest three reasons for this being the case.
+\begin{itemize}
+    \item Existing CWR's include no span-level representation of entities, so these will have to be learned from a often small downstream dataset.
+    \item While transformers are good at capturing relationships between single words, they have difficulty modelling such relationsips between sequences of words, of which entities typically consist.
+    \item Finally, the word-based pretraining task is not suited for producing entity-level representations, as the masked language model (MLM) usually only has to predict a single word in an entity given the rest of the entity.
+    An example is predicting "Value" in "Deep Fucking [MASK]", where predicting the single word is clearly easier than predicting the entire entity.
+\end{itemize}
+%TODO: Phrase MLM better
+
+%GAMMELT ÆVL
+The model produces contextualized representations of both words and entities which can then be used for fine-tuning it for specific tasks.
+This is unlike other models such as BERT \cite{devlin2019bert} and RoBERTa \cite{liu2019roberta} which produce only contextualized word representations (CWR).
+This allows fine-tuned tasks using LUKE to use the knowledge gained from entities, ideally improving results.
+
+\subsection{Pretraining}
+BERT, RoBERTa, and similar models use only the token embeddings inferred directly from the given sequences when pretraining.
+LUKE, which uses RoBERTa's tokenizer, also receives this.
+However, the entities that Wikipedia provides as hyperlinks, are also embedded and fed to the model.
+
+%Discuss: Here as motivation or later? https://towardsdatascience.com/gpt-3-has-no-idea-what-it-is-saying-95d4c1bad4a8
+%TODO: Output representations
+%TODO: Combination of LM and entity embeddings
+%TODO: Pretraining, new pretraining task
+%TODO: Posttraining
+%TODO: Results here?
+%TODO: Entity-aware self-attention
+%TODO: Entity-related tasks
+%TODO: Same latent space for words and entities
+%TODO: Formality, normality 🎵🎵🎵
+
 \section{Benchmarking Named Entity Recognition}
 \subsection{Off-the-shelf, Danish models}
 \label{sec:exidan}
