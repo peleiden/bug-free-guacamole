@@ -18,7 +18,7 @@
 \fancyhf{}
 \lhead{Søren Winkel Holm, Asger Laurits Schultz}
 \chead{}
-\rhead{Technical University of Denmark}
+\rhead{Technical University opip f Denmark}
 \lfoot{Plan for BSc. project}
 \rfoot{Page \thepage{} of \pageref{LastPage}}
 
@@ -31,7 +31,7 @@ Natural Language Processing (NLP) is one of the subfields of Artificial Intellig
 It is, however, also one of the most data hungry fields, resulting in a limited success in transferring methods from English to low-resource language domains such as Danish.
 A possible mitigation of this limitation of statistical learning is the introduction of explicit knowledge in the modelling, which will be explored in this project.
 
-The contextualized word representation model LUKE (Language Understanding using Knowledge Embeddings) combines explicit knowledge of named entities mined from Wikipedia with the Deep Learning in the form the Transformer architecture. %TODO: Citér
+The contextualized word representation model LUKE (Language Understanding using Knowledge Embeddings) combines explicit knowledge of named entities mined from Wikipedia with deep learning in the form the Transformer architecture. \cite{transformer}
 The primary goal of this bachelor project is to produce and analyze daLUKE, a Danish entity-aware model following the LUKE architecture.
 The NLP subtask of Named Entity Recognition (NER) will be the main approach to examine the performance of the model.
 
@@ -39,7 +39,7 @@ As a part of the project, we aim to
 \begin{itemize}
     \item reproduce existing Danish NER results on a number of public NER datasets and reproduce the NER results of the English LUKE
     \item pre-train a Danish LUKE-based model on the Danish Wikipedia
-    \item fine-tune daLUKE on NER and compare its' performance and predictions to existing NER models - particularly daBERT
+    \item fine-tune daLUKE on NER and compare its performance and predictions to existing NER models - particularly Danish BERT\footnote{\url{https://github.com/botxo/nordic\_bert}}
     \item optimize the performance of daLUKE, possibly by changes to data and architecture, and perform a open-source release of the pre-trained model
 \end{itemize}
 
@@ -57,6 +57,10 @@ As a part of the project, we aim to
         \caption{Gantt chart showing the current, quite tentative, project timeline}
     \label{fig:gantt}
 \end{figure}\noindent
+
+\begin{thebibliography}{9}
+    \bibitem{transformer} Vaswani, A. et al.: "Attention is all you need". \url{https://arxiv.org/abs/1706.03762v5}
+\end{thebibliography}
 
 
 \end{document}

@@ -21,7 +21,8 @@ tasks = [
     ("Explore approaches to generate more data", 3, 10),
     ("Search hyper-parameters", 4, 12),
     ("Analyze daLUKE predictions", 9, 15),
-    ("Perform final pre-training", 11, 14),
+    ("Perform final pre-training", 11, 13),
+    ("Finetune on DaNE", 13, 14),
     ("Deploy daLUKE for easy open-source use", 13, 16),
 ]
 tasks = reversed(tasks)
