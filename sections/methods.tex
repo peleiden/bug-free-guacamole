@@ -17,6 +17,26 @@ Yamada et al. suggest three reasons for this being the case.
     An example is predicting "Value" in "Deep Fucking [MASK]", where predicting the single word is clearly easier than predicting the entire entity.
 \end{itemize}
 %TODO: Phrase MLM better
+LUKE, in contrast to BERT and RoBERTa, also considers entities as tokens, and it takes and inputs both word and entity tokens and produces both CWR's and CER's, respectively.
+This allows LUKE to deal with the listed problems with word-based models.
+
+Architecturally, LUKE has a single transformer on top of word- and entity embeddings that maps both types of tokens into the same latent space.
+
+\subsubsection{Pretraining}
+LUKE's pretraining is a direct extension of BERT's MLM. \cite{devlin2019bert}
+Where BERT is trained to predict randomly masked words, LUKE is trained to predict both randomly masked words and entities.
+An architectural overview of LUKE including the pretraining task is shown on Figure REF.
+
+The model is trained over 200K steps.
+Wikipedia pages are iterated over in random order.
+
+The word-entity duality of LUKE means that a large subset of the model is similar to conventional word-based models.
+For this reasons, all parameters in the transformer as well as word word embeddings are initialized to those found in RoBERTa.
+
+The authors also introduce a new entity-aware self-attention mechanism -- a version of the original self-attention mechanism in transformers that takes entities into account.
+This is not used for pretraining, however, and only for fine-tuning.
+
+
 
 %GAMMELT ÆVL
 The model produces contextualized representations of both words and entities which can then be used for fine-tuning it for specific tasks.
