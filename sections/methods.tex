@@ -6,7 +6,7 @@
 
 \section{LUKE}
 LUKE (Language Understanding with Knowledge-based Embeddings) is a language model introduced by Yamada et al. in November of 2020. \cite{yamada2020luke}.
-While conteptually similar to models such as BERT \cite{devlin2019bert} and RoBERTa \cite{liu2019roberta}, LUKE not only produces contextualized word representations (CWR), but also contextualized entity representations (CER), which, as Yamada et al. show, leads to state-of-the-art results on a number of entity-related tasks.
+While architecturally similar to models such as BERT \cite{devlin2019bert} and RoBERTa \cite{liu2019roberta}, LUKE not only produces contextualized word representations (CWR), but also contextualized entity representations (CER), which, as Yamada et al. show, leads to state-of-the-art results on a number of entity-related tasks.
 
 BERT \cite{devlin2019bert} and RoBERTa \cite{liu2019roberta} yield strong, general-purpose CWR's that are effective for many different NLP tasks but are often suboptimal for entity-related tasks.
 Yamada et al. suggest three reasons for this being the case.
@@ -18,23 +18,54 @@ Yamada et al. suggest three reasons for this being the case.
 \end{itemize}
 %TODO: Phrase MLM better
 LUKE, in contrast to BERT and RoBERTa, also considers entities as tokens, and it takes and inputs both word and entity tokens and produces both CWR's and CER's, respectively.
-This allows LUKE to deal with the listed problems with word-based models.
+This allows LUKE to deal with the listed problems with word-based language models.
 
-Architecturally, LUKE has a single transformer on top of word- and entity embeddings that maps both types of tokens into the same latent space.
+\subsection{Architecture}
+LUKE is a transformer that operates on sequence input using trainable word and entity embeddings which are encoded by 24 self-attention transformer layers.
+After these, the model can be extended with a decoder consisting of bi-directional classifications heads for pretraining, or it can be extended with linear layers for downstream tasks.
 
-\subsubsection{Pretraining}
-LUKE's pretraining is a direct extension of BERT's MLM. \cite{devlin2019bert}
+\subsubsection{BERT Architecture}
+The word/entity duality of LUKE means that a large part of the model performs the same task as the conventional word-based language models.
+For this reason, the word embeddings in LUKE follow the BERT architecture and Yamada et al. initialize these embeddings to those found in RoBERTa.
+In the pre-training of Yamada et al., the encoder of LUKE is also equivalent with that of BERT and is initialized the weights of RoBERTa.
+
+\subsubsection{Entity Embeddings}
+The only architectural difference between LUKE and BERT in the pretraining of Yamada et al. is the addition of a map from entity id's and entity position id's to entity embeddings.
+This part of the model consists of lookup tables that store values for each possible id.
+For the entity token id embedding, the size of the lookup table corresponds to the size of the entity vocabulary.
+
+The entity embeddings are concatenated to the word embeddings and thus operate in the same latent space when fed to the encoder.
+
+\subsubsection{Entity-aware Self-attention}
+Yamada et al. present a entity-related change to the BERT encoder architecture \cite[Sec. 3.2]{yamada2020luke}.
+This change is in the query mechanism of the attention scorer.
+
+For the attention between token $i$ and token $j$ with the hidden states $\mathbf x_i, \mathbf x_j$, a part of the BERT attention mechanism is to compute the following scalar:
+\begin{equation}
+    q_{ij} = \mathbf x_j^\top \mathbf Q \mathbf x_i,
+\end{equation}
+where $\mathbf Q\in \RR^{H\low{in}\times H\low{out}}$ is called the query matrix for a layer with input hidden size $H\low{in}$ and output hidden size $H\low{out}$.
+
+In LUKE, the tokens $\mathbf x_i$ might either be words or entities.
+To handle this explicitly, entity-aware self-attention changes the computation of the scalar $q_{ij}$ to
+\begin{equation}
+    q_{ij} = 
+    \begin{cases}
+    \mathbf x_j^\top \mathbf Q_{w2w} \mathbf x_i  & \text{if both $\mathbf x_i$ and $\mathbf x_j$ are word tokens}\\
+    \mathbf x_j^\top \mathbf Q_{w2e} \mathbf x_i & \text{if $\mathbf x_i$ is word and $\mathbf x_j$ is entity}\\
+    \mathbf x_j^\top \mathbf Q_{e2w} \mathbf x_i & \text{if $\mathbf x_i$ is entity and $\mathbf x_j$ is word}\\
+    \mathbf x_j^\top \mathbf Q_{e2e} \mathbf x_i & \text{if both $\mathbf x_i$ and $\mathbf x_j$ are entity tokens}
+    \end{cases}
+\end{equation}
+LUKE is, however, not pretrained using this mechanism, but for the fine-tuning tasks, Yamada et al. show in ablation experiments that this addition consistently yields better performance \cite[Sec. 5.2]{yamada2020luke}.
+
+\subsection{Pretraining}
+Yamada et. al perform the pretraining of LUKE by extending the MLM task of BERT \cite{devlin2019bert}.
 Where BERT is trained to predict randomly masked words, LUKE is trained to predict both randomly masked words and entities.
-An architectural overview of LUKE including the pretraining task is shown on Figure REF.
 
-The model is trained over 200K steps.
-Wikipedia pages are iterated over in random order.
 
-The word-entity duality of LUKE means that a large subset of the model is similar to conventional word-based models.
-For this reasons, all parameters in the transformer as well as word word embeddings are initialized to those found in RoBERTa.
-
-The authors also introduce a new entity-aware self-attention mechanism -- a version of the original self-attention mechanism in transformers that takes entities into account.
-This is not used for pretraining, however, and only for fine-tuning.
+% The model is trained over 200K steps.
+% Wikipedia pages are iterated over in random order.
 
 %%GAMMELT ÆVL
 % The model produces contextualized representations of both words and entities which can then be used for fine-tuning it for specific tasks.
