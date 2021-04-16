@@ -6,6 +6,8 @@
 3) Train Danish LUKE for NER on benchmark data 
 4) Produce Danish open source LUKE with NER as example and comparison with existing NER benchmarks
 
+[TRÆNINGER](https://docs.google.com/document/d/1bZYhWAhx-WZexIxM1y1w003R9X8EV7VbMdbsf69YSLg/edit?usp=sharing)
+
 [Nextcloud-datamappe](https://nx5746.your-storageshare.de/s/3cyfw5weFNMbwjK)
 
 
