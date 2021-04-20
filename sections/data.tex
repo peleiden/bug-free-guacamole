@@ -6,19 +6,47 @@
 
 \section{Entity-annotated Danish Wikipedia}
 For building the entity-annotated dataset, the dump of Danish Wikipedia from March 1st was used.
+%TODO: Indsæt link/citation
 It consists of 80,187,419 words spanning 265,196 content pages, each of which makes up an entity in the entity vocabulary.
+%TODO: Hvorfor er der 265315 entiteter i vocab?
 Due to the limited size of Danish Wikipedia, the limit on 500,000 entities from the English LUKE is not relevant.
 
-A page consists is essentiality a sequence of words, some of which are part of hyperlinks.
+For the purposes of this model, a page is seen as a long sequence of words with hyperlinks spanning some of these.
 These hyperlinks are treated as entity annotations, such that most articles contain a number of entity annotations.
 Two special entities are added: \texttt{[MASK]} and \texttt{[UNK]}.
 During training, 15\pro\ of entities are masked at random by replacing them with \texttt{[MASK]}.
-%TODO: Dynamically?
 \texttt{[UNK]} is used for hyperlinks that point to entities not in the vocabulary.
 %TODO Consider why, and check if ever used in Danish: In English, the vocab is larger, so usage is obvious, but does it also include red links?
+The first and last tokens are always \texttt{[SEP]} and \texttt{[CLS]}.
+%TODO: Check
 
 Every page is split into batches consisting of no more than 512 consecutive tokens and the contained hyperlinks with their entity annotations.
+Word spans over the tokens in each sequence are also include.
 The set of all such sequences over all pages makes up the pretraining dataset.
+
+\subsection{Entity Augmentation}
+While the hyperlinks on Wikipedia provide useful entity span annotations for pretraining, they have one major drawback: A page is usually only linked once, even if it is referenced multiple times in an article.
+This results in a large number of false negatives in the entity annotations.
+\cite{yamada2020luke} do not account for this in their pretraining, however they use a simple string matching method for extending annotations when finetuning on the SQuAD dataset.
+
+We preprocess the articles in a similar way already before the pretraining step to augment the entity part of the dataset.
+Our preprocessing consists of the following tqo steps applied article-wise:
+\begin{enumerate}
+    \item Get set of other mentioned articles including the title of the article itself.
+    Only include titles of at least three characters.
+    \item For each title, check if it matches a sequence of characters following whitespace, ignoring casing.
+    If there is a match, annotate and go to next whitespace.
+\end{enumerate}
+Many hyperlinks span only the first part of a given word.
+This allows e.g. the words "Wind mills" to link to the article "Wind mill", even if they do not match exactly.
+We allow such matches when annotating as we expect it to remove a large number of false negatives, while introducing relatively few false positives.
+To reduce the number of false positives, we only perform extra annotations with titles of at least three characters.
+This prevents the article on "A" to match every word starting with "A".
+We also only match titles already linked in the articles, as we assume that any article that should be linked to has already been linked at least once.
+This further reduces the number of false positives.
+
+These steps increase the number of entity annotations from 4,693,505 to 6,614,552.
+
 
 \section{Named Entity Recognition}
 
