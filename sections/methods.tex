@@ -4,8 +4,10 @@
 \chapter{Methods}
 \lhead{Methods}
 
-\section{LUKE}
+\section{Pretrained LUKE model}
 LUKE (Language Understanding with Knowledge-based Embeddings) is a language model introduced by Yamada et al. in November of 2020. \cite{yamada2020luke}.
+As the model is tested and extended in this project, key properties of the architecture and pretraining methodology are presented in this section.
+
 While architecturally similar to models such as BERT \cite{devlin2019bert} and RoBERTa \cite{liu2019roberta}, LUKE not only produces contextualized word representations (CWR), but also contextualized entity representations (CER), which, as Yamada et al. show, leads to state-of-the-art results on a number of entity-related tasks.
 
 BERT \cite{devlin2019bert} and RoBERTa \cite{liu2019roberta} yield strong, general-purpose CWR's that are effective for many different NLP tasks but are often suboptimal for entity-related tasks.
@@ -30,21 +32,23 @@ For this reason, the word embeddings in LUKE follow the BERT architecture and Ya
 In the pre-training of Yamada et al., the encoder of LUKE is also equivalent with that of BERT and is initialized the weights of RoBERTa.
 
 \subsubsection{Entity Embeddings}
-The only architectural difference between LUKE and BERT in the pretraining of Yamada et al. is the addition of a map from entity id's and entity position id's to entity embeddings.
+The only architectural difference between LUKE and BERT in the pretraining of Yamada et al. (apart from pretraining specific heads) is the addition of a map from entity id's and entity position id's to entity embeddings.
 This part of the model consists of lookup tables that store values for each possible id.
 For the entity token id embedding, the size of the lookup table corresponds to the size of the entity vocabulary.
 
-The entity embeddings are concatenated to the word embeddings and thus operate in the same latent space when fed to the encoder.
+The entity embeddings are concatenated to the word embeddings and are passed through the encoder such that the two token domains exist in the same latent space.
+After the encoding, the output can be split into representations for the words and entities in the sequence.
+
 
 \subsubsection{Entity-aware Self-attention}
-Yamada et al. present a entity-related change to the BERT encoder architecture \cite[Sec. 3.2]{yamada2020luke}.
-This change is in the query mechanism of the attention scorer.
+Yamada et al. present a entity-related change to the BERT encoder architecture in the query metchanism of the attention scorer \cite[Sec. 3.2]{yamada2020luke}.
 
-For the attention between token $i$ and token $j$ with the hidden states $\mathbf x_i, \mathbf x_j$, a part of the BERT attention mechanism is to compute the following scalar:
+For the attention between token $i$ and token $j$ with the hidden states $\mathbf x_i, \mathbf x_j$, a core part of the normal transformer attention mechanism is to compute the following scalar:
 \begin{equation}
     q_{ij} = \mathbf x_j^\top \mathbf Q \mathbf x_i,
 \end{equation}
-where $\mathbf Q\in \RR^{H\low{in}\times H\low{out}}$ is called the query matrix for a layer with input hidden size $H\low{in}$ and output hidden size $H\low{out}$.
+where $\mathbf Q\in \RR^{H\low{in}\times H\low{out}}$ is called the query matrix for a layer with input hidden size $H\low{in}$ and output hidden size $H\low{out}$ \cite[Sec. 3.2.1]{vaswani2017att}.
+% FIXME: H_in og H_out må da være det samme?
 
 In LUKE, the tokens $\mathbf x_i$ might either be words or entities.
 To handle this explicitly, entity-aware self-attention changes the computation of the scalar $q_{ij}$ to
@@ -63,29 +67,20 @@ LUKE is, however, not pretrained using this mechanism, but for the fine-tuning t
 Yamada et. al perform the pretraining of LUKE by extending the MLM task of BERT \cite{devlin2019bert}.
 Where BERT is trained to predict randomly masked words, LUKE is trained to predict both randomly masked words and entities.
 
+The pretraining task thus gives three sequences as input:
+The word id's, with some of them replaced by the mask id, the entity id's, also masked, and finally a list which stores the positions of the entities in the sentence.
+From these, the model is to classify the tokens at the mask positions in both sequences.
+The model parameters are then updated by the Adam optimizer backpropagating through loss computed as the sum of the multi-class cross entropy losses of the two classification tasks.
 
-% The model is trained over 200K steps.
-% Wikipedia pages are iterated over in random order.
+\subsubsection{Entity Mask Prediction Head}
+For the entity pretraining task, LUKE is equipped with another classifier structure in addition to the masked language model prediction head inherited from BERT.
+This new prediction head follows the architecture of the masked word scorer just operating on the entity representations.
+The masked entity tokens are thus scored as corresponding to one of the entities in the entity vocabulary by two linear layers between which an activation and layer normalization are placed.
 
-%%GAMMELT ÆVL
-% The model produces contextualized representations of both words and entities which can then be used for fine-tuning it for specific tasks.
-% This is unlike other models such as BERT \cite{devlin2019bert} and RoBERTa \cite{liu2019roberta} which produce only contextualized word representations (CWR).
-% This allows fine-tuned tasks using LUKE to use the knowledge gained from entities, ideally improving results.
 
-% \subsection{Pretraining}
-% BERT, RoBERTa, and similar models use only the token embeddings inferred directly from the given sequences when pretraining.
-% LUKE, which uses RoBERTa's tokenizer, also receives this.
-% However, the entities that Wikipedia provides as hyperlinks, are also embedded and fed to the model.
-
-%Discuss: Here as motivation or later? https://towardsdatascience.com/gpt-3-has-no-idea-what-it-is-saying-95d4c1bad4a8
-%TODO: Output representations
-%TODO: Combination of LM and entity embeddings
-%TODO: Pretraining, new pretraining task
-%TODO: Posttraining
 %TODO: Results here?
 %TODO: Entity-aware self-attention
 %TODO: Entity-related tasks
-%TODO: Same latent space for words and entities
 %TODO: Formality, normality 🎵🎵🎵
 
 \section{Benchmarking Named Entity Recognition}
