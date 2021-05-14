@@ -4,8 +4,29 @@
 \chapter{Results}
 \lhead{Results}
 
-\section{Reproductions}
-\subsection{Danish NER benchmarks}
+\section{English LUKE Reproduction}%
+\label{sec:English LUKE Reproduction}
+\begin{table}[H]
+	\begin{center}
+		\begin{tabular}{l r r r r r}
+			Model & Micro avg. & LOC & PER & ORG & MISC \\
+			\hline
+			LUKE large & $94.00 \pm  0.2$ & $94.99 \pm  0.09$ & $97.19 \pm  0.1$ & $93.63 \pm  0.3$ & $85.29 \pm  1$ \\
+			LUKE base & $93.42 \pm  0.2$ & $94.67 \pm  0.2$ & $96.89 \pm  0.2$ & $92.41 \pm  0.2$ & $84.94 \pm  0.7$ \\
+			 &  &  &  &  &  \\
+			Support & 5616 & 1666 & 1602 & 1647 & 701 \\
+		\end{tabular}
+	\end{center}
+	\caption{Mean F1\pro-scores and standard deviation over five repetitions of fine-tuning and evaluating LUKE on CoNLL2003 for each model size.}
+	\label{tab:lukeF1s}
+\end{table}
+
+\section{Pretraining of daLUKE}%
+\label{sec:Pretraining of daLUKE}
+
+
+\section{Danish Named Entity Recognition}%
+\label{sec:Danish Named Entity Recognition}
 \begin{table}[H]
 	\begin{center}
 		\begin{tabular}{l l r r r r r r}
@@ -64,21 +85,6 @@
 	\end{center}
 	\caption{F1\pro-scores of Danish NER models of the WikiANN data-set consisting of 10000 sentences.}
 	\label{tab:WikiANN}
-\end{table}
-\subsection{English LUKE NER performance}
-\begin{table}[H]
-	\begin{center}
-		\begin{tabular}{l r r r r r}
-			Model & Micro avg. & LOC & PER & ORG & MISC \\
-			\hline
-			LUKE large & $94.00 \pm  0.2$ & $94.99 \pm  0.09$ & $97.19 \pm  0.1$ & $93.63 \pm  0.3$ & $85.29 \pm  1$ \\
-			LUKE base & $93.42 \pm  0.2$ & $94.67 \pm  0.2$ & $96.89 \pm  0.2$ & $92.41 \pm  0.2$ & $84.94 \pm  0.7$ \\
-			 &  &  &  &  &  \\
-			Support & 5616 & 1666 & 1602 & 1647 & 701 \\
-		\end{tabular}
-	\end{center}
-	\caption{Mean F1\pro-scores and standard deviation over five repetitions of fine-tuning and evaluating LUKE on CoNLL2003 for each model size.}
-	\label{tab:lukeF1s}
 \end{table}
 
 \end{document}
