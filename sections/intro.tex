@@ -3,13 +3,29 @@
 \begin{document}
 \chapter{Introduction}
 \lhead{Introduction}
+% TODO: Gennemgå sætninger for friskhed - hvor meget skal der citeres?
 The rapid development of Artificial Intelligence (AI) seen in the last decade is not just one of research;
-fields such as Data Science or AI Engineering have brought emerging intelligent technologies to industry, resulting in AI playing a significant role in society.
-This data-driven wave of AI has been led by the subfield that deals with statistical learning such as Deep Neural Networks while symbolic methods using explicit knowledge have been less influential.
-The successful societal impact of these statistical methods such as Deep Learning is, however, conditioned on the availability of enough data which has the negative side effect of limiting the benefits of AI to high resource domains.
+the applied field sometimes called Data Science or AI Engineering has brought emerging intelligent technologies to industry, resulting in AI playing a significant role in society.
+This data driven wave of AI has been led by the subfield that deals with statistical learning such as Deep Neural Networks while symbolic methods using explicit knowledge have been less influential.
+The successful societal impact of these statistical methods such as Deep Learning is, however, conditioned on the availability of big data and heavy computing resources resulting in high resource domains receiving most of the benefit of AI.
 
-A clear example of this issue is the important field of Natural Language Processing (NLP) that
-%TODO: NLP data-sulten => mindre sprogområder ikke lige så meget med på AI-bølgen. => kan eksplicit vidensrepræsentation hjælpe os her? => daLUKE
+A clear example of this issue is the important field of Natural Language Processing (NLP) that attacks the difficult task of understanding human language, one of the distinguishing aspects of our intelligence.
+NLP based on statistical methods from AI has in recent years taken sizable strides towards this understanding with large-scale models such as GPT-2, GPT-3, BERT, RoBERTa, ELMo and T5 gaining public attention and seeing practical use.
+
+The data hunger of these models results in natural languages with low amounts of available data, dubbed low resource languages, lacking severely behind in technical results and thus seeing less practical use of NLP.
+To avoid these regions falling behind in the AI race, these languages, that include Danish, have seen a growing trend of attention from the literature resulting in a diverse set of methods attempting learning in the data sparse case \cite{hedderich2021survey}.
+
+One such possible mitigation is to let the statistical approach be influenced by explicit modelling of knowledge.
+In this project, language understanding in the low resource language Danish will be attempted using a new Deep Learning technique for NLP that succeeded with this modelling approach in English.
+The model, \emph{Language Understanding Using Knowledge Embeddings} (LUKE), was released in October of 2020 and explicitly handles the difference between single words and named entities such as \emph{Lionel Messi}, \emph{The United States of America}, \emph{Science} \cite{yamada2020luke}.
+The model had in total seen training from 160 GB of text\footnotemark and achieved State of The Art (SoTA) results on a number of classic NLP tasks such as Named Entity Recognition (NER).
+\footnotetext{This includes all training that had an effect on the final model weights and thus also the data used to pretrain RoBERTa \cite[Sec. 3.2]{liu2019roberta}, the weights of which was used for initializing most of the LUKE weights. Counting only the data used for LUKE itself, the number is not directly reported but was found to be around 7 GB by running the data pipeline.}
+For Danish, the amount of suitable data for this technique is about 40 times smaller \footnotemark.
+\footnotetext{
+    The pretraining method uses the special format of Wikipedia. The English Wikipedia dump used by LUKE contained 3.5 billion words \cite[App. A]{yamada2020luke} while the Danish Wikipedia consists of 81 million words.
+}
+It is the goal of this project to present the best possible Open Source Danish LUKE for use of Danish NLP practitioners while also taking this challenge as a case study of Deep Natural Language Processing for low resource languages.
+% Nævn forskellen i compute?
 \section{Related Work}
 \subsection{Deep, Knowledge-enhanced NLP}
 \subsection{Danish NLP}
