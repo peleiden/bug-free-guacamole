@@ -14,16 +14,15 @@ BERT \cite{devlin2019bert} and RoBERTa \cite{liu2019roberta} yield strong, gener
 Yamada et al. suggest three reasons for this being the case.
 \begin{itemize}
     \item Existing CWR's include no span-level representation of entities, so these will have to be learned from a often small downstream dataset.
-    \item While transformers are good at capturing relationships between single words, they have difficulty modelling such relationsips between sequences of words, of which entities typically consist.
-    \item Finally, the word-based pretraining task is not suited for producing entity-level representations, as the masked language model (MLM) usually only has to predict a single word in an entity given the rest of the entity.
-    An example is predicting "Value" in "Deep Fucking [MASK]", where predicting the single word is clearly easier than predicting the entire entity.
+    \item While transformers are good at capturing relationships between single words, they have difficulty modelling such relationsips between sequences of words, of which entities often consist.
+    \item Finally, the word-based pretraining task is not suited for producing entity-level representations, as the masked language model (MLM) mostly learns to predict single words rather than entire entity spans.
+    An example is predicting "Rings" in "Lord of the [MASK]", where predicting the single word is clearly easier than predicting the entire entity.
 \end{itemize}
-%TODO: Phrase MLM better
 LUKE, in contrast to BERT and RoBERTa, also considers entities as tokens, and it takes and inputs both word and entity tokens and produces both CWR's and CER's, respectively.
-This allows LUKE to deal with the listed problems with word-based language models.
+This allows LUKE to deal with the listed problems of purely word-based language models.
 
 \subsection{Architecture}
-LUKE is a transformer that operates on sequence input using trainable word and entity embeddings which are encoded by 24 self-attention transformer layers.
+LUKE is a transformer that operates on input sequences using trainable word and entity embeddings which are encoded by 24 self-attention transformer layers.
 After these, the model can be extended with a decoder consisting of bi-directional classifications heads for pretraining, or it can be extended with linear layers for downstream tasks.
 
 \subsubsection{BERT Architecture}
@@ -61,21 +60,22 @@ To handle this explicitly, entity-aware self-attention changes the computation o
     \mathbf x_j^\top \mathbf Q_{e2e} \mathbf x_i & \text{if both $\mathbf x_i$ and $\mathbf x_j$ are entity tokens}
     \end{cases}
 \end{equation}
-LUKE is, however, not pretrained using this mechanism, but for the fine-tuning tasks, Yamada et al. show in ablation experiments that this addition consistently yields better performance \cite[Sec. 5.2]{yamada2020luke}.
+LUKE, however, is not pretrained using this mechanism, but for the fine-tuning tasks, Yamada et al. show in ablation experiments that this addition consistently yields better performance \cite[Sec. 5.2]{yamada2020luke}.
 
 \subsection{Pretraining}
 Yamada et. al perform the pretraining of LUKE by extending the MLM task of BERT \cite{devlin2019bert}.
 Where BERT is trained to predict randomly masked words, LUKE is trained to predict both randomly masked words and entities.
 
 The pretraining task thus gives three sequences as input:
-The word id's, with some of them replaced by the mask id, the entity id's, also masked, and finally a list which stores the positions of the entities in the sentence.
+Word id's, entity id's, and positions of the entities.
+15\pro\ of words and entities are randomly replaced by the [MASK] token, following RoBERTa \cite{liu2019roberta}.
 From these, the model is to classify the tokens at the mask positions in both sequences.
-The model parameters are then updated by the Adam optimizer backpropagating through loss computed as the sum of the multi-class cross entropy losses of the two classification tasks.
+The model parameters are then updated by the AdamW optimizer backpropagating through loss computed as the sum of the multi-class cross entropy losses of the two classification tasks.
 
 \subsubsection{Entity Mask Prediction Head}
 For the entity pretraining task, LUKE is equipped with another classifier structure in addition to the masked language model prediction head inherited from BERT.
 This new prediction head follows the architecture of the masked word scorer just operating on the entity representations.
-The masked entity tokens are thus scored as corresponding to one of the entities in the entity vocabulary by two linear layers between which an activation and layer normalization are placed.
+The masked entity tokens are thus scored as corresponding to one of the entities in the entity vocabulary by two linear layers between which an activation function and layer normalization are placed.
 
 
 \section{Benchmarking Existing Named Entity Recognition}
@@ -123,43 +123,47 @@ A number of Danish NER models that are publily available and usable by NLP pract
 Most of the models are found through DaNLP\footnotemark, an open-source collection of Danish NLP software and references released by the Alexandra Institute which also released the DaNE dataset.
 \footnotetext{
     The repository is at \url{https://github.com/alexandrainst/danlp} from which a collection of NER models can be found under \code{docs/docs/tasks/ner.md}.
-}
-\paragraph{DaNLP da-BERT}
-is an NER model produced by DaNLP by using the pre-trained, Danish BERT, \emph{Bidirectional Encoder Representations from Transformers}, \cite{devlin2019bert} released by the company BotXO \cite{botxo2019dabert}.
-The model is fine-tuned for NER on the DaNE test set \cite{hvingelby2020dane}.
-\paragraph{NERDA m-BERT}
-is a NER model fine-tuned by Ekstra Bladet Analyse in their repository NERDA\footnotemark, \emph{NER for Danish} using the pre-trained Multilingual BERT released by the original Google Research BERT team\cite{devlin2019bert}.
+}\\
+\\
+\textbf{DaNLP da-BERT}
+is an NER model produced by DaNLP by using the pretrained Danish BERT released by the company BotXO \cite{botxo2019dabert} under the Creative Commons 4.0 open source license.
+The model is fine-tuned for NER on the DaNE test set \cite{hvingelby2020dane}.\\
+\\
+\textbf{NERDA m-BERT}
+is a NER model fine-tuned by Ekstra Bladet Analyse in their repository NERDA\footnotemark, \emph{NER for Danish} using the pre-trained Multilingual BERT released by the original Google Research BERT team \cite{devlin2019bert}.
 The training data was also DaNE.
 \footnotetext{
     The repository is at \url{https://github.com/ebanalyse/NERDA}.
-}
-\paragraph{NERDA Ælæctra}
+}\\
+\\
+\textbf{NERDA Ælæctra}
 is also released in the NERDA repository and uses the Danish Transformer Ælæctra which has been pre-trained on the Danish Gigaword Corpus by Malte Højmark-Bertelsen at KMD \cite{bertelsen2020lctra}.
-The model is an adaption of the efficient BERT alternative Electra \cite{clark2020electra} and has been fine-tuned by NERDA on DaNE.
-
-\paragraph{DaNLP Flair}
-is a NER model based on the open-source contextual word embedding framework Flair \cite{akbik2019flair}, fine-tuned on DaNE by DaNLP.
-
-\paragraph{DaNLP spaCy}
+The model is an adaption of the efficient BERT alternative Electra \cite{clark2020electra} and has been fine-tuned by NERDA on DaNE.\\
+\\
+\textbf{DaNLP Flair}
+is a NER model based on the open-source contextual word embedding framework Flair \cite{akbik2019flair}, fine-tuned on DaNE by DaNLP.\\
+\\
+\textbf{DaNLP spaCy}
 is a model released in DaNLP which is obtained by training the general, open-source NLP framework spaCy \cite{honnibal2020spacy} on the Universal Dependencies Danish Dependency Treebank (UD-DDT) Corpus\cite{johann2015udddt}.
-This Danish spaCy model was then fine-tuned for NER on DaNE.
-
-\paragraph{Polyglot}
+This Danish spaCy model was then fine-tuned for NER on DaNE.\\
+\\
+\textbf{Polyglot}
 is a NLP framework supporting a wide range of tasks in many languages including NER in 40 different languages.
-The NER model is produced using automatic, language-agnostic annotations generated from Wikipedia and Freebase link structures \cite{rfou2015polyglot}.
-
-\paragraph{DKIE Stanford CRF (daner)}
+The NER model is produced using automatic, language-agnostic annotations generated from Wikipedia and Freebase link structures \cite{rfou2015polyglot}.\\
+\\
+\textbf{DKIE Stanford CRF (daner)}
 is an application of the Stanford CoreNLP Conditional Random Field (CRF) NER classifier \cite{manning2014corenlp} released by IT University of Copenhagen (ITU).
 The model was trained on NER annotations produced at ITU on the Danish Dependency Treebank (DDT) corpus \cite{kromann2003ddt} as a part of the DKIE project \cite{derc2014dkie}.
 The released Java-based NER tool is called \code{daner}\footnotemark.
 \footnotetext{
     The repository is at \url{https://github.com/ITUnlp/daner}
 }
+%TODO Tilføj dacy
 
-
-\section{daLUKE}
+\section{DaLUKE}
 \subsection{Approach Compared to English LUKE}%
 \label{sub:diffapp}
+DaLUKE's pretraining largely follows LUKE's: Weights are initialized from da-BERT, and the same pretraining task is used on a corresponding dataset in Danish.
 % Vi bruger enitetsopmærksom
 % Andre ting, vi lige kommer på
 \subsection{Pretraining Methodology and Hyperparameters}%
