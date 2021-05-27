@@ -176,10 +176,12 @@ DaLUKE's pretraining largely follows LUKE's with some differences:
     \item The full entity vocabulary is used.
 \end{itemize}
 Due to the memory intensive nature of the transformer architecture, we follow Yamada et al. and use gradient accumulation over multiple subbatches within each batch.
-This allows parameter updates to be based an all examples in a given batch.
 
 The learning rate, which uses a linear warmup followed by a linear decay, is updated after each batch.
-\cite{pytorchamp}
+This prevents the model from overfitting on early examples and allows better optimization later on, while still retaining a relatively high learning rate throughout of most the training, without the training dragging on, as it would with a constant, low learning rate.
+
+The model is trained using Pytorch Automatic Mixed Precision \cite{pytorchamp}, which -- ideally, at least, as will be discussed in section \ref{sub:oss} -- should decrease training time.
+This is partially due to half-precision calculations being simpler, and partially due to the lower memory requirements, allowing larger subbatches and thus better GPU utilization.
 
 \noindent
 The following hyperparameters were used for the pretraining.
@@ -203,11 +205,13 @@ The following hyperparameters were used for the pretraining.
 \end{table}\noindent
 
 \subsection{Fine-tuning daLUKE for Named Entity Recognition}%
-\label{sub:Fine-tuning daLUKE for Named Entity Recognition}
+\label{sub:finetune-ner}
 
 
-\subsection{Implementation Detail and Open Source Software}%
-\label{sub:Open Source Software Package and Model}
+\subsection{Implementation Details and Open Source Software}%
+\label{sub:oss}
+
+\subsubsection{Distributed Training}
 
 
 
