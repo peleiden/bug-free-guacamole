@@ -16,7 +16,7 @@ Yamada et al. suggest three reasons for this being the case.
     \item Existing CWR's include no span-level representation of entities, so these will have to be learned from a often small downstream dataset.
     \item While transformers are good at capturing relationships between single words, they have difficulty modelling such relationsips between sequences of words, of which entities often consist.
     \item Finally, the word-based pretraining task is not suited for producing entity-level representations, as the masked language model (MLM) mostly learns to predict single words rather than entire entity spans.
-    An example is predicting "Rings" in "Lord of the [MASK]", where predicting the single word is clearly easier than predicting the entire entity.
+    An example is predicting "Flies" in "Lord of the [MASK]", where predicting the single word is clearly easier than predicting the entire entity.
 \end{itemize}
 LUKE, in contrast to BERT and RoBERTa, also considers entities as tokens, and it takes and inputs both word and entity tokens and produces both CWR's and CER's, respectively.
 This allows LUKE to deal with the listed problems of purely word-based language models.
@@ -40,6 +40,7 @@ After the encoding, the output can be split into representations for the words a
 
 
 \subsubsection{Entity-aware Self-attention}
+\label{subsubsec:entityaware}
 Yamada et al. present a entity-related change to the BERT encoder architecture in the query metchanism of the attention scorer \cite[Sec. 3.2]{yamada2020luke}.
 
 For the attention between token $i$ and token $j$ with the hidden states $\mathbf x_i, \mathbf x_j$, a core part of the normal transformer attention mechanism is to compute the following scalar:
@@ -161,19 +162,51 @@ The released Java-based NER tool is called \code{daner}\footnotemark.
 %TODO Tilføj dacy
 
 \section{DaLUKE}
-\subsection{Approach Compared to English LUKE}%
-\label{sub:diffapp}
-DaLUKE's pretraining largely follows LUKE's: Weights are initialized from da-BERT, and the same pretraining task is used on a corresponding dataset in Danish.
+
 % Vi bruger enitetsopmærksom
 % Andre ting, vi lige kommer på
 \subsection{Pretraining Methodology and Hyperparameters}%
 \label{sub:dalpre}
+DaLUKE's pretraining largely follows LUKE's with some differences:
+\begin{itemize}
+    \item The entity-augmented Danish Wikipedia described in section \ref{subsec:entaug} is used.
+    \item Entity-aware self-attention is used for the pretraining.
+    \item Weights are initialized from da-BERT.
+    All four attention matrices described in section \ref{subsubsec:entityaware} are initialized to the same attention matrix in da-BERT.
+    \item The full entity vocabulary is used.
+\end{itemize}
+Due to the memory intensive nature of the transformer architecture, we follow Yamada et al. and use gradient accumulation over multiple subbatches within each batch.
+This allows parameter updates to be based an all examples in a given batch.
+
+The learning rate, which uses a linear warmup followed by a linear decay, is updated after each batch.
+\cite{pytorchamp}
+
+\noindent
+The following hyperparameters were used for the pretraining.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|r}
+        Parameter  &    Value\\\hline
+        Epochs     & 150\\
+        Batch size &    4096\\
+        Peak learning rate & $5\ctp{-4}$\\
+        LR warmup steps prop. & $ 6\pro $\\
+        Mask prob. for words & $ 15\pro $\\
+        Mask prob. for entities & $ 15\pro $\\
+        Dropout & $ 0.1 $\\
+        Weight decay & $ 0.01 $\\
+        AdamW $ \beta_1 $ & $ 0.9 $\\
+        AdamW $ \beta_2 $ & $ 0.999 $\\
+        AdamW $ \epsilon $ & $ 10^{-6} $
+    \end{tabular}
+    \caption{Hyperparameters for DaLUKE pretraining.}\label{tab:pretrain-hyper}
+\end{table}\noindent
 
 \subsection{Fine-tuning daLUKE for Named Entity Recognition}%
 \label{sub:Fine-tuning daLUKE for Named Entity Recognition}
 
 
-\subsection{Open Source Software Package and Model}%
+\subsection{Implementation Detail and Open Source Software}%
 \label{sub:Open Source Software Package and Model}
 
 

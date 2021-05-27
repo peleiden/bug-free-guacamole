@@ -26,7 +26,7 @@ Sequences are cut short if necessary to prevent hyperlinks spanning two sequence
 Special tokens are added to the beginning and end of each sequence.
 %TODO WHICH
 Word spans over tokens is also saved, as the MLM pretraining task is done on a word level.
-Thus, an entry in the dataset consists of the following four parts:
+Thus, an entry in the dataset -- from now on called an example -- consists of the following four parts:
 \begin{itemize}
 %TODO Spacing
     \item An array of at most 512 token ID's
@@ -34,10 +34,11 @@ Thus, an entry in the dataset consists of the following four parts:
     \item An array of two-tuples containing the start and end indices for every entity
     \item An array of two-tuples containing the start and end indices for every word
 \end{itemize}
-The dataset is the set of all such entries from all articles.
+The dataset is the set of all examples from all articles.
 %TODO List all special tokens
 
 \subsection{Entity Augmentation}
+\label{subsec:entaug}
 For the purposes of the discussing the motivation and effects of our data preprocessing, we will use the terms true/false positive/negative about the entity annotations.
 In order for the binary terms to make sense, annotations and no annotations are considered positive and negative, respectively, with only their existense being relevant.
 
@@ -62,7 +63,24 @@ This prevents the article on "A" to be linked at every word starting with "A".
 We also only match titles already linked in the articles, as we assume that any article that should be linked to has already been linked at least once.
 This further reduces the number of false positives.
 
-These steps increase the number of entity annotations from 4,693,505 to 6,956,690.
+Table \ref{tab:metadata} shows how these augmentation steps change the size of the dataset.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|r|r}
+        Statistic&Unaugmented	&Augmented	\\\hline
+        Subword tokens&101,445,535	&108,360,000	\\
+        Entity vocabulary size&264,754  &275,586\\
+        Entity annotations&4,693,505	&6,956,690\\
+        Examples&363,932   &378,749
+    \end{tabular}
+    \caption{
+        Statistics for both datasets.
+        The discrepancy in entity vocabulary size is explained by adding links that point to the article in which the link occurs.
+        This means that some articles, which are never linked to, have links in the augmented dataset, leading to them being included in the entity vocabulary.
+        The increased number of subword tokens and examples comes from not including sentences without entities, of which there are fewer in the augmented dataset.
+    }
+    \label{tab:metadata}
+\end{table}\noindent
 
 
 \section{Named Entity Recognition}
