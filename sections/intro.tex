@@ -18,7 +18,7 @@ To avoid these regions falling behind in the AI race, these languages, that incl
 One such possible mitigation is to let the statistical approach be influenced by explicit modelling of knowledge.
 In this project, language understanding in the low resource language Danish will be attempted using a new deep learning technique for NLP that succeeded with this modelling approach in English.
 The model, \emph{Language Understanding Using Knowledge Embeddings} (LUKE), was released in October of 2020 and explicitly handles the difference between single words and named entities such as \emph{Lionel Messi}, \emph{The United States of America}, \emph{Science} \cite{yamada2020luke}.
-The model had in total seen training from 160 GB of text\footnotemark and achieved state of the art results on a number of classic NLP tasks such as Named Entity Recognition (NER).
+The model had in total seen training from 160 GB of text\footnotemark and achieved state of the art results on a number of classic NLP tasks such as named entity recognition (NER).
 \footnotetext{This includes all training that had an effect on the final model weights and thus also the data used to pretrain RoBERTa \cite[Sec. 3.2]{liu2019roberta}, the weights of which was used for initializing most of the LUKE weights. Counting only the data used for LUKE itself, the number is not directly reported but was found to be around 7 GB from our own experiments with the English LUKE data pipeline.}
 For Danish, the amount of suitable data for this technique is about 40 times smaller \footnotemark.
 \footnotetext{
@@ -38,13 +38,31 @@ This approach rarely includes any modelling of knowledge that is not induced imp
 The Defense Advanced Research Projects Agency (DARPA) identify the future wave of AI as one of \emph{contextual adaption}; a combination of deep learning for perception and latent representations and symbolic modelling methods \cite{darpa17ai}.
 In NLP, knowledge-enhancing deep neural networks is not just an idea for the future; several approaches using explicit knowledge to improve pretrained contextual word representations (CRW's) have been presented in recent years, a subset of which will be summarized here.
 
-\paragraph{Static, separate knowledge graphs}
+\subsubsection{Static, separate knowledge graphs}
+A direct way to use explicit knowledge is to maintain a separate representation of facts which can be incorporated into both pretraining and inference of deep language models.
+This representation is often called a knowledge base (KB) or knowledge graph (KG) when the relational facts or entities are modelled.
 
-\paragraph{Pretraining augmentations}
+In 2019, \emph{Enhanced Language Representation with Informative Entities}, ERNIE, was introduced by a Beijing team \cite{zhang2019ernie} looking to ''enhance language representation  with  external  knowledge'' \cite[1]{zhang2019ernie} by recognizing mentions of named entities in given text and retrieving their positions in a separate knowledge graph (KG).
+The query from knowledge graph, explicit model of facts, is encoded into knowledge embeddings and are taken as input for a BERT-based dual transformer architecture.
+The model was not evaluated on named entity recognition in the original paper, but was evaluated on the \emph{General Language Understanding Evaluation} benchmark \cite{wang2018glue} where it did not outperform BERT.
 
+Later in 2019, a similar idea was proposed in \emph{Knowledge Enhanced Contextual Word Representations} where the model \emph{KnowBert} \cite{peters2019knowbert} was shown to outperform ERNIE and BERT in knowledge related tasks, though GLUE or NER was not tested.
+Here, the key addition was the Knowledge Attention and Recontextualization (KAR) component which allows information to retrieved from multiple KG's of different forms such as WordNET and Wikipedia and represented within the BERT encoder.
 
+In KnowBert, though the KAR weights were trained, the KG was only used for encoding a subset of fixed facts for the model.
+The \emph{Knowledge Graph Language Model} (KGLM) presented in \emph{Barack’s Wife Hillary: Using Knowledge Graphs for Fact-Aware Language Modeling} \cite{logan2019barack} employs a more dynamic use of the knowledge graph.
+The model uses the same approach to representing knowledge graph facts as ERNIE, but also builds a local graph on the sequence level which is grown by a generative model with each new token.
+The paper presents improved fact completion compared to GPT-2 and further analysis has shown that the overall fact completion of KGLM is comparative to KnowBert, though they perform very differently from domain to domain, with KGLM being most dependant on the used knowledge graph \cite{birk2020knowledge}.
 
-% Tag udgangspunkt i noter/dyb-videns-nlp.md og skriv en temaopdelt gennemgang
+\subsubsection{Pretraining augmentations}
+A strength of the statistical, deep approach that implicitly models knowledge is the potential for generalizable results:
+You do not need a new domain specific KG for every application if enough general knowledge has been caught in your weights.
+Motivated by the hope of this elusive generalizability, a number of methods have been proposed to enhance specifically the pretraining of language models to better have handle factual knowledge.
+LUKE, the subject of this project, is one of these attempts.
+
+An example of this weaker knowledge modelling is found in \emph{KEPLER: A Unified Model for Knowledge Embedding and Pre-trained Language Representation} \cite{wang2021kepler} where downstream inference can be performed without any additional resources than the transformer structure itself.
+The knowledge enhancement of this BERT-based language model is, however, in the pretraining where the model optimizes over a joint task of both performing masked language modelling and a novel knowledge graph objective requiring the model to learn knowledge embeddings.
+KEPLER does not improve GLUE performance from RoBERTa \cite{liu2019roberta} from which it was initialized, but beats both classical language models and knowledge enhanced ones such as ERNIE and KnowBERT on a number of knowledge related tasks.
 
 \subsection{Deep NLP in Danish}
 % Mål i afsnittet:
