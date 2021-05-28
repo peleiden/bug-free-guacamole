@@ -1,3 +1,4 @@
+% !TeX spellcheck = en_GB
 \documentclass[main.tex]{subfiles}
 
 \begin{document}
@@ -14,7 +15,7 @@ BERT \cite{devlin2019bert} and RoBERTa \cite{liu2019roberta} yield strong, gener
 Yamada et al. suggest three reasons for this being the case.
 \begin{itemize}
     \item Existing CWR's include no span-level representation of entities, so these will have to be learned from a often small downstream dataset.
-    \item While transformers are good at capturing relationships between single words, they have difficulty modelling such relationsips between sequences of words, of which entities often consist.
+    \item While transformers are good at capturing relationships between single words, they have difficulty modelling such relationships between sequences of words, of which entities often consist.
     \item Finally, the word-based pretraining task is not suited for producing entity-level representations, as the masked language model (MLM) mostly learns to predict single words rather than entire entity spans.
     An example is predicting "Flies" in "Lord of the [MASK]", where predicting the single word is clearly easier than predicting the entire entity.
 \end{itemize}
@@ -180,17 +181,19 @@ Due to the memory intensive nature of the transformer architecture, we follow Ya
 The learning rate, which uses a linear warmup followed by a linear decay, is updated after each batch.
 This prevents the model from overfitting on early examples and allows better optimization later on, while still retaining a relatively high learning rate throughout of most the training, without the training dragging on, as it would with a constant, low learning rate.
 
-The model is trained using Pytorch Automatic Mixed Precision \cite{pytorchamp}, which -- ideally, at least, as will be discussed in section \ref{sub:oss} -- should decrease training time.
+%TODO Overvej: Skal dette ned i implementeringsdetaljer?
+The model is trained using Pytorch Automatic Mixed Precision (AMP) \cite{pytorchamp}, which -- ideally, at least, as will be discussed in section \ref{sub:oss} -- should decrease training time with little to no penalty to accuracy. \cite{huang2020amp}
 This is partially due to half-precision calculations being simpler, and partially due to the lower memory requirements, allowing larger subbatches and thus better GPU utilization.
+However, as figure \ref{fig:runtime} shows, AMP works as intended when training on NVIDIA V100's, but has the opposite effect when training on NVIDIA A100's.
 
 \noindent
-The following hyperparameters were used for the pretraining.
+The hyperparameters used for pretraining are shown in table \ref{tab:pretrain-hyper}.
 \begin{table}[H]
     \centering
     \begin{tabular}{l|r}
         Parameter  &    Value\\\hline
         Epochs     & 150\\
-        Batch size &    4096\\
+        Batch size &    4080\\
         Peak learning rate & $5\ctp{-4}$\\
         LR warmup steps prop. & $ 6\pro $\\
         Mask prob. for words & $ 15\pro $\\
@@ -210,6 +213,31 @@ The following hyperparameters were used for the pretraining.
 
 \subsection{Implementation Details and Open Source Software}%
 \label{sub:oss}
+
+\subsubsection*{Training Time and GPU details}
+As transformer training requires significant compute, distributing the training over multiple GPU's can yield significant speedups.
+Especially given the parallelizable nature of the transformer compared to recurrent neural network variations \cite{vaswani2017att}, training should scale fairly well on multiple GPU's.
+
+The pretraining took roughly a week.
+Due to varying GPU availability, both A100's and V100's were used at different parts of the pretraining with $ 2\times $A100 being the most common configuration.
+For comparison, Yamada et al. train LUKE using 16 V100's over a period of 30 days. \cite{yamada2020luke}
+
+We measure the time needed to train for one epoch on different cluster configurations.
+The results are shown on figure \ref{fig:runtime}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.7\textwidth]{runtime}
+    \caption{
+        How GPU models, number of GPU's, and AMP influences pretraining runtime.
+        Sub-batch size (SB) is included, as it is important for GPU utilization.
+        The measurements were taken with da-BERT weights locked.
+        The V100's act mostly as expected with close to optimal scaling and AMP decreasing runtime.
+        Surprisingly, however, the A100's, while faster, scale poorly and are slower when using AMP.
+        While we cannot offer an explanation for this behaviour, we suspect it may be due to different hardware other than the GPU's, driver versions, or CUDA versions.
+        PyTorch 1.8.1 compiled with CUDA 11.1 was used.
+    }
+    \label{fig:runtime}
+\end{figure}\noindent
 
 \subsubsection{Distributed Training}
 
