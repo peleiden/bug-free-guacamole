@@ -1,7 +1,7 @@
 \documentclass[main.tex]{subfiles}
 
 \begin{document}
-\chapter{Discussion}
+\chapter{Experiments, Results, and Discussion}
 \lhead{Discussion}
 
 \section{LUKE's predictions}
@@ -22,9 +22,23 @@
     }
 \end{table}
 
-\section{Possible daLUKE improvements}%
-\label{sec:Possible daLUKE improvements}
+\section{Pretraining Experiments}
+In order to investigate what affects pretraining effectiveness, several ablation studies are performed.
+Unless stated otherwise, the hyperparameters from table \ref{tab:pretrain-hyper} are used, but with 50 epochs due to limited compute.
 
+\paragraph{Hyperparameter Search}
+
+\paragraph{Dataset Augmentation}
+
+\paragraph{Bert Attention}
+
+\paragraph{Fixing of da-BERT Parameters}
+
+\paragraph{Weighted Entity Loss}
+
+\section{Finetuning}
+\label{sec:finetuning}
 % Starter med at lære "O" på alting, derefter kommer detaljerede ting
+% Undersøg varians på læring - særligt fokus på lr og seed
 
 \end{document}

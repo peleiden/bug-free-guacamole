@@ -186,7 +186,6 @@ The model is trained using Pytorch Automatic Mixed Precision (AMP) \cite{pytorch
 This is partially due to half-precision calculations being simpler, and partially due to the lower memory requirements, allowing larger subbatches and thus better GPU utilization.
 However, as figure \ref{fig:runtime} shows, AMP works as intended when training on NVIDIA V100's, but has the opposite effect when training on NVIDIA A100's.
 
-\noindent
 The hyperparameters used for pretraining are shown in table \ref{tab:pretrain-hyper}.
 \begin{table}[H]
     \centering
@@ -214,7 +213,7 @@ The hyperparameters used for pretraining are shown in table \ref{tab:pretrain-hy
 \subsection{Implementation Details and Open Source Software}%
 \label{sub:oss}
 
-\subsubsection*{Training Time and GPU details}
+\subsubsection*{Distributed Training and Runtime}
 As transformer training requires significant compute, distributing the training over multiple GPU's can yield significant speedups.
 Especially given the parallelizable nature of the transformer compared to recurrent neural network variations \cite{vaswani2017att}, training should scale fairly well on multiple GPU's.
 
@@ -239,8 +238,13 @@ The results are shown on figure \ref{fig:runtime}.
     \label{fig:runtime}
 \end{figure}\noindent
 
-\subsubsection{Distributed Training}
-
+\subsubsection*{Open Source Software Package}
+We publish DaLUKE and all related code under the MIT open source software license \cite{mitlicense}.
+All code is available at \url{https://github.com/peleiden/daluke}.
+The pretrained model is available with and without MLM layers at TODO.
+The model finetuned on DaNE is available at TODO.
+Our software package is \code{pip} installable and runs on Python 3.8 and above.
+It allows for using DaLUKE for NER on text files directly from the command line.
 
 
 \end{document}
