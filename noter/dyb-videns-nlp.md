@@ -21,11 +21,13 @@
 - Fundet via LUKE
 - https://arxiv.org/abs/1909.04164
 - 9 sep 2019
+- builds a local graph on the sequence level which is grown by a generative model with each new token
 
 ## KEPLER
 - Fundet via LUKE
 - https://arxiv.org/abs/1911.06136
 - 13 nov 2019
+- optimizes over a joint task of both performing masked language modelling and a novel knowledge graph objective requiring the model to learn knowledge embeddings
 
 ## WKLM
 - Fundet via LUKE
