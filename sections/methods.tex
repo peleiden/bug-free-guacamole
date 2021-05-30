@@ -206,9 +206,35 @@ The hyperparameters used for pretraining are shown in table \ref{tab:pretrain-hy
     \caption{Hyperparameters for DaLUKE pretraining.}\label{tab:pretrain-hyper}
 \end{table}\noindent
 
-\subsection{Fine-tuning daLUKE for Named Entity Recognition}%
+\subsection{Fine-tuning DaLUKE for Named Entity Recognition}%
 \label{sub:finetune-ner}
+%TODO Model modification regarding entities
+Following Yamada et al. \cite{yamada2020luke} and Sohrab and Miwa \cite{sohrab2018nestedner}, all possible entity spans (or $n$-grams) over a tokenized text piece are calculated.
+These are considered the named entity candidates and are given to the pretrained transformer as entity inputs along with the subword tokens from the text piece.
+For each named entity candidate, the computed CER and the CWR's of the first and last tokens in the corresponding span are concatenated.
+As both CWR's and CER's occupy the same 768 dimensional latent space, the combined representation exists in a $ 3\cdot 768 = 2304 $ dimensional latent space.
+This representation is then given to a single linear layer that learns to classify the entity as either a non-entity or one of the classes in a given dataset.
+For the fine-tuning, both the pretrained model and the linear layer are fitted.
 
+The following hyperparameters listed in table \ref{tab:finetune-hyper} were used for training:
+\begin{table}[H]
+%    TODO Make these up to date
+    \centering
+    \begin{tabular}{l|r}
+        Parameter  &    Value\\\hline
+        Epochs     & 25\\
+        Batch size &    16\\
+        Peak learning rate & $5\ctp{-5}$\\
+        LR warmup steps prop. & $ 6\pro $\\
+        Dropout (pretrained model) & $ 0.1 $\\
+        Dropout (final, linear layer) & $ 0.1 $\\
+        Weight decay & $ 0.01 $\\
+        AdamW $ \beta_1 $ & $ 0.9 $\\
+        AdamW $ \beta_2 $ & $ 0.98 $\\
+        AdamW $ \epsilon $ & $ 10^{-6} $
+    \end{tabular}
+    \caption{Hyperparameters for DaLUKE fine-tuning.}\label{tab:finetune-hyper}
+\end{table}\noindent
 
 \subsection{Implementation Details and Open Source Software}%
 \label{sub:oss}
@@ -232,18 +258,21 @@ The results are shown on figure \ref{fig:runtime}.
         The measurements were taken with da-BERT weights locked.
         The V100's act mostly as expected with close to optimal scaling and AMP decreasing runtime.
         Surprisingly, however, the A100's, while faster, scale poorly and are slower when using AMP.
-        While we cannot offer an explanation for this behaviour, we suspect it may be due to different hardware other than the GPU's, driver versions, or CUDA versions.
-        PyTorch 1.8.1 compiled with CUDA 11.1 was used.
+        The poorly scaling may at least partially be explained by the faster processing time of the A100, causing a relatively larger amount of time to be spent on model synchronization.
+        Other differences in hardware and software configurations may also be to blame.
+        However, we cannot offer an explanation for AMP being slower on the A100.
+        Python 3.8.4 using PyTorch 1.8.1 compiled with CUDA 11.1 was used.
     }
     \label{fig:runtime}
 \end{figure}\noindent
 
 \subsubsection*{Open Source Software Package}
 We publish DaLUKE and all related code under the MIT open source software license \cite{mitlicense}.
-All code is available at \url{https://github.com/peleiden/daluke}.
+All code and documentation is available at \url{https://github.com/peleiden/daluke}.
 The pretrained model is available with and without MLM layers at TODO.
 The model finetuned on DaNE is available at TODO.
 Our software package is \code{pip} installable and runs on Python 3.8 and above.
+Simply run `pip install daluke` to install it on your computer.
 It allows for using DaLUKE for NER on text files directly from the command line.
 
 
