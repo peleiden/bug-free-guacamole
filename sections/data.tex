@@ -37,20 +37,20 @@ Thus, an entry in the dataset -- from now on called an example -- consists of th
 The dataset is the set of all examples from all articles.
 %TODO List all special tokens
 
-\subsection{Entity Augmentation}
+\subsection{Entity Augmentations}
 \label{subsec:entaug}
 For the purposes of the discussing the motivation and effects of our data preprocessing, we will use the terms true/false positive/negative about the entity annotations.
 In order for the binary terms to make sense, annotations and no annotations are considered positive and negative, respectively, with only their existense being relevant.
 
-One limitation for Wikipedia as a pretraining dataset is that hyperlinks are rarely repeated, even if their page is mentioned multiple times.
-This results in false negatives where entities are not annotated
+One limitation of Wikipedia as a pretraining dataset is that hyperlinks are rarely repeated, even if the same article is refenced multiple times on a page.
+This results in false negatives where entities are not annotated.
 
-\cite{yamada2020luke} account for this by performing simple string matching and adding entities when finetuning on the SQuAD dataset, however they add no additional entity annotations in the pretraining dataset.
+Yamada et al. account for this by performing simple string matching and adding entities when finetuning on the SQuAD dataset, however they add no additional entity annotations in the pretraining dataset. \cite{yamada2020luke}
 
 In order to augment the entity annotations, we perform preprocessing on Wikipedia prior to pretraining similar to the string matching on SQuAD.
 Our preprocessing consists of the following two steps applied article-wise:
 \begin{enumerate}
-    \item Get set of other mentioned articles including the title of the article itself.
+    \item Get set of mentioned articles including the title of the article itself.
     Only include titles of at least three characters.
     \item For each title, check if it matches a sequence of characters following a whitespace, ignoring casing.
     If there is a match, annotate and go to next whitespace.
