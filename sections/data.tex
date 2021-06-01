@@ -3,6 +3,7 @@
 \begin{document}
 \chapter{Data}
 \lhead{Data}
+\label{chap:data}
 
 \section{Entity-annotated Danish Wikipedia}
 For pretraining LUKE, a corpus of entity annotated text is needed.
@@ -84,11 +85,11 @@ Table \ref{tab:metadata} shows how these augmentation steps change the size of t
 
 
 \section{Named Entity Recognition}
+\label{sec:nerdata}
 
-%TODO:
 \subsection{Danish NER testing sets}
 \label{subsec:daNERdata}
-For the task of evaluating existing Danish NER models, three publicly available datasets previously used in the literature were identified.
+For the task of evaluating benchmarking both existing and new Danish Named Entity Recognition (NER) models, three publicly available datasets previously used in the literature were identified.
 
 \paragraph{Danish Universal Dependencies}
 Danish Universal Dependencies of Danish Dependency Treebank (UD-DDT) is a grammatically annotated dataset produced by converting the Danish Dependency Treebank corpus \cite{kromann2003ddt} to the Universal Dependency annotation format \cite{johann2015udddt}.
@@ -155,6 +156,7 @@ The dataset is the central benchmark in the field of Named Entity Recognition \c
 \end{table}
 
 \subsection{Annotation schemes: What do the tags mean?}
+\ref{subsec:annoschemes}
 The DaNE and Plank sets refer to the CoNLL-2003 as their reference annotation scheme \cite[Sec. 4]{hvingelby2020dane} \cite[Sec. 2.1]{plank2019neural}.
 Wiki-ANN follows the same categories, excluding MISC.
 All datasets follow the Inside-outside-beginning (IOB) format that ascribes a word the "I-X" tag if it is inside a named entity of type X, "B-X" if it begins the X entity and "O" if it is outside named entities (e.g. the null class).
@@ -175,7 +177,7 @@ Note, that the all-important context of the words is not shown here.
 \begin{itemize}
     \item DaNE: helvede (LOC), Holland (LOC), Astrid Lindgren (PER), Odense Teater (ORG), det danske rigsfællesskab (ORG), afghansk (MISC), Camel (MISC)
     \item Plank: Bagdad (LOC), Bjarne (PER), USA (ORG), Københavns Kommune (ORG), DR-dokumentar (MISC), Levi's jeans (MISC)
-    \item Wiki-ANN (da.): Dinariske Apler (LOC), Esbjerg Kommune (LOC), Jorge Luis Borges (PER), FC Barcelona (ORG), kommunehospitals (ORG)
+    \item Wiki-ANN (da.): Dinariske Alper (LOC), Esbjerg Kommune (LOC), Jorge Luis Borges (PER), FC Barcelona (ORG), kommunehospitals (ORG)
     \item CoNLL-2003: Buenos Aires (LOC), Whistler Mountain (LOC), Katja Seizinger (PER),  FIFA (ORG), Asian Cup (MISC), Swede (MISC)
 \end{itemize}
 

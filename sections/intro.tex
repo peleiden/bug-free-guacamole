@@ -27,8 +27,40 @@ For Danish, the amount of suitable data for this technique is about 40 times sma
 It is the goal of this project to present the best possible open source Danish LUKE for use of Danish NLP practitioners while also taking this challenge as a case study of deep natural language processing for low resource languages.
 % Nævn forskellen i compute?
 
-\section{State of The Art}
+\section{Introductory Theory and State of The Art}
 \label{sota}
+
+\subsection{Named Entity Recognition}
+Natural language processing has the broad goal of algorithmically understanding natural languages such as English and Danish.
+To quantify this abstract ideal, understanding is often measured in performance on a set of well-defined language challenges that are expected to require some general understanding.
+One such challenge is the task of recognizing \emph{named entities}, rigidly defined real-world objects such as specific persons, locations, organizations, events, products, etc.
+The problem of named entity recognition (NER) is to produce an algorithm that can, given a string of characters designating a document of natural language, return an \emph{annotation} which ascribes, to each word in the document, both whether the word is a part of a named entity (NE) and what category of NE the word corresponds to \cite{wiki2021ner}.
+For the string
+\[
+    \text{
+        ''Caesar marched on Rome, defying the Senate of the Roman Republic.'',
+    }
+\]
+a correct result could be
+\begin{align*}
+    & \text{
+        ''\emph{Caesar} is a person,
+        \emph{marched} is not a NE,
+        \emph{on} is not a NE,
+        \emph{Rome} is a location,
+    }\\
+    &\text{
+        \emph{defying} is not a NE,
+        \emph{the Senate of the Roman Republic} is an organization''.
+    }
+\end{align*}
+There are many ambiguities in this formulation of the problem but these are general, as the set of NE types varies between benchmarks and even the definition of a NE is unsettled with possible answers including proper nouns, rigid designators and unique identifiers \cite[Sec. 4]{marrero2013ner}.
+For the benchmarks used in this project, the NE categories and annotation representation are introduced in Section~\ref{sec:nerdata} and the evaluation of the performance of NER algorithms is discussed in Section~\ref{}.
+
+NER is not just used as a benchmark for language understanding:
+In the applied field of information retrieval, semantic annotation and question answering systems rely on NER to control the information focus \cite[Sec. 2]{marrero2013ner}.
+The task, being defined in the 90's, has been active and competitive and in English, state of the art methods achieve close to human performance on classic benchmarks \cite{wiki2021ner, marrero2013ner}.
+Researchers argue, however, that the task is not solved as the generalization of algorithms fitted to one NER data set to new examples is poor \cite[Sec. 7.2]{marrero2013ner}.
 
 \subsection{Deep, Knowledge-enhanced NLP}
 The combination of statistical methods and explicit human crafted domain knowledge was the state of the art in many natural language processing (NLP) tasks in the 1990's and up into the 2000's \cite[Sec. 22.5]{russell2016ai}.
