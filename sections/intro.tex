@@ -54,13 +54,15 @@ a correct result could be
         \emph{the Senate of the Roman Republic} is an organization''.
     }
 \end{align*}
-There are many ambiguities in this formulation of the problem but these are general, as the set of NE types varies between benchmarks and even the definition of a NE is unsettled with possible answers including proper nouns, rigid designators and unique identifiers \cite[Sec. 4]{marrero2013ner}.
-For the benchmarks used in this project, the NE categories and annotation representation are introduced in Section~\ref{sec:nerdata} and the evaluation of the performance of NER algorithms is discussed in Section~\ref{}.
+There are multiple ambiguities in this formulation of the problem but this is a common issue for the problem, as the set of NE types varies between benchmarks and as the definition of a NE is unsettled with possible answers including proper nouns, rigid designators and unique identifiers \cite[Sec. 4]{marrero2013ner}.
+For the benchmarks used in this project, the NE categories and annotation formats are introduced in Section~\ref{sec:nerdata} while the evaluation of the performance of NER algorithms is discussed in Section~\ref{}.
 
 NER is not just used as a benchmark for language understanding:
 In the applied field of information retrieval, semantic annotation and question answering systems rely on NER to control the information focus \cite[Sec. 2]{marrero2013ner}.
-The task, being defined in the 90's, has been active and competitive and in English, state of the art methods achieve close to human performance on classic benchmarks \cite{wiki2021ner, marrero2013ner}.
-Researchers argue, however, that the task is not solved as the generalization of algorithms fitted to one NER data set to new examples is poor \cite[Sec. 7.2]{marrero2013ner}.
+This both of both research and practical interest was defined in the 90's and has been active and competitive, especially in English where state of the art methods achieve close to human performance on some classic benchmarks \cite{wiki2021ner, marrero2013ner}.
+Researchers argue, however, that the task is not yet solved as the generalization of the statistical algorithms fitted to one NER data set to new examples is poor \cite[Sec. 7.2]{marrero2013ner}.
+
+The state of the art on English NER benchmarks moves quickly, but almost all algorithms currently (June 2021) achieving high scores in common benchmarks are deep neural networks and of the transformer architecture in particular \cite{ruder21ner, pwc21ner}.
 
 \subsection{Deep, Knowledge-enhanced NLP}
 The combination of statistical methods and explicit human crafted domain knowledge was the state of the art in many natural language processing (NLP) tasks in the 1990's and up into the 2000's \cite[Sec. 22.5]{russell2016ai}.
@@ -76,7 +78,8 @@ This representation is often called a knowledge base (KB) or knowledge graph (KG
 
 In 2019, \emph{Enhanced Language Representation with Informative Entities}, ERNIE, was introduced by a Beijing team \cite{zhang2019ernie} looking to ''enhance language representation  with  external  knowledge'' \cite[1]{zhang2019ernie} by recognizing mentions of named entities in given text and retrieving their positions in a separate knowledge graph (KG).
 The query from knowledge graph, explicit model of facts, is encoded into knowledge embeddings and are taken as input for a BERT-based dual transformer architecture.
-The model was not evaluated on named entity recognition in the original paper, but was evaluated on the \emph{General Language Understanding Evaluation} benchmark \cite{wang2018glue} where it did not outperform BERT.
+The model was during training required to fill in randmoly masked named entities in given sequences using the KG.
+ERNIE was not evaluated on named entity recognition in the original paper, but was evaluated on the \emph{General Language Understanding Evaluation} benchmark \cite{wang2018glue} where it did not outperform BERT.
 
 Later in 2019, a similar idea was proposed in \emph{Knowledge Enhanced Contextual Word Representations} where the model \emph{KnowBert} \cite{peters2019knowbert} was shown to outperform ERNIE and BERT in knowledge related tasks, though GLUE or NER was not tested.
 Here, the key addition was the Knowledge Attention and Recontextualization (KAR) component which allows information to retrieved from multiple KG's of different forms such as WordNET and Wikipedia and represented within the BERT encoder.
@@ -92,9 +95,24 @@ You do not need a new domain specific KG for every application if enough general
 Motivated by the hope of this elusive generalizability, a number of methods have been proposed to enhance specifically the pretraining of language models to better have handle factual knowledge.
 LUKE, the subject of this project, is one of these attempts.
 
-An example of this weaker knowledge modelling is found in \emph{KEPLER: A Unified Model for Knowledge Embedding and Pre-trained Language Representation} \cite{wang2021kepler} where downstream inference can be performed without any additional resources than the transformer structure itself.
-The knowledge enhancement of this BERT-based language model is, however, in the pretraining where the model optimizes over a joint task of both performing masked language modelling and a novel knowledge graph objective requiring the model to learn knowledge embeddings.
+An example of this weaker knowledge modelling is found in the 2019 model \emph{KEPLER: A Unified Model for Knowledge Embedding and Pre-trained Language Representation} \cite{wang2021kepler} where downstream inference can be performed without any additional resources than the transformer structure itself.
+The knowledge enhancement of this BERT-based language model is, however, in the pretraining where the model optimizes over a joint task of both performing masked language modelling (MLM) and a novel knowledge graph objective requiring the model to learn knowledge embeddings.
 KEPLER does not improve GLUE performance from RoBERTa \cite{liu2019roberta} from which it was initialized, but beats both classical language models and knowledge enhanced ones such as ERNIE and KnowBERT on a number of knowledge related tasks.
+
+This idea of pretraining a transformer both for MLM and for a new knowledge-guided task has been taken up multiple times, including in LUKE.
+\emph{WKLM}, presented in 2019 in \emph{Pretrained Encyclopedia: Weakly Supervised Knowledge-Pretrained Language Model} \cite{xiong2019wklm}, uses the English Wikipedia, taking hyperlinks to be entities, and trains an unaltered BERT architecture jointly on MLM and on a task involving identifying the randomly replaced entity in a sequence.
+\emph{KALM}, published after LUKE in \emph{Knowledge-Aware Language Model Pretraining}, also keeps the core language model architecture, in this case GPT-2, unchanged, adding a separate entity tokenizer and entity embedding layer for an entity prediction pretraining task.
+
+Though these models achieve good performance, with WKLM surpassing BERT and ERNIE on some question answering and entity related benchmarks, and KALM outperforming GPT-2 on some knowledge related zero-shot tasks, the 2020 article \emph{K-Adapter: Infusing Knowledge into Pre-Trained Models with Adapters} \cite{wang2020kadapter} raises a concern with the approach.
+According to the authors, the idea of knowledge-augmenting the pretraining task and then updating the entire model limits the ability to inject versatile knowledge and sets up a heterogeneous learning problem resulting in entangled parameters that are hard to investigate.
+The model \emph{K-Adapter} instead uses ''adapters'', add-ons for the transformer structure, which are pretrained for different knowledge tasks while the base RoBERTa parameters are not updated.
+The resulting model outperforms BERT, WKLM, ERNIE, KEPLER and KnowBERT on central knowledge related tasks.
+
+Another issue, raised more recently, with this jungle of knowledge enhanced models is that they do not unify generative and discriminative tasks, limiting their generalizability to fewer downstream tasks.
+This is voiced in \emph{KgPLM: Knowledge-guided Language Model Pre-training via Generative and Discriminative Learning} \cite{he2020kgplm} where the model KgPLM, pretrained by both generating masked entities and discriminating replaced ones, is proposed as a solution.
+
+Which of the knowledge-enhanced models result in the best general performance for practitioners is beyond the scope of this project, as the continuous improvement of many of the models and large amount of different benchmarks used in the articles makes direct comparisons of general language understanding ability challenging.
+On all benchmarks tested by the LUKE team \cite{yamada2020luke}, none of the above models have presented higher scores than LUKE \cite[Sec. 4]{yamada2020luke}.
 
 \subsection{Deep NLP in Danish}
 % Mål i afsnittet:
@@ -103,6 +121,8 @@ KEPLER does not improve GLUE performance from RoBERTa \cite{liu2019roberta} from
 % danlp skal introduceres
 %
 % spacy/dacy skal introduceres
+%
+% Ælæktra
 
 \section{The Report}%
 \label{sec:The Report}
