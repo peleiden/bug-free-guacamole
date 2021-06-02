@@ -5,92 +5,14 @@
 \chapter{Methods}
 \lhead{Methods}
 
-\section{Pretrained LUKE model}
-LUKE (Language Understanding with Knowledge-based Embeddings) is a language model introduced by Yamada et al. in November of 2020. \cite{yamada2020luke}.
-As the model is tested and extended in this project, key properties of the architecture and pretraining methodology are presented in this section.
-
-While architecturally similar to models such as BERT \cite{devlin2019bert} and RoBERTa \cite{liu2019roberta}, LUKE not only produces contextualized word representations (CWR), but also contextualized entity representations (CER), which, as Yamada et al. show, leads to state-of-the-art results on a number of entity-related tasks.
-
-BERT \cite{devlin2019bert} and RoBERTa \cite{liu2019roberta} yield strong, general-purpose CWR's that are effective for many different NLP tasks but are often suboptimal for entity-related tasks.
-Yamada et al. suggest three reasons for this being the case.
-\begin{itemize}
-    \item Existing CWR's include no span-level representation of entities, so these will have to be learned from a often small downstream dataset.
-    \item While transformers are good at capturing relationships between single words, they have difficulty modelling such relationships between sequences of words, of which entities often consist.
-    \item Finally, the word-based pretraining task is not suited for producing entity-level representations, as the masked language model (MLM) mostly learns to predict single words rather than entire entity spans.
-    An example is predicting "Flies" in "Lord of the [MASK]", where predicting the single word is clearly easier than predicting the entire entity.
-\end{itemize}
-LUKE, in contrast to BERT and RoBERTa, also considers entities as tokens, and it takes and inputs both word and entity tokens and produces both CWR's and CER's, respectively.
-This allows LUKE to deal with the listed problems of purely word-based language models.
-
-\subsection{Architecture}
-LUKE is a transformer that operates on input sequences using trainable word and entity embeddings which are encoded by 24 self-attention transformer layers.
-After these, the model can be extended with a decoder consisting of bi-directional classifications heads for pretraining, or it can be extended with linear layers for downstream tasks.
-
-\subsubsection{BERT Architecture}
-The word/entity duality of LUKE means that a large part of the model performs the same task as the conventional word-based language models.
-For this reason, the word embeddings in LUKE follow the BERT architecture and Yamada et al. initialize these embeddings to those found in RoBERTa.
-In the pre-training of Yamada et al., the encoder of LUKE is also equivalent with that of BERT and is initialized the weights of RoBERTa.
-
-\subsubsection{Entity Embeddings}
-The only architectural difference between LUKE and BERT in the pretraining of Yamada et al. (apart from pretraining specific heads) is the addition of a map from entity id's and entity position id's to entity embeddings.
-This part of the model consists of lookup tables that store values for each possible id.
-For the entity token id embedding, the size of the lookup table corresponds to the size of the entity vocabulary.
-
-The entity embeddings are concatenated to the word embeddings and are passed through the encoder such that the two token domains exist in the same latent space.
-After the encoding, the output can be split into representations for the words and entities in the sequence.
-
-
-\subsubsection{Entity-aware Self-attention}
-\label{subsubsec:entityaware}
-Yamada et al. present a entity-related change to the BERT encoder architecture in the query metchanism of the attention scorer \cite[Sec. 3.2]{yamada2020luke}.
-
-For the attention between token $i$ and token $j$ with the hidden states $\mathbf x_i, \mathbf x_j$, a core part of the normal transformer attention mechanism is to compute the following scalar:
-\begin{equation}
-    q_{ij} = \mathbf x_j^\top \mathbf Q \mathbf x_i,
-\end{equation}
-where $\mathbf Q\in \RR^{H\low{in}\times H\low{out}}$ is called the query matrix for a layer with input hidden size $H\low{in}$ and output hidden size $H\low{out}$ \cite[Sec. 3.2.1]{vaswani2017att}.
-% FIXME: H_in og H_out må da være det samme?
-
-In LUKE, the tokens $\mathbf x_i$ might either be words or entities.
-To handle this explicitly, entity-aware self-attention changes the computation of the scalar $q_{ij}$ to
-\begin{equation}
-    q_{ij} = 
-    \begin{cases}
-    \mathbf x_j^\top \mathbf Q_{w2w} \mathbf x_i  & \text{if both $\mathbf x_i$ and $\mathbf x_j$ are word tokens}\\
-    \mathbf x_j^\top \mathbf Q_{w2e} \mathbf x_i & \text{if $\mathbf x_i$ is word and $\mathbf x_j$ is entity}\\
-    \mathbf x_j^\top \mathbf Q_{e2w} \mathbf x_i & \text{if $\mathbf x_i$ is entity and $\mathbf x_j$ is word}\\
-    \mathbf x_j^\top \mathbf Q_{e2e} \mathbf x_i & \text{if both $\mathbf x_i$ and $\mathbf x_j$ are entity tokens}
-    \end{cases}
-\end{equation}
-LUKE, however, is not pretrained using this mechanism, but for the fine-tuning tasks, Yamada et al. show in ablation experiments that this addition consistently yields better performance \cite[Sec. 5.2]{yamada2020luke}.
-
-\subsection{Pretraining}
-Yamada et. al perform the pretraining of LUKE by extending the MLM task of BERT \cite{devlin2019bert}.
-Where BERT is trained to predict randomly masked words, LUKE is trained to predict both randomly masked words and entities.
-
-The pretraining task thus gives three sequences as input:
-Word id's, entity id's, and positions of the entities.
-15\pro\ of words and entities are randomly replaced by the [MASK] token, following RoBERTa \cite{liu2019roberta}.
-From these, the model is to classify the tokens at the mask positions in both sequences.
-The model parameters are then updated by the AdamW optimizer backpropagating through loss computed as the sum of the multi-class cross entropy losses of the two classification tasks.
-
-\subsubsection{Entity Mask Prediction Head}
-For the entity pretraining task, LUKE is equipped with another classifier structure in addition to the masked language model prediction head inherited from BERT.
-This new prediction head follows the architecture of the masked word scorer just operating on the entity representations.
-The masked entity tokens are thus scored as corresponding to one of the entities in the entity vocabulary by two linear layers between which an activation function and layer normalization are placed.
-
-
 \section{Benchmarking Existing Named Entity Recognition}
 \subsection{Fine-tuning English LUKE}
-Yamada et al. benchmark \emph{LUKE}, their new transformer-based model for contextualized entity representations on a number of Natural Language Processing tasks, including Named Entity Recognition on the CoNLL-2003 dataset \cite{yamada2020luke}.
+Yamada et al. benchmark \emph{LUKE}, on Named Entity Recognition using the CoNLL-2003 dataset \cite{yamada2020luke}.
 
-Reproduction of these results were performed by obtaining the pretrained LUKE models from Yamada et al.'s software repository.
-
-The model was then fine-tuned for NER by training a linear classifier over all $n$-grams in each sentence with the named entities as targets for cross-entropy loss, as described in \cite[Sec. 4.3]{yamada2020luke}.
+Reproduction of these results were attempted by obtaining the pretrained LUKE models from Yamada et al.'s software repository.
 The same hyper-parameters as Yamada et al. were used and are shown along with and technical details in Table~\ref{tab:params}.
 
-This procedure was repeated five times for each of the two released LUKE models, called \emph{large} and \emph{base}, to examine variability in the downstream training.
-
+The finetuning procedure was repeated five times for each of the two released LUKE models, called \emph{large} and \emph{base}, to examine variability in the downstream training.
 %%% Horrible footnote manipulation - it works, dont touch it! %%%
 \addtocounter{footnote}{1}
 \footnotetext{\label{foot:fnt}
@@ -239,7 +161,7 @@ The following hyperparameters listed in table \ref{tab:finetune-hyper} were used
 \subsection{Implementation Details and Open Source Software}%
 \label{sub:oss}
 
-\subsubsection*{Distributed Training and Runtime}
+\subsubsection{Distributed Training and Runtime}
 As transformer training requires significant compute, distributing the training over multiple GPU's can yield significant speedups.
 Especially given the parallelizable nature of the transformer compared to recurrent neural network variations \cite{vaswani2017att}, training should scale fairly well on multiple GPU's.
 
@@ -266,7 +188,7 @@ The results are shown on figure \ref{fig:runtime}.
     \label{fig:runtime}
 \end{figure}\noindent
 
-\subsubsection*{Open Source Software Package}
+\subsubsection{Open Source Software Package}
 We publish DaLUKE and all related code under the MIT open source software license \cite{mitlicense}.
 All code and documentation is available at \url{https://github.com/peleiden/daluke}.
 The pretrained model is available with and without MLM layers at TODO.
