@@ -1,0 +1,21 @@
+## Mulige problemer i  prætræning
+
+- Overfitter - måske særligt på entiteter?
+  - Løsningsidéer:  
+    - Klassisk regularisering: Dropout + vægthenfald
+    - Anden maskeringsprocedure/maskeringssandsynlighed
+    - Fjerne sjældne entiteter: Vi er igang
+  - Diagnosemuligheder
+    - Valideringsdata
+- Der er for lidt data
+  - Løsningsidéer:
+    - Bronzeannotering
+    - Uannoteret tekst?
+- Fejl i koden
+  - Diagnosemuligheder
+    - Unit-tests af centrale dele
+    - Introspektion (udført)
+- Læringshyperparametre
+  - Er læringsrate for høj for længe?
+- Maskeringshyperparametre passer ikke til datasæt
+- Fejl i BERT-parametre?
