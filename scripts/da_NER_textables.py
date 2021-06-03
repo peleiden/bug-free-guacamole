@@ -6,23 +6,25 @@ import pyperclip
 
 DATASETS = ("DaNE", "Plank", "WikiANN")
 MODEL_NAMES = {
-    "BERT":         "DaNLP da-BERT",
-    "mBERT":        "NERDA m-BERT",
-    "Ælæctra":      "NERDA Ælæctra",
-    "Flair":        "DaNLP Flair",
-    "spaCy":        "DaNLP spaCy",
-    "Polyglot":     "Polyglot",
-    "daner":        "DKIE Stanford CRF",
+    "BERT":     "DaNLP da-BERT",
+    "mBERT":    "NERDA m-BERT",
+    "Ælæctra":  "NERDA Ælæctra",
+    "DaCy":     "DaCy",
+    "spaCy":    "DaNLP spaCy",
+    "Flair":    "DaNLP Flair",
+    "Polyglot": "Polyglot",
+    "daner":    "DKIE Stanford CRF",
 }
 
 MODEL_TRAINDATA = {
-    "BERT":         "DaNE",
-    "mBERT":        "DaNE",
-    "Ælæctra":      "DaNE",
-    "Flair":        "DaNE",
-    "spaCy":        "DaNE",
-    "Polyglot":     "Wikipedia",
-    "daner":        "ITU CDT",
+    "BERT":      "DaNE",
+    "mBERT":     "DaNE",
+    "Ælæctra":   "DaNE",
+    "DaCy":      "DaNE",
+    "spaCy":     "DaNE",
+    "Flair":     "DaNE",
+    "Polyglot":  "Wikipedia",
+    "daner":     "ITU CDT",
 }
 
 def f1f(f: float) -> str:
@@ -36,7 +38,7 @@ def build_main_table(dataset: str, experiment: dict) -> str:
     cats = ["LOC", "PER", "ORG"]
     miscdata = dataset != "WikiANN"
     # Fix miscfuckeri
-    row = ["Model", "Train data", "Micro avg."]
+    row = ["Model", "Train. data", "Micro avg."]
     if miscdata:
         row.append("$-$MISC")
         cats.append("MISC")
