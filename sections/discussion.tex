@@ -1,11 +1,54 @@
 \documentclass[main.tex]{subfiles}
 
 \begin{document}
-\chapter{Further Experiments and Discussion}
-\lhead{Further Experiments and Discussion}
+\chapter{Experiments and Discussion}
+\lhead{Experiments and Discussion}
 
-\section{LUKE's predictions}
-\subsection{Reproducability}
+\section{What Is Going On In The Pretraining?}
+In order to investigate what affects pretraining effectiveness, several ablation studies are performed.
+Unless stated otherwise, the hyperparameters from table \ref{tab:pretrain-hyper} are used, but with 50 epochs due to limited compute.
+
+\subsection{Introspection: The Parameter Population}
+
+\paragraph{Baseline}
+For the baseline model, the main model is retrained using only 50 epochs.
+This allows for a fairer comparison to the ablation studies as apposed to using the model trained for 150 epochs.
+
+\subsection{Dataset Augmentation}
+\begin{enumerate}
+    \item Performance og træningskurver uden datasæt-augmentering
+\end{enumerate}
+
+\subsection{Entity-Aware Attention}
+\begin{enumerate}
+    \item Performance og træningskurver uden entity-aware attention
+    \item Køretidssammenligning på de to modeller
+\end{enumerate}
+
+\subsection{Impact of Danish BERT}
+\begin{enumerate}
+    \item Performance og træningskurver for eksperimentet, hvor BERT-vægte blev låst op fra starten
+    \item Her rapporteres under-eksperimentet med performance for da-BERT på vores datasæt
+    \item Her kan henvises til parameterplotsene i en diskussion af BERT-vægtenes rolle
+\end{enumerate}
+
+\subsection{Entity Vocabulary Size}
+
+\begin{enumerate}
+    \item Performance og træningskurver for eksperimentet, hvor vocab'en blev begrænset - er dette spændende nok?
+\end{enumerate}
+
+\section{Finetuning Performance}
+
+\subsection{Hyperparameter Impact}
+
+\begin{enumerate}
+    \item Hyperparametersøgning for daluke-ner
+\end{enumerate}
+
+\subsection{Stability of Finetuning}
+
+\subsubsection{Reproducability of English LUKE}
 \begin{table}[H]
     \begin{center}
             \begin{tabular}{l r r r r r}
@@ -22,28 +65,20 @@
     }
 \end{table}
 
-\section{Pretraining Experiments}
-In order to investigate what affects pretraining effectiveness, several ablation studies are performed.
-Unless stated otherwise, the hyperparameters from table \ref{tab:pretrain-hyper} are used, but with 50 epochs due to limited compute.
+\subsubsection{How Random is This?}
+\begin{enumerate}
+    \item Krydsval. af finetuning
+    \item Gentagelse af finetuning for fem forskellige seeds
+    \item Statistiske metoder til sammenligning af scores
+    \item Spørgsmålstegn ved generaliserbarhed
+\end{enumerate}
 
-\paragraph{Baseline}
-For the baseline model, the main model is retrained using only 50 epochs.
-This allows for a fairer comparison to the ablation studies as apposed to using the model trained for 150 epochs.
+\section{Predictions: What Is Learned?}
 
+\subsection{Masked Language Predictions}
 
-\paragraph{Hyperparameter Search}
+\subsection{daLUKE Representation Geometry}
 
-\paragraph{Dataset Augmentation}
-
-\paragraph{Bert Attention}
-
-\paragraph{Fixing of da-BERT Parameters}
-
-\paragraph{Weighted Entity Loss}
-
-\section{Finetuning}
-\label{sec:finetuning}
-% Starter med at lære "O" på alting, derefter kommer detaljerede ting
-% Undersøg varians på læring - særligt fokus på lr, seed og måske dropout
+\subsection{When the Model Goes Wrong}
 
 \end{document}

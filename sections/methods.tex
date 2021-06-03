@@ -112,6 +112,11 @@ The model is trained using Pytorch Automatic Mixed Precision (AMP) \cite{pytorch
 This is partially due to half-precision calculations being simpler, and partially due to the lower memory requirements, allowing larger subbatches and thus better GPU utilization.
 However, as figure \ref{fig:runtime} shows, AMP works as intended when training on NVIDIA V100's, but has the opposite effect when training on NVIDIA A100's.
 
+\paragraph{Hyperparameter Search}
+\begin{enumerate}
+    \item Forklar vores pilot-forsøg brugt til hyperparametersøgning
+\end{enumerate}
+
 The hyperparameters used for pretraining are shown in table \ref{tab:pretrain-hyper}.
 \begin{table}[H]
     \centering

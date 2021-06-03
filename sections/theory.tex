@@ -1,8 +1,8 @@
 \documentclass[main.tex]{subfiles}
 
 \begin{document}
-\chapter{Theory and State of The Art}
-\lhead{Theory and State of The Art}
+\chapter{Theory and State of the Art}
+\lhead{Theory and State of the Art}
 \label{chap:theory}
 
 \section{Named Entity Recognition}
@@ -165,16 +165,16 @@ This new prediction head follows the architecture of the masked word scorer just
 The masked entity tokens are thus scored as corresponding to one of the entities in the entity vocabulary by two linear layers between which an activation function and layer normalization are placed.
 
 \subsection{Finetuning for NER}
-%TODO: Meget kort atm.
 The model was fine-tuned for NER by training a linear classifier over all $n$-grams in each sentence with the named entities as targets for cross-entropy loss, as described in \cite[Sec. 4.3]{yamada2020luke}.
 
 \section{Deep NLP in Danish}
-% Mål i afsnittet:
-% daBERT skal introduceres
-%
-% danlp skal introduceres
-%
-% spacy/dacy skal introduceres
-%
-% Ælæktra
+
+Kom ind på følgende
+\begin{enumerate}
+    \item daBERT
+    \item daNLP
+    \item SpaCy/DaCy
+    \item Ælæktra
+\end{enumerate}
+
 \end{document}
