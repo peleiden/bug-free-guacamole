@@ -166,6 +166,10 @@ To handle this explicitly, entity-aware self-attention changes the computation o
 LUKE, however, is not pretrained using this mechanism, but for the fine-tuning tasks, Yamada et al. show in ablation experiments that this addition consistently yields better performance \cite[Sec. 5.2]{yamada2020luke}.
 
 \subsection{Pretraining}
+\begin{enumerate}
+    \item Unmasking og random masking
+\end{enumerate}
+
 Yamada et. al perform the pretraining of LUKE by extending the MLM task of BERT \cite{devlin2019bert}.
 Where BERT is trained to predict randomly masked words, LUKE is trained to predict both randomly masked words and entities.
 

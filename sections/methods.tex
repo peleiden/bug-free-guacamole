@@ -131,7 +131,7 @@ The hyperparameters used for pretraining are shown in table \ref{tab:pretrain-hy
         Parameter  &    Value\\\hline
         Epochs     & 150\\
         Batch size &    4080\\
-        Peak learning rate & $5\ctp{-4}$\\
+        Peak learning rate & $3\ctp{-4}$\\
         LR warmup steps prop. & $ 6\pro $\\
         Mask prob. for words & $ 15\pro $\\
         Mask prob. for entities & $ 15\pro $\\
@@ -143,6 +143,24 @@ The hyperparameters used for pretraining are shown in table \ref{tab:pretrain-hy
     \end{tabular}
     \caption{Hyperparameters for DaLUKE pretraining.}\label{tab:pretrain-hyper}
 \end{table}\noindent
+
+\paragraph{Learning rate}
+LUKE follows BERT and increases its learning rate linearly from 0 to the peak learning rate followed by a linear decrease to 0 for the rest of the learning rate - the slanted triangle learning rate (STLR). \cite{devlin2019bert} \cite{yamada2020luke} \cite{howardruder2018universal}
+
+For pretraining, DaLUKE also employs linear warmup for the first 6\pro\ of parameter updates, after which it decreases polynomially with a power of $ \sqrt{3} $ and a final learning rate of one tenth the peak learning rate.
+This results in a more aggressive decrease in learning rate after the warmup period but a slightly higher learning rate in the final steps compared to STLR.
+The learning rate development is shown on figure \ref{fig:lr}.
+\begin{figure}[H]
+    \centering
+%TODO Learning rate plot    \includegraphics[width=.5\textwidth]{}
+    \caption{Learning rate over the course of the pretraining.}
+    \label{fig:lr}
+\end{figure}\noindent
+
+\paragraph{Accuracy measures}
+In order to measure the performance of the pretraining model, the accuracy of word and entity predictions are calculated throughout the training.
+Due to the size of the classification problem, especially regarding entities, top $ k $ accuracies are calculated for each - that is, if the true token was among the $ k $ tokens given the highest probability by the model.
+Top 1, 3, 5, and 10 accuracies are calculated for both the masked word and masked entity task using every example that the model trains on, while top 25 and 50 are calculated using one twentieth of examples for computational efficiency.
 
 \subsection{Fine-tuning DaLUKE for Named Entity Recognition}%
 \label{sub:finetune-ner}
