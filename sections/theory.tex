@@ -39,6 +39,18 @@ Researchers argue, however, that the task is not yet solved as the generalizatio
 
 The state of the art on English NER benchmarks moves quickly, but almost all algorithms currently (June 2021) achieving high scores in common benchmarks are deep neural networks and of the transformer architecture in particular \cite{ruder21ner, pwc21ner}.
 
+\section{Deep NLP in Danish}
+
+Kom ind på følgende
+\begin{enumerate}
+    \item daBERT
+    \item daNLP
+    \item SpaCy/DaCy
+    \item Ælæktra
+\end{enumerate}
+
+Måske skal NER nævnes?
+
 \section{Deep, Knowledge-enhanced NLP}
 The combination of statistical methods and explicit human crafted domain knowledge was the state of the art in many natural language processing (NLP) tasks in the 1990's and up into the 2000's \cite[Sec. 22.5]{russell2016ai}.
 As with most other fields of AI, the emergence of performant deep learning methods disrupted NLP in the 2010's, popularizing the methodology of using deep architectures, generally reccurent neural networks or transformers, as general purpose language models that can be fine tuned to a number of different tasks \cite{otter18dlnlp}.
@@ -91,6 +103,10 @@ On all benchmarks tested by the LUKE team \cite{yamada2020luke}, none of the abo
 
 
 \section{LUKE}
+\begin{enumerate}
+    \item Gennemgå afsnit og sørg for, at det passer i sin nye kontekst
+    \item Få lavet finetuning-afsnittet
+\end{enumerate}
 LUKE (Language Understanding with Knowledge-based Embeddings) is a language model introduced by Yamada et al. in November of 2020. \cite{yamada2020luke}.
 As the model is tested and extended in this project, key properties of the architecture and pretraining methodology are presented in this section.
 
@@ -166,15 +182,5 @@ The masked entity tokens are thus scored as corresponding to one of the entities
 
 \subsection{Finetuning for NER}
 The model was fine-tuned for NER by training a linear classifier over all $n$-grams in each sentence with the named entities as targets for cross-entropy loss, as described in \cite[Sec. 4.3]{yamada2020luke}.
-
-\section{Deep NLP in Danish}
-
-Kom ind på følgende
-\begin{enumerate}
-    \item daBERT
-    \item daNLP
-    \item SpaCy/DaCy
-    \item Ælæktra
-\end{enumerate}
 
 \end{document}

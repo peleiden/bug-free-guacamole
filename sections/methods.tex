@@ -7,7 +7,7 @@
 
 \section{Benchmarking Existing Named Entity Recognition}
 \subsection{Fine-tuning English LUKE}
-Yamada et al. benchmark \emph{LUKE}, on Named Entity Recognition using the CoNLL-2003 dataset \cite{yamada2020luke}.
+Yamada et al. benchmark LUKE, on Named Entity Recognition using the CoNLL-2003 dataset \cite{yamada2020luke}.
 
 Reproduction of these results were attempted by obtaining the pretrained LUKE models from Yamada et al.'s software repository.
 The same hyper-parameters as Yamada et al. were used and are shown along with and technical details in Table~\ref{tab:params}.
@@ -41,6 +41,9 @@ The finetuning procedure was repeated five times for each of the two released LU
     The repository \url{github.com/studio-ousia/luke} was cloned at commit-SHA \code{6feefe6}, installed and used for the fine-tuning.
 }
 \subsection{Off-the-shelf, Danish models}
+\begin{enumerate}
+    \item Afgør, hvor meget af modellerne skal stå her og hvor meget, der skal stå i teori/dansk-nlp-afsnittet -- der skal nok rykkes en god sjat derop
+\end{enumerate}
 \label{sec:exidan}
 A number of Danish NER models that are publily available and usable by NLP practitioners are collected and evaluated on the testing datasets of three Danish NER annotations considered in \ref{subsec:daNERdata}: DaNE, Plank and Wiki-ANN.
 
@@ -94,6 +97,11 @@ The released Java-based NER tool is called \code{daner}\footnotemark.
 % Andre ting, vi lige kommer på
 \subsection{Pretraining Methodology and Hyperparameters}%
 \label{sub:dalpre}
+\begin{enumerate}
+    \item Måske mere detaljeret beskrivelse af arkitektur -- og illustration?
+    \item Vis LR her
+    \item Det her afsnit skal være lidt mere detaljeret IMO: Fortæl kort om vores optimeringsmetode + loss + gradientakkulumation
+\end{enumerate}
 DaLUKE's pretraining largely follows LUKE's with some differences:
 \begin{itemize}
     \item The entity-augmented Danish Wikipedia described in section \ref{subsec:entaug} is used.
@@ -111,11 +119,6 @@ This prevents the model from overfitting on early examples and allows better opt
 The model is trained using Pytorch Automatic Mixed Precision (AMP) \cite{pytorchamp}, which -- ideally, at least, as will be discussed in section \ref{sub:oss} -- should decrease training time with little to no penalty to accuracy. \cite{huang2020amp}
 This is partially due to half-precision calculations being simpler, and partially due to the lower memory requirements, allowing larger subbatches and thus better GPU utilization.
 However, as figure \ref{fig:runtime} shows, AMP works as intended when training on NVIDIA V100's, but has the opposite effect when training on NVIDIA A100's.
-
-\paragraph{Hyperparameter Search}
-\begin{enumerate}
-    \item Forklar vores pilot-forsøg brugt til hyperparametersøgning
-\end{enumerate}
 
 The hyperparameters used for pretraining are shown in table \ref{tab:pretrain-hyper}.
 \begin{table}[H]
@@ -139,6 +142,9 @@ The hyperparameters used for pretraining are shown in table \ref{tab:pretrain-hy
 
 \subsection{Fine-tuning DaLUKE for Named Entity Recognition}%
 \label{sub:finetune-ner}
+\begin{enumerate}
+    \item Også gerne lidt mere detalje i læringsproblemet inklusiv opskrivning af loss med lossvægt
+\end{enumerate}
 %TODO Model modification regarding entities
 Following Yamada et al. \cite{yamada2020luke} and Sohrab and Miwa \cite{sohrab2018nestedner}, all possible entity spans (or $n$-grams) over a tokenized text piece are calculated.
 These are considered the named entity candidates and are given to the pretrained transformer as entity inputs along with the subword tokens from the text piece.
@@ -169,7 +175,6 @@ The following hyperparameters listed in table \ref{tab:finetune-hyper} were used
 
 \subsection{Implementation Details and Open Source Software}%
 \label{sub:oss}
-
 \subsubsection{Distributed Training and Runtime}
 As transformer training requires significant compute, distributing the training over multiple GPU's can yield significant speedups.
 Especially given the parallelizable nature of the transformer compared to recurrent neural network variations \cite{vaswani2017att}, training should scale fairly well on multiple GPU's.

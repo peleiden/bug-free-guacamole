@@ -8,6 +8,10 @@
 In order to investigate what affects pretraining effectiveness, several ablation studies are performed.
 Unless stated otherwise, the hyperparameters from table \ref{tab:pretrain-hyper} are used, but with 50 epochs due to limited compute.
 
+\begin{enumerate}
+    \item Alle træningskurverne for hovedeksperimentet
+\end{enumerate}
+
 \subsection{Introspection: The Parameter Population}
 
 \paragraph{Baseline}
@@ -65,7 +69,7 @@ This allows for a fairer comparison to the ablation studies as apposed to using 
     }
 \end{table}
 
-\subsubsection{How Random is This?}
+\subsubsection{Randomness of Results}
 \begin{enumerate}
     \item Krydsval. af finetuning
     \item Gentagelse af finetuning for fem forskellige seeds
@@ -76,9 +80,21 @@ This allows for a fairer comparison to the ablation studies as apposed to using 
 \section{Predictions: What Is Learned?}
 
 \subsection{Masked Language Predictions}
+\begin{enumerate}
+    \item Noget analyse og nogle eksempler på MLM, MEM-forudsigelser
+\end{enumerate}
 
 \subsection{daLUKE Representation Geometry}
 
-\subsection{When the Model Goes Wrong}
+\begin{enumerate}
+    \item Visualiseringer af DaNE-repræsentationeres geometri (PCA, t-SNE, UMAP)
+    \item Forsøg på forklaring af resultaterne
+\end{enumerate}
+
+\subsection{When the Model is Wrong}
+
+\begin{enumerate}
+    \item Fejl-analyse på modellen: Print eksempler på fejl og sammenlign gerne med, hvilke fejl konkurrenterne begår
+\end{enumerate}
 
 \end{document}
