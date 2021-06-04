@@ -6,6 +6,7 @@
 \label{chap:data}
 
 \section{Entity-annotated Danish Wikipedia}
+\label{sec:dawiki}
 For pretraining LUKE, a corpus of entity annotated text is needed.
 Entity annotations consist of two things: The word span and the name of the entity.
 No text is written directly with such annotations in mind.
@@ -46,9 +47,10 @@ In order for the binary terms to make sense, annotations and no annotations are 
 One limitation of Wikipedia as a pretraining dataset is that hyperlinks are rarely repeated, even if the same article is refenced multiple times on a page.
 This results in false negatives where entities are not annotated.
 
-Yamada et al. account for this by performing simple string matching and adding entities when finetuning on the SQuAD dataset, however they add no additional entity annotations in the pretraining dataset. \cite{yamada2020luke}
+% Ikke helt enig i, at vi kan påstå, at Yamada's håndtering af SQuAD svarer til dette problem. SQuAD-løsningen handler ikke om for mange falske negativer; den handler om at kunne forward-passe datasættet
+% Yamada et al. account for this by performing simple string matching and adding entities when finetuning on the SQuAD dataset, however they add no additional entity annotations in the pretraining dataset. \cite{yamada2020luke}
 
-In order to augment the entity annotations, we perform preprocessing on Wikipedia prior to pretraining similar to the string matching on SQuAD.
+In order to augment the entity annotations, we perform preprocessing on Wikipedia prior to pretraining. %similar to the string matching on SQuAD.
 Our preprocessing consists of the following two steps applied article-wise:
 \begin{enumerate}
     \item Get set of mentioned articles including the title of the article itself.

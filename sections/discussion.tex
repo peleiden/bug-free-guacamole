@@ -15,9 +15,19 @@ For the baseline model, the main model is retrained using only 50 epochs.
 This allows for a fairer comparison to the ablation studies as apposed to using the model trained for 150 epochs.
 
 \subsection{Dataset Augmentation}
+A key addition to the pretraining pipeline was the addition of extra entity annotations not already in the Wikipedia articles themselves using pattern matching as explained in Section~\ref{subsec:entaug}.
+This resulted in a 48\pro growth in the number of annotations as shown in Table~\ref{tab:metadata}.
+An ablation experiment on this was performed
+
+\ref{tab:metadata}
 \begin{enumerate}
     \item Performance og træningskurver uden datasæt-augmentering
 \end{enumerate}
+
+The theorized problem of of false negatives in the volunteer-produced annotations seems to be present in the data and this augmentation appears to mitigate this.
+This result supports a possible strategy for improvement:
+To produce additional LUKE pretraining data sets from raw text corpora by automatically annotating them using pattern matching.
+Such lower standard annotations used to achieve extra data might be necessary for continued improvement in low-resource languages such as Danish.
 
 \subsection{Entity-Aware Attention}
 \begin{enumerate}
@@ -33,18 +43,33 @@ This allows for a fairer comparison to the ablation studies as apposed to using 
 \end{enumerate}
 
 \subsection{Entity Vocabulary Size}
+For the English LUKE, Yamada et al. used an entity vocabulary of the $500\ctp3$ entities \cite[Sec. 3.4]{yamada2020luke} even though the English Wikipedia contains $\sim 6\ctp6$ content pages\footnotemark.
+\footnotetext{English Wikipedia Statistics: \url{https://en.wikipedia.org/wiki/Special:Statistics}}
+This is, apart from crude filtering of non-entity pages, a result of cutting the entity domain down to the most frequent hyperlinks.
+For the Danish Wikipedia, however, the number of content pages is $\sim 250\ctp3$ \footnotemark resulting in the DaLUKE entity vocabulary containing $220\ctp3$ entities.
+\footnotetext{Danish Wikipedia Statistics: \url{https://da.wikipedia.org/wiki/Speciel:Statistik}}
+As this is a much smaller world of entities, the main DaLUKE model did not cut this full entity vocabulary by frequency.
+
+An experiment was performed where entities that were mentioned less than 50 times were excluded from the data, resulting in a vocabulary of $21,769$ entities.
+This was done on the augmented data explained in Section \ref{sec:dawiki}.
 
 \begin{enumerate}
-    \item Performance og træningskurver for eksperimentet, hvor vocab'en blev begrænset - er dette spændende nok?
+    \item Performance og træningskurver
 \end{enumerate}
+
+This experimental filtering of the DaLUKE entities preserves $7,8\pro$ of the content pages, while $8,3\pro$ were preserved for the English LUKE.
+Intuitively, it would make sense that the same proportional filtering works better in English, as the absolute number of entities making up the implicit Knowledge Base of the model might be important:
+Smaller datasets, corresponding to smaller language areas, does not equate a smaller shared world of named entities.
+
+This conceptual argument together with the experimental results suggests that more of the rare entities should be included when working with smaller datasets, though a more continuous experimental search of this filtering parameter might yield a better trade-off than our solution of including all entities.
 
 \section{Finetuning Performance}
 \begin{enumerate}
     \item Prec. vs rec
 \end{enumerate}
 
-\subsection{Featre Usage}%
-\label{sub:Featre Usage}
+\subsection{Feature Usage}%
+\label{sub:Feature Usage}
 
 \begin{enumerate}
     \item Konkaterneringsshow
