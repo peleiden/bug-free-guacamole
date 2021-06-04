@@ -6,6 +6,9 @@
 \lhead{Methods}
 
 \section{Benchmarking Existing Named Entity Recognition}
+\begin{enumerate}
+    \item Evalueringsmetode
+\end{enumerate}
 \subsection{Fine-tuning English LUKE}
 Yamada et al. benchmark LUKE, on Named Entity Recognition using the CoNLL-2003 dataset \cite{yamada2020luke}.
 
@@ -101,6 +104,7 @@ The released Java-based NER tool is called \code{daner}\footnotemark.
     \item Måske mere detaljeret beskrivelse af arkitektur -- og illustration?
     \item Vis LR her
     \item Det her afsnit skal være lidt mere detaljeret IMO: Fortæl kort om vores optimeringsmetode + loss + gradientakkulumation
+    \item Top $K$
 \end{enumerate}
 DaLUKE's pretraining largely follows LUKE's with some differences:
 \begin{itemize}
@@ -144,6 +148,7 @@ The hyperparameters used for pretraining are shown in table \ref{tab:pretrain-hy
 \label{sub:finetune-ner}
 \begin{enumerate}
     \item Også gerne lidt mere detalje i læringsproblemet inklusiv opskrivning af loss med lossvægt
+    \item Teorien bag NER skal fordeles så en del står oppe i LUKE-teori-afsnittet
 \end{enumerate}
 %TODO Model modification regarding entities
 Following Yamada et al. \cite{yamada2020luke} and Sohrab and Miwa \cite{sohrab2018nestedner}, all possible entity spans (or $n$-grams) over a tokenized text piece are calculated.

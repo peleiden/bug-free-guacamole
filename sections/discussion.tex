@@ -8,13 +8,9 @@
 In order to investigate what affects pretraining effectiveness, several ablation studies are performed.
 Unless stated otherwise, the hyperparameters from table \ref{tab:pretrain-hyper} are used, but with 50 epochs due to limited compute.
 
-\begin{enumerate}
-    \item Alle træningskurverne for hovedeksperimentet
-\end{enumerate}
-
 \subsection{Introspection: The Parameter Population}
 
-\paragraph{Baseline}
+\subsection{Baseline}
 For the baseline model, the main model is retrained using only 50 epochs.
 This allows for a fairer comparison to the ablation studies as apposed to using the model trained for 150 epochs.
 
@@ -31,7 +27,7 @@ This allows for a fairer comparison to the ablation studies as apposed to using 
 
 \subsection{Impact of Danish BERT}
 \begin{enumerate}
-    \item Performance og træningskurver for eksperimentet, hvor BERT-vægte blev låst op fra starten
+    \item Performance og træningskurver for eksperimentet, hvor BERT-vægte ikke bruges
     \item Her rapporteres under-eksperimentet med performance for da-BERT på vores datasæt
     \item Her kan henvises til parameterplotsene i en diskussion af BERT-vægtenes rolle
 \end{enumerate}
@@ -43,6 +39,14 @@ This allows for a fairer comparison to the ablation studies as apposed to using 
 \end{enumerate}
 
 \section{Finetuning Performance}
+\begin{enumerate}
+    \item Prec. vs rec
+\end{enumerate}
+
+\subsection{Pretraining Impact}
+\begin{enumerate}
+    \item Fine-tuning på en række checkpoints
+\end{enumerate}
 
 \subsection{Hyperparameter Impact}
 
