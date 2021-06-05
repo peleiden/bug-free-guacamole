@@ -23,19 +23,20 @@ The finetuning procedure was repeated five times for each of the two released LU
     \url{https://github.com/studio-ousia/luke/tree/6feefe657d97d2f847ace87f61f23b705f75d2aa\#released-models} 
 } 
 \begin{table}[H]
-    \begin{tabular}{l|cc}
-                                    & LUKE large & LUKE base\\\hline
+    \centering
+%    TODO The number of parameters is clearly mixed up. Is the learning rate too?
+    \begin{tabular}{l|rr}
         Pre-trained model
-                                    & LUKE RoBERTa large \textsuperscript{\ref{foot:fnt}}\
-                                                & LUKE RoBERTa base\textsuperscript{\ref{foot:fnt}}\\
+                                    & LUKE large \textsuperscript{\ref{foot:fnt}}\
+                                                & LUKE base\textsuperscript{\ref{foot:fnt}}\\\hline
         Pre-trained model parameters & $253\ctp 6$ & $483\ctp 6$\\
-        Pre-trained model entity vocabulary & \multicolumn{2}{c}{$500\ctp3$}\\
+        Pre-trained model entity vocabulary & $500\ctp3$ & $500\ctp3$\\
         Learning rate               & $10^{-5}$ & $5\ctp{-5}$\\
-        Batch size (effective)      & \multicolumn{2}{c}{8 (16)}\\
-        Gradient accumulation steps & \multicolumn{2}{c}{2}\\
-        Numeric precision           & \multicolumn{2}{c}{Mixed FP16/FP32 (Nvidia APEX)}\\
-        Training code               & \multicolumn{2}{c}{PyTorch-based \code{luke}-repository \protect\footnotemark}\\
-        Software version            & \multicolumn{2}{c}{Python 3.6, PyTorch 1.2}
+        Effective batch size        & 16 & 16\\
+        Gradient accumulation steps & 2 & 2\\
+        Numeric precision           & \multicolumn{2}{l}{Mixed FP16/FP32 (Nvidia APEX)}\\
+        Training code               & \multicolumn{2}{l}{PyTorch-based \code{luke}-repository \protect\footnotemark}\\
+        Software version            & \multicolumn{2}{l}{Python 3.6, PyTorch 1.2}
     \end{tabular}
     \label{tab:params}
 \end{table}
@@ -116,9 +117,6 @@ DaLUKE's pretraining largely follows LUKE's with some differences:
 \end{itemize}
 Due to the memory intensive nature of the transformer architecture, we follow Yamada et al. and use gradient accumulation over multiple subbatches within each batch.
 
-The learning rate, which uses a linear warmup followed by a linear decay, is updated after each batch.
-This prevents the model from overfitting on early examples and allows better optimization later on, while still retaining a relatively high learning rate throughout of most the training, without the training dragging on, as it would with a constant, low learning rate.
-
 %TODO Overvej: Skal dette ned i implementeringsdetaljer?
 The model is trained using Pytorch Automatic Mixed Precision (AMP) \cite{pytorchamp}, which -- ideally, at least, as will be discussed in section \ref{sub:oss} -- should decrease training time with little to no penalty to accuracy. \cite{huang2020amp}
 This is partially due to half-precision calculations being simpler, and partially due to the lower memory requirements, allowing larger subbatches and thus better GPU utilization.
@@ -176,7 +174,7 @@ As both CWR's and CER's occupy the same 768 dimensional latent space, the combin
 This representation is then given to a single linear layer that learns to classify the entity as either a non-entity or one of the classes in a given dataset.
 For the fine-tuning, both the pretrained model and the linear layer are fitted.
 
-The following hyperparameters listed in table \ref{tab:finetune-hyper} were used for training:
+The hyperparameters listed in table \ref{tab:finetune-hyper} were used for training.
 \begin{table}[H]
 %    TODO Make these up to date
     \centering
@@ -203,7 +201,8 @@ As transformer training requires significant compute, distributing the training 
 Especially given the parallelizable nature of the transformer compared to recurrent neural network variations \cite{vaswani2017att}, training should scale fairly well on multiple GPU's.
 
 The pretraining took roughly a week.
-Due to varying GPU availability, both A100's and V100's were used at different parts of the pretraining with $ 2\times $A100 being the most common configuration.
+Due to varying GPU availability, varying numbers of A100's and V100's were used for pretraining and the experiments in section \ref{sec:pretrainpls}.
+The main pretraining took approximately five days on $ 4\times $V100.
 For comparison, Yamada et al. train LUKE using 16 V100's over a period of 30 days. \cite{yamada2020luke}
 
 We measure the time needed to train for one epoch on different cluster configurations.

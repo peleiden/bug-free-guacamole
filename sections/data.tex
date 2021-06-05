@@ -14,25 +14,26 @@ However, embedded hyperlinks implicitly provide the word spans, however these of
 On Wikipedia this is not the case, as hyperlinks point to articles on specific topics, which makes it useful for LUKE's pretraining task.
 Given its size, Wikipedia then is a particularly useful pretraining dataset.
 
-We use the Danish Wikiepdia dump from March 1st, 2021 as our data.
-%TODO: Indsæt link/citation
-It contains 80,187,419 words spanning 265,196 content pages, each of which makes up an entity in the entity vocabulary.
-%TODO: Hvorfor er der 265315 entiteter i vocab?
-The authors of LUKE limit the entity vocabulary to the 500,000 most often linked pages.
-As the Danish Wikipedia is only roughly 2.5\pro\ the size of the English Wikipedia, no limit on the size of the entity vocabulary is used to preserve data.
+The Danish Wikipedia from March 1st, 2021 is used for building the dataset.
+It contains 80,187,419 words spanning 287,594 content pages, the titles of which make up the entity vocabulary.
+Yamada et al. limit the entity vocabulary to the 500,000 most often linked pages \cite{yamada2020luke}.
+As the Danish Wikipedia is only roughly 2.5\pro\ the size of the English Wikipedia, no limit on the entity vocabulary is imposed to preserve data.
 
 Every article is a sequence of words with embedded hyperlinks.
-These are split into sequences of at most 510 tokens using BotXO's Danish BERT tokenizer, and the token spans of the hyperlinks are saved.
-%TODO LINKKK
+These are split into sequences of at most 512 tokens using BotXO's Danish BERT tokenizer, and the token spans of the hyperlinks are saved.
+The first and last tokens are always [CLS] and [SEP], respectively, with the remaining 510 tokens coming directly from the tokenizer.
 Sequences are cut short if necessary to prevent hyperlinks spanning two sequences.
-Special tokens are added to the beginning and end of each sequence.
-%TODO WHICH
+All sequences contain text from at most one paragraph in an article.
+
 Word spans over tokens is also saved, as the MLM pretraining task is done on a word level.
-Thus, an entry in the dataset -- from now on called an example -- consists of the following four parts:
+Sub-word and entity tokens are masked using the [MASK] token.
+The [UNK] special token is reserved for sub-words that are not part of the tokenizer's vocabulary.
+
+Thus, an entry in the dataset -- called an example -- consists of the following:
 \begin{itemize}
 %TODO Spacing
-    \item An array of at most 512 token ID's
-    \item An array of entity ID's
+    \item An array of at most 512 sub-words token ID's
+    \item An array of at most 128 entity ID's
     \item An array of two-tuples containing the start and end indices for every entity
     \item An array of two-tuples containing the start and end indices for every word
 \end{itemize}
@@ -47,10 +48,7 @@ In order for the binary terms to make sense, annotations and no annotations are 
 One limitation of Wikipedia as a pretraining dataset is that hyperlinks are rarely repeated, even if the same article is refenced multiple times on a page.
 This results in false negatives where entities are not annotated.
 
-% Ikke helt enig i, at vi kan påstå, at Yamada's håndtering af SQuAD svarer til dette problem. SQuAD-løsningen handler ikke om for mange falske negativer; den handler om at kunne forward-passe datasættet
-% Yamada et al. account for this by performing simple string matching and adding entities when finetuning on the SQuAD dataset, however they add no additional entity annotations in the pretraining dataset. \cite{yamada2020luke}
-
-In order to augment the entity annotations, we perform preprocessing on Wikipedia prior to pretraining. %similar to the string matching on SQuAD.
+In order to augment the entity annotations, we perform preprocessing on Wikipedia prior to pretraining.
 Our preprocessing consists of the following two steps applied article-wise:
 \begin{enumerate}
     \item Get set of mentioned articles including the title of the article itself.
@@ -66,15 +64,15 @@ This prevents the article on "A" to be linked at every word starting with "A".
 We also only match titles already linked in the articles, as we assume that any article that should be linked to has already been linked at least once.
 This further reduces the number of false positives.
 
-Table \ref{tab:metadata} shows how these augmentation steps change the size of the dataset.
+Table \ref{tab:metadata} shows how these augmentation steps change the properties of the dataset.
 \begin{table}[H]
     \centering
-    \begin{tabular}{l|r|r}
-        Statistic&Unaugmented	&Augmented	\\\hline
-        Subword tokens&101,445,535	&108,360,000	\\
-        Entity vocabulary size&264,754  &275,586\\
-        Entity annotations&4,693,505	&6,956,690\\
-        Examples&363,932   &378,749
+    \begin{tabular}{l|r|r|r}
+        Statistic&Unaugmented	&Augmented    &Difference	\\\hline
+        Subword tokens&101,394,208	&108,322,681 &+6,8\pro	\\
+        Entity vocabulary size&214,150  &225,198    &+5,2\pro   \\
+        Entity annotations&4,883,918	&7,180,372 &+47,0\pro\\
+        Examples&363,498   &378,357 &+4,1\pro
     \end{tabular}
     \caption{
         Statistics for both datasets.
@@ -119,7 +117,7 @@ Previous literature has highlighted the scarcity of accessible, gold-standard, D
     \centering
     \begin{tabular}{l|rrr|rrrr}
         \multirow{2}{*}{Dataset} & \multicolumn{3}{c|}{Number of sentences} & \multicolumn{4}{c}{Test set entities}\\
-                                &Train. & Dev. & Test &LOC & PER & ORG & MISC \\\hline
+                                &\jl{Train} & \jl{Dev.} & \jl{Test} &\multicolumn{1}{|l}{LOC} & \jl{PER} & \jl{ORG} & \jl{MISC} \\\hline
         DaNE        & 4383 & 564 & 565 & 101 & 318 & 221 & 159 \\
         Plank       & 604  & 564 & 565 & 98  & 309 & 114 & 52 \\
         Wiki-ANN (da.)   & $20\ctp3$ & $10\ctp3$ & $10\ctp3$ & 7458 & 10,660 & 10,876 & 0
@@ -140,11 +138,11 @@ The dataset is the central benchmark in the field of Named Entity Recognition \c
     \url{
         https://paperswithcode.com/sota/named-entity-recognition-ner-on-conll-2003
     }.
-    As of 26/02, 2021, LUKE tops the leaderboard.
+    As of February 2, 2021, LUKE tops the leaderboard.
 }
 \begin{table}[H]
     \centering
-    \begin{tabular}{l|ccc|cccc}
+    \begin{tabular}{l|rrr|rrrr}
     CoNLL-2003 English  & Articles  & Sentences  & Tokens   & LOC   & PER   & ORG   & MISC  \\ \hline
     Training set        & 946       & 14,987     & 203,621  & 7140  & 6600  & 6321  & 3438   \\
     Development set     & 216       & 3466      & 51,362   & 1837  & 1842  & 1341  & 922    \\

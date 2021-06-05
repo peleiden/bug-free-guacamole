@@ -5,8 +5,11 @@
 \lhead{Experiments and Discussion}
 
 \section{What Is Going on in the Pretraining?}
+\label{sec:pretrainpls}
 In order to investigate what affects pretraining effectiveness, several ablation studies are performed.
 Unless stated otherwise, the hyperparameters from table \ref{tab:pretrain-hyper} are used, but with 50 epochs due to limited compute.
+The experiments were trained primarily on a $ 2\times$A100 configuration.
+Due to its negative effect on runtime on A100's (see figure \ref{fig:runtime}), AMP is not used for any of the following experiments.
 
 \subsection{Introspection: The Parameter Population}
 
@@ -16,7 +19,7 @@ This allows for a fairer comparison to the ablation studies as apposed to using 
 
 \subsection{Dataset Augmentation}
 A key addition to the pretraining pipeline was the addition of extra entity annotations not already in the Wikipedia articles themselves using pattern matching as explained in Section~\ref{subsec:entaug}.
-This resulted in a 48\pro growth in the number of annotations as shown in Table~\ref{tab:metadata}.
+This resulted in a 47\pro\ growth in the number of annotations as shown in Table~\ref{tab:metadata}.
 An ablation experiment on this was performed
 
 \ref{tab:metadata}
