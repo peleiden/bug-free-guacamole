@@ -10,6 +10,9 @@ In order to investigate what affects pretraining effectiveness, several ablation
 Unless stated otherwise, the hyperparameters from table \ref{tab:pretrain-hyper} are used, but with 50 epochs due to limited compute.
 The experiments were trained primarily on a $ 2\times$A100 configuration.
 Due to its negative effect on runtime on A100's (see figure \ref{fig:runtime}), AMP is not used for any of the following experiments.
+%TODO Overvej, om introspection skal stå her. Ellers skal ovenstående formuleringer ændres
+%TODO Beskriv fine-tuning: Bare en enkelt finetuning eller flere for at korrigere for varians? Nævn hyperparametre, evt med tabelhenvisning
+%TODO Tal om den meget store initialiseringsvarians
 
 \subsection{Introspection: The Parameter Population}
 
@@ -18,21 +21,30 @@ For the baseline model, the main model is retrained using only 50 epochs.
 This allows for a fairer comparison to the ablation studies as apposed to using the model trained for 150 epochs.
 
 \subsection{Dataset Augmentation}
-A key addition to the pretraining pipeline was the addition of extra entity annotations not already in the Wikipedia articles themselves using pattern matching as explained in Section~\ref{subsec:entaug}.
-This resulted in a 47\pro\ growth in the number of annotations as shown in Table~\ref{tab:metadata}.
-An ablation experiment on this was performed
 
 \ref{tab:metadata}
 \begin{enumerate}
     \item Performance og træningskurver uden datasæt-augmentering
 \end{enumerate}
+A key addition to the pretraining pipeline was the addition of extra entity annotations not already in the Wikipedia articles themselves using pattern matching as explained in Section~\ref{subsec:entaug}.
+This resulted in a 47\pro\ growth in the number of annotations as shown in Table~\ref{tab:metadata}.
+While it was argued that it should improve performance, it was all theoretical.
+Therefore, this effects of the agumentation is investigated.
 
+%TODO Vær sikker på, at disse konklusioner holder
 The theorized problem of of false negatives in the volunteer-produced annotations seems to be present in the data and this augmentation appears to mitigate this.
 This result supports a possible strategy for improvement:
 To produce additional LUKE pretraining data sets from raw text corpora by automatically annotating them using pattern matching.
-Such lower standard annotations used to achieve extra data might be necessary for continued improvement in low-resource languages such as Danish.
+Such lower standard annotations used to achieve extra data might be necessary for continued improvement in low-resource languages such as Danish but should be used carefully to prevent the training suffering from garbage in, garbage out.
 
-\subsection{Entity-Aware Attention}
+\subsection{Entity-aware Self-Attention}
+One of Yamada et al.'s key contributions to the transformer is the addition of query matrices for relations between entities and words.
+They do not use these extra matrices in the pretraining but instead let them be learned during downstream tasks, initializing them to the word-to-word matrices of RoBERTa.
+They perform ablation studies on multiple datasets, showing an improvement in every case over original attention.
+\cite{yamada2020luke}
+
+These results suggest that training the extra query matrices in the pretraining also might have a positive impact.
+For this reason, entity-aware self-attention has been used here for all pretrainings bar this one, where its effects on pretraining is investigated.
 \begin{enumerate}
     \item Performance og træningskurver uden entity-aware attention
     \item Køretidssammenligning på de to modeller
@@ -47,22 +59,23 @@ Such lower standard annotations used to achieve extra data might be necessary fo
 
 \subsection{Entity Vocabulary Size}
 For the English LUKE, Yamada et al. used an entity vocabulary of the $500\ctp3$ entities \cite[Sec. 3.4]{yamada2020luke} even though the English Wikipedia contains $\sim 6\ctp6$ content pages\footnotemark.
-\footnotetext{English Wikipedia Statistics: \url{https://en.wikipedia.org/wiki/Special:Statistics}}
+\footnotetext{English Wikipedia Statistics: \url{https://en.wikipedia.org/wiki/Special:Statistics}. Visited March 3, 2021.}
 This is, apart from crude filtering of non-entity pages, a result of cutting the entity domain down to the most frequent hyperlinks.
-For the Danish Wikipedia, however, the number of content pages is $\sim 250\ctp3$ \footnotemark resulting in the DaLUKE entity vocabulary containing $220\ctp3$ entities.
-\footnotetext{Danish Wikipedia Statistics: \url{https://da.wikipedia.org/wiki/Speciel:Statistik}}
+For the Danish Wikipedia, however, the number of content pages is $\sim 267\ctp3$ \footnotemark resulting in the DaLUKE entity vocabulary containing $\sim 225\ctp3$ entities.
+\footnotetext{Danish Wikipedia Statistics: \url{https://da.wikipedia.org/wiki/Speciel:Statistik} Visited March 3, 2021.}
+%TODO Hvorfor har vi flere sider, end der står der? Hvilke sider tæller vi med, som wikipedia ikke tæller med?
 As this is a much smaller world of entities, the main DaLUKE model did not cut this full entity vocabulary by frequency.
 
-An experiment was performed where entities that were mentioned less than 50 times were excluded from the data, resulting in a vocabulary of $21,769$ entities.
+An experiment was performed where entities that were mentioned less than 50 times were excluded from the data, resulting in a vocabulary of $19,119$ entities.
 This was done on the augmented data explained in Section \ref{sec:dawiki}.
 
 \begin{enumerate}
     \item Performance og træningskurver
 \end{enumerate}
 
-This experimental filtering of the DaLUKE entities preserves $7,8\pro$ of the content pages, while $8,3\pro$ were preserved for the English LUKE.
-Intuitively, it would make sense that the same proportional filtering works better in English, as the absolute number of entities making up the implicit Knowledge Base of the model might be important:
-Smaller datasets, corresponding to smaller language areas, does not equate a smaller shared world of named entities.
+This experimental filtering of the DaLUKE entities preserves $8,5\pro$ of the content pages, while $8,3\pro$ were preserved for the English LUKE.
+Intuitively, it would make sense that the same proportional filtering works better in English, as the absolute number of entities making up the implicit knowledge base of the model might be important:
+Smaller datasets, corresponding to smaller language areas, do not equate a smaller shared world of named entities.
 
 This conceptual argument together with the experimental results suggests that more of the rare entities should be included when working with smaller datasets, though a more continuous experimental search of this filtering parameter might yield a better trade-off than our solution of including all entities.
 
