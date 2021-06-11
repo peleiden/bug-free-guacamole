@@ -6,9 +6,8 @@
 \lhead{Methods}
 
 \section{Benchmarking Existing Named Entity Recognition}
-\begin{enumerate}
-    \item Evalueringsmetode
-\end{enumerate}
+\subsection{Evaluation of NER}
+\label{subsec:nereval}
 \subsection{Fine-tuning English LUKE}
 Yamada et al. benchmark LUKE, on Named Entity Recognition using the CoNLL-2003 dataset \cite{yamada2020luke}.
 
@@ -45,60 +44,42 @@ The finetuning procedure was repeated five times for each of the two released LU
     The repository \url{github.com/studio-ousia/luke} was cloned at commit-SHA \code{6feefe6}, installed and used for the fine-tuning.
 }
 \subsection{Off-the-shelf, Danish models}
-\begin{enumerate}
-    \item Afgør, hvor meget af modellerne skal stå her og hvor meget, der skal stå i teori/dansk-nlp-afsnittet -- der skal nok rykkes en god sjat derop
-\end{enumerate}
 \label{sec:exidan}
-A number of Danish NER models that are publily available and usable by NLP practitioners are collected and evaluated on the testing datasets of three Danish NER annotations considered in \ref{subsec:daNERdata}: DaNE, Plank and Wiki-ANN.
+A number of Danish NER models that are publily available and usable by NLP practitioners were collected and evaluated on the testing datasets of the three Danish NER annotations considered in Section \ref{subsec:daNERdata}:
+DaNE, Plank and Wiki-ANN.
 
-Most of the models are found through DaNLP\footnotemark, an open-source collection of Danish NLP software and references released by the Alexandra Institute which also released the DaNE dataset.
+Most of the models were found through DaNLP \cite{danlp2021} and a number of them are introduced in Section \ref{sec:nlpda}.
+
+\setlist{itemsep=.5em}
+\begin{itemize}
+    \item \textbf{DaNLP da-BERT}: The daBERT model \cite{botxo2019dabert} finetuned for NER on DaNE by DaNLP.
+    \item \textbf{NERDA m-BERT}: The multilingual BERT base released by the original Google Research BERT team \cite{devlin2019bert} finetuned by NERDA \cite{kjeldgaard2020nerda} on DaNE.
+    \item \textbf{NERDA Ælæctra}: The transformer Ælæctra, released by Malte Højmark-Bertelsen, \cite{bertelsen2020lctra} finetuned by NERDA on DaNE.
+    \item \textbf{DaCy}: An adaption of version 3 of the SpaCy framework \cite{honnibal2020spacy} to Danish by Kenneth Enevoldsen including finetuning of on DaNE \cite{enevoldsen2020dacy}.
+        The large version, using the large multilingual RoBERTa model behind the scenes, was collected.
+        This 2021 model is the currently reported state of the art.
+    \item \textbf{DaNLP spaCy}: SpaCy, version 2, adapted to Danish by DaNLP and finetuned on DaNE.
+    \item \textbf{DaNLP Flair}: The Flair framework \cite{akbik2019flair} also adapted to Danish by DaNLP and finetuned on DaNE.
+    \item \textbf{Polyglot}: A NLP framework supporting a wide range of tasks in many languages including NER in 40 different languages.
+        The NER model is finetuned using automatic, language-agnostic annotations generated from Wikipedia and Freebase link structures \cite{rfou2015polyglot}.
+    \item \textbf{daner (DKIE Stanford CRF)}: An application of the Stanford CoreNLP Conditional Random Field (CRF) NER classifier \cite{manning2014corenlp} released Leon Derczynski asa part of the DKIE project \cite{derc2014dkie}.
+    The model was trained on NER annotations produced at ITU on the Danish Dependency Treebank (DDT) corpus \cite{kromann2003ddt}.
+    The released Java-based NER tool is called \code{daner}\footnotemark.
 \footnotetext{
-    The repository is at \url{https://github.com/alexandrainst/danlp} from which a collection of NER models can be found under \code{docs/docs/tasks/ner.md}.
-}\\
-\\
-\textbf{DaNLP da-BERT}
-is an NER model produced by DaNLP by using the pretrained Danish BERT released by the company BotXO \cite{botxo2019dabert} under the Creative Commons 4.0 open source license.
-The model is fine-tuned for NER on the DaNE test set \cite{hvingelby2020dane}.\\
-\\
-\textbf{NERDA m-BERT}
-is a NER model fine-tuned by Ekstra Bladet Analyse in their repository NERDA\footnotemark, \emph{NER for Danish} using the pre-trained Multilingual BERT released by the original Google Research BERT team \cite{devlin2019bert}.
-The training data was also DaNE.
-\footnotetext{
-    The repository is at \url{https://github.com/ebanalyse/NERDA}.
-}\\
-\\
-\textbf{NERDA Ælæctra}
-is also released in the NERDA repository and uses the Danish Transformer Ælæctra which has been pre-trained on the Danish Gigaword Corpus by Malte Højmark-Bertelsen at KMD \cite{bertelsen2020lctra}.
-The model is an adaption of the efficient BERT alternative Electra \cite{clark2020electra} and has been fine-tuned by NERDA on DaNE.\\
-\\
-\textbf{DaNLP Flair}
-is a NER model based on the open-source contextual word embedding framework Flair \cite{akbik2019flair}, fine-tuned on DaNE by DaNLP.\\
-\\
-\textbf{DaNLP DaCy}
-is a model released by Kenneth Enevoldsen, Center for Humanities Computing Aarhus, which is produced by training the general, open-source NLP transformer based framework spaCy \cite{honnibal2020spacy} on various Danish data sets \cite{enevoldsen2020dacy}.
-The \emph{large} model which was fine-tuned for NER on DaNE was obtained.\\
-\\
-\textbf{DaNLP spaCy}
-is a model released in DaNLP which is obtained by training spaCy \cite{honnibal2020spacy} on the Universal Dependencies Danish Dependency Treebank (UD-DDT) Corpus\cite{johann2015udddt}.
-This Danish spaCy model was then fine-tuned for NER on DaNE.\\
-\\
-\textbf{Polyglot}
-is a NLP framework supporting a wide range of tasks in many languages including NER in 40 different languages.
-The NER model is produced using automatic, language-agnostic annotations generated from Wikipedia and Freebase link structures \cite{rfou2015polyglot}.\\
-\\
-\textbf{DKIE Stanford CRF (daner)}
-is an application of the Stanford CoreNLP Conditional Random Field (CRF) NER classifier \cite{manning2014corenlp} released by IT University of Copenhagen (ITU).
-The model was trained on NER annotations produced at ITU on the Danish Dependency Treebank (DDT) corpus \cite{kromann2003ddt} as a part of the DKIE project \cite{derc2014dkie}.
-The released Java-based NER tool is called \code{daner}\footnotemark.
-\footnotetext{
-    The repository is at \url{https://github.com/ITUnlp/daner}
+    The repository is at \url{github.com/ITUnlp/daner}
 }
-%TODO Tilføj dacy
-
+\end{itemize}
+\setlist{noitemsep}
+\noindent
+The weights of all these finished NER models were downloaded and evaluated in accordance with Section \ref{subsec:nereval}.
+The code for performing inference for all the models on the three datasets and measuring the F1 scores can be found in module \code{reproduction.danish\_ner} in the DaLUKE repository\footnotemark.
+The reproduction was performed using Python version 3.7.10 and the dependency versions defined in the requirements of DaNLP and NERDA.
+\footnotetext{
+    The reproduction code is available here:
+    \url{github.com/peleiden/daluke/tree/master/reproduction/danish_ner}.
+}
 \section{DaLUKE}
 
-% Vi bruger enitetsopmærksom
-% Andre ting, vi lige kommer på
 \subsection{Pretraining Methodology and Hyperparameters}%
 \label{sub:dalpre}
 \begin{enumerate}

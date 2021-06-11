@@ -13,7 +13,7 @@ MODEL_NAMES = {
     "spaCy":    "DaNLP spaCy",
     "Flair":    "DaNLP Flair",
     "Polyglot": "Polyglot",
-    "daner":    "DKIE Stanford CRF",
+    "daner":    "daner",
 }
 
 MODEL_TRAINDATA = {
