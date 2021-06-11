@@ -217,7 +217,7 @@ Unless otherwise stated, all fine-tunings presented in the rest of the paper use
 \subsubsection{Open Source Software Package}
 \begin{enumerate}
     \item Minidokumentation
-    \item Link til læsmig.nm
+    \item Link til læsmig.md
 \end{enumerate}
 We publish DaLUKE and all related code under the MIT open source software license \cite{mitlicense}.
 All code and documentation is available at \url{https://github.com/peleiden/daluke}.
@@ -228,7 +228,29 @@ Simply run `pip install daluke` to install it on your computer.
 It allows for using DaLUKE for NER on text files directly from the command line.
 
 \paragraph{Implementation}
-Yamada et al. have made their code\footnote{\url{https://github.com/studio-ousia/luke}. Visited June 6, 2021.} freely available under the Apache License 2.0 \cite{apachelicense}.
+Yamada et al. have made their code\footnote{\url{https://github.com/studio-ousia/luke}. Visited June 11, 2021.} freely available under the Apache License 2.0 \cite{apachelicense}.
+We highly appreciate this, and our original plan was to use their code and then as necessary fit it to our needs.
+However, we quickly ran into a number of issues with this approach:
+Getting all dependencies installed with the correct versions proved to be a very challenging task.
+To solve this, we forked the repository and updated both Python and several of the dependencies to newer versions, but this in itself required major code rewrites.
+When that worked, we started pretraining, which had more mysterious issues:
+Training on a single GPU worked, but two GPU's slowed training by a factor of three, and three or more GPU's simply did not work.
+Due to limited GPU availability, cryptic error messages, and an almost complete lack of documentation, debugging once again became very challenging.
+
+These reasons compelled us to reimplement the model and training from scratch.
+This would also help us understand LUKE better due to being forced to work with all the details of the model and training tasks.
+Finally, it would make it much easier to fit the code to our needs, as we would have a much better understanding of the code base.
+The forked LUKE repository, available at \code{https://github.com/peleiden/luke}, is used for parts of the data-set preparation, but everything else has been reimplemented.
+Our code is inspired from the original LUKE code, but we have made efforts to make it more approachable by making the code more readable and better structured and especially by increasing the amount of documentation.
+
+Rewriting code bases always carries a risk of introducing bugs.
+Despite borrowing heavily from Yamada et al., we did introduce a number of bugs in the code that had to be fixed, forcing multiple restarts of the training.
+These ranged from domain specific such as accidentally leaving category pages in the entity vocabulary to classical ones such as copying pointers instead of the memory stored at them.
+In that regard, using the original code would be safer, as this has been proven to work.
+However, the original code is also not error free.
+For instance, we discovered a bug in the masking where the unmasking and random word replacements would either be done or not done for an entire sequence, rather than being probabilistic for every masked sub-word token.
+We have opened an issue on the LUKE repository that can be followed here.
+%TODO Make issue
 
 \subsubsection{Floating Point Precision}
 The model is trained using PyTorch Automatic Mixed Precision (AMP) \cite{pytorchamp}, which -- ideally, at least -- should decrease training time with little to no penalty to accuracy \cite{huang2020amp}.
@@ -262,9 +284,10 @@ The results are shown on figure \ref{fig:runtime}.
         The measurements were taken with da-BERT weights locked.
         The V100's act mostly as expected with close to optimal scaling and AMP decreasing runtime.
         Surprisingly, however, the A100's, while faster, scale poorly and are slower when using AMP.
-        The poorly scaling may at least partially be explained by the faster processing time of the A100, causing a relatively larger amount of time to be spent on model synchronization.
-        Other differences in hardware and software configurations may also be to blame.
-        However, we cannot offer an explanation for AMP being slower on the A100.
+        The poor scaling is partially explained by Amdahl's law \cite{klein2011amdahl}: The sequential parts of the code do not get faster along with the GPU and so take up a relatively larger amount of the runtime.
+        The A100's also do not have an NVLink bridge unlike the V100's and must therefore communicate over PCIe, which is slower.
+        The poor AMP performance, however, is harder to explain.
+        According to our cluster specialist, it is caused by different \code{sgemm} implementations, but we have not investigated it any further.
         Python 3.8.4 using PyTorch 1.8.1 compiled with CUDA 11.1 was used.
     }
     \label{fig:runtime}

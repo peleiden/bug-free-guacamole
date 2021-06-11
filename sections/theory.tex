@@ -106,7 +106,6 @@ On all benchmarks tested by the LUKE team \cite{yamada2020luke}, none of the abo
 \label{sec:LUKE}
 \begin{enumerate}
     \item Gennemgå afsnit og sørg for, at det passer i sin nye kontekst
-    \item Få lavet finetuning-afsnittet
 \end{enumerate}
 LUKE (Language Understanding with Knowledge-based Embeddings) is a language model introduced by Yamada et al. in November of 2020 \cite{yamada2020luke}.
 As the model is tested and extended in this project, key properties of the architecture and pretraining methodology are presented in this section.
@@ -167,16 +166,15 @@ To handle this explicitly, entity-aware self-attention changes the computation o
 LUKE, however, is not pretrained using this mechanism, but for the fine-tuning tasks, Yamada et al. show in ablation experiments that this addition consistently yields better performance \cite[Sec. 5.2]{yamada2020luke}.
 
 \subsection{Pretraining}
-\begin{enumerate}
-    \item Unmasking og random masking
-\end{enumerate}
-
 Yamada et. al perform the pretraining of LUKE by extending the MLM task of BERT \cite{devlin2019bert}.
 Where BERT is trained to predict randomly masked words, LUKE is trained to predict both randomly masked words and entities.
 
 The pretraining task thus gives three sequences as input:
-Word id's, entity id's, and positions of the entities.
-15\pro\ of words and entities are randomly replaced by the [MASK] token, following RoBERTa \cite{liu2019roberta}.
+Sub-word token id's, entity token id's, and positions of the entities.
+Following RoBERTa \cite{liu2019roberta}, sub-word tokens making up 15\pro\ of full words in each sequence are randomly replaced with the [MASK] token.
+Of these, 10\pro\ are unmasked again, and another 10\pro\ are replaced by a random token from the vocabulary instead of [MASK].
+Similarly, 15\pro\ of entity tokens are replaced with [MASK], but none of these are unmasked or replaced with random entities.
+The model is then trained to predict all sub-word tokens 
 From these, the model is to classify the tokens at the mask positions in both sequences.
 The model parameters are then updated by the AdamW optimizer.
 
