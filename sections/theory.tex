@@ -196,19 +196,25 @@ This new prediction head follows the architecture of the masked word scorer just
 The masked entity tokens are thus scored as corresponding to one of the entities in the entity vocabulary by two linear layers between which an activation function and layer normalization are placed.
 
 \subsection{Finetuning for Named Entity Recognition}
-%TODO Model modification regarding entities
-%TODO Overlapping spans
-%TODO Document context
-Yamada et al. base their NER fine-tuning on Sohrab and Miwa.
-All possible entity spans (or $n$-grams) up to length 16 over a tokenized text piece are calculated.
+Yamada et al. base their NER fine-tuning on Sohrab and Miwa \cite{sohrab2018nestedner}.
+All possible entity spans (or $n$-grams) up to length 16 for computational efficiency over a tokenized text piece are calculated.
+Entity spans that cross sentence boundaries are exluded.
 These are considered the named entity candidates and are given to the pretrained transformer as entity inputs along with the subword tokens from the text piece.
+Named entity candidates are given as [MASK] tokens in direct continuation of the pretraining, where the model learned to predict those tokens.
+As such, there are only two entity input ID's in the fine-tuning: [PAD] and [MASK].
+Embeddings for all other entities are discarded.
 For each named entity candidate, the computed CER and the CWR's of the first and last tokens in the corresponding span are concatenated.
 This combined representation is then given to a single linear layer that learns to classify the entity as either a non-entity or one of the classes in the dataset.
 For a dataset with $ n $ classes, the learning problem is then an $ n+1 $ class classification task.
 The loss is calculated as the cross entropy loss between the predicted class scores and the true class scores using equation \eqref{eq:crossentropyloss}.
-Both the full pretrained model and the linear layer are fitted.
+Both the full pretrained model and the linear classifier are fitted.
 
-To solve overlapping spans
-\cite{yamada2020luke} \cite{sohrab2018nestedner}
+An issue with the $ n $-grams is the large amount of overlaps between spans.
+This is solved by greedily selecting spans based on the class scores from the classifier.
+Thus, if two (partially) overlapping spans both are predicted to cover an entity, only the one with the highest score is kept, while the other is predicted to be a non-entity.
+
+Following BERT \cite{devlin2019bert}, the maximal document context is included in the target document, allowing each entity prediction to use as much context as the data-set provides, limited only by the maximum of 512 sub-word tokens given to LUKE.
+This plays to the strengths of the transformer, which is good at retaining attention over long sequences of text \cite{vaswani2017att}.
+\cite{yamada2020luke}
 
 \end{document}
