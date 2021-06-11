@@ -29,6 +29,20 @@
     \item Alle træningskurverne for hovedeksperimentet
 \end{enumerate}
 
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|r|rrrrr}
+        Top $K$-accuracy [\pro] & $K=1$  & $K=3$ & $K=5$ & $K=10$ & $K=25$ & $K=50$\\\hline
+        Masked words            &        &       &       &        &        &       \\
+        Masked entities         &        &       &       &        &        &
+    \end{tabular}
+    \caption{
+        The main pretrained model performance in the last of 150 epochs.
+        The measures are frequency of correct prediction on the two mask prediction tasks, when considering a prediction to be correct if the true token is one $K$ most likely labels according to the model softmax output.
+    }
+    \label{tab:mainpre}
+\end{table}
+
 \section{Danish Named Entity Recognition}%
 \label{sec:nerres}
 \begin{table}                                                                                                                                                                                                                           

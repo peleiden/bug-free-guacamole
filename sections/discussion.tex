@@ -17,27 +17,152 @@ Due to its negative effect on runtime on A100's (see figure \ref{fig:runtime}), 
 \subsection{Introspection: The Parameter Population}
 
 \subsection{Baseline}
-For the baseline model, the main model is retrained using only 50 epochs.
-This allows for a fairer comparison to the ablation studies as apposed to using the model trained for 150 epochs.
+For a baseline model, the main model is retrained using only 50 epochs, but otherwise using the same hyperparameters, shown in Table~\ref{tab:pretrain-hyperparameters}.
+This allows for a comparison to a number of ablation studies where compute resources did not allow full 150 epoch pretraining.
+
+The final results of this pretraining are summarized below.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|r|rrrrr}
+        Top $K$-accuracy [\pro] & $K=1$  & $K=3$ & $K=5$ & $K=10$ & $K=25$ & $K=50$\\\hline
+        Masked words            & 24.23  & 30.94 & 34.37 & 39.70  & 47.71  & 53.62 \\
+        Masked entities         & 28.80  & 39.01 & 50.64 & 50.64  & 59.57  & 66.32
+    \end{tabular}
+    \caption{
+        The top $K$ accuracy of the baseline model in the 50'th and last epoch.
+    }
+    \label{tab:mainpre}
+\end{table}
+% 2021-06-11 19:37:14.230    INFO        K=1
+%                                        Word:   24.231
+%                                        Entity: 28.800
+% 2021-06-11 19:37:14.235    INFO        K=3
+%                                        Word:   30.937
+%                                        Entity: 39.009
+% 2021-06-11 19:37:14.238    INFO        K=5
+%                                        Word:   34.371
+%                                        Entity: 43.843
+% 2021-06-11 19:37:14.242    INFO        K=10
+%                                        Word:   39.701
+%                                        Entity: 50.637
+% 2021-06-11 19:37:14.245    INFO        K=25
+%                                        Word:   47.708
+%                                        Entity: 59.567
+% 2021-06-11 19:37:14.249    INFO        K=50
+%                                        Word:   53.619
+%                                        Entity: 66.324
+
+The model is afterwards finetuned for named entity recognition on DaNE following the approach described in Section~\ref{sub:finetune-ner} and the following hyperparameters, non-systematically selected:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|r}
+        Parameter  &    Value\\\hline
+        Epochs     & 10\\
+        Batch size &    16\\
+        Peak learning rate & $2\ctp{-5}$\\
+        LR warmup steps proportion & $ 6\pro $\\
+        Dropout (pretrained model) & $ 0.1 $\\
+        Dropout (final, linear layer) & $ 0.025 $\\
+        Weight decay & $ 0.025 $\\
+        Loss weighting & No\\
+    \end{tabular}
+    \caption{Hyperparameters for baseline finetuning experiment and the following ablation experiments.}\label{tab:baseline-hyper}
+\end{table}\noindent
+This resulted in the following performance on the DaNE test data set where MISC annotations \emph{were} included.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|rrr}
+                          &  Precision & Recall & F1\\\hline
+        Micro avg. [\pro] &  86.73     & 78.49  & 82.41
+    \end{tabular}
+\end{table}
+
+ % 2021-06-11 19:53:46.665    INFO                      precision    recall f1-score   support
+
+ %                                                LOC     0.8958    0.8958   0.8958        96
+ %                                               MISC     0.7872    0.6116   0.6884       121
+ %                                                ORG     0.8372    0.6708   0.7448       161
+ %                                                PER     0.9140    0.9444   0.9290       180
+
+ %                                          micro avg     0.8673    0.7849   0.8241       558
+ %                                          macro avg     0.8586    0.7807   0.8145       558
+ %                                       weighted avg     0.8612    0.7849   0.8180       558
 
 \subsection{Dataset Augmentation}
 
 \ref{tab:metadata}
-\begin{enumerate}
-    \item Performance og træningskurver uden datasæt-augmentering
-\end{enumerate}
 A key addition to the pretraining pipeline was the addition of extra entity annotations not already in the Wikipedia articles themselves using pattern matching as explained in Section~\ref{subsec:entaug}.
 This resulted in a 47\pro\ growth in the number of annotations as shown in Table~\ref{tab:metadata}.
 While it was argued that it should improve performance, it was all theoretical.
-Therefore, this effects of the agumentation is investigated.
+Therefore, this effect of the augmentation is investigated by pretraining a model with the original data for 50 epochs and same hyperparameters as the main experiment.
 
-%TODO Vær sikker på, at disse konklusioner holder
-The theorized problem of of false negatives in the volunteer-produced annotations seems to be present in the data and this augmentation appears to mitigate this.
-This result supports a possible strategy for improvement:
-To produce additional LUKE pretraining data sets from raw text corpora by automatically annotating them using pattern matching.
-Such lower standard annotations used to achieve extra data might be necessary for continued improvement in low-resource languages such as Danish but should be used carefully to prevent the training suffering from garbage in, garbage out.
+The pretraining terminated to the following performance.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|r|rrrrr}
+        Top $K$-accuracy [\pro] & $K=1$  & $K=3$ & $K=5$ & $K=10$ & $K=25$ & $K=50$\\\hline
+        Masked words            & 25.26  & 32.16 & 35.60 & 40.93  & 48.78  & 54.62 \\
+        Masked entities         & 34.02  & 42.85 & 47.21 & 53.52  & 62.258 & 68.82
+    \end{tabular}
+    \caption{
+        The top $K$ accuracy of the pretrained model trained without dataset augmentation in the 50'th and last epoch.
+    }
+    \label{tab:mainpre}
+\end{table}
+At a first glance, these masked language modelling results that strictly dominate the numbers for the baseline seems to suggest that the dataset augmentation was ill-advised.
+There is, however, a large issue (apart from the obvious problem of judging a model by it's performance on the training data set) with the metric in this case:
+The dataset augmentation also changed the benchmark itself as the masking task of the baseline model also includes automatically annotated, and thus somewhat dubious, entity links.
+This can explain the clear gain in entity masking performance.
+Whether this explanation has any merit in explaining the increased word accuracy found in this ablation study is less clear to us and relates to the model synergy effects in this joint task.
 
-\subsection{Entity-aware Self-Attention}
+% 2021-06-11 19:38:23.333    INFO        K=1
+%                                        Word:   25.260
+%                                        Entity: 34.015
+% 2021-06-11 19:38:23.340    INFO        K=3
+%                                        Word:   32.155
+%                                        Entity: 42.846
+% 2021-06-11 19:38:23.345    INFO        K=5
+%                                        Word:   35.601
+%                                        Entity: 47.212
+% 2021-06-11 19:38:23.351    INFO        K=10
+%                                        Word:   40.926
+%                                        Entity: 53.520
+% 2021-06-11 19:38:23.356    INFO        K=25
+%                                        Word:   48.776
+%                                        Entity: 62.258
+% 2021-06-11 19:38:23.361    INFO        K=50
+%                                        Word:   54.617
+%                                        Entity: 68.818
+As a more unbiased benchmark, this model was finetuned on the DaNE data set using the hyperparameters at Table~\ref{tab:baseline-hyper} resulting in the following performance:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|rrr}
+                          &  Precision & Recall & F1\\\hline
+        Micro avg. [\pro] &  85.42     & 80.82  & 83.06
+    \end{tabular}
+\end{table}
+% 2021-06-11 16:08:34.724    INFO                      precision    recall  f1-score   support
+
+%                                                 LOC     0.8155    0.8750    0.8442        96
+%                                                MISC     0.7500    0.6942    0.7210       121
+%                                                 ORG     0.8214    0.7143    0.7641       161
+%                                                 PER     0.9711    0.9333    0.9518       180
+
+%                                           micro avg     0.8542    0.8082    0.8306       558
+%                                           macro avg     0.8395    0.8042    0.8203       558
+%                                        weighted avg     0.8532    0.8082    0.8291       558
+
+The ablation study gets substantially higher recall than the baseline resulting in a higher micro average F1 score on the NER task, though the baseline outperforms in precision.
+
+All in all, these benchmarks cannot be used to argue that the theorized problem of of false negatives in the volunteer-produced annotations is mitigated by this augmentation approach resulting in a better language understanding.
+If anything, the addition of automatic pattern-matched annotations worsened the performance slightly.
+
+As the addition of these $47\pro$ bronze standard annotations did directly stop the learning, we still propose this approach as an avenue for further development of DaLUKE.
+Much needed entirely new LUKE pretraining data sets could be produced from raw text corpora by automatically annotating them using pattern matching.
+Such lower standard annotations used to achieve extra data might be necessary for continued improvement in low-resource languages such as Danish but should be used carefully and with an analysis of the trade off between quality and quantity of data.
+
+\subsection{Entity-aware Self-attention}
 One of Yamada et al.'s key contributions to the transformer is the addition of query matrices for relations between entities and words.
 They do not use these extra matrices in the pretraining but instead let them be learned during downstream tasks, initializing them to the word-to-word matrices of RoBERTa.
 They perform ablation studies on multiple datasets, showing an improvement in every case over original attention.
@@ -63,21 +188,75 @@ For the English LUKE, Yamada et al. used an entity vocabulary of the $500\ctp3$ 
 This is, apart from crude filtering of non-entity pages, a result of cutting the entity domain down to the most frequent hyperlinks.
 For the Danish Wikipedia, however, the number of content pages is $\sim 267\ctp3$ \footnotemark resulting in the DaLUKE entity vocabulary containing $\sim 225\ctp3$ entities.
 \footnotetext{Danish Wikipedia Statistics: \url{https://da.wikipedia.org/wiki/Speciel:Statistik} Visited March 3, 2021.}
-%TODO Hvorfor har vi flere sider, end der står der? Hvilke sider tæller vi med, som wikipedia ikke tæller med?
-As this is a much smaller world of entities, the main DaLUKE model did not cut this full entity vocabulary by frequency.
+%TODO Hvorfor har vi flere sider, end der står der? Hvilke sider tæller vi med, som wikipedia ikke tæller med? Rigtig godt spørgsmål :P  -- Ved ikke lige, hvad vi skal gøre ved det
+As this is a much smaller world of entities, the entity vocabulary of the main DaLUKE model was not cut by frequency.
 
 An experiment was performed where entities that were mentioned less than 50 times were excluded from the data, resulting in a vocabulary of $19,119$ entities.
 This was done on the augmented data explained in Section \ref{sec:dawiki}.
+After pretraining for 50 epochs with the same hyperparameters as the main experiment, the following performance was observed.
 
-\begin{enumerate}
-    \item Performance og træningskurver
-\end{enumerate}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|r|rrrrr}
+        Top $K$-accuracy [\pro] & $K=1$  & $K=3$ & $K=5$ & $K=10$ & $K=25$ & $K=50$\\\hline
+        Masked words            & 23.91  & 30.50 & 33.90 & 39.19  & 47.11  & 53.03 \\
+        Masked entities         & 30.56  & 42.15 & 48.87 & 55.79  & 65.91  & 66.32
+    \end{tabular}
+    \caption{
+        The top $K$ accuracy of the entity vocabulary-limited model in the 50'th and last epoch.
+    }
+    \label{tab:mainpre}
+\end{table}
+The performance on the word prediction task is slightly worse for this entity vocabulary experiment, while clearly higher scores are seen on the masked entity task.
+As for the data augmentation experiment, attention must again be put on the changes in the benchmark itself as the accuracy of 31\pro in calculated in a $\sim 20\ctp3$ class problem while the baseline accuracy of 29\pro is calculated over almost ten times as many classes.
 
-This experimental filtering of the DaLUKE entities preserves $8,5\pro$ of the content pages, while $8,3\pro$ were preserved for the English LUKE.
+% 2021-06-11 19:38:47.989    INFO        K=1
+%                                        Word:   23.905
+%                                        Entity: 30.585
+% 2021-06-11 19:38:47.998    INFO        K=3
+%                                        Word:   30.500
+%                                        Entity: 42.149
+% 2021-06-11 19:38:48.005    INFO        K=5
+%                                        Word:   33.902
+%                                        Entity: 47.872
+% 2021-06-11 19:38:48.011    INFO        K=10
+%                                        Word:   39.185
+%                                        Entity: 55.786
+% 2021-06-11 19:38:48.017    INFO        K=25
+%                                        Word:   47.108
+%                                        Entity: 65.914
+% 2021-06-11 19:38:48.022    INFO        K=50
+%                                        Word:   53.028
+%                                        Entity: 73.347
+
+The NER performance of this model was, following the approach in the previous experiments, found to be quite close to the performance of the baseline with an average F1 0.2\pro\ points worse.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|rrr}
+                          &  Precision & Recall & F1\\\hline
+        Micro avg. [\pro] &  85.06     & 79.57  & 82.22
+    \end{tabular}
+\end{table}
+% 2021-06-11 15:26:30.316    INFO                      precision    recall  f1-score   support
+
+%                                                 LOC     0.8878    0.9062    0.8969        96
+%                                                MISC     0.7358    0.6446    0.6872       121
+%                                                 ORG     0.7986    0.6894    0.7400       161
+%                                                 PER     0.9385    0.9333    0.9359       180
+
+%                                           micro avg     0.8506    0.7957    0.8222       558
+%                                           macro avg     0.8402    0.7934    0.8150       558
+%                                        weighted avg     0.8455    0.7957    0.8188       558
+
+Conclusively, the results of this experiment are close to the baseline, signifying robustness in the approach.
+However, with these hyperparameters, the removal of entities does not seem promising for the Danish data set.
+
+This experimental filtering of the DaLUKE entities preserves $7\pro$ of the content pages, while $8\pro$ were preserved for the English LUKE.
 Intuitively, it would make sense that the same proportional filtering works better in English, as the absolute number of entities making up the implicit knowledge base of the model might be important:
 Smaller datasets, corresponding to smaller language areas, do not equate a smaller shared world of named entities.
 
-This conceptual argument together with the experimental results suggests that more of the rare entities should be included when working with smaller datasets, though a more continuous experimental search of this filtering parameter might yield a better trade-off than our solution of including all entities.
+This conceptual argument somewhat supported by the experimental results suggests that more of the rare entities should be included when working with smaller datasets, though a more continuous experimental search of this filtering parameter might yield a better trade-off than our main model solution of including all entities.
 
 \section{Finetuning Performance}
 \label{sec:finetuning-exp}
