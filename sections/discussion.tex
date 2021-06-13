@@ -8,20 +8,22 @@
 \label{sec:pretrainpls}
 In order to investigate what affects pretraining effectiveness, several ablation studies are performed.
 Unless stated otherwise, the hyperparameters from table \ref{tab:pretrain-hyper} are used, but with 50 epochs due to limited compute.
-The experiments were trained primarily on a $ 2\times$A100 configuration.
+The experiments were trained primarily on a $ 1\times$A100 configuration.
 Due to its negative effect on runtime on A100's (see figure \ref{fig:runtime}), AMP is not used for any of the following experiments.
 %TODO Overvej, om introspection skal stå her. Ellers skal ovenstående formuleringer ændres
 %TODO Beskriv fine-tuning: Bare en enkelt finetuning eller flere for at korrigere for varians? Nævn hyperparametre, evt med tabelhenvisning
 %TODO Tal om den meget store initialiseringsvarians
+%TODO Lukas' ting om da-BERTs undertræning. Måske et andet sted end her
+
+All of the models presented here are evaluated on the DaNE test set \emph{with} MISC annotations included.
 
 \subsection{Introspection: The Parameter Population}
 
 \subsection{Baseline}
-For a baseline model, the main model is retrained using only 50 epochs, but otherwise using the same hyperparameters, shown in Table~\ref{tab:pretrain-hyperparameters}.
+For a baseline model, the main model is retrained using only 50 epochs, but otherwise using the same hyperparameters, shown in Table \ref{tab:pretrain-hyperparameters}.
 This allows for a comparison to a number of ablation studies where compute resources did not allow full 150 epoch pretraining.
 
-The final results of this pretraining are summarized below.
-
+The final results of this pretraining are summarized in table \ref{tab:baseline-mlm}.
 \begin{table}[H]
     \centering
     \begin{tabular}{l|r|rrrrr}
@@ -32,7 +34,7 @@ The final results of this pretraining are summarized below.
     \caption{
         The top $K$ accuracy of the baseline model in the 50'th and last epoch.
     }
-    \label{tab:mainpre}
+    \label{tab:baseline-mlm}
 \end{table}
 % 2021-06-11 19:37:14.230    INFO        K=1
 %                                        Word:   24.231
@@ -52,7 +54,6 @@ The final results of this pretraining are summarized below.
 % 2021-06-11 19:37:14.249    INFO        K=50
 %                                        Word:   53.619
 %                                        Entity: 66.324
-
 The model is afterwards finetuned for named entity recognition on DaNE following the approach described in Section~\ref{sub:finetune-ner} and the following hyperparameters, non-systematically selected:
 \begin{table}[H]
     \centering
@@ -69,7 +70,7 @@ The model is afterwards finetuned for named entity recognition on DaNE following
     \end{tabular}
     \caption{Hyperparameters for baseline finetuning experiment and the following ablation experiments.}\label{tab:baseline-hyper}
 \end{table}\noindent
-This resulted in the following performance on the DaNE test data set where MISC annotations \emph{were} included.
+This resulted in the following performance on the DaNE test data-set.
 \begin{table}[H]
     \centering
     \begin{tabular}{l|rrr}
@@ -103,13 +104,13 @@ The pretraining terminated to the following performance.
     \begin{tabular}{l|r|rrrrr}
         Top $K$-accuracy [\pro] & $K=1$  & $K=3$ & $K=5$ & $K=10$ & $K=25$ & $K=50$\\\hline
         Masked words            & 25.26  & 32.16 & 35.60 & 40.93  & 48.78  & 54.62 \\
-        Masked entities         & 34.02  & 42.85 & 47.21 & 53.52  & 62.258 & 68.82
+        Masked entities         & 34.02  & 42.85 & 47.21 & 53.52  & 62.26 & 68.82
     \end{tabular}
     \caption{
         The top $K$ accuracy of the pretrained model trained without dataset augmentation in the 50'th and last epoch.
     }
-    \label{tab:mainpre}
-\end{table}
+    \label{tab:old-data-mlm}
+\end{table}\noindent
 At a first glance, these masked language modelling results that strictly dominate the numbers for the baseline seems to suggest that the dataset augmentation was ill-advised.
 There is, however, a large issue (apart from the obvious problem of judging a model by it's performance on the training data set) with the metric in this case:
 The dataset augmentation also changed the benchmark itself as the masking task of the baseline model also includes automatically annotated, and thus somewhat dubious, entity links.
@@ -141,7 +142,7 @@ As a more unbiased benchmark, this model was finetuned on the DaNE data set usin
                           &  Precision & Recall & F1\\\hline
         Micro avg. [\pro] &  85.42     & 80.82  & 83.06
     \end{tabular}
-\end{table}
+\end{table}\noindent
 % 2021-06-11 16:08:34.724    INFO                      precision    recall  f1-score   support
 
 %                                                 LOC     0.8155    0.8750    0.8442        96
@@ -152,7 +153,6 @@ As a more unbiased benchmark, this model was finetuned on the DaNE data set usin
 %                                           micro avg     0.8542    0.8082    0.8306       558
 %                                           macro avg     0.8395    0.8042    0.8203       558
 %                                        weighted avg     0.8532    0.8082    0.8291       558
-
 The ablation study gets substantially higher recall than the baseline resulting in a higher micro average F1 score on the NER task, though the baseline outperforms in precision.
 
 All in all, these benchmarks cannot be used to argue that the theorized problem of of false negatives in the volunteer-produced annotations is mitigated by this augmentation approach resulting in a better language understanding.
@@ -170,12 +170,79 @@ They perform ablation studies on multiple datasets, showing an improvement in ev
 
 These results suggest that training the extra query matrices in the pretraining also might have a positive impact.
 For this reason, entity-aware self-attention has been used here for all pretrainings bar this one, where its effects on pretraining is investigated.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|r|rrrrr}
+        Top $K$-accuracy [\pro] & $K=1$  & $K=3$ & $K=5$ & $K=10$ & $K=25$ & $K=50$\\\hline
+        Masked words            & 20.63  & 26.29 & 29.41 & 34.58  & 42.44  & 48.73 \\
+        Masked entities         & 12.26  & 20.98 & 25.69 & 32.76  & 42.88 & 51.52
+    \end{tabular}
+    \caption{
+        The top $K$ accuracy of the pretrained model trained without entity-aware self-attention in the 50'th and last epoch.
+    }
+    \label{tab:bert-attention-mlm}
+\end{table}\noindent
+After finetuning, the following results were achieved:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|rrr}
+        &  Precision & Recall & F1\\\hline
+        Micro avg. [\pro] &  70.22     & 44.80  & 54.70
+    \end{tabular}
+\end{table}\noindent
+
 \begin{enumerate}
     \item Performance og træningskurver uden entity-aware attention
-    \item Køretidssammenligning på de to modeller
+%    \item Køretidssammenligning på de to modeller
 \end{enumerate}
 
 \subsection{Impact of Danish BERT}
+As described in section \ref{sec:LUKE}, many of the weights are initialized from a base transformer.
+This transfer step ideally gives DaLUKE all the contextual language understanding of da-BERT without having to learn it all.
+In order to test this hypothesis, a pretraining is conducted without initializing the weights to da-BERT.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|r|rrrrr}
+        Top $K$-accuracy [\pro] & $K=1$  & $K=3$ & $K=5$ & $K=10$ & $K=25$ & $K=50$\\\hline
+        Masked words            & 47.86  & 59.28 & 63.92 & 69.83  & 76.51  & 81.04 \\
+        Masked entities         & 81.71  & 87.19 & 88.87 & 90.90  & 93.15 & 94.56
+    \end{tabular}
+    \caption{
+        The top $K$ accuracy of the pretrained model trained without initializing weights from da-BERT in the 50'th and last epoch.
+    }
+    \label{tab:nobert-mlm}
+\end{table}\noindent
+It is immediately clear from table \ref{tab:nobert-mlm} that this model performs noticably better at both the masked word and masked entity tasks than other models so far.
+That is despite even starting from 0 in the masked word task (see figure \ref{fig:nobert-acc}).
+Because of this, good NER performance could reasonbly be expected.
+This did not happen - in fact, results were much worse than the baseline.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|rrr}
+        &  Precision & Recall & F1\\\hline
+        Micro avg. [\pro] &  76.99     & 65.95  & 71.04
+    \end{tabular}
+\end{table}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{nobert-acc.png}
+    \caption{Development of the masked word and entity accuracies during the course of the pretraining without initializing from da-BERT weights.
+    All curves are smoothed using a rolling average.}
+    \label{fig:nobert-acc}
+\end{figure}\noindent
+The training of da-BERT clearly turns out to be a help here.
+From figure \ref{fig:nobert-acc}, the initialization seems to provide two things other than initial MLM accuracy:
+\begin{itemize}
+    \item A regulazation effect that prevents the model from overfitting to the dataset.
+    \item Increased pretraining stability.
+    The accuracy curves contain a number of sudden jumps and drops that are much rarer in other pretrainings.
+\end{itemize}
+It should be noted that because no weights came from da-BERT, no weights were ever locked throughout pretraining.
+A similar experiment with weights unlocked and initialization from da-BERT showed pretraining accuracies much closer to the baseline, indicating that the regualizing effect is indeed da-BERT.
+%TODO Under-undereksperimentet skal måske formaliseres mere
+
 \begin{enumerate}
     \item Performance og træningskurver for eksperimentet, hvor BERT-vægte ikke bruges
     \item Her rapporteres under-eksperimentet med performance for da-BERT på vores datasæt
@@ -205,7 +272,7 @@ After pretraining for 50 epochs with the same hyperparameters as the main experi
     \caption{
         The top $K$ accuracy of the entity vocabulary-limited model in the 50'th and last epoch.
     }
-    \label{tab:mainpre}
+    \label{tab:few-ents-acc}
 \end{table}
 The performance on the word prediction task is slightly worse for this entity vocabulary experiment, while clearly higher scores are seen on the masked entity task.
 As for the data augmentation experiment, attention must again be put on the changes in the benchmark itself as the accuracy of 31\pro in calculated in a $\sim 20\ctp3$ class problem while the baseline accuracy of 29\pro is calculated over almost ten times as many classes.

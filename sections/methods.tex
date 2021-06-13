@@ -148,7 +148,11 @@ Existing models are inconsistent in whether or not they train and/or evaluate us
 For this reason, we always train using MISC but evaluate both with and without it.
 When evaluating without MISC, MISC predictions are treated as non-entity predictions.
 
+%TODO Hvad står dev. for? Development?
 The hyperparameters listed in table \ref{tab:finetune-hyper} were used for training.
+After each epoch, the model is evaluated on the dev. part of the data-set.
+If it gets a better score than the hitherto best checkpoint, the checkpoint is overwritten.
+The best checkpoint of the model was used for evaluation on the test set.
 \begin{enumerate}
     \item Til hovedeksperimentet bruger vi ikke faste hyperparametre, men søger i hyperparam-optimering.
 \end{enumerate}
