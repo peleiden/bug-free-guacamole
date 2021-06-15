@@ -297,7 +297,6 @@ For the English LUKE, Yamada et al. used an entity vocabulary of the $500\ctp3$ 
 This is, apart from crude filtering of non-entity pages, a result of cutting the entity domain down to the most frequent hyperlinks.
 For the Danish Wikipedia, however, the number of content pages is $\sim 267\ctp3$ \footnotemark resulting in the DaLUKE entity vocabulary containing $\sim 225\ctp3$ entities.
 \footnotetext{Danish Wikipedia Statistics: \url{https://da.wikipedia.org/wiki/Speciel:Statistik} Visited March 3, 2021.}
-%TODO Hvorfor har vi flere sider, end der står der? Hvilke sider tæller vi med, som wikipedia ikke tæller med? Rigtig godt spørgsmål :P  -- Ved ikke lige, hvad vi skal gøre ved det
 As this is a much smaller world of entities, the entity vocabulary of the main DaLUKE model was not cut by frequency.
 
 An experiment was performed where entities that were mentioned less than 50 times were excluded from the data, resulting in a vocabulary of $19,119$ entities.
@@ -316,7 +315,7 @@ After pretraining for 50 epochs with the same hyperparameters as the main experi
         The top $k$ accuracy of the entity vocabulary-limited model in the 50'th and last epoch.
     }
     \label{tab:few-ents-acc}
-\end{table}
+\end{table}\noindent
 The performance on the word prediction task is slightly worse for this entity vocabulary experiment, while clearly higher scores are seen on the masked entity task.
 As for the data augmentation experiment, attention must again be put on the changes in the benchmark itself as the accuracy of 31\pro in calculated in a $\sim 20\ctp3$ class problem while the baseline accuracy of 29\pro is calculated over almost ten times as many classes.
 
