@@ -20,15 +20,15 @@ All of the models presented here are evaluated on the DaNE test set \emph{with} 
 \subsection{Introspection: The Parameter Population}
 
 \subsection{Baseline}
-For a baseline model, the main model is retrained using only 50 epochs, but otherwise using the same hyperparameters, shown in Table \ref{tab:pretrain-hyperparameters}.
+For a baseline model, the main model is retrained using only 50 epochs, but otherwise using the same hyperparameters, shown in Table \ref{tab:pretrain-hyper}.
 This allows for a comparison to a number of ablation studies where compute resources did not allow full 150 epoch pretraining.
 
-The final results of this pretraining are summarized in table \ref{tab:baseline-mlm}.
+The final results of this pretraining are summarized in table \ref{tab:baseline-mlm} with the accuracy development shown on figure \ref{fig:baseline-acc}.
 
 \begin{table}[H]
     \centering
     \begin{tabular}{l|l|cccccc}
-        Model                           & Top $k$-accuracy [\pro]  & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
+        Model                           & Top $k$ accuracy [\pro]  & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
         \multirow{2}{*}{Baseline}       & Masked words             & 24.23  & 30.94 & 34.37 & 39.70  & 47.71  & 53.62 \\
                                         & Masked entities          & 28.80  & 39.01 & 50.64 & 50.64  & 59.57  & 66.32
     \end{tabular}
@@ -36,7 +36,7 @@ The final results of this pretraining are summarized in table \ref{tab:baseline-
         The top $k$ accuracy of the baseline model in the 50'th and last epoch.
     }
     \label{tab:baseline-mlm}
-\end{table}
+\end{table}\noindent
 % 2021-06-11 19:37:14.230    INFO        K=1
 %                                        Word:   24.231
 %                                        Entity: 28.800
@@ -55,18 +55,24 @@ The final results of this pretraining are summarized in table \ref{tab:baseline-
 % 2021-06-11 19:37:14.249    INFO        K=50
 %                                        Word:   53.619
 %                                        Entity: 66.324
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.7\textwidth]{baseline-acc}
+    \caption{Baseline masked language and masked entity accuracy throughout pretraining.}
+    \label{fig:baseline-acc}
+\end{figure}\noindent
 The model is afterwards finetuned for named entity recognition on DaNE following the approach described in Section~\ref{sub:finetune-ner} and the following hyperparameters, non-systematically selected:
 \begin{table}[H]
     \centering
     \begin{tabular}{l|r}
-        Parameter  &    Value\\\hline
+        Parameter  &    \jl{Value}\\\hline
         Epochs     & 10\\
         Batch size &    16\\
         Peak learning rate & $2\ctp{-5}$\\
         LR warmup steps proportion & $ 6\pro $\\
         Dropout (pretrained model) & $ 0.1 $\\
         Dropout (final, linear layer) & $ 0.025 $\\
-        Weight decay & $ 0.025 $\\
+        Weight decay & $ 0.05 $\\
         Loss weighting & No\\
     \end{tabular}
     \caption{Hyperparameters for baseline finetuning experiment and the following ablation experiments.}\label{tab:baseline-hyper}
@@ -81,7 +87,7 @@ This resulted in the following performance on the DaNE test data-set.
     \end{tabular}
     \caption{The baseline finetuning results where avg. refers to the micro average}
     \label{tab:summary}
-\end{table}
+\end{table}\noindent
 The results of the baseline experiment together with the following experiments are also shown together in a final overview at Section \ref{subsec:preoverview}.
  % 2021-06-11 19:53:46.665    INFO                      precision    recall f1-score   support
 
@@ -415,13 +421,27 @@ This conceptual argument somewhat supported by the experimental results suggests
 
 \subsection{Feature Usage}%
 \label{sub:Feature Usage}
-An entity candidate forward passed through the final, classifying layer in the NER model is comprised of the concatenation of word representations of first and final words, and, novelly for LUKE, a contextual representation of the entity span.
-Two finetuning experiments are performed by altering this entity feature approach by observing the performance when the word and entity representations are used alone, individually.
+An entity candidate forward passed through the final, classifying layer in the NER model is comprised of the concatenation of word representations of first and final sub-word tokens, and, novelly for LUKE, a contextual representation of the entity span.
+Two finetuning experiments are performed by altering this entity feature approach by observing the performance when the sub-word token and entity representations are used individually.
 This is done using the baseline experiment hyperparameters seen at \ref{tab:baseline-hyper}.
 
 \begin{enumerate}
     \item Konkaterneringsshow
 \end{enumerate}
+
+\begin{table}[H]
+    \centering
+    \footnotesize
+    \begin{tabular}{l|ccccc|c|c}
+        \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
+        & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                        \\ \hline
+        First and last sub-word tokens & 80.93 & 85.57 & 93.00 & 70.47 & 71.86 & 83.72 & 78.32 \\
+        Entity tokens & 80.30 & 83.24 & 92.39 & 72.43 & 69.33 & 84.25 & 76.70 \\
+        Both          & & & & & & & 
+    \end{tabular}
+    \caption{Fine-tuning results using different features for the classifier.}
+    \label{tab:concat}
+\end{table}
 
 
 \subsection{Pretraining Impact}

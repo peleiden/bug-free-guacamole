@@ -8,7 +8,7 @@
 \label{sec:English LUKE Reproduction}
 \begin{table}[H]
 	\begin{center}
-		\begin{tabular}{l r r r r r}
+		\begin{tabular}{l c c c c c}
 			Model & Micro avg. & LOC & PER & ORG & MISC \\
 			\hline
 			LUKE large & $94.00 \pm  0.2$ & $94.99 \pm  0.09$ & $97.19 \pm  0.1$ & $93.63 \pm  0.3$ & $85.29 \pm  1$ \\
@@ -17,7 +17,7 @@
 			Support & 5616 & 1666 & 1602 & 1647 & 701 \\
 		\end{tabular}
 	\end{center}
-	\caption{Mean F1\pro-scores and standard deviation over five repetitions of fine-tuning and evaluating LUKE on CoNLL2003 for each model size.}
+	\caption{Mean F1\pro\ scores and standard deviation over five repetitions of fine-tuning and evaluating LUKE on CoNLL2003 for each model size.}
 %    TODO: If not already, it should be stated somewhere that all multiclass F1 refer to micro average
 	\label{tab:lukeF1s}
 \end{table}
@@ -32,7 +32,7 @@
 \begin{table}[H]
     \centering
     \begin{tabular}{l|r|rrrrr}
-        Top $K$-accuracy [\pro] & $K=1$  & $K=3$ & $K=5$ & $K=10$ & $K=25$ & $K=50$\\\hline
+        Top $k$ accuracy [\pro] & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
         Masked words            &        &       &       &        &        &       \\
         Masked entities         &        &       &       &        &        &
     \end{tabular}
@@ -41,12 +41,18 @@
         The measures are frequency of correct prediction on the two mask prediction tasks, when considering a prediction to be correct if the true token is one $K$ most likely labels according to the model softmax output.
     }
     \label{tab:mainpre}
-\end{table}
+\end{table}\noindent
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{pretrain-acc}
+    \caption{Masked sub-words and masked entity accuracy throughout pretraining.}
+\end{figure}\noindent
 
 \section{Danish Named Entity Recognition}%
 \label{sec:nerres}
-\begin{table}                                                                                                                                                                                                                           
-        \begin{center}                                                                                                                                                                                                                  
+\begin{table}
+        \begin{center}                     
                 \begin{tabular}{l l r r r r r r}                                                                                                                                                                                        
                         Model & Train. data & Micro avg. & ⁒MISC & LOC & PER & ORG & MISC \\                                                                                                                                          
                         \hline                                                                                                                                                                                                          

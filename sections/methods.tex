@@ -129,8 +129,8 @@ This results in a more aggressive decrease in learning rate after the warmup per
 The learning rate development is shown on figure \ref{fig:lr}.
 \begin{figure}[H]
     \centering
-%TODO Learning rate plot    \includegraphics[width=.5\textwidth]{}
-    \caption{Learning rate over the course of the pretraining.}
+    \includegraphics[width=.7\textwidth]{lr}
+    \caption{Learning rate during the pretraining.}
     \label{fig:lr}
 \end{figure}\noindent
 
@@ -181,7 +181,7 @@ Howard and Ruder have also shown that the slanted triangle approach for fine-tun
 
 \paragraph{Loss}
 Due to the nature of the $ n $-grams, only very few spans actually cover entities, making the O class dominate the dataset.
-For instance, in DaNE, the O class accounts for 99.3\pro\ of spans.
+For instance, in the training set of DaNE, the O class accounts for 99.3\pro\ of spans.
 Furthermore, the actual entities themselves are not perfectly balanced as all things should be.
 This naturally poses the question: Will class-weighted cross entropy loss perform better?
 
@@ -281,7 +281,7 @@ The results are shown on figure \ref{fig:runtime}.
         The poor scaling is partially explained by Amdahl's law \cite{klein2011amdahl}: The sequential parts of the code do not get faster along with the GPU and so take up a relatively larger amount of the runtime.
         The A100's also do not have an NVLink bridge unlike the V100's and must therefore communicate over PCIe, which is slower.
         The poor AMP performance, however, is harder to explain.
-        According to our cluster specialist, it is caused by different \code{sgemm} implementations, but we have not investigated it any further.
+        According to our cluster specialist, it is caused by different \code{gemm} implementations, but we have not investigated it any further.
         Python 3.8.4 using PyTorch 1.8.1 compiled with CUDA 11.1 was used.
     }
     \label{fig:runtime}
