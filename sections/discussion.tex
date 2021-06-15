@@ -26,7 +26,7 @@ This allows for a comparison to a number of ablation studies where compute resou
 The final results of this pretraining are summarized in table \ref{tab:baseline-mlm}.
 \begin{table}[H]
     \centering
-    \begin{tabular}{l|r|rrrrr}
+    \begin{tabular}{l|rrrrrr}
         Top $K$-accuracy [\pro] & $K=1$  & $K=3$ & $K=5$ & $K=10$ & $K=25$ & $K=50$\\\hline
         Masked words            & 24.23  & 30.94 & 34.37 & 39.70  & 47.71  & 53.62 \\
         Masked entities         & 28.80  & 39.01 & 50.64 & 50.64  & 59.57  & 66.32
@@ -173,13 +173,13 @@ For this reason, entity-aware self-attention has been used here for all pretrain
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{l|r|rrrrr}
-        Top $K$-accuracy [\pro] & $K=1$  & $K=3$ & $K=5$ & $K=10$ & $K=25$ & $K=50$\\\hline
+    \begin{tabular}{l|rrrrrr}
+        Top $k$-accuracy [\pro] & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
         Masked words            & 20.63  & 26.29 & 29.41 & 34.58  & 42.44  & 48.73 \\
         Masked entities         & 12.26  & 20.98 & 25.69 & 32.76  & 42.88 & 51.52
     \end{tabular}
     \caption{
-        The top $K$ accuracy of the pretrained model trained without entity-aware self-attention in the 50'th and last epoch.
+        The top $k$ accuracy of the pretrained model trained without entity-aware self-attention in the 50'th and last epoch.
     }
     \label{tab:bert-attention-mlm}
 \end{table}\noindent
@@ -334,6 +334,9 @@ This conceptual argument somewhat supported by the experimental results suggests
 
 \subsection{Feature Usage}%
 \label{sub:Feature Usage}
+An entity candidate forward passed through the final, classifying layer in the NER model is comprised of the concatenation of word representations of first and final words, and, novelly for LUKE, a contextual representation of the entity span.
+Two finetuning experiments are performed by altering this entity feature approach by observing the performance when the word and entity representations are used alone, individually.
+This is done using the baseline experiment hyperparameters seen at \ref{tab:baseline-hyper}.
 
 \begin{enumerate}
     \item Konkaterneringsshow
@@ -341,21 +344,27 @@ This conceptual argument somewhat supported by the experimental results suggests
 
 
 \subsection{Pretraining Impact}
+The pretraining effect is difficult to quantify with questions such as validity of pretraining task for language understanding and overfitting on the limited data set being scary.
+One way to glimpse into the pretraining black box is to observe the performance of down stream language tasks on a number of checkpoints produced during the pretraining.
+Finetuning of the main DaLUKE after every fifth epoch was performed using the finetuning experiment hyperparameters seen at \ref{tab:baseline-hyper}.
+
 \begin{enumerate}
     \item Fine-tuning på en række checkpoints
 \end{enumerate}
 
-\subsection{Hyperparameter Impact}
+% \subsection{Class-weighted Loss} %TODO: Interessant
 
-\begin{enumerate}
-    \item Hyperparametersøgning for daluke-ner
-\end{enumerate}
-
-\subsection{Class-weighted Loss}
-
-\subsection{Stability of Finetuning}
+\subsection{Stability of LUKE Finetuning}
 
 \subsubsection{Reproducability of English LUKE}
+For the reproduction of the English LUKE, the results were initially underwhelming as five repetitions of the finetuning of LUKE large on CoNLL2003 consistently, slightly underperformed the reported result of 94.3\pro\ micro average as seen at table \ref{tab:EnLUKE-wrong}.
+After investigating, this somewhat disappointing result was revealed to be overturned when finetuning with Python version 3.6 and PyTorch 1.2 instead of using newer versions as done in the initial run.
+Using these correct versions, the same as Yamada et al. reported in their package file, the results were succesfully reproduced as shown in the central results in Section \ref{sec:English LUKE Reproduction}.
+For the large model, only one of the five repetitions yielded the reported performance.
+No criticism can be raised based on this results; the sample size is small and, furthermore, we found that the mean \emph{base} model performance superseded the reported micro average F1 score of 93.3\pro.
+
+All in all, the slight hiccups in reproducing the finetuning results show the difficulties in empiric evaluations of deep methods strongly relying on indeterminism -- especially as the underlying framework, PyTorch, does not guarantee reproducable results across versions and platforms, even if using identical seeds for the random number generator \ref{pytorchrep}.
+
 \begin{table}[H]
     \begin{center}
             \begin{tabular}{l r r r r r}
@@ -370,9 +379,10 @@ This conceptual argument somewhat supported by the experimental results suggests
         Results when pre-training and evaluating LUKE with Python version 3.8 and PyTorch 1.4.
         Values are mean and standard deviance over five repetitions of the fine-tuning.
     }
+    \label{tab:EnLUKE-wrong}
 \end{table}
 
-\subsubsection{Randomness of Results}
+\subsubsection{Randomness of DaLUKE Results}
 \begin{enumerate}
     \item Krydsval. af finetuning
     \item Gentagelse af finetuning for fem forskellige seeds
