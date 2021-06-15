@@ -374,17 +374,18 @@ This conceptual argument somewhat supported by the experimental results suggests
         Model                                 & Top $k$-accuracy [\pro]  & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
         \multirow{2}{*}{Baseline}             & Masked words             & 24.23  & 30.94 & 34.37 & 39.70  & 47.71  & 53.62 \\
                                               & Masked entities          & 28.80  & 39.01 & 50.64 & 50.64  & 59.57  & 66.32 \\\hline
-        \multirow{2}{*}{No data aug.}         & Masked words             & 25.26  & 32.16 & 35.60 & 40.93  & 48.78  & 54.62 \\
-                                              & Masked entities          & 34.02  & 42.85 & 47.21 & 53.52  & 62.26 & 68.82 \\\hline
+        \multirow{2}{*}{No data aug.}         & Masked words             & \underline{25.26}  & \underline{32.16} & \underline{35.60} & \underline{40.93}  & \underline{48.78}  & \underline{54.62} \\
+                                              & Masked entities          & \underline{34.02}  & 42.85 & 47.21 & 53.52  & 62.26 & \underline{68.82} \\\hline
         \multirow{2}{*}{BERT attention}       & Masked words             & 20.63  & 26.29 & 29.41 & 34.58  & 42.44  & 48.73 \\
                                               & Masked entities          & 12.26  & 20.98 & 25.69 & 32.76  & 42.88 & 51.52 \\\hline
-        \multirow{2}{*}{No transfer learning} & Masked words             & 47.86  & 59.28 & 63.92 & 69.83  & 76.51  & 81.04 \\
-                                              & Masked entities          & 81.71  & 87.19 & 88.87 & 90.90  & 93.15 & 94.56 \\\hline
+        \multirow{2}{*}{No transfer learning} & Masked words             & \bfseries 47.86  & \bfseries 59.28 & \bfseries 63.92 & \bfseries 69.83  & \bfseries 76.51  & \bfseries 81.04 \\
+                                              & Masked entities          & \bfseries 81.71  & \bfseries 87.19 & \bfseries 88.87 & \bfseries 90.90  & \bfseries 93.15 & \bfseries 94.56 \\\hline
         \multirow{2}{*}{Limited entity vocab.}& Masked words             & 23.91  & 30.50 & 33.90 & 39.19  & 47.11  & 53.03 \\
-                                              & Masked entities          & 30.56  & 42.15 & 48.87 & 55.79  & 65.91  & 66.32
+                                              & Masked entities          & 30.56  & \underline{42.15} & \underline{48.87} & \underline{55.79}  & \underline{65.91}  & 66.32
     \end{tabular}
     \caption{
-        Overview of final pretraining results for all the experiments presented previously
+        Overview of final pretraining results for all the experiments presented previously.
+        Best result for each metric is shown in boldface with second best result underlined (as the distribution of bests's is quite boring here).
     }
     \label{tab:mlmsummary}
 \end{table}
@@ -396,7 +397,7 @@ This conceptual argument somewhat supported by the experimental results suggests
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                        \\ \hline
     Baseline                & 82.41&89.58&92.90&74.48&68.84      & \textbf{86.73}                          & 78.49                       \\
-    No data augmentation    & \textbf{83.07}&84.42&\textbf{95.18}&\textbf{76.41}&72.10      & 85.42                          & \textbf{80.82}                       \\
+    No data augmentation    & \textbf{83.07}&84.42&\textbf{95.18}&\textbf{76.41}&\textbf{72.10}      & 85.42                          & \textbf{80.82}                       \\
     BERT attention          & 54.70&69.16&60.20&37.00&53.20      & 70.22                          & 44.80                       \\
     No transfer learning    & 71.04&79.05&83.57&55.42&61.74      & 76.99                          & 65.95                       \\
     Limited entity vocab.   & 82.22&\textbf{89.69}&93.59&74.00&68.72      & 85.02                          & 79.57 
