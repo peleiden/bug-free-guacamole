@@ -550,7 +550,7 @@ Dimensionality reduction for visualization on the representations was performed 
 
 Implementation wise, Sci-Kit Learn was used for $t$-SNE \cite{pedregosa2011scikit} and UMAP Learn was used for UMAP \cite{mcinnes2018umap-software} with hyperparameters shown at Table~\ref{tab:dimreducer-hyper}.
 The set of 975,312 entity spans in the DaNE training set was randomly subsampled to 100K examples for these nonlinear dimensionality reduction algorithms due to compute limitations.
-Even with this limit and with hyperparameters chosen to favour global structure, only messy, hairy ball plots were achieved from $t$-SNE and UMAP, motivating an extra visualization where only the 4003 entity spans that corresponded to true entity annotations were included.
+Even with this limit and with hyperparameters chosen to favour global structure, only messy, hairy ball plots, see Appendix~\ref{sec:dimredu}, were achieved from $t$-SNE and UMAP, motivating visualizing the data set where only the 4003 entity spans that corresponded to true entity annotations were included.
 
 \begin{table}[H]
     \centering
@@ -567,6 +567,45 @@ Even with this limit and with hyperparameters chosen to favour global structure,
         All other hyperparameters followed the defaults in Sci-Kit Learn 0.24.1 and UMAP Learn 0.5.1.
     }\label{tab:dimreducer-hyper}
 \end{table}\noindent
+
+\begin{figure}[H]
+    \centering
+        % \includegraphics[width=0.7\linewidth]{full-geo/pca_matrix}
+    \caption{
+        The first four components visualized against each other from PCA performed on the 975,312 possible entity spans in the DaNE training data.
+    }
+    \label{fig:all-pca}
+\end{figure}\noindent
+
+\begin{figure}[H]
+    \centering
+        \includegraphics[width=0.7\linewidth]{pos-geo/pca_matrix}
+    \caption{
+        The first four components visualized against each other from PCA performed on only the 4003 entity spans that are annotated to a NE class in the DaNE training data.
+    }
+    \label{fig:pos-pca}
+\end{figure}\noindent
+
+\begin{figure}[H]
+    \centering
+        \includegraphics[width=0.495\linewidth]{pos-geo/tsne}
+        \includegraphics[width=0.495\linewidth]{pos-geo/umap}
+    \caption{
+        $t$-SNE and UMAP projections of the DaNE dataset containing entity spans with positive labels.
+    }
+    \label{fig:pos-tsne}
+\end{figure}\noindent
+
+\begin{figure}[H]
+    \centering
+        % \includegraphics[width=0.495\textwidth]{full-geo/PCA0-sequence-len}
+        \includegraphics[width=0.495\textwidth]{pos-geo/PCA0-sequence-len}
+        \includegraphics[width=0.495\textwidth]{pos-geo/t-SNE1-sequence-len}
+        \includegraphics[width=0.495\textwidth]{pos-geo/UMAP0-sequence-len}
+     \caption{
+    }
+    \label{fig:repvslen}
+\end{figure}\noindent
 
 \begin{enumerate}
     \item Visualiseringer af DaNE-repræsentationeres geometri (PCA, t-SNE, UMAP)
