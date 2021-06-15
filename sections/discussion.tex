@@ -12,10 +12,11 @@ The experiments were trained primarily on a $ 1\times$A100 configuration.
 Due to its negative effect on runtime on A100's (see figure \ref{fig:runtime}), AMP is not used for any of the following experiments.
 %TODO Overvej, om introspection skal stå her. Ellers skal ovenstående formuleringer ændres
 %TODO Beskriv fine-tuning: Bare en enkelt finetuning eller flere for at korrigere for varians? Nævn hyperparametre, evt med tabelhenvisning
-%TODO Tal om den meget store initialiseringsvarians
+%TODO Tal om den meget store initialiseringsvarians - måske ikke så vigtig? De indhenter jo det alle sammen
 %TODO Lukas' ting om da-BERTs undertræning. Måske et andet sted end her
 
 All of the models presented here are evaluated on the DaNE test set \emph{with} MISC annotations included.
+This is because only the performances relative to the baseline model rather than other NER models is interesting.
 
 \subsection{Introspection: The Parameter Population}
 
@@ -204,7 +205,7 @@ After finetuning, the following results were achieved:
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
-    BERT attention          & 54.70&69.16&60.20&37.00&53.20      & 70.22                          & 44.80
+    BERT attention          & 79.62 & 85.86 & 92.84 & 70.95 &   64.84      & 84.51                          & 75.27
     \end{tabular}
    \caption{The finetuning results of the traditional attention experiment.}
     \label{tab:bertatt}
@@ -233,9 +234,9 @@ In order to test this hypothesis, a pretraining is conducted without initializin
 \begin{table}[H]
     \centering
     \begin{tabular}{l|l|cccccc}
-        Model                                 & Top $k$-accuracy [\pro]  & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
-        \multirow{2}{*}{No transfer learning} & Masked words             & 47.86  & 59.28 & 63.92 & 69.83  & 76.51  & 81.04 \\
-                                              & Masked entities          & 81.71  & 87.19 & 88.87 & 90.90  & 93.15 & 94.56
+        Model                                 & Top $k$ accuracy [\pro]  & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
+        No transfer & Masked words             & 47.86  & 59.28 & 63.92 & 69.83  & 76.51  & 81.04 \\
+        learning                                      & Masked entities          & 81.71  & 87.19 & 88.87 & 90.90  & 93.15 & 94.56
     \end{tabular}
     \caption{
         The top $K$ accuracy of the pretrained model trained without initializing weights from da-BERT in the 50'th and last epoch.
@@ -390,7 +391,7 @@ This conceptual argument somewhat supported by the experimental results suggests
     \end{tabular}
     \caption{
         Overview of final pretraining results for all the experiments presented previously.
-        Best result for each metric is shown in boldface with second best result underlined (as the distribution of bests's is quite boring here).
+        Best result for each metric is shown in boldface with second best result underlined (as the distribution of bests is quite boring here).
     }
     \label{tab:mlmsummary}
 \end{table}
@@ -403,7 +404,7 @@ This conceptual argument somewhat supported by the experimental results suggests
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                        \\ \hline
     Baseline                & 82.41&89.58&92.90&74.48&68.84      & \textbf{86.73}                          & 78.49                       \\
     No data augmentation    & \textbf{83.07}&84.42&\textbf{95.18}&\textbf{76.41}&\textbf{72.10}      & 85.42                          & \textbf{80.82}                       \\
-    BERT attention          & 54.70&69.16&60.20&37.00&53.20      & 70.22                          & 44.80                       \\
+    BERT attention          & 79.62 & 85.86 & 92.84 & 70.95 &   64.84      & 84.51                          & 75.27 \\
     No transfer learning    & 71.04&79.05&83.57&55.42&61.74      & 76.99                          & 65.95                       \\
     Limited entity vocab.   & 82.22&\textbf{89.69}&93.59&74.00&68.72      & 85.02                          & 79.57 
     \end{tabular}
@@ -414,15 +415,19 @@ This conceptual argument somewhat supported by the experimental results suggests
 \section{Finetuning Performance}
 \label{sec:finetuning-exp}
 \begin{enumerate}
-    \item Prec. vs rec
-    \item Gør det klart, at alle bruger den store Carlos
+    \item Prec. vs rec. - bør måske være i 6.3, da det jo er mere analyse-agtigt?
+%    \item Gør det klart, at alle bruger den store Carlos
+    \item Gør det klart, hvad baseline er
+    
 \end{enumerate}
+As with pretraining, fine-tuning has a number of interesting elements that are worth investigating further.
+For these experiments, the main pretrained model from section \ref{sec:Pretraining of daLUKE} are used but with the baseline fine-tuning hyperparameters from table \ref{tab:baseline-hyper}.
+Following the pretraining experiments, all results are reported with MISC.
 
 \subsection{Feature Usage}%
 \label{sub:Feature Usage}
 An entity candidate forward passed through the final, classifying layer in the NER model is comprised of the concatenation of word representations of first and final sub-word tokens, and, novelly for LUKE, a contextual representation of the entity span.
 Two finetuning experiments are performed by altering this entity feature approach by observing the performance when the sub-word token and entity representations are used individually.
-This is done using the baseline experiment hyperparameters seen at \ref{tab:baseline-hyper}.
 
 \begin{enumerate}
     \item Konkaterneringsshow
@@ -436,7 +441,7 @@ This is done using the baseline experiment hyperparameters seen at \ref{tab:base
         & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                        \\ \hline
         First and last sub-word tokens & 80.93 & 85.57 & 93.00 & 70.47 & 71.86 & 83.72 & 78.32 \\
         Entity tokens & 80.30 & 83.24 & 92.39 & 72.43 & 69.33 & 84.25 & 76.70 \\
-        Both          & & & & & & & 
+        Both (default) & & & & & & & 
     \end{tabular}
     \caption{Fine-tuning results using different features for the classifier.}
     \label{tab:concat}
@@ -463,7 +468,7 @@ Using these correct versions, the same as Yamada et al. reported in their packag
 For the large model, only one of the five repetitions yielded the reported performance.
 No criticism can be raised based on this results; the sample size is small and, furthermore, we found that the mean \emph{base} model performance superseded the reported micro average F1 score of 93.3\pro.
 
-All in all, the slight hiccups in reproducing the finetuning results show the difficulties in empiric evaluations of deep methods strongly relying on indeterminism -- especially as the underlying framework, PyTorch, does not guarantee reproducable results across versions and platforms, even if using identical seeds for the random number generator \ref{pytorchrep}.
+All in all, the slight hiccups in reproducing the finetuning results show the difficulties in empiric evaluations of deep methods strongly relying on indeterminism -- especially as the underlying framework, PyTorch, does not guarantee reproducable results across versions and platforms, even if using identical seeds for the random number generator \cite{pytorchrep}.
 
 \begin{table}[H]
     \begin{center}
@@ -525,6 +530,7 @@ The same repetition of the finetuning procedure as carried out for English LUKE 
 
 \begin{enumerate}
     \item Fejl-analyse på modellen: Print eksempler på fejl og sammenlign gerne med, hvilke fejl konkurrenterne begår
+    \item Forvirringsmatricer
 \end{enumerate}
 
 \end{document}
