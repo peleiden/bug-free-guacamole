@@ -184,7 +184,6 @@ For the entity token id embedding, the size of the lookup table corresponds to t
 The entity embeddings are concatenated to the word embeddings and are passed through the encoder such that the two token domains exist in the same latent space.
 After the encoding, the output can be split into representations for the words and entities in the sequence.
 
-
 \subsubsection{Entity-aware Self-attention}
 \label{subsubsec:entityaware}
 Yamada et al. present a entity-related change to the BERT encoder architecture in the query metchanism of the attention scorer \cite[Sec. 3.2]{yamada2020luke}.
@@ -231,6 +230,11 @@ For each of the two classification tasks, the cross entropy loss $ l $ is then c
 \end{equation}
 where $ c_i $ is the true class of the $ i $'th example \cite{pytorchcel}.
 The total loss is then calculated as the sum of individual losses for both tasks.
+
+Yamada et al. \cite{yamada2020luke} use weight decay for the entire model barring bias and layer normalizations.
+According to Krogh and Hertz \cite{krogh1991weight}, weight decay improves generalizability in feed-forward networks.
+This is due to the suppression of irrelevant parameters, letting the smallest possible parameters solve the problems.
+Larger parameters naturally lead to larger sensitivity to noise and thus poorer generalization.
 
 \subsubsection{Entity Mask Prediction Head}
 For the entity pretraining task, LUKE is equipped with another classifier structure in addition to the masked language model prediction head inherited from BERT.

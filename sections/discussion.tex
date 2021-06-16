@@ -17,12 +17,6 @@ All of the models presented here are evaluated on the DaNE test set \emph{with} 
 This is because only the performances relative to the baseline model rather than other NER models is interesting.
 
 \subsection{The Parameter Population}
-Following Yamada et al. \cite{yamada2020luke}, DaLUKE is trained with weight decay on all parameters barring biases and layer norms.
-According to Krogh and Hertz \cite{krogh1991weight}, weight decay improves generalizability in feed-forward networks.
-This is due to the suppression of irrelevant parameters, letting the smallest possible parameters solve the problems.
-Larger parameters naturally lead to larger sensitivity to noise and thus poorer generalization.
-
-Motivated by this, the distribution of parameters is measured.
 Figure \ref{fig:weight-dist} shows the distribution before and after pretraining divided by whether or not a given parameter was initialized from da-BERT.
 \begin{figure}[H]
     \centering
@@ -40,7 +34,7 @@ Figure \ref{fig:weight-dist} shows the distribution before and after pretraining
 \end{figure}\noindent
 Two observations stand out:
 Firstly, DaLUKE exclusive parameters, which consist of entity embeddings and the entity part of the decoder, are spread out.
-This includes the notable peak that comes from biases and layernorms being initialized to 0.
+This includes the notable peak that comes from biases and layer normalizations being initialized to 0.
 Secondly, the shared parameters are more or less unchanged in their distribution.
 This makes sense, as they are already trained, and so training even more with a similar task should not make result in any significant change.
 Furthermore, all parameters from da-BERT (barring the three sets of DaLUKE exclusive query matrices) are not changed for the first half of training.
