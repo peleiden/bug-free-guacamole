@@ -587,7 +587,7 @@ Dimensionality reduction for visualization on the representations was performed 
 
 Implementation wise, Sci-Kit Learn was used for $t$-SNE \cite{pedregosa2011scikit} and UMAP Learn was used for UMAP \cite{mcinnes2018umap-software} with hyperparameters shown at Table~\ref{tab:dimreducer-hyper}.
 The set of 975,312 entity spans in the DaNE training set was randomly subsampled to 100K examples for these nonlinear dimensionality reduction algorithms due to compute limitations.
-Even with this limit and with hyperparameters chosen to favour global structure, $t$-SNE and UMAP results were difficult to intepret, see Appendix~\ref{sec:dimeru}, motivating visualizing the data set where only the 4003 entity spans that corresponded to true entity annotations were included.
+Even with this limit and with hyperparameters chosen to favour global structure, $t$-SNE and UMAP results were difficult to intepret, see Appendix~\ref{sec:dimredu}, motivating visualizing the data set where only the 4003 entity spans that corresponded to true entity annotations were included.
 
 \begin{table}[H]
     \centering
@@ -604,15 +604,19 @@ Even with this limit and with hyperparameters chosen to favour global structure,
         All other hyperparameters followed the defaults in Sci-Kit Learn 0.24.1 and UMAP Learn 0.5.1.
     }\label{tab:dimreducer-hyper}
 \end{table}\noindent
+Dimensionality reduction on the full dataset yield weakly structured visualizations of the geometry, mostly dominated by giant clusters, as seen for PCA at figure \ref{fig:all-pca}, which also shows some clustering of true entities, and at the others in Appendix~\ref{sec:dimredu}.
+The true, underlying dimensionality of the representations also seems high as the first 100 components principal components only explain less than 60\pro\ of data variance, see figure \ref{fig:full-varex}, an indication of well-learned representations which, ideally, should exploit all vector coordinates by having minimal latent dimension covariance.
 
 \begin{figure}[H]
     \centering
         \includegraphics[width=0.7\linewidth]{full-geo/pca_matrix}
     \caption{
         The first four components visualized against each other from PCA performed on all 975,312 possible entity spans in the DaNE training data.
+        Spans in grey are not marked as entities in the data set.
     }
     \label{fig:all-pca}
 \end{figure}\noindent
+For the reductions in the positive label-only dataset, even more meaningful structure is apparent with all three methods, at figures \ref{fig:pos-pca}, \ref{fig:pos-tsne}, \ref{fig:repvslen}, showing slight grouping of entities in the same NER class, indicating that the pretrained model, even before finetuning, represents language in a way that is adjacent to the human annotated dataset.
 
 \begin{figure}[H]
     \centering
@@ -632,6 +636,61 @@ Even with this limit and with hyperparameters chosen to favour global structure,
     }
     \label{fig:pos-tsne}
 \end{figure}\noindent
+The obvious question is what these plots mean: What do the clusters and the dimensions themselves correspond to?
+This is far from a trivial task; while it is possible to correlate the dimensionality reduced coordinates to the original dimensions, more clever thinking is required to correlate both to human language understanding.
+We mostly leave this task for further work, but go through a some of the examples and their projections and present some qualitative observations with supporting examples in Table~\ref{tab:dimexamples}.
+\begin{table}[H]
+    \footnotesize
+    \centering
+    \begin{tabularx}{\linewidth}{llclX}
+        Data    & Alg.      & Vector                     & \jl{Class}  & Example \\\hline
+
+        Full    & PCA       & $\begin{bmatrix}-11.75\\\underline{36.44}\\-4.85\\16.42\\\vdots\end{bmatrix}$ & O           & De følgende 10 år er der ydet omkring 800 mio. kr. til enkeltprojekter \textbf{og forskningsinstitutter}.\\[3em]
+
+        Full    & PCA       & $\begin{bmatrix}-8.78\\\underline{32.14}\\-1.64\\14.64\\\vdots\end{bmatrix}$ & LOC           & Den syriske leder ankom i går til Abu Dhabi efter besøg i Saudi-Arabien og \textbf{Kuwait}.\\[3em]
+
+        % Full    & PCA       & $\begin{bmatrix}-0.50\\\underline{-11.53}\\-1.78\\5.66\\\vdots\end{bmatrix}$ & O           & Også i Baku \textbf{syntes der at} være roligere, selv om soldater i pansrede køretøjer og lastbiler patruljerede i gaderne, og der var demonstrationer i centrum af byen, oplyste en talsmand for det aserbajdsjanske udenrigsministerium.\\
+
+        Positives    & PCA       & $\begin{bmatrix}-0.23\\-5.63\\-9.60\\\underline{-15.17}\\\vdots\end{bmatrix}$ & MISC        & Det \textbf{jugoslaviske} præsidentråd appellerede i sidste øjeblik til FN om at undlade at iværksætte en boykot og opfordrede til, at der i stedet indkaldes til en international konference om konflikten.\\
+
+        Positives    & PCA       & $\begin{bmatrix}2.30\\5.32\\4.91\\\underline{-13.13}\\\vdots\end{bmatrix}$ & MISC        & Med indsættelse af \textbf{europæiske} fartøjer rykker Vestunionen for første gang i centrum af europæisk sikkerhed efter mange års debat om at lette USAs byrder ved forsvaret af Europa.\\
+
+        Positives    & $t$-SNE       & $\begin{bmatrix}\underline{-37.77}\\-22.41\end{bmatrix}$ & PER        & "Piloten forsøgte at rette maskinen op -- så kunne jeg ikke se mere, men pludselig var der gnister i luften," siger øjenvidnet \textbf{Peter de Neef}.\\
+
+        Positives    & $t$-SNE       & $\begin{bmatrix}\underline{-37.75}\\-22.36\end{bmatrix}$ & PER        & "Løfterne om bonus har jeg heller aldrig fået svar på, hvor bare en undskyldning kunne have gjort underværker," understreger \textbf{Peter Freil}.\\
+
+        Positives    & UMAP       & $\begin{bmatrix}-2.54\\\underline{7.27}\end{bmatrix}$ & MISC       & Datoen for den dag i april, da han fik sin tro på det \textbf{danske} retssystem tilbage.\\
+
+        Positives    & UMAP       & $\begin{bmatrix}-2.07\\\underline{7.17}\end{bmatrix}$ & LOC        & Roskilde Domkirke bliver 12. november rammen om den første af en række koncerter, den norske sangerinde Sissel Kyrkjebø giver i \textbf{Danmark}.
+
+\end{tabularx}
+    \caption{
+        \footnotesize
+        Selected entity examples chosen for having high values in resulting dimensions.
+        An example consists of a sentence and an entity candidate -- the example entity span is here visualized with boldface words.
+        The coordinate value which is extreme and motivated the inclusion of the example is underlined.
+    }
+    \label{tab:dimexamples}
+\end{table}\noindent
+\begin{itemize}
+    % TODO: Skal flere understøttende eksempler med i appendiks? - har dem i min local_data
+    \item 
+        The second principal component in the dataset including all data seems to tell something about span position, as the highest values in this dimension almost all correspond to examples with the span at the very end of the sentence.
+        Based on this, it makes sense that the plots in Figure~\ref{fig:all-pca} shows the actual entities having moderate values.
+    \item 
+        Low values of the fourth principal component in the positive-label only dataset seems to correspond for a very specific type of words:
+        Adjectivizations of political, geographic regions such as "Danish" or "English".
+        As explained in Section~\ref{subsec:annoschemes}, such entities should have the label MISC.
+        This observation fits with Figure~\ref{fig:pos-pca} showing MISC generally having the lowest 4th dimension values and LOC coming in second.
+    \item 
+        For $t$-SNE on the positive-only data set, no such clear dependencies on coordinate numeric values were observed, explainable by $t$-SNE not returning linear projections, but an approximate recreation of data point distances.
+        Two examples very close in $t$-SNE distances are shown in Table~\ref{tab:dimexamples}; these are also semantically very similar in entity type and role.
+    \item 
+        For UMAP fitted to the examples with positive labels, the clear cluster placed around $\begin{bmatrix} -2.5\\ 7\end{bmatrix}$ is examined.
+        Here, every entity is revealed to a derivative of the word \emph{Denmark}.
+        Some of these are MISC (adjectivizations, demonyms) and some LOC (\emph{Denmark} itself) as seen at Figure~\ref{fig:pos-tsne}.
+\end{itemize}
+Furthermore, a key quality of the representations is their contextualized nature; this is, superficially, shown to be present in the reduced dimensions, as multiple of these are correlated with the length of the example sequence as shown in Figure~\ref{fig:repvslen}.
 
 \begin{figure}[H]
     \centering
@@ -640,14 +699,10 @@ Even with this limit and with hyperparameters chosen to favour global structure,
         \includegraphics[width=0.495\textwidth]{pos-geo/t-SNE1-sequence-len}
         \includegraphics[width=0.495\textwidth]{pos-geo/UMAP0-sequence-len}
      \caption{
+        Four selected reduced dimensions, the first (top left) from the full dataset and the three others from the dataset only containing positives, visualized as a function of the length of the sentence that the entity example appears in.
     }
     \label{fig:repvslen}
 \end{figure}\noindent
-
-\begin{enumerate}
-    \item Visualiseringer af DaNE-repræsentationeres geometri (PCA, t-SNE, UMAP)
-    \item Forsøg på forklaring af resultaterne
-\end{enumerate}
 
 \subsection{When the Model is Wrong}
 
