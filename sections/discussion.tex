@@ -10,15 +10,34 @@ In order to investigate what affects pretraining effectiveness, several ablation
 Unless stated otherwise, the hyperparameters from table \ref{tab:pretrain-hyper} are used, but with 50 epochs due to limited compute.
 The experiments were trained primarily on a $ 1\times$A100 configuration.
 Due to its negative effect on runtime on A100's (see figure \ref{fig:runtime}), AMP is not used for any of the following experiments.
-%TODO Overvej, om introspection skal stå her. Ellers skal ovenstående formuleringer ændres
-%TODO Beskriv fine-tuning: Bare en enkelt finetuning eller flere for at korrigere for varians? Nævn hyperparametre, evt med tabelhenvisning
-%TODO Tal om den meget store initialiseringsvarians - måske ikke så vigtig? De indhenter jo det alle sammen
 %TODO Lukas' ting om da-BERTs undertræning. Måske et andet sted end her
 
 All of the models presented here are evaluated on the DaNE test set \emph{with} MISC annotations included.
 This is because only the performances relative to the baseline model rather than other NER models is interesting.
 
-\subsection{Introspection: The Parameter Population}
+\subsection{The Parameter Population}
+
+
+\subsection{Effect of More Pretraining}
+How more pretraining affects the language understanding of the model can be hard to quantify.
+Obviously, there is the loss and by extension the top $ k $ accuracy, but these follow directly from the pretraining task and are not direct measures of language understanding.
+High scores may also indicate overfitting, especially on small datasets.
+
+One way to glimpse into the pretraining black box is to observe the performance of downstream language tasks on a number of checkpoints produced during the pretraining.
+Such a checkpoint was produced just after model initialization and following that after roughly every fifth epoch for a total of 32 checkpoints from the main model.
+At every checkpoint, fine-tuning was performed using the hyperparameters from table \ref{tab:baseline-hyper}.
+The result is shown in figure \ref{fig:running}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\textwidth]{running}
+    \caption{Fine-tuning results using different pretraining checkpoints.}
+    \label{fig:running}
+\end{figure}\noindent
+At least for NER, extra pretraining only yields improved results up to five epochs -- or maybe even less, but no checkpoints were saved to test that hypothesis.
+After the first five epochs, fine-tuning performance is stagnant.
+In fact, the performance curve mirrors that of the masked sub-word accuracy of the MLM (see table \ref{fig:pretrain-acc}).
+On the other hand, there is hardly any correlation between the performance and the masked entity accuracy.
+This indicates that fine-tuning overwhelmingly relies on the knowledge gained from the BERT part of the model.
 
 \subsection{Baseline}
 For a baseline model, the main model is retrained using only 50 epochs, but otherwise using the same hyperparameters, shown in Table \ref{tab:pretrain-hyper}.
@@ -58,7 +77,7 @@ The final results of this pretraining are summarized in table \ref{tab:baseline-
 %                                        Entity: 66.324
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.7\textwidth]{baseline-acc}
+    \includegraphics[width=.8\textwidth]{baseline-acc}
     \caption{Baseline masked language and masked entity accuracy throughout pretraining.}
     \label{fig:baseline-acc}
 \end{figure}\noindent
@@ -446,16 +465,6 @@ Two finetuning experiments are performed by altering this entity feature approac
     \caption{Fine-tuning results using different features for the classifier.}
     \label{tab:concat}
 \end{table}
-
-
-\subsection{Pretraining Impact}
-The pretraining effect is difficult to quantify with questions such as validity of pretraining task for language understanding and overfitting on the limited data set being scary.
-One way to glimpse into the pretraining black box is to observe the performance of down stream language tasks on a number of checkpoints produced during the pretraining.
-Finetuning of the main DaLUKE after every fifth epoch was performed using the finetuning experiment hyperparameters seen at \ref{tab:baseline-hyper}.
-
-\begin{enumerate}
-    \item Fine-tuning på en række checkpoints
-\end{enumerate}
 
 % \subsection{Class-weighted Loss} %TODO: Interessant
 
