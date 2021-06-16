@@ -6,25 +6,27 @@ import pyperclip
 
 DATASETS = ("DaNE", "Plank", "WikiANN")
 MODEL_NAMES = {
-    "BERT":     "DaNLP da-BERT",
-    "mBERT":    "NERDA m-BERT",
-    "Ælæctra":  "NERDA Ælæctra",
-    "DaCy":     "DaCy",
-    "spaCy":    "DaNLP spaCy",
-    "Flair":    "DaNLP Flair",
-    "Polyglot": "Polyglot",
-    "daner":    "daner",
+    "BERT":             "DaNLP da-BERT",
+    "mBERT":            "NERDA m-BERT",
+    "Ælæctra":          "NERDA Ælæctra",
+    "DaCyMedium":       "DaCy medium",
+    "DaCyLarge":        "DaCy large",
+    "spaCy":            "DaNLP spaCy",
+    "Flair":            "DaNLP Flair",
+    "Polyglot":         "Polyglot",
+    "daner":            "daner",
 }
 
 MODEL_TRAINDATA = {
-    "BERT":      "DaNE",
-    "mBERT":     "DaNE",
-    "Ælæctra":   "DaNE",
-    "DaCy":      "DaNE",
-    "spaCy":     "DaNE",
-    "Flair":     "DaNE",
-    "Polyglot":  "Wikipedia",
-    "daner":     "ITU CDT",
+    "BERT":         "DaNE",
+    "mBERT":        "DaNE",
+    "Ælæctra":      "DaNE",
+    "DaCyMedium":   "DaNE",
+    "DaCyLarge":    "DaNE",
+    "spaCy":        "DaNE",
+    "Flair":        "DaNE",
+    "Polyglot":     "Wikipedia",
+    "daner":        "ITU CDT",
 }
 
 def f1f(f: float) -> str:
