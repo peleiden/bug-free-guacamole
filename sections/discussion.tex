@@ -470,32 +470,6 @@ This conceptual argument somewhat supported by the experimental results suggests
 As with pretraining, fine-tuning has a number of interesting elements that are worth investigating further.
 For these experiments, the main pretrained model from section \ref{sec:Pretraining of daLUKE} are used but with the baseline fine-tuning hyperparameters from table \ref{tab:baseline-hyper}.
 Following the pretraining experiments, all results are reported with MISC.
-
-\subsection{Feature Usage}%
-\label{sub:Feature Usage}
-An entity candidate forward passed through the final, classifying layer in the NER model is comprised of the concatenation of word representations of first and final sub-word tokens, and, novelly for LUKE, a contextual representation of the entity span.
-Two finetuning experiments are performed by altering this entity feature approach by observing the performance when the sub-word token and entity representations are used individually.
-
-\begin{enumerate}
-    \item Konkaterneringsshow
-\end{enumerate}
-
-\begin{table}[H]
-    \centering
-    \footnotesize
-    \begin{tabular}{l|ccccc|c|c}
-        \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
-        & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                        \\ \hline
-        First and last sub-word tokens & 80.93 & 85.57 & 93.00 & 70.47 & 71.86 & 83.72 & 78.32 \\
-        Entity tokens & 80.30 & 83.24 & 92.39 & 72.43 & 69.33 & 84.25 & 76.70 \\
-        Both (default) & & & & & & & 
-    \end{tabular}
-    \caption{Fine-tuning results using different features for the classifier.}
-    \label{tab:concat}
-\end{table}
-
-% \subsection{Class-weighted Loss} %TODO: Interessant
-
 \subsection{Stability of LUKE Finetuning}
 
 \subsubsection{Reproducability of English LUKE}
@@ -571,6 +545,32 @@ It must be noted that we cannot claim to present an unbiased estimate of the gen
     \item Statistiske metoder til sammenligning af scores (????)
     \item Spørgsmålstegn ved generaliserbarhed
 \end{enumerate}
+
+
+\subsection{Feature Usage}%
+\label{sub:Feature Usage}
+An entity candidate forward passed through the final, classifying layer in the NER model is comprised of the concatenation of word representations of first and final sub-word tokens, and, novelly for LUKE, a contextual representation of the entity span.
+Two finetuning experiments are performed by altering this entity feature approach by observing the performance when the sub-word token and entity representations are used individually.
+
+\begin{enumerate}
+    \item Konkaterneringsshow
+\end{enumerate}
+
+\begin{table}[H]
+    \centering
+    \footnotesize
+    \begin{tabular}{l|ccccc|c|c}
+        \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
+        & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                        \\ \hline
+        First and last sub-word tokens & 80.93 & 85.57 & 93.00 & 70.47 & 71.86 & 83.72 & 78.32 \\
+        Entity tokens & 80.30 & 83.24 & 92.39 & 72.43 & 69.33 & 84.25 & 76.70 \\
+        Both (default) & & & & & & & 
+    \end{tabular}
+    \caption{Fine-tuning results using different features for the classifier.}
+    \label{tab:concat}
+\end{table}
+
+% \subsection{Class-weighted Loss} %TODO: Interessant
 
 \section{Predictions: What Is Learned?}
 
