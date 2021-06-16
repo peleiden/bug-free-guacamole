@@ -550,7 +550,7 @@ Dimensionality reduction for visualization on the representations was performed 
 
 Implementation wise, Sci-Kit Learn was used for $t$-SNE \cite{pedregosa2011scikit} and UMAP Learn was used for UMAP \cite{mcinnes2018umap-software} with hyperparameters shown at Table~\ref{tab:dimreducer-hyper}.
 The set of 975,312 entity spans in the DaNE training set was randomly subsampled to 100K examples for these nonlinear dimensionality reduction algorithms due to compute limitations.
-Even with this limit and with hyperparameters chosen to favour global structure, only messy, hairy ball plots, see Appendix~\ref{sec:dimredu}, were achieved from $t$-SNE and UMAP, motivating visualizing the data set where only the 4003 entity spans that corresponded to true entity annotations were included.
+Even with this limit and with hyperparameters chosen to favour global structure, $t$-SNE and UMAP results were difficult to intepret, see Appendix~\ref{sec:dimeru}, motivating visualizing the data set where only the 4003 entity spans that corresponded to true entity annotations were included.
 
 \begin{table}[H]
     \centering
@@ -570,9 +570,9 @@ Even with this limit and with hyperparameters chosen to favour global structure,
 
 \begin{figure}[H]
     \centering
-        % \includegraphics[width=0.7\linewidth]{full-geo/pca_matrix}
+        \includegraphics[width=0.7\linewidth]{full-geo/pca_matrix}
     \caption{
-        The first four components visualized against each other from PCA performed on the 975,312 possible entity spans in the DaNE training data.
+        The first four components visualized against each other from PCA performed on all 975,312 possible entity spans in the DaNE training data.
     }
     \label{fig:all-pca}
 \end{figure}\noindent
@@ -598,7 +598,7 @@ Even with this limit and with hyperparameters chosen to favour global structure,
 
 \begin{figure}[H]
     \centering
-        % \includegraphics[width=0.495\textwidth]{full-geo/PCA0-sequence-len}
+        \includegraphics[width=0.495\textwidth]{full-geo/PCA0-sequence-len}
         \includegraphics[width=0.495\textwidth]{pos-geo/PCA0-sequence-len}
         \includegraphics[width=0.495\textwidth]{pos-geo/t-SNE1-sequence-len}
         \includegraphics[width=0.495\textwidth]{pos-geo/UMAP0-sequence-len}
