@@ -37,7 +37,7 @@ For the benchmarks used in this project, the NE categories and annotation format
 
 NER is not just used as a benchmark for language understanding:
 In the applied field of information retrieval, semantic annotation and question answering systems rely on NER to control the information focus \cite[Sec. 2]{marrero2013ner}.
-This both of both research and practical interest was defined in the 90's and has been active and competitive, especially in English where state of the art methods achieve close to human performance on some classic benchmarks \cite{wiki2021ner, marrero2013ner}.
+This task of both research and practical interest was defined in the 90's and has been active and competitive, especially in English where state of the art methods achieve close to human performance on some classic benchmarks \cite{wiki2021ner, marrero2013ner}.
 Researchers argue, however, that the task is not yet solved as the generalization of the statistical algorithms fitted to one NER data set to new examples is poor \cite[Sec. 7.2]{marrero2013ner}.
 
 The state of the art on English NER benchmarks moves quickly, but almost all algorithms currently (June 2021) achieving high scores in common benchmarks are deep neural networks and of the transformer architecture in particular \cite{ruder21ner, pwc21ner}.
@@ -50,6 +50,8 @@ The state of the art on English NER benchmarks moves quickly, but almost all alg
     \item Skal der gives mere plads til at forklare BERT?
     \item Skal prætrænings/finetunings-workflowet introduceres?
 \end{enumerate}
+Danish is, compared to English, a low resource language:
+The world Danish speaking population is smaller than the English speaking population of the largest cities, naturally resulting in significantly fewer and smaller available text datasets, and in less attention from both researchers and practitioners.
 While pushing the performance of current NLP algorithms to their limits is much more difficult in low resource languages, the field of applied NLP in Danish has adopted many of the deep NLP developments of recent years.
 
 Two key, related technologies used in deep Danish NLP will be given short introductions in this section as they are also used in this project:
@@ -148,7 +150,10 @@ On all benchmarks tested by the LUKE team \cite{yamada2020luke}, none of the abo
 \section{LUKE}
 \label{sec:LUKE}
 \begin{enumerate}
+    \item VIGTIG: Gør dette mindre inforstået og introducér flere af de nye begreber
+    \item LUKE's specielle egenskaber nedtones lidt for meget i slutningen af dette for-afsnit og ved at sige "only architectural difference"
     \item Gennemgå afsnit og sørg for, at det passer i sin nye kontekst
+    \item Vis et eksempel nede i prætræningsafsnittet af, hvordan prætræningsdata ser ud.
     \item Kryptisk vægtinitialisering
 \end{enumerate}
 LUKE (Language Understanding with Knowledge-based Embeddings) is a language model introduced by Yamada et al. in November of 2020 \cite{yamada2020luke}.
@@ -162,7 +167,7 @@ Yamada et al. suggest three reasons for this being the case.
     \item Existing CWR's include no span-level representation of entities, so these will have to be learned from a often small downstream dataset.
     \item While transformers are good at capturing relationships between single words, they have difficulty modelling such relationships between sequences of words, of which entities often consist.
     \item Finally, the word-based pretraining task is not suited for producing entity-level representations, as the masked language model (MLM) mostly learns to predict single words rather than entire entity spans.
-    An example is predicting "Flies" in "Lord of the [MASK]", where predicting the single word is clearly easier than predicting the entire entity.
+        An example is predicting ''saw'' in ''I came, I [MASK], I conquered'', where predicting the single word is clearly easier than predicting the entire entity.
 \end{itemize}
 LUKE, in contrast to BERT and RoBERTa, also considers entities as tokens, and it takes and inputs both word and entity tokens and produces both CWR's and CER's, respectively.
 This allows LUKE to deal with the listed problems of purely word-based language models.
@@ -219,7 +224,7 @@ Of these, 10\pro\ are unmasked again, and another 10\pro\ are replaced by a rand
 Similarly, 15\pro\ of entity tokens are replaced with [MASK], but none of these are unmasked or replaced with random entities.
 The model is then trained to predict all sub-word tokens 
 From these, the model is to classify the tokens at the mask positions in both sequences.
-The model parameters are then updated by the AdamW optimizer.
+The model parameters are then updated by the stochastic gradient optimization algorithm known as \emph{Adam with weight decay fix} (AdamW) \ref{loshchilov2019decoupled}.
 
 For a batch of size $ N $ and $ C $ classes, the model produces a matrix of size $ N\times C $ where $ X_{i, j} $ is the class score for class $ j $ for the $ i $'th example in the batch.
 For each of the two classification tasks, the cross entropy loss $ l $ is then calculated as

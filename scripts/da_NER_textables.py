@@ -40,13 +40,14 @@ def build_main_table(dataset: str, experiment: dict) -> str:
     cats = ["LOC", "PER", "ORG"]
     miscdata = dataset != "WikiANN"
     # Fix miscfuckeri
-    row = ["Model", "Train. data", "Micro avg."]
+    row = ["Model name", "Trained on", "F1"]
     if miscdata:
-        row.append("$-$MISC")
+        row.append(r"F1 {\tiny\textdiscount MISC}")
         cats.append("MISC")
+    row += ["Prec.", "Rec."]
     row += cats
 
-    t.set_cols_align(["l", "l"] + ["r"]*(1+len(cats)+int(miscdata)))
+    t.set_cols_align(["l", "l"] + ["c"]*(3+len(cats)+int(miscdata)))
     t.set_cols_dtype(["t"]*len(row)) # Dont overwrite my formatting pls
     t.header(row)
 
@@ -56,14 +57,10 @@ def build_main_table(dataset: str, experiment: dict) -> str:
         if miscdata:
             row.append(f1f(v["stats"]["micro avg"]["f1-score"]) if v["stats"]["MISC"]["f1-score"] else "-")
         row.append(f1f(v["stats_nomisc"]["micro avg"]["f1-score"]))
+        row.append(f1f(v["stats"]["micro avg"]["precision"]))
+        row.append(f1f(v["stats"]["micro avg"]["recall"]))
         row += [f1f(v["stats"][c]["f1-score"] or "-") for c in cats]
         t.add_row(row)
-    row = ["Support", "", v["stats"]["micro avg"]["support"]]
-    if miscdata:
-        row.append(v["stats_nomisc"]["micro avg"]["support"])
-    row += [v["stats"][c]["support"] for c in cats]
-    t.add_row(["" for _ in row])
-    t.add_row(row)
     #print(t.draw())
     out = draw_latex(t, caption=f"F1\pro-scores of Danish NER models of the {dataset} data-set consisting of {v['N']} sentences.", label=f"tab:{dataset}")
     print(out)
