@@ -9,6 +9,14 @@
 \section{Benchmarking Existing Named Entity Recognition}
 \subsection{Evaluation of NER}
 \label{subsec:nereval}
+As explained in Section \ref{subsec:annoschemes}, all datasets used in the project supply an annotation label in IOB format \cite{ramshaw1995IOB} for each word in each sequence.
+Comparing two such sequences, one of 
+
+% http://www.davidsbatista.net/blog/2018/05/09/Named_Entity_Evaluation/
+% “precision is the percentage of named entities found by the learning system that are correct. Recall is the percentage of named entities present in the corpus that are found by the system. A named entity is correct only if it is an exact match of the corresponding entity in the data file.”
+
+\cite{seqeval}
+
 \subsection{Fine-tuning English LUKE}
 Yamada et al. benchmark LUKE, on Named Entity Recognition using the CoNLL-2003 dataset \cite{yamada2020luke}.
 
