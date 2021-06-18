@@ -3,22 +3,20 @@
 \begin{document}
 \chapter{Introduction}
 \lhead{Introduction}
-\begin{enumerate}
-    \item Flere henvisninger
-\end{enumerate}
 The rapid development of artificial intelligence (AI) seen in the last decade is not just one of research;
-the applied field sometimes called Data Science or AI Engineering has brought emerging intelligent technologies to industry, resulting in AI playing a significant role in society.  This data driven wave of AI has been led by the subfield that deals with statistical learning such as deep neural networks while symbolic methods using explicit knowledge have been less influential.
+the applied field sometimes called Data Science or AI Engineering has brought emerging intelligent technologies to industry, resulting in AI playing a significant role in society.
+This data driven wave of AI has been led by the subfield that deals with statistical learning such as deep neural networks while symbolic methods using explicit knowledge have been less influential \cite{lecun2015deep}.
 The successful societal impact of these statistical methods such as deep learning is, however, conditioned on the availability of big data and heavy computing resources resulting in high resource domains receiving most of the benefit of AI.
 
 A clear example of this issue is the important field of natural language processing (NLP) that attacks the difficult task of understanding human language, one of the distinguishing aspects of our intelligence.
-NLP based on statistical methods from AI has in recent years taken sizable strides towards this understanding with large-scale models such as GPT-2, GPT-3, BERT, RoBERTa, ELMo and T5 gaining public attention and seeing practical use.
+NLP based on statistical methods from AI has in recent years taken sizable strides towards this understanding with large-scale models with names such as GPT-2, GPT-3, BERT, RoBERTa, ELMo and T5 gaining public attention and seeing practical use.
 
 The data hunger of these models results in natural languages with low amounts of available data, dubbed low resource languages, lacking severely behind in technical results and thus seeing less practical use of NLP.
-To avoid these regions falling behind in the AI race, these languages, that include Danish, have seen a growing trend of attention from the literature resulting in a diverse set of methods attempting learning in the data sparse case \cite{hedderich2021survey}.
+To avoid these regions falling behind in the AI race, these languages, that include Danish, have seen a growing trend of attention from the literature resulting in a diverse set of methods attempting learning in the data sparse case. \cite{hedderich2021survey}
 
 One such possible mitigation is to let the statistical approach be influenced by explicit modelling of knowledge.
 In this project, language understanding in the low resource language Danish will be attempted using a new deep learning technique for NLP that succeeded with this modelling approach in English.
-The model, \emph{Language Understanding Using Knowledge Embeddings} (LUKE), was released in October of 2020 and explicitly handles the difference between single words and named entities such as \emph{Lionel Messi}, \emph{The United States of America}, \emph{Science} \cite{yamada2020luke}.
+The model, \emph{Language Understanding Using Knowledge Embeddings} (LUKE), was released in October of 2020 and explicitly handles the difference between single words and \emph{named entities} such as ''Lionel Messi'', ''The United States of America'' or ''Science'' \cite{yamada2020luke}.
 The model had in total seen training from 160 GB of text\footnotemark and achieved state of the art results on a number of classic NLP tasks such as named entity recognition (NER).
 \footnotetext{This includes all training that had an effect on the final model weights and thus also the data used to pretrain RoBERTa \cite[Sec. 3.2]{liu2019roberta}, the weights of which was used for initializing most of the LUKE weights. Counting only the data used for LUKE itself, the number is not directly reported but was found to be around 7 GB from our own experiments with the English LUKE data pipeline.}
 For Danish, the amount of suitable data for this technique is about 40 times smaller \footnotemark.
@@ -27,11 +25,24 @@ For Danish, the amount of suitable data for this technique is about 40 times sma
 }
 It is the goal of this project to present a maximally performant open source Danish LUKE for use of Danish NLP practitioners while also taking this challenge as a case study of deep natural language processing for low resource languages.
 
-\section{The Report}%
-\label{sec:The Report}
-\begin{enumerate}
-    \item Forskningsspørgsmål
-    \item Overblik over, hvad der kommer til at ske
+\section{The Project}%
+\label{sec:project}
+Apart from the practical task of releasing a usable, open source Danish LUKE model (DaLUKE), the project has the objective to answer the following research questions:
+\begin{enumerate}[itemsep=.5em]
+    \item
+        Do the new knowledge-based methods proposed by the LUKE paper raise the level of natural language knowledge in Danish?
+        Here, the Danish BERT, the model on which DaLUKE is based, will be used for comparison and the NLP task of named enitty recognition (NER) will be used as a proxy for natural language understanding.
+    \item
+        What methods in the applied data engineering pipeline and the knowledge-enhanced pretraining task are important for the final DaLUKE results?
+    \item
+        Can both the English LUKE NER result and previous Danish NER results be reproduced, and how does the DaLUKE performance and predictions compare to this Danish state of the art?
 \end{enumerate}
+In the following chapter, the central task of NER will be introduced and related models within the both Danish and general, knowledge-enhanced NLP will be discussed, before introducing LUKE.
+In Chapter \ref{chap:data}, the used datasets and our augmentation of these are introduced.
+Then, Chapter \ref{chap:methods} documents the actions taken to pretrain and fine-tune DaLUKE and to reproduce existing results.
+Here, the released software package \code{daluke} will also be introduced.
+The NER results of DaLUKE and reproduced Danish models are shown in Chapter~\ref{chap:results} together with DaLUKE pretraining results.
+In Chapter~\ref{chap:discussion}, approaches to understanding the results are shown, including ablation studies on the training method and analysis of model predictions.
+Finally, project outcomes are summarized.
 
 \end{document}
