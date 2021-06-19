@@ -70,6 +70,7 @@ The final results of this pretraining are summarized in table \ref{tab:baseline-
 
 \begin{table}[H]
     \centering
+    \small
     \begin{tabular}{l|l|cccccc}
         Model                           & Top $k$ accuracy [\pro]  & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
         \multirow{2}{*}{Baseline}       & Masked words             & 24.23  & 30.94 & 34.37 & 39.70  & 47.71  & 53.62 \\
@@ -100,13 +101,14 @@ The final results of this pretraining are summarized in table \ref{tab:baseline-
 %                                        Entity: 66.324
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.8\textwidth]{baseline-acc}
+    \includegraphics[width=\textwidth]{baseline-acc}
     \caption{Baseline masked language and masked entity accuracy throughout pretraining.}
     \label{fig:baseline-acc}
 \end{figure}\noindent
 The model is afterwards finetuned for named entity recognition on DaNE following the approach described in Section~\ref{sub:finetune-ner} and the following hyperparameters, non-systematically selected:
 \begin{table}[H]
     \centering
+    \small
     \begin{tabular}{l|r}
         Parameter  &    \jl{Value}\\\hline
         Epochs     & 10\\
@@ -123,6 +125,7 @@ The model is afterwards finetuned for named entity recognition on DaNE following
 This resulted in the following performance on the DaNE test data-set.
 \begin{table}[H]
     \centering
+    \small
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
@@ -155,6 +158,7 @@ The pretraining terminated to the following performance.
 
 \begin{table}[H]
     \centering
+    \small
     \begin{tabular}{l|l|cccccc}
         Model                               & Top $k$-accuracy [\pro]  & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
         \multirow{2}{*}{No data aug.}       & Masked words             & 25.26  & 32.16 & 35.60 & 40.93  & 48.78  & 54.62 \\
@@ -192,6 +196,7 @@ Whether this explanation has any merit in explaining the increased word accuracy
 As a more unbiased benchmark, this model was finetuned on the DaNE data set using the hyperparameters at Table~\ref{tab:baseline-hyper} resulting in the following performance:
 \begin{table}[H]
     \centering
+    \small
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
@@ -230,6 +235,7 @@ For this reason, entity-aware self-attention has been used here for all pretrain
 
 \begin{table}[H]
     \centering
+    \small
     \begin{tabular}{l|l|cccccc}
         Model                               & Top $k$-accuracy [\pro]  & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
         \multirow{2}{*}{BERT attention}     & Masked words             & 20.63  & 26.29 & 29.41 & 34.58  & 42.44  & 48.73 \\
@@ -244,6 +250,7 @@ After finetuning, the following results were achieved:
 
 \begin{table}[H]
     \centering
+    \small
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
@@ -275,6 +282,7 @@ In order to test this hypothesis, a pretraining is conducted without initializin
 
 \begin{table}[H]
     \centering
+    \small
     \begin{tabular}{l|l|cccccc}
         Model                                 & Top $k$ accuracy [\pro]  & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
         No transfer & Masked words             & 47.86  & 59.28 & 63.92 & 69.83  & 76.51  & 81.04 \\
@@ -302,6 +310,7 @@ This did not happen - in fact, results were much worse than the baseline.
 
 \begin{table}[H]
     \centering
+    \small
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
@@ -312,7 +321,7 @@ This did not happen - in fact, results were much worse than the baseline.
 \end{table}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{nobert-acc.png}
+    \includegraphics[width=\linewidth]{nobert-acc.png}
     \caption{Development of the masked word and entity accuracies during the course of the pretraining without initializing from da-BERT weights.
     All curves are smoothed using a rolling average.}
     \label{fig:nobert-acc}
@@ -348,7 +357,7 @@ After pretraining for 50 epochs with the same hyperparameters as the main experi
 
 \begin{table}[H]
     \centering
-
+    \small
     \begin{tabular}{l|l|cccccc}
         Model                                 & Top $k$-accuracy [\pro]  & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
         \multirow{2}{*}{Limited entity vocab.}& Masked words             & 23.91  & 30.50 & 33.90 & 39.19  & 47.11  & 53.03 \\
@@ -385,13 +394,14 @@ The NER performance of this model was, following the approach in the previous ex
 
 \begin{table}[H]
     \centering
+    \small
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
     Limited entity vocab.   & 82.22&89.69&93.59&74.00&68.72      & 85.02                          & 79.57
     \end{tabular}
     \caption{The finetuning results of the entity vocabulary limiting pretraining experiment.}
-    \label{tab:dataaug}
+    \label{tab:ent-limit}
 \end{table}
 % 2021-06-11 15:26:30.316    INFO                      precision    recall  f1-score   support
 
@@ -477,15 +487,15 @@ No criticism can be raised based on this results; the sample size is small and, 
 All in all, the slight hiccups in reproducing the finetuning results show the difficulties in empiric evaluations of deep methods strongly relying on indeterminism -- especially as the underlying framework, PyTorch, does not guarantee reproducable results across versions and platforms, even if using identical seeds for the random number generator \cite{pytorchrep}.
 
 \begin{table}[H]
-    \begin{center}
-            \begin{tabular}{l r r r r r}
-                    Model & Micro avg. & LOC & PER & ORG & MISC \\
-                    \hline
-                    LUKE large & $93.97 \pm  0.07$ & $95.06 \pm  0.2$ & $97.19 \pm  0.08$ & $93.51 \pm  0.2$ & $85.15 \pm  0.4$ \\
-                        &  &  &  &  &  \\
-                    Support & 5616 & 1666 & 1602 & 1647 & 701 \\
-            \end{tabular}
-    \end{center}
+    \centering
+    \small
+    \begin{tabular}{l r r r r r}
+            Model & Micro avg. & LOC & PER & ORG & MISC \\
+            \hline
+            LUKE large & $93.97 \pm  0.07$ & $95.06 \pm  0.2$ & $97.19 \pm  0.08$ & $93.51 \pm  0.2$ & $85.15 \pm  0.4$ \\
+                &  &  &  &  &  \\
+            Support & 5616 & 1666 & 1602 & 1647 & 701 \\
+    \end{tabular}
     \caption{
         Results when pre-training and evaluating LUKE with Python version 3.8 and PyTorch 1.4.
         Values are mean and standard deviance of F1 scores over five repetitions of the fine-tuning.
@@ -648,7 +658,7 @@ The cross validation test sets will thus be larger, as no development set is use
     \end{tabular}
     \caption{}
     \label{tab:cross}
-\end{table}
+\end{table}\noindent
 It must be noted that we cannot claim to present an unbiased estimate of the generalization performance, even to datasets following the same distribution, as the main experiment hyperparameters, that were also used here, were chosen based on performance on much of the data.
 \paragraph{Dataset generalization ability}
 \begin{enumerate}
@@ -735,7 +745,7 @@ To add detail to the ability to generalize across these three datasets, DaLUKE i
                     \hline
                     DaNE & DaNE         & 82.89 & 85.18 & 84.67 & 81.18 & 87.00 & 94.15 & 73.15 & 74.58 \\
                     DaNE & Plank        & 69.02 & 78.86 & 60.54 & 80.26 & 81.68 & 92.53 & 56.03 & 13.24 \\
-                    DaNE & DaNE         &  --   & 66.84 & 72.67 & 61.87 & 73.46 & 74.89 & 44.18 & -- \\\hline
+                    DaNE & WikiAnn      &  --   & 66.84 & 72.67 & 61.87 & 73.46 & 74.89 & 44.18 & -- \\\hline
 
                     Plank & DaNE        & 63.49 & 73.10 & 80.83 & 52.15 & 76.04 & 90.40 & 45.64 & 4.62 \\
                     Plank & Plank       & 74.93 & 74.93 & 78.06 & 72.05 & 76.29 & 90.38 & 50.57 & 41.03 \\
