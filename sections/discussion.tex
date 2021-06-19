@@ -504,9 +504,10 @@ All in all, the slight hiccups in reproducing the finetuning results show the di
 \end{table}
 
 \subsubsection{Randomness of DaLUKE Results}
-\paragraph{RNG variance}
+\paragraph{Random number generation variance}
 
-The same repetition of the finetuning procedure as carried out for English LUKE is done for the main DaLUKE pretrained model by training with five different random number generator (RNG) seeds.
+The same repetition of the finetuning procedure as carried out for English LUKE is done for the main DaLUKE pretrained model by training with five different random number generation (RNG) seeds.
+The results are shown in table \ref{tab:seeds}.
 
               % precision    recall  f1-score   support
 
@@ -571,22 +572,26 @@ The same repetition of the finetuning procedure as carried out for English LUKE 
      3                      & 84.53&88.66&93.85&78.03&75.11  & 86.93                          & 82.26                       \\
      4                      & 81.37&82.41&93.18&72.85&72.85  & 83.84                          & 79.03                       \\
      5                      & 82.47&84.97&93.26&74.68&74.01  & 84.98                          & 80.11                       \\\hline
-     Mean                   & 82.73& 85.24& 93.36& 75.09& 73.81& 85.68& 80\\
+     Mean                   & 82.73& 85.24& 93.36& 75.09& 73.81& 85.68& 80.00\\
      Std.                   & 1.4& 2.3& 0.8& 2.8& 1.2& 2.1& 1.3
     \end{tabular}
     \caption{Repeating the finetuning procedure of the main model, reporting results.}
     \label{tab:seeds}
-\end{table}
-
+\end{table}\noindent
+Unfortunately, the standard deviation is rather large compared to the margins between many of the experiments.
+For reference, seed 1 was used for all experiments bar this one.
+As the seed was fixed for all experiments, the large inter-seed variance is likely not indicative of the experiments being incomparable.
+However, it does cast doubt on the comparison to other Danish NER models.
+As table \ref{tab:seeds} shows, one of the models (seed 3) actually achieves state-of-the-art.
 
 \paragraph{Dataset split variance}
-Another way to look at a finetuning indeterminism is by the randomness in data set.
+Another way to look at fine-tuning indeterminism is by the randomness in dataset.
 Predefined splits, chosen randomly by the dataset creators at the Alexandra Institute \cite{hvingelby2020dane}, into training, development and testing data sets were used for all experiments.
 A less noisy estimate of generalization performance is generally obtained by $K$-fold cross validation as opposed to this simple hold-out testing method \cite[Sec. 1.3]{bishop2006pattern}.
 This is performed using $K=5$ random splits as this gives a training set of approximately same size as for the predefined splits, that is, 4383 examples in the DaNE splits and 4410 in cross validation training.
 The cross validation test sets will thus be larger, as no development set is used.
 
-5-fold cross validation of the finetuning with the main experiment hyperparameters is thus carried out and presented in Table~\ref{tab:cross}.
+5-fold cross validation of the fine-tuning with the main experiment hyperparameters is thus carried out and presented in Table~\ref{tab:cross}.
 
 
  % ┆   ┆   LOC     0.9111    0.9193    0.9152       223
