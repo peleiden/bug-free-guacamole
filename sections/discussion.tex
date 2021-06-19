@@ -29,7 +29,7 @@ Figure \ref{fig:weight-dist} shows the distribution before and after pretraining
         DaLUKE $ \backslash $ da-BERT are the remaining parameters.
         These are made up of the entity embeddings (58 million parameters) and the entity decoder (58 million parameters).
         In total, the model has 273 million parameters.
-        Notetice that DaLUKE $ \cap $ da-BERT and DaLUKE $ \backslash $ da-BERT are not full probability densities but rather subsets that together make up the DaLUKE graph, which is a full probability density.   
+        Notetice that DaLUKE $ \cap $ da-BERT and DaLUKE $ \backslash $ da-BERT are not full probability densities but rather subsets that together make up the DaLUKE graph, which is a full probability density.
     }
     \label{fig:weight-dist}
 \end{figure}\noindent
@@ -458,7 +458,7 @@ This conceptual argument somewhat supported by the experimental results suggests
     No data augmentation    & \textbf{83.07}&84.42&\textbf{95.18}&\textbf{76.41}&\textbf{72.10}      & 85.42                          & \textbf{80.82}                       \\
     BERT attention          & 79.62 & 85.86 & 92.84 & 70.95 &   64.84      & 84.51                          & 75.27 \\
     No transfer learning    & 71.04&79.05&83.57&55.42&61.74      & 76.99                          & 65.95                       \\
-    Limited entity vocab.   & 82.22&\textbf{89.69}&93.59&74.00&68.72      & 85.02                          & 79.57 
+    Limited entity vocab.   & 82.22&\textbf{89.69}&93.59&74.00&68.72      & 85.02                          & 79.57
     \end{tabular}
     \caption{Overview of the pretraining experiment finetuning results presented in the previous subsections.}
     \label{tab:nersummary}
@@ -785,7 +785,7 @@ Two fine-tuning experiments are performed by altering this entity feature approa
         & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                        \\ \hline
         Sub-word tokens & 81.27 & \textbf{87.63} & 92.44 & 70.99 & 71.62 & 84.66 & 78.14 \\
         Entity tokens & 81.75 & 85.15 & 93.22 & 71.48 & 74.01 & \textbf{85.08} & 78.67 \\
-        Both (default) & \textbf{82.89} & 87.00 & \textbf{94.15} & \textbf{73.15} & \textbf{74.58} & 84.67 & \textbf{81.18} 
+        Both (default) & \textbf{82.89} & 87.00 & \textbf{94.15} & \textbf{73.15} & \textbf{74.58} & 84.67 & \textbf{81.18}
     \end{tabular}
     \caption{
         Fine-tuning results using different features for the classifier.
@@ -934,18 +934,18 @@ We mostly leave this task for further work, but go through a some of the example
 \end{table}\noindent
 \begin{itemize}
     % TODO: Skal flere understøttende eksempler med i appendiks? - har dem i min local_data
-    \item 
+    \item
         The second principal component in the dataset including all data seems to tell something about span position, as the highest values in this dimension almost all correspond to examples with the span at the very end of the sentence.
         Based on this, it makes sense that the plots in Figure~\ref{fig:all-pca} shows the actual entities having moderate values.
-    \item 
+    \item
         Low values of the fourth principal component in the positive-label only dataset seems to correspond for a very specific type of words:
         Adjectivizations of political, geographic regions such as "Danish" or "English".
         As explained in Section~\ref{subsec:annoschemes}, such entities should have the label MISC.
         This observation fits with Figure~\ref{fig:pos-pca} showing MISC generally having the lowest 4th dimension values and LOC coming in second.
-    \item 
+    \item
         For $t$-SNE on the positive-only data set, no such clear dependencies on coordinate numeric values were observed, explainable by $t$-SNE not returning linear projections, but an approximate recreation of data point distances.
         Two examples very close in $t$-SNE distances are shown in Table~\ref{tab:dimexamples}; these are also semantically very similar in entity type and role.
-    \item 
+    \item
         For UMAP fitted to the examples with positive labels, the clear cluster placed around $\begin{bmatrix} -2.5\\ 7\end{bmatrix}$ is examined.
         Here, every entity is revealed to a derivative of the word \emph{Denmark}.
         Some of these are MISC (adjectivizations, demonyms) and some LOC (\emph{Denmark} itself) as seen at Figure~\ref{fig:pos-tsne}.
@@ -979,7 +979,7 @@ Furthermore, a key quality of the representations is their contextualized nature
     \begin{tabular}{l l | r r r r r }
         & &	\multicolumn{5}{c}{Predicted}	\\
         \multirow{5}{*}{True label} & & LOC & PER & ORG & MISC & O \\\hline
-        	& LOC  & 91 & 0    & 2   & 3   & 5   \\
+            & LOC  & 91 & 0    & 2   & 3   & 5   \\
             & PER  & 0  & 307  & 2   & 3   & 5   \\
             & ORG  & 23 & 11   & 154 & 12  & 21  \\
             & MISC & 0  & 0    & 16  & 114 & 29  \\
@@ -987,8 +987,111 @@ Furthermore, a key quality of the representations is their contextualized nature
     \end{tabular}
 \end{table}\noindent
 
-\begin{enumerate}
-    \item Fejl-analyse på modellen: Print eksempler på fejl og sammenlign gerne med, hvilke fejl konkurrenterne begår
-\end{enumerate}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l | c }
+        Model               & Same prediction as DaLUKE [\pro]\\\hline
+        DaNLP da-BERT       & 97.86\\
+        NERDA m-BERT        & 98.44\\
+        NERDA Ælæctra       & 97.70\\
+        DaCy medium         & 98.68\\
+        DaCy large          & \textbf{98.76}\\
+        DaNLP spaCy         & 97.65\\
+        DaNLP Flair         & 96.37\\
+        Polyglot            & 93.45\\
+        daner               & 95.90
+    \end{tabular}
+    \label{tab:covar}
+    \caption{
+        Covariances between DaLUKE predictions and those of other Danish NER algorithms on the DaLUKE testing dataset.
+    }
+\end{table}\noindent
+
+% 2021-06-19 16:31:04.881    INFO        Confusion matrix with DaLUKE results ↓ and results from BERT-DaNE →
+% 2021-06-19 16:58:48.906    INFO             | LOC | PER | ORG | MISC | O
+%                                        -----+-----+-----+-----+------+-----
+%                                        LOC  | 114 | 0   | 0   | 0    | 5
+%                                        PER  | 0   | 310 | 5   | 0    | 3
+%                                        ORG  | 10  | 9   | 143 | 0    | 21
+%                                        MISC | 1   | 0   | 4   | 0    | 141
+%                                        O    | 4   | 3   | 6   | 0    | 9244
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l l | r r r r r }
+        & &	\multicolumn{5}{c}{DaBERT Large predictions}	\\
+        \multirow{5}{*}{DaLUKE predictions} & & LOC & PER & ORG & MISC & O \\\hline
+          & LOC  & 114 & 0   & 0   &  --    & 5  \\
+          & PER  & 0   & 310 & 5   &  --    & 3  \\
+          & ORG  & 10  & 9   & 143 &  --    & 21 \\
+          & MISC & 1   & 0   & 4   &  --    & 141\\
+          & O    & 4   & 3   & 6   &  --    & 9244
+    \end{tabular}
+    \label{tab:dabertcompare}
+    \caption{
+        DaBERT
+    }
+\end{table}\noindent
+% Indtryk: Vores forbedringer ligger i bare, at opdage flere entiteter: Særligt MISC. Vi har ikke strammet typingen så meget op (datasættet er også svært!)
+
+
+% Vi ser ud til at have forstået, at entiteter tit ligger i citationstegn
+                                       Text:            I  de  sidste  otte  år  har  han  bl.a.  skrevet  og  tegnet  tabuoverskridende  tegneseriehæfter  som  "  Langt   ud      af      halsen  "  og  "  Op      og      stå     "  og  de  populære  børnebøger  "  Verdens  grimmeste  pige    "  ,  "  Stor    og      stærk   "  og  den  grinagtige  "  Dengang  min     onkel   Kulle   blev    skør    "  .
+                                       Truth:           O  O   O       O     O   O    O    O      O        O   O       O                  O                 O    O  B-MISC  I-MISC  I-MISC  I-MISC  O  O   O  B-MISC  I-MISC  I-MISC  O  O   O   O         O           O  B-MISC   I-MISC     I-MISC  O  O  O  B-MISC  I-MISC  I-MISC  O  O   O    O           O  B-MISC   I-MISC  I-MISC  I-MISC  I-MISC  I-MISC  O  O
+                                       DaLUKE pred:     O  O   O       O     O   O    O    O      O        O   O       O                  O                 O    O  B-MISC  I-MISC  I-MISC  I-MISC  O  O   O  B-MISC  I-MISC  I-MISC  O  O   O   O         O           O  B-MISC   I-MISC     I-MISC  O  O  O  B-MISC  I-MISC  I-MISC  O  O   O    O           O  O        O       O       O       O       O       O  O
+                                       BERT-DaNE pred:  O  O   O       O     O   O    O    O      O        O   O       O                  O                 O    O  O       O       O       O       O  O   O  O       O       O       O  O   O   O         O           O  O        O          O       O  O  O  O       O       O       O  O   O    O           O  O        O       O       B-PER   O       O       O  O
+
+% Vi fanger flere MISC'er
+                                       Text:            Dansk   kultur  skal  skabes  ,  forvaltes  ,  plejes  og  forkæles  af  os  danskere  .
+                                       Truth:           B-MISC  O       O     O       O  O          O  O       O   O         O   O   B-MISC    O
+                                       DaLUKE pred:     B-MISC  O       O     O       O  O          O  O       O   O         O   O   B-MISC    O
+                                       BERT-DaNE pred:  O       O       O     O       O  O          O  O       O   O         O   O   O         O
+
+
+% 2021-06-19 16:29:26.614    INFO        Confusion matrix with DaLUKE results ↓ and results from DaCyLarge-DaNE →
+% 2021-06-19 16:58:11.740    INFO             | LOC | PER | ORG | MISC | O
+%                                        -----+-----+-----+-----+------+-----
+%                                        LOC  | 108 | 0   | 2   | 1    | 8
+%                                        PER  | 0   | 309 | 6   | 3    | 0
+%                                        ORG  | 9   | 3   | 154 | 5    | 12
+%                                        MISC | 0   | 1   | 3   | 120  | 22
+%                                        O    | 8   | 4   | 8   | 27   | 9210
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l l | r r r r r }
+        & &	\multicolumn{5}{c}{DaCy Large predictions}	\\
+        \multirow{5}{*}{DaLUKE predictions} & & LOC & PER & ORG & MISC & O \\\hline
+           & LOC                             &  108 & 0   & 2   & 1    & 8\\
+           & PER                             &  0   & 309 & 6   & 3    & 0\\
+           & ORG                             &  9   & 3   & 154 & 5    & 12\\
+           & MISC                            &  0   & 1   & 3   & 120  & 22\\
+           & O                               &  8   & 4   & 8   & 27   & 9210
+    \end{tabular}
+    \label{tab:dacycompare}
+    \caption{
+        DaCy
+    }
+\end{table}\noindent
+
+% Pointe: DaCy er flersproget:
+                                       % Text:                 de      fire    årstider  hører  med  til  opus    VIII    der  hedder  "  Il      Cimento  dell'Armonia  e       dell'Invenzione  .
+                                       % Truth:                B-MISC  I-MISC  I-MISC    O      O    O    B-MISC  I-MISC  O    O       O  B-MISC  I-MISC   I-MISC        I-MISC  I-MISC           O
+                                       % DaLUKE pred:          B-MISC  I-MISC  I-MISC    O      O    O    B-MISC  I-MISC  O    O       O  O       O        O             O       O                O
+                                       % DaCyLarge-DaNE pred:  O       O       O         O      O    O    O       O       O    O       O  B-MISC  I-MISC   I-MISC        I-MISC  I-MISC           O
+
+% Pointe: Vi gætter for lidt - måske er CASED et probem?
+
+                                       % Text:                 Der  ligger  fire  skodder  plus  en  hel  Camel   .
+                                       % Truth:                O    O       O     O        O     O   O    B-MISC  O
+                                       % DaLUKE pred:          O    O       O     O        O     O   O    O       O
+                                       % DaCyLarge-DaNE pred:  O    O       O     O        O     O   O    B-MISC  O
+
+                                       % Text:                 Den  modtog  han  i  øvrigt  Kulturministeriets  børnebogspris  for  i  1990  .
+                                       % Truth:                O    O       O    O  O       B-ORG               O              O    O  O     O
+                                       % DaLUKE pred:          O    O       O    O  O       O                   O              O    O  O     O
+                                       % DaCyLarge-DaNE pred:  O    O       O    O  O       B-ORG               O              O    O  O     O
+
 
 \end{document}
