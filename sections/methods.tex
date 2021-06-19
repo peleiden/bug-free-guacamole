@@ -9,14 +9,58 @@
 \section{Benchmarking Named Entity Recognition}
 \subsection{Evaluation of NER}
 \label{subsec:nereval}
+\begin{enumerate}
+    \item Nævn med/uden MISC, eller er det for åbenlyst?
+\end{enumerate}
 As explained in Section \ref{subsec:annoschemes}, all datasets used in the project supply an annotation label in IOB format \cite{ramshaw1995IOB} for each word in each sequence.
-Comparing two such sequences, one of 
+Comparing two such sequences, there are a number of potential error patterns as both the span and the type of the entity is to be guessed, see Table~\ref{tab:eval}.
+\begin{table}[H]
+    \footnotesize
+    \centering
+    \begin{tabular}{l|llllll}
+        Sentence                    & Gaul & is & divided & into & three & parts.\\
+        Truth                       & B-LOC & O & O & O & O & O \\\hline
+        I (TP): Complete match      & B-LOC & O & O & O & O & O \\
+        II (FP): Spurious entity    & B-LOC & O & O & O & O & B-MISC \\
+        III (FN): Missing entity    & O     & O & O & O & O & O \\
+        IV: Wrong type              & B-ORG & O & O & O & O & O \\
+        V: Wrong boundary           & B-LOC & I-LOC & O & O & O & O \\
+        VI: Wrong type and boundary & B-ORG & I-ORG & O & O & O & O
+    \end{tabular}
+    \caption{
+        The different outcomes of a prediction when related to the ground truth.
+        This categorization and naming is taken from \cite{batista2018eval}.
+        The first three simple cases can be translated to true positives, false positives and false negatives, when considering only one entity type at a time.
+    }
+    \label{tab:eval}
+\end{table}\noindent
+In our evaluation, the simple and strict approach of the CONLL2003 shared task evaluation was followed, explained as:
 
-% http://www.davidsbatista.net/blog/2018/05/09/Named_Entity_Evaluation/
-% “precision is the percentage of named entities found by the learning system that are correct. Recall is the percentage of named entities present in the corpus that are found by the system. A named entity is correct only if it is an exact match of the corresponding entity in the data file.”
+''Precision is the percentage of named entities found by the learning system that are correct.
+Recall is the percentage of named entities present in the corpus that are found by the system.
+A named entity is correct only if it is an exact match of the corresponding entity in the data file.''
+\cite[Sec 2.4]{tjang2003conll}
 
-\cite{seqeval}
+Using the terminology of Table~\ref{tab:eval}, these measures are, assuming the predictions and ground truth both contain at least one positive label, defined for each class (e.g. LOC) as
+\begin{equation}
+    \label{eq:precrec}
+    \text{Precision} = \frac{\text{\# case I}}{\text{\# case I} + \text{\# case II}},\quad \text{Recall} = \frac{\text{\# case I}}{\text{\# case I} + \text{\# case III}}.
+\end{equation}
+From these class level metrics, global values of precision and recall were reported using the \emph{micro average}, that is, by aggregating the number of prediction outcomes (I, II, III) across classes before using the formulae \eqref{eq:precrec}.
+In the report, every reference to an average of metrics over NER classes refers to this micro average.
+Thus, using this approach, the error types IV, V and VI are not considered\footnotemark.
+\footnotetext{
+    Using this approach, the cases IV and VI in Table~\ref{tab:eval} would for the evaluation of the LOC class be treated as case III and for the evaluation of the ORG class be treated as case II.
+    V would, similarly, be counted as both a case II and III for ORG.
+    Such errors would thus be judged harshly in the global metrics and not show up in any way as partial corrects for any of the classes.
+}
 
+Following previous literature, the main score on which the system performance was judged is the F1 score, the harmonic mean of precision of recall;
+\begin{equation}
+    \label{eq:f1}
+    \text{F1} = \dfrac{2}{\nicefrac 1 {\text{Precision}} + \nicefrac 1 {\text{Recall}}}.
+\end{equation}
+The reported score were obtained using a Python sequence evaluation library \cite{seqeval}, also used by the original LUKE paper and DaNLP, with whom comparisons are made.
 \subsection{Fine-tuning English LUKE}
 Yamada et al. benchmark LUKE, on Named Entity Recognition using the CoNLL-2003 dataset \cite{yamada2020luke}.
 
