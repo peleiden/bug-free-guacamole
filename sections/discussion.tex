@@ -768,7 +768,7 @@ Two fine-tuning experiments are performed by altering this entity feature approa
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
         & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                        \\ \hline
-        First and last sub-word tokens & 81.27 & \textbf{87.63} & 92.44 & 70.99 & 71.62 & 84.66 & 78.14 \\
+        Sub-word tokens & 81.27 & \textbf{87.63} & 92.44 & 70.99 & 71.62 & 84.66 & 78.14 \\
         Entity tokens & 81.75 & 85.15 & 93.22 & 71.48 & 74.01 & \textbf{85.08} & 78.67 \\
         Both (default) & \textbf{82.89} & 87.00 & \textbf{94.15} & \textbf{73.15} & \textbf{74.58} & 84.67 & \textbf{81.18} 
     \end{tabular}
@@ -784,9 +784,45 @@ Two fine-tuning experiments are performed by altering this entity feature approa
 \section{Predictions: What Is Learned?}
 
 \subsection{Masked Language Predictions}
-\begin{enumerate}
-    \item Noget analyse og nogle eksempler på MLM, MEM-forudsigelser
-\end{enumerate}
+%TODO Måske ryk noget af det følgende ævl op i teori
+The transformer architecture \cite{vaswani2017att} is designed handle long-term dependencies better than older network architectures used for language modelling such as recurrent neural networks and long short-term memory networks \cite{hochreiter1997lstm}.
+Furthermore, the traditional versions of these models only include context up to the word in question.
+If context is given in the next word or sentence, it would not be included.
+While bidirectional versions of these architectures make sure all context is included \cite{schuster1997birnn}, they still struggle with long-term dependencies.
+\cite{Goodfellow-et-al-2016}
+
+To demonstrate DaLUKE's ability to consider context, an example with various subsets is constructed.
+\begin{align*}
+    &\text{
+    '''[MASK]' blev angrebet af 'USA' i '2003' som følge af 'terrorangrebet
+    }\\
+    &\text{
+         den 11. september 2001'. 'Saddam Hussein' blev fanget i december.''
+    }\footnote{
+    In English, it reads "[MASK] war attacked by the US in 2003 following the terrorist attack of September 11, 2001. Saddam Hussein was captured in December."}
+\end{align*}
+[MASK] masks "Irak" ("Iraq" in English).
+Five entities (marked with single quotes) are also given to the model, with the first one being masked.
+For clarity, both the word "Irak" and the entity "Irak" are masked.
+
+First consider the shorter version: "[MASK] blev angrebet af USA i 2003 som følge af terrorangrebet d. 11. september 2001."
+Given this text piece, DaLUKE predicts "afghanistan"\footnote{Model predictions are lower-cased, as the da-BERT tokenizer is lower-cased.} with a certainty of 15.95\pro.
+While certainly a reasonable guess, it is incorrect, as Afghanistan was attacked in 2001.
+For context, "irak" is the second guess of the model with 4.98\pro\ certainty.
+Furthermore, the masked "Irak" entity is predicted as "USA", but only with 7.61\pro~certainty.
+Adding the additional context of Saddam Hussein being captured, however, makes DaLUKE predict "irak" with 17.64\pro~certainty.
+Furthermore, the masked "Irak" entity is predicted as "Irak" with 15.57\pro~certainty.
+
+This example highlights how DaLUKE is able to take advantage of context to substantially improve its predictions.
+The following examples show similar results.
+For simplicity, no entities are included.
+\begin{itemize}
+    \item "I [MASK] spises der meget and." -- "danmark" is predicted, which is a good guess but not "december" as intended.\\
+    "I [MASK] spises der meget and. Det er nemlig julemåneden." -- "december" is correctly predicted.
+    \item "Danmarks vigtigste lov er [MASK]." -- "bekendtgørelser", which while grammatically correct does not make sense in the context.\\
+    "Danmarks vigtigste lov er [MASK]. Den blev underskrevet i 1849." -- "grundloven" is correctly predicted.
+\end{itemize}
+
 
 \subsection{DaLUKE Representations: The NER Geometry}
 DaLUKE produces contextualized representations of both words and entities and these were, for the NER task, successfully adapted to show a level of language understanding.
