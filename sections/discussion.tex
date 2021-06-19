@@ -966,6 +966,12 @@ Furthermore, a key quality of the representations is their contextualized nature
 
 \subsection{When the Model is Wrong}
 
+\begin{enumerate}
+    \item Fejl-analyse på modellen: Print eksempler på fejl og sammenlign gerne med, hvilke fejl konkurrenterne begår
+\end{enumerate}
+Analysing when the model is right or wrong may provide valuable insight into how performance can be improved.
+For this reason, a confusion matrix (table \ref{tab:pred-true-confmat}) is constructed for the DaNE testset that shows predicted labels against the true labels.
+
 %      | O    | LOC | PER | ORG | MISC
 %-----+------+-----+-----+-----+-----
 %O    | 9197 | 5   | 0   | 8   | 14
@@ -976,6 +982,7 @@ Furthermore, a key quality of the representations is their contextualized nature
 
 \begin{table}[H]
     \centering
+    \small
     \begin{tabular}{l l | r r r r r }
         & &	\multicolumn{5}{c}{Predicted}	\\
         \multirow{5}{*}{True label} & & LOC & PER & ORG & MISC & O \\\hline
@@ -985,7 +992,25 @@ Furthermore, a key quality of the representations is their contextualized nature
             & MISC & 0  & 0    & 16  & 114 & 29  \\
             & O    & 5  & 0    & 8   & 14  & 9,197
     \end{tabular}
+    \caption{Predicted labels versus the true labels on the DaNE testset.}
+    \label{tab:pred-true-confmat}
 \end{table}\noindent
+From the table, there are two major sources for errors:
+\begin{enumerate}
+    \item LOC is often predicted on ORG entities -- but not the other way around.
+    \item O is often predicted on true labels, especially on ORG and MISC. This highlights the relatively low recall (see table \ref{tab:DaNE}).
+\end{enumerate}
+Point 1 may have a relatively simple explanation: That many organizations have locations in their name, but not vice versa.
+Consider for instance the organization entity "Karlslunde Hallerne".
+While Karlslunde is a city and thus normally would be a LOC entity, that is not the case here.
+As the model greedily selects from overlapping spans, LOC will be selected if the model is even slightly more sure that "Karlslunde" is a LOC entity than that "Karlslunde Hallerne" is an ORG entity.
+Especially given the lower-case tokenization of the da-BERT tokenizer \cite{botxo2019dabert}, the capitalization of most organizations cannot be used, making predicting ORG's containing LOC's relatively harder.
+This highlights a weakness of the greedy selection of partially overlapping spans.
+
+To check if this is indeed the case, some examples of LOC predictions on ORG entities are printed out:
+%TODO Er entitetsspannet indeholdende "Karlslunde" også ORG-markeret? Ellers skal nogle af pointerne ændres
+%TODO Eksempler til punkt 1
+%TODO Uddyb punkt 2
 
 
 \begin{table}[H]
@@ -1022,11 +1047,11 @@ Furthermore, a key quality of the representations is their contextualized nature
     \begin{tabular}{l l | r r r r r }
         & &	\multicolumn{5}{c}{DaBERT Large predictions}	\\
         \multirow{5}{*}{DaLUKE predictions} & & LOC & PER & ORG & MISC & O \\\hline
-          & LOC  & 114 & 0   & 0   &  --    & 5  \\
-          & PER  & 0   & 310 & 5   &  --    & 3  \\
-          & ORG  & 10  & 9   & 143 &  --    & 21 \\
-          & MISC & 1   & 0   & 4   &  --    & 141\\
-          & O    & 4   & 3   & 6   &  --    & 9244
+        & LOC  & 114 & 0   & 0   &  --    & 5  \\
+        & PER  & 0   & 310 & 5   &  --    & 3  \\
+        & ORG  & 10  & 9   & 143 &  --    & 21 \\
+        & MISC & 1   & 0   & 4   &  --    & 141\\
+        & O    & 4   & 3   & 6   &  --    & 9244
     \end{tabular}
     \label{tab:dabertcompare}
     \caption{
@@ -1034,8 +1059,6 @@ Furthermore, a key quality of the representations is their contextualized nature
     }
 \end{table}\noindent
 % Indtryk: Vores forbedringer ligger i bare, at opdage flere entiteter: Særligt MISC. Vi har ikke strammet typingen så meget op (datasættet er også svært!)
-
-
 % Vi ser ud til at have forstået, at entiteter tit ligger i citationstegn
                                        Text:            I  de  sidste  otte  år  har  han  bl.a.  skrevet  og  tegnet  tabuoverskridende  tegneseriehæfter  som  "  Langt   ud      af      halsen  "  og  "  Op      og      stå     "  og  de  populære  børnebøger  "  Verdens  grimmeste  pige    "  ,  "  Stor    og      stærk   "  og  den  grinagtige  "  Dengang  min     onkel   Kulle   blev    skør    "  .
                                        Truth:           O  O   O       O     O   O    O    O      O        O   O       O                  O                 O    O  B-MISC  I-MISC  I-MISC  I-MISC  O  O   O  B-MISC  I-MISC  I-MISC  O  O   O   O         O           O  B-MISC   I-MISC     I-MISC  O  O  O  B-MISC  I-MISC  I-MISC  O  O   O    O           O  B-MISC   I-MISC  I-MISC  I-MISC  I-MISC  I-MISC  O  O
@@ -1092,6 +1115,5 @@ Furthermore, a key quality of the representations is their contextualized nature
                                        % Truth:                O    O       O    O  O       B-ORG               O              O    O  O     O
                                        % DaLUKE pred:          O    O       O    O  O       O                   O              O    O  O     O
                                        % DaCyLarge-DaNE pred:  O    O       O    O  O       B-ORG               O              O    O  O     O
-
 
 \end{document}

@@ -247,6 +247,7 @@ This new prediction head follows the architecture of the masked word scorer just
 The masked entity tokens are thus scored as corresponding to one of the entities in the entity vocabulary by two linear layers between which an activation function and layer normalization are placed.
 
 \subsection{Finetuning for Named Entity Recognition}
+\label{subsec:finetuning-theory}
 Yamada et al. base their NER fine-tuning on Sohrab and Miwa \cite{sohrab2018nestedner}.
 All possible entity spans (or $n$-grams) up to length 16 for computational efficiency over a tokenized text piece are calculated.
 Entity spans that cross sentence boundaries are exluded.
