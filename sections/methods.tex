@@ -65,7 +65,7 @@ The reported score were obtained using a Python sequence evaluation library \cit
 Yamada et al. benchmark LUKE, on Named Entity Recognition using the CoNLL-2003 dataset \cite{yamada2020luke}.
 
 Reproduction of these results were attempted by obtaining the pretrained LUKE models from Yamada et al.'s software repository.
-The same hyper-parameters as Yamada et al. were used and are shown along with and technical details in Table~\ref{tab:params}.
+The same hyperparameters as Yamada et al. were used and are shown along with and technical details in Table~\ref{tab:params}.
 
 The finetuning procedure was repeated five times for each of the two released LUKE models, called \emph{large} and \emph{base}, to examine variability in the downstream training.
 %%% Horrible footnote manipulation - it works, dont touch it! %%%
@@ -201,32 +201,9 @@ Existing models are inconsistent in whether or not they train and/or evaluate us
 For this reason, we always train using MISC but evaluate both with and without it.
 When evaluating without MISC, MISC predictions are treated as non-entity predictions.
 
-%TODO Hvad står dev. for? Development?
-The hyperparameters listed in table \ref{tab:finetune-hyper} were used for training.
-After each epoch, the model is evaluated on the dev. part of the data-set.
+After each epoch, the model is evaluated on the development (validation) split of the dataset.
 If it gets a better score than the hitherto best checkpoint, the checkpoint is overwritten.
 The best checkpoint of the model was used for evaluation on the test set.
-\begin{enumerate}
-    \item Til hovedeksperimentet bruger vi ikke faste hyperparametre, men søger i hyperparam-optimering.
-\end{enumerate}
-\begin{table}[H]
-    %    TODO Make these up to date
-    \centering
-    \begin{tabular}{l|r}
-        Parameter  &    Value\\\hline
-        Epochs     & 15\\
-        Batch size &    16\\
-        Peak learning rate & $2\ctp{-5}$\\
-        LR warmup steps prop. & $ 6\pro $\\
-        Dropout (pretrained model) & $ 0.1 $\\
-        Dropout (final, linear layer) & $ 0.05 $\\
-        Weight decay & $ 0.01 $\\
-        AdamW $ \beta_1 $ & $ 0.9 $\\
-        AdamW $ \beta_2 $ & $ 0.98 $\\
-        AdamW $ \epsilon $ & $ 10^{-6} $
-    \end{tabular}
-    \caption{Hyperparameters for DaLUKE fine-tuning.}\label{tab:finetune-hyper}
-\end{table}\noindent
 
 \paragraph{Learning rate}
 Unlike in the pretraining, we do as Yamada et al. and use a slanted triangle learning rate \cite{yamada2020luke}.
@@ -253,11 +230,35 @@ Arguably the simplest, and the one used here, is the reciprocal of the number of
 Unless otherwise stated, all fine-tunings presented in the rest of the paper use the non-weighted loss.
 
 \paragraph{Hyperparameter search}
-
+The used finetuning datasets all include development (validation) datasets in addition to the training and testing splits.
+The development set of DaNE was used to guide the search for fine-tuning hyperparameters for the final model.
+The search is performed by repeating the training procedure with all combinations of the following parameter values that were chosen based on previous, informal experimentation.
 \begin{enumerate}
-    \item Hyperparametersøgning for daluke-ner
-    \item Vis også resultater
+    \item Batch size $\in\{8, 16\}$
+    \item Peak learning rate $\in\{10^{-5}, 5\ctp{5}\}$
+    \item Dropout (last linear layer) $\in\{0.025, 0.1\}$
+    \item Whether or not to use class-weighted loss $\in\{\text{Yes}, \text{No}\}$
 \end{enumerate}
+For each combination, the resulting model was evaluated on the development set, shown in Table~\ref{tab:hyperres} and the hyperparameters with highest average F1 score was chosen and the final model using which the final model was produced by finetuning again to avoid selection bias.
+The chosen hyperparameters are reported below together with the used hyperparameters that were not tested.
+\begin{table}[H]
+    \centering
+    \small
+    \begin{tabular}{l|r}
+        Parameter                       & \jl{Value}\\\hline
+        Epochs                          & 15\\
+        Batch size                      & 8\\
+        Peak learning rate              & $5\ctp{-5}$\\
+        LR warmup steps proportion      & $ 6\pro $\\
+        Dropout (pretrained model)      & $ 0.1 $\\
+        Dropout (final, linear layer)   & $ 0.025 $\\
+        Weight decay                    & $ 0.01 $\\
+        Loss weighting                  & No
+    \end{tabular}
+    \caption{Hyperparameters used for fine-tuning DaLUKE for named entity recognition}
+    \label{tab:main-hyper}
+\end{table}\noindent
+
 \subsection{Implementation Details and Open Source Software}%
 \label{sub:oss}
 
