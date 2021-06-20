@@ -969,13 +969,12 @@ Furthermore, a key quality of the representations is their contextualized nature
 
 \subsection{When the Model is Wrong}
 
-\begin{enumerate}
-    \item Fejl-analyse på modellen: Print eksempler på fejl og sammenlign gerne med, hvilke fejl konkurrenterne begår
-\end{enumerate}
-
 Analysing when the model is right or wrong may provide valuable insight into how the classification decisions are made and how to improve this.
-% into how performance can be improved.
-For this reason, a confusion matrix (table \ref{tab:pred-true-confmat}) is constructed for the DaNE testset that shows predicted labels against the true labels.
+For this reason, a confusion matrix (table \ref{tab:pred-true-confmat}) is constructed for the DaNE testset that shows predicted labels against the true labels\footnotemark.
+\footnotetext{
+    All confusion matrices in this section are for simplicity and nuance done on the word level and not on entire entity span level.
+    This means that these confusion matrices do not correspond exactly to the reported precision and recall scores, as these were calculated on span level as explained in Section~\ref{sec:nereval}.
+}
 
 %      | O    | LOC | PER | ORG | MISC
 %-----+------+-----+-----+-----+-----
@@ -1053,6 +1052,9 @@ contextual understanding and some degree of factural knowledge were exemplifyied
 Rather, most errors shown here are examples that genuinely are difficult applications of language knowledge.
 To get more insight into the prediction patterns of DaLUKE specifically, the NER predictions are compared with those of other Danish NER algorithms.
 
+Initially, the similarity of other model predictions and those of DaLUKE are measured using the proportion of words for which the prediction is the same, shown at Table~\ref{tab:covar}.
+Surprisingly, the most similar models are the DaCy models, using the multilingual RoBERTa base and large behind the hood \cite{enevoldsen2020dacy}, and the multilingual BERT from NERDA, while da-BERT, on which DaLUKE is based, follows behind.
+
 \begin{table}[H]
     \centering
     \begin{tabular}{l | c }
@@ -1070,8 +1072,12 @@ To get more insight into the prediction patterns of DaLUKE specifically, the NER
     \label{tab:covar}
     \caption{
         Covariances between DaLUKE predictions and those of other Danish NER algorithms on the DaLUKE testing dataset.
+        This calculation is performed on the word level.
     }
 \end{table}\noindent
+Compared to the da-BERT predictions, the biggest difference is the higher amount of positive predictions as seen on Table~\ref{tab:dabertcompare}.
+DaNLP da-BERT was not finetuned for MISC, so this difference is natural, but DaLUKE also discovers more organizations.
+DaLUKE also predicts location more rarely, a class on which DaLUKE outperforms da-BERT (87.0\pro vs. 83.9\pro).
 
 % 2021-06-19 16:31:04.881    INFO        Confusion matrix with DaLUKE results ↓ and results from BERT-DaNE →
 % 2021-06-19 16:58:48.906    INFO             | LOC | PER | ORG | MISC | O
@@ -1081,11 +1087,10 @@ To get more insight into the prediction patterns of DaLUKE specifically, the NER
 %                                        ORG  | 10  | 9   | 143 | 0    | 21
 %                                        MISC | 1   | 0   | 4   | 0    | 141
 %                                        O    | 4   | 3   | 6   | 0    | 9244
-
 \begin{table}[H]
     \centering
     \begin{tabular}{l l | r r r r r }
-        & &	\multicolumn{5}{c}{DaBERT Large predictions}	\\
+        & &	\multicolumn{5}{c}{da-BERT predictions}	\\
         \multirow{5}{*}{DaLUKE predictions} & & LOC & PER & ORG & MISC & O \\\hline
         & LOC  & 114 & 0   & 0   &  --    & 5  \\
         & PER  & 0   & 310 & 5   &  --    & 3  \\
@@ -1095,22 +1100,38 @@ To get more insight into the prediction patterns of DaLUKE specifically, the NER
     \end{tabular}
     \label{tab:dabertcompare}
     \caption{
-        DaBERT Large predictions vs. DaLUKE predictions.
+        da-BERT predictions vs. DaLUKE predictions.
     }
 \end{table}\noindent
-% Indtryk: Vores forbedringer ligger i bare, at opdage flere entiteter: Særligt MISC. Vi har ikke strammet typingen så meget op (datasættet er også svært!)
-% Vi ser ud til at have forstået, at entiteter tit ligger i citationstegn
-                                       % Text:            I  de  sidste  otte  år  har  han  bl.a.  skrevet  og  tegnet  tabuoverskridende  tegneseriehæfter  som  "  Langt   ud      af      halsen  "  og  "  Op      og      stå     "  og  de  populære  børnebøger  "  Verdens  grimmeste  pige    "  ,  "  Stor    og      stærk   "  og  den  grinagtige  "  Dengang  min     onkel   Kulle   blev    skør    "  .
-                                       % Truth:           O  O   O       O     O   O    O    O      O        O   O       O                  O                 O    O  B-MISC  I-MISC  I-MISC  I-MISC  O  O   O  B-MISC  I-MISC  I-MISC  O  O   O   O         O           O  B-MISC   I-MISC     I-MISC  O  O  O  B-MISC  I-MISC  I-MISC  O  O   O    O           O  B-MISC   I-MISC  I-MISC  I-MISC  I-MISC  I-MISC  O  O
-                                       % DaLUKE pred:     O  O   O       O     O   O    O    O      O        O   O       O                  O                 O    O  B-MISC  I-MISC  I-MISC  I-MISC  O  O   O  B-MISC  I-MISC  I-MISC  O  O   O   O         O           O  B-MISC   I-MISC     I-MISC  O  O  O  B-MISC  I-MISC  I-MISC  O  O   O    O           O  O        O       O       O       O       O       O  O
-                                       % BERT-DaNE pred:  O  O   O       O     O   O    O    O      O        O   O       O                  O                 O    O  O       O       O       O       O  O   O  O       O       O       O  O   O   O         O           O  O        O          O       O  O  O  O       O       O       O  O   O    O           O  O        O       O       B-PER   O       O       O  O
+From examining the examples where the models differ, DaLUKE seems employ the additional learned knowledge to better disambiguate between similar classes and use context to discover named entities, see Table~\ref{tab:daberterrors}.
+% Uddybe mere - det her er jo vores chance for at blære
 
-% Vi fanger flere MISC'er
-                                       % Text:            Dansk   kultur  skal  skabes  ,  forvaltes  ,  plejes  og  forkæles  af  os  danskere  .
-                                       % Truth:           B-MISC  O       O     O       O  O          O  O       O   O         O   O   B-MISC    O
-                                       % DaLUKE pred:     B-MISC  O       O     O       O  O          O  O       O   O         O   O   B-MISC    O
-                                       % BERT-DaNE pred:  O       O       O     O       O  O          O  O       O   O         O   O   O         O
-
+\begin{table}[H]
+    \footnotesize
+    \begin{tabular}{l|llllllll}
+        Text:             & $\ldots$  & redegørelsen  & i  & det    & udenrigspolitiske  & nævn   & $\ldots$ \\
+        Truth:            & $\ldots$  & O             & O  & B-ORG  & I-ORG              & I-ORG  & $\ldots$ \\\hline
+        DaLUKE pred.:     & $\ldots$  & O             & O  & B-ORG  & I-ORG              & I-ORG  & $\ldots$ \\
+        da-BERT pred.:    & $\ldots$  & O             & O  & O      & O                  & O      & $\ldots$ \\
+    \end{tabular}\par
+    \begin{tabular}{l|lllllllllllllll}
+        Text:            &  "Ih,   & hvor  & jeg  & glæder  & mig  & til  & et  & lille  & glas,"  & lød  & det  & fra  & Lykke  \\
+        Truth:           &  O    & O     & O    & O       & O    & O    & O   & O      & O        & O    & O    & O    & B-PER  \\\hline
+        DaLUKE pred.:    &  O    & O     & O    & O       & O    & O    & O   & O      & O        & O    & O    & O    & B-PER  \\
+        da-BERT pred.:   &  O    & O     & O    & O       & O    & O    & O   & O      & O        & O    & O    & O    & O
+    \end{tabular}\par
+    \begin{tabular}{l|llllllllllll}
+        Text:            & Rapporten  & $\ldots$  & er  & bestilt  & og  & betalt  & af  & Københavns  & Amtsråd  & $\ldots$\\
+        Truth:           & O          & $\ldots$  & O   & O        & O   & O       & O   & B-ORG       & I-ORG    & $\ldots$\\\hline
+        DaLUKE  pred.:   & O          & $\ldots$  & O   & O        & O   & O       & O   & B-ORG       & I-ORG    & $\ldots$\\
+        da-BERT pred.:   & O          & $\ldots$  & O   & O        & O   & O       & O   & B-LOC       & I-LOC    & $\ldots$
+    \end{tabular}
+    \caption{
+    }
+    \label{tab:daberterrors}
+\end{table}\noindent
+The same comparison is made to DaCy Large which achieves higher performance than DaLUKE -- especially driven by improvements in organization and miscellaneous classes.
+Here, the biggest differences lies in cases where the models have to discern between these two classes and  null class, seen at Table~\ref{tab:dacycompare}.
 
 % 2021-06-19 16:29:26.614    INFO        Confusion matrix with DaLUKE results ↓ and results from DaCyLarge-DaNE →
 % 2021-06-19 16:58:11.740    INFO             | LOC | PER | ORG | MISC | O
@@ -1120,7 +1141,6 @@ To get more insight into the prediction patterns of DaLUKE specifically, the NER
 %                                        ORG  | 9   | 3   | 154 | 5    | 12
 %                                        MISC | 0   | 1   | 3   | 120  | 22
 %                                        O    | 8   | 4   | 8   | 27   | 9210
-
 \begin{table}[H]
     \centering
     \begin{tabular}{l l | r r r r r }
@@ -1137,23 +1157,45 @@ To get more insight into the prediction patterns of DaLUKE specifically, the NER
         DaCy Large predictions vs. DaLUKE predictions.
     }
 \end{table}\noindent
+Examples where DaCy is right, but DaLUKE wrong is shown at Table~\ref{tab:dacyex}.
+These give more possible causes of the improvement, adding to the initial explanation of DaCy employing a BERT \emph{large}-sized transformer, adding flexibility to the model, theoretically allowing higher level language features to be learned compared to the base size model used by DaLUKE.
+One cause is the use of the case sensitive byte-pair encoding tokenizer of RoBERTa \cite{conneau2020unsupervised} which we speculate helps discovering more entities, relating to the high recall of DaCy (83.7\pro versus the 81.2\pro of DaLUKE).
+Another interesting pattern lies in the strength of the multilingual model used by DaCy correctly predicting entities in foreign languages.
 
-% Pointe: DaCy er flersproget:
-                                       % Text:                 de      fire    årstider  hører  med  til  opus    VIII    der  hedder  "  Il      Cimento  dell'Armonia  e       dell'Invenzione  .
-                                       % Truth:                B-MISC  I-MISC  I-MISC    O      O    O    B-MISC  I-MISC  O    O       O  B-MISC  I-MISC   I-MISC        I-MISC  I-MISC           O
-                                       % DaLUKE pred:          B-MISC  I-MISC  I-MISC    O      O    O    B-MISC  I-MISC  O    O       O  O       O        O             O       O                O
-                                       % DaCyLarge-DaNE pred:  O       O       O         O      O    O    O       O       O    O       O  B-MISC  I-MISC   I-MISC        I-MISC  I-MISC           O
+\begin{table}[H]
+    \footnotesize
+    \begin{tabular}{l|llllll}
+        Text:             & $\ldots$  & opus    & VIII    & der  & hedder  \\
+        Truth:            & $\ldots$  & B-MISC  & I-MISC  & O    & O       \\\hline
+        DaLUKE pred.:     & $\ldots$  & B-MISC  & I-MISC  & O    & O       \\
+        DaCy pred.:       & $\ldots$  & O       & O       & O    & O       
+    \end{tabular}
+    (continued)\\
+    \begin{tabular}{c} % The spooky, scary, invisible ghost table for formatting!
+        \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad 
+    \end{tabular}
+                \begin{tabular}{llllll}
+                     Il      & Cimento  & dell'Armonia  & e       & dell'Invenzione \\
+                     B-MISC  & I-MISC   & I-MISC        & I-MISC  & I-MISC          \\\hline
+                     O       & O        & O             & O       & O               \\
+                     B-MISC  & I-MISC   & I-MISC        & I-MISC  & I-MISC          
+                \end{tabular}\par
+    \begin{tabular}{l|llllllll}
+        Text:             & Der  & ligger  & fire  & skodder  & plus  & en  & hel  & Camel   \\ 
+        Truth:            & O    & O       & O     & O        & O     & O   & O    & B-MISC  \\\hline
+        DaLUKE pred.:     & O    & O       & O     & O        & O     & O   & O    & O       \\ 
+        DaCy pred.:    & O    & O       & O     & O        & O     & O   & O    & B-MISC
+    \end{tabular}\par
+    \begin{tabular}{l|llllllllll}
+        Text:            & Den  & modtog  & han  & i  & øvrigt  & Kulturministeriets  & børnebogspris  & for  & i  & 1990 \\
+        Truth:           & O    & O       & O    & O  & O       & B-ORG               & O              & O    & O  & O    \\\hline
+        DaLUKE  pred.:   & O    & O       & O    & O  & O       & O                   & O              & O    & O  & O    \\
+        DaCy pred.:   & O    & O       & O    & O  & O       & B-ORG               & O              & O    & O  & O    
+    \end{tabular}
+    \caption{
+    }
+    \label{tab:dacyex}
+\end{table}\noindent
 
-% Pointe: Vi gætter for lidt - måske er CASED et probem?
-
-                                       % Text:                 Der  ligger  fire  skodder  plus  en  hel  Camel   .
-                                       % Truth:                O    O       O     O        O     O   O    B-MISC  O
-                                       % DaLUKE pred:          O    O       O     O        O     O   O    O       O
-                                       % DaCyLarge-DaNE pred:  O    O       O     O        O     O   O    B-MISC  O
-
-                                       % Text:                 Den  modtog  han  i  øvrigt  Kulturministeriets  børnebogspris  for  i  1990  .
-                                       % Truth:                O    O       O    O  O       B-ORG               O              O    O  O     O
-                                       % DaLUKE pred:          O    O       O    O  O       O                   O              O    O  O     O
-                                       % DaCyLarge-DaNE pred:  O    O       O    O  O       B-ORG               O              O    O  O     O
 
 \end{document}
