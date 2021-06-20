@@ -118,9 +118,9 @@ Previous literature has highlighted the scarcity of accessible, gold-standard, D
     \begin{tabular}{l|rrr|rrrr}
         \multirow{2}{*}{Dataset} & \multicolumn{3}{c|}{Number of sentences} & \multicolumn{4}{c}{Test set entities}\\
                                 &\jl{Train} & \jl{Dev.} & \jl{Test} &\multicolumn{1}{|l}{LOC} & \jl{PER} & \jl{ORG} & \jl{MISC} \\\hline
-        DaNE        & 4383 & 564 & 565 & 101 & 318 & 221 & 159 \\
+        DaNE        & 4,383 & 564 & 565 & 101 & 318 & 221 & 159 \\
         Plank       & 604  & 564 & 565 & 98  & 309 & 114 & 52 \\
-        Wiki-ANN (da.)   & $20\ctp3$ & $10\ctp3$ & $10\ctp3$ & 7458 & 10,660 & 10,876 & 0
+        Wiki-ANN (da.)   & $20\ctp3$ & $10\ctp3$ & $10\ctp3$ & 7,458 & 10,660 & 10,876 & 0
     \end{tabular}
     \caption{
         Counts of sentences and test set entities in the three Danish NER benchmarks.
@@ -128,6 +128,33 @@ Previous literature has highlighted the scarcity of accessible, gold-standard, D
     }
     \label{tab:daNERdata}
 \end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|r r r r}
+        Subset of data&LOC	&PER	&ORG   &MISC \\\hline
+        Train&1,144	&2,146	&1,267  &1,273 \\
+        Dev.&126	&277   &131  &138 \\
+        Test&101   &318   &221  &159
+    \end{tabular}
+    \caption{DaNE label distribution by data subset.}
+    \label{tab:danedist}
+\end{table}\noindent
+
+\begin{figure}[H]
+    \centering
+   	\begin{minipage}[t]{0.32\textwidth}
+       \includegraphics[width=\textwidth]{datadist_dane}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{datadist_plank}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{datadist_wikiann}
+    \end{minipage}
+    \caption{Distribution of entity labels in the three Danish NER datasets.}
+    \label{fig:dadatadist}
+\end{figure}\noindent
 
 \subsection{CoNLL-2003}
 The shared task for the 2003 Conference on Computational Natural Language Leanring (CoNLL) was language-independent NER for which annotations on English Reuters news wire articles were performed by researchers \cite{tjang2003conll}.
