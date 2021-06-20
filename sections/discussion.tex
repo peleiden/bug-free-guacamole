@@ -989,7 +989,7 @@ For this reason, a confusion matrix (table \ref{tab:pred-true-confmat}) is const
     \centering
     \small
     \begin{tabular}{l l | r r r r r }
-        & &	\multicolumn{5}{c}{Predicted}	\\
+        & &	\multicolumn{5}{c}{Predicted label}	\\
         \multirow{5}{*}{True label} & & LOC & PER & ORG & MISC & O \\\hline
             & LOC  & 91 & 0    & 2   & 3   & 5   \\
             & PER  & 0  & 307  & 2   & 3   & 5   \\
@@ -1011,23 +1011,25 @@ Consider for instance the organization entity "Bakken" in the (verbatim) test ex
 
 The model predicts LOC, but while the amusement park, Bakken, would be refer to the physical location in another context, this sentence is about an homage to the spirit or tradition of the park as an institution and is as such marked as ORG.
 While the model is contextual meaning correctly predicting such entities is possible, examples with as little context as this one requires a degree of very minute real world knowledge currently not obtained by DaLUKE.
-This error pattern also occurred with names of theaters, libraries and municipalities.
-
+This error pattern also occurred with names of theatres, libraries and municipalities.
+For many of these cases, the task is of differentiating between ORG and LOC is further complicated by the fact that the LOC makes up only a subset of the full name.
+This means that the model not only has to choose between ORG an LOC for a given entity candidate, but also has to select between a LOC entity and an ORG entity spanning a superset of the LOC span.
+If the LOC is the easier prediction, the model will be more confident on that and due to the greedy selection among overlapping spans will not predict ORG.
 \begin{table}[H]
     \footnotesize
     \begin{tabular}{l|llllllllll}
         Text:   & Nørrebro  & Bibliotek  & introducerede  &for  &et  &par  &år  &siden  &NU-bøgerne & $\ldots$ \\
-        Truth:  & B-ORG     & I-ORG      & O              &O    &O   &O    &O   &O      &B-MISC  & $\ldots$    \\\hline
-        Pred.:   & B-LOC     & I-LOC      & O              &O    &O   &O    &O   &O      &O   & $\ldots$
+        Truth:  & B-ORG     & I-ORG      & O              &O    &O   &O    &O   &O      &B-MISC  & $\ldots$    \\
+        Pred.:   & B-LOC     & I-LOC      & O              &O    &O   &O    &O   &O      &O   & $\ldots$\\\hline
     \end{tabular}\par
     \begin{tabular}{l|llllllll}
         Text:    & $\ldots$  &Folkekongressen  &skal  &give  &præsidenten  &diktatoriske  &beføjelser  &.\\
-        Truth:   & $\ldots$  &B-ORG            &O     &O     &O            &B-MISC        &O           &O\\\hline
-        Pred.:   & $\ldots$  &O                &O     &O     &O            &O             &O           &O
+        Truth:   & $\ldots$  &B-ORG            &O     &O     &O            &B-MISC        &O           &O\\
+        Pred.:   & $\ldots$  &O                &O     &O     &O            &O             &O           &O\\\hline
     \end{tabular}\par
     \begin{tabular}{l|llllllll}
         Text:    & $\ldots$ &  om  &Landsforeningen  &Ungbo  &har  &begået  &mandatsvig  & $\ldots$ \\
-        Truth:   & $\ldots$ &  O   &B-ORG            &I-ORG  &O    &O       &O           & $\ldots$ \\\hline
+        Truth:   & $\ldots$ &  O   &B-ORG            &I-ORG  &O    &O       &O           & $\ldots$ \\
         Pred.:   & $\ldots$ &  O   &O                &B-ORG  &O    &O       &O           & $\ldots$
     \end{tabular}
     \caption{
@@ -1035,9 +1037,9 @@ This error pattern also occurred with names of theaters, libraries and municipal
     }
     \label{tab:dalukeerrors}
 \end{table}\noindent
-Point 2, the prevalence of false negatives (prediction case III, following Table\ref{tab:eval}), can be a calibration problem as examined in CALIBRATION, but is also, in our estimation, one of the most difficult parts of this dataset, as the definition of named entities starts becoming quite difficult.
+Point 2, the prevalence of false negatives (prediction case III, following table~\ref{tab:eval}), can be a calibration problem as examined in CALIBRATION, but is also, in our estimation, one of the most difficult parts of this dataset, as the definition of named entities starts becoming quite difficult.
 One common cause found is missing a number of adjectives marked as MISC including ''borgerlig'', ''indremissionsk'' and ''olympisk''.
-The classification of these as named entities as MISC is correct following CONLL-2003 definition, see Section~\ref{subsec:annoschemes}, but we speculate that this might be a difference in language understanding between English and Danish as this categorization seems non-intuitive in Danish -- in which adjectives are also never capitalized.
+The classification of these as named entities as MISC is correct following CONLL-2003 definition (see Section~\ref{subsec:annoschemes}) but we speculate that this might be a difference in language understanding between English and Danish as this categorization seems non-intuitive in Danish -- in which adjectives are also never capitalized.
 
 In the missed organizations, two possible causes are found.
 Firstly, using a case-sensitive tokenizer, which the da-BERT is not \cite{botxo2019dabert}, might help some errors such as ''Markedsudvalget'' and ''Kulturministeriets''.
@@ -1093,7 +1095,7 @@ To get more insight into the prediction patterns of DaLUKE specifically, the NER
     \end{tabular}
     \label{tab:dabertcompare}
     \caption{
-        DaBERT
+        DaBERT Large predictions vs. DaLUKE predictions.
     }
 \end{table}\noindent
 % Indtryk: Vores forbedringer ligger i bare, at opdage flere entiteter: Særligt MISC. Vi har ikke strammet typingen så meget op (datasættet er også svært!)
@@ -1132,7 +1134,7 @@ To get more insight into the prediction patterns of DaLUKE specifically, the NER
     \end{tabular}
     \label{tab:dacycompare}
     \caption{
-        DaCy
+        DaCy Large predictions vs. DaLUKE predictions.
     }
 \end{table}\noindent
 
