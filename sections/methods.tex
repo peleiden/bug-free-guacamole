@@ -261,18 +261,15 @@ Unless otherwise stated, all fine-tunings presented in the rest of the paper use
 \subsection{Implementation Details and Open Source Software}%
 \label{sub:oss}
 
-\subsubsection{Open Source Software Package}
-\begin{enumerate}
-    \item Minidokumentation
-    \item Link til læsmig.md
-\end{enumerate}
+\paragraph{Open Source Software Package}
 We publish DaLUKE and all related code under the MIT open source software license \cite{mitlicense}.
 All code and documentation is available at \url{https://github.com/peleiden/daluke}.
-The pretrained model is available with and without MLM layers at TODO.
-The model finetuned on DaNE is available at TODO.
+The pretrained model is available with MLM layers at \url{https://nx5746.your-storageshare.de/s/qDM2TE6m9CKmPWd}.
+The model finetuned on DaNE is available at \url{https://nx5746.your-storageshare.de/s/wxbY3TrwfAoYxb9}.
 Our software package is \code{pip} installable and runs on Python 3.8 and above.
 Simply run `pip install daluke` to install it on your computer.
 It allows for using DaLUKE for NER on text files directly from the command line.
+For instructions, see the readme on the repository.
 
 \paragraph{Implementation}
 Yamada et al. have made their code\footnote{\url{https://github.com/studio-ousia/luke}. Visited June 11, 2021.} freely available under the Apache License 2.0 \cite{apachelicense}.
@@ -299,7 +296,7 @@ For instance, we discovered a bug in the masking where the unmasking and random 
 We have opened an issue on the LUKE repository that can be followed here.
 %TODO Make issue
 
-\subsubsection{Floating Point Precision}
+\paragraph{Floating Point Precision}
 The model is trained using PyTorch Automatic Mixed Precision (AMP) \cite{pytorchamp}, which -- ideally, at least -- should decrease training time with little to no penalty to accuracy \cite{huang2020amp}.
 This is partially due to half-precision calculations being simpler, and partially due to the lower memory requirements, allowing larger subbatches and thus better GPU utilization.
 However, as figure \ref{fig:runtime} shows, AMP works as intended when training on NVIDIA V100's, but has the opposite effect when training on NVIDIA A100's.
@@ -311,7 +308,7 @@ Due to the smaller precision, underflow in the gradients is a risk.
 This is handled by scaling up the loss and then scaling down the gradients accordingly.
 \cite{pytorchamp}
 
-\subsubsection{Distributed Training and Runtime}
+\paragraph{Distributed Training and Runtime}
 As transformer training requires significant compute, distributing the training over multiple GPU's can yield significant speedups.
 Especially given the parallelizable nature of the transformer compared to recurrent neural network variations \cite{vaswani2017att}, training should scale fairly well on multiple GPU's.
 

@@ -37,9 +37,9 @@ Two observations stand out:
 Firstly, DaLUKE exclusive parameters, which consist of entity embeddings and the entity part of the decoder, are spread out.
 This includes the notable peak that comes from biases and layer normalizations being initialized to 0.
 Secondly, the shared parameters are more or less unchanged in their distribution.
-This makes sense, as they are already trained, and so training even more with a similar task should not make result in any significant change.
+This makes sense, as they are already trained, and so further training on similar data with a similar task should not make result in any significant change.
 Furthermore, all parameters from da-BERT (barring the three sets of DaLUKE exclusive query matrices) are not changed for the first half of training.
-When they are finally unlocked, both the loss and learning rate have dropped significantly leading to less change.
+When they are finally unlocked, both the loss and learning rate have dropped significantly resulting in less change.
 
 \subsection{Effect of More Pretraining}
 How more pretraining affects the language understanding of the model can be hard to quantify.
@@ -896,6 +896,7 @@ For the reductions in the positive label-only dataset, even more meaningful stru
         \includegraphics[width=0.495\linewidth]{pos-geo/umap}
     \caption{
         $t$-SNE and UMAP projections of the DaNE dataset containing entity spans with positive labels.
+        While the classes are not strongly separated, some clusters consisting of mostly one class are clearly visible in both projections.
     }
     \label{fig:pos-tsne}
 \end{figure}\noindent
@@ -1196,6 +1197,9 @@ Another interesting pattern lies in the strength of the multilingual model used 
     }
     \label{tab:dacyex}
 \end{table}\noindent
+
+\section{Summary}
+%TODO Bedre navn, så 6.1.8 ikke gentages
 
 
 \end{document}
