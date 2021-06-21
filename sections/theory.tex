@@ -68,10 +68,11 @@ Another application of exsting NLP frameworks was performed by Kenneth Enevoldse
 
 These frameworks use more than static word embeddings under the hood, however:
 The current, high performing NLP algorithms in Danish rely on representing language contextually; that is, letting the vector representation of a token be dependant on its' context.
-This simple idea expresses the common sense notion that the word \emph{dark} should be treated differently by NLP algorithms in the examples ''Her thoughts were dark'', ''Her hair was dark'', but it requires the substitution of the simple dictionary mappings possible for the static embeddings with models that can take the text as input and represents the context.
+This simple idea expresses the common sense notion that the word \emph{dark} should be treated differently by NLP algorithms in the examples ''Her thoughts were dark'', ''Her hair was dark''.
+This requires the substitution of the simple dictionary mappings used for the static embeddings with, instead, models that can take the text as input and represents the context.
 Such models, producing vector representations of tokens in documents using the document context, are called \emph{general-purpose language models} \cite[Chap. 2]{birk2020knowledge} or \emph{contextualized word representation language models} \cite[Sec. 2]{yamada2020luke} and will in this project be referred to simply as \emph{language models}.
 
-Multiple architectures exist for these language models, but the state of the art in Danish NLP benchmarks is dominated by one type: The \emph{transformer}.
+Multiple architectures exist for these language models, but the state of the art in Danish NLP benchmarks is dominated by one type: The transformer.
 This deep neural network-based model employs the idea of \emph{attention}:
 Calculating weights between the tokens in the document expressing their relevance for each other by scaled dot products with learned, real-valued matrices.
 In the transformer, these attention calculations are done iteratively for a number of layers making up the \emph{encoder} which produces the contextualized word representations (CWR's) from the static word embeddings of each token.
@@ -79,12 +80,12 @@ This architecture, proposed in 2017 by Ashish Vaswani et al. \cite{vaswani2017at
 
 In Danish, the most significant, pretrained language model is in our estimation a Danish version of the transfomer BERT released by the company BotXO in 2019 \cite{botxo2019dabert} .
 This model, in the following called \emph{daBERT}, is produced by pretraining the base version of the very influential architecture \emph{Bidirectional Encoder Representations from Transformers} (BERT) \cite{devlin2019bert} on 10 GB of Danish text predominantly acquired from web scrapes.
-daBERT model has been finetuned on most Danish benchmarks in the DaNLP project and consistently yield top results \cite{danlp2021, hvingelby2020dane}.
+The daBERT model has been finetuned on most Danish benchmarks in the DaNLP project and consistently yield top results \cite{danlp2021, hvingelby2020dane}.
 
 Another, more recent, Danish transformer is the adaption of the more ressource efficient language model Electra to Danish under the name Ælæctra by Malte Hømark-Bertelsen, KMD and Aarhus University \cite{bertelsen2020lctra}.
 NER finetuned versions of Ælæctra and some multilingual transformers have been released by Ekstra Bladet Analyse under the project \emph{NER for Danish} (NERDA) \cite{kjeldgaard2020nerda}.
 
-Of this plethora of Danish language models and NLP frameworks, the current (June 2021) state of the art (SOTA) on central NER benchmarks is, according the NLP, the 2021 newcomer DaCy which surpassed DaNLP's fine tuned daBERT model which was SOTA at the beginning of this project \footnotemark.
+Of this plethora of Danish language models and NLP frameworks, the current (June 2021) state of the art (SOTA) on central NER benchmarks is, according to DaNLP, the 2021 newcomer DaCy which surpassed DaNLP's fine-tuned daBERT model which was SOTA at the beginning of this project \footnotemark.
 \footnotetext{
     A table of the results can be seen at the DaNLP repository at \url{https://github.com/alexandrainst/danlp} under \code{docs/docs/tasks/ner.md}.
 }
@@ -102,21 +103,22 @@ As with most other fields of AI, the emergence of performant deep learning metho
 This approach rarely includes any modelling of knowledge that is not induced implicitly by the contextual representations generated during pretraining on an unannotated text corpus.
 
 The Defense Advanced Research Projects Agency (DARPA) identify the future wave of AI as one of \emph{contextual adaption}; a combination of deep learning for perception and latent representations and symbolic modelling methods \cite{darpa17ai}.
-In NLP, knowledge-enhancing deep neural networks is not just an idea for the future; several approaches using explicit knowledge to improve pretrained contextual word representations (CRW's) have been presented in recent years, a subset of which will be summarized here.
+In NLP, knowledge-enhancing deep neural networks is not just an idea for the future:
+Several approaches using explicit knowledge to improve pretrained contextual word representations (CRW's) have been presented in recent years, a subset of which will be summarized here.
 
 \subsection{Static, separate knowledge graphs}
 A direct way to use explicit knowledge is to maintain a separate representation of facts which can be incorporated into both pretraining and inference of deep language models.
-This representation is often called a knowledge base (KB) or knowledge graph (KG) when the relational facts or entities are modelled.
+This representation is often called a knowledge base (KB)  -- or knowledge graph (KG) if the relational facts or entities are modelled.
 
-In 2019, \emph{Enhanced Language Representation with Informative Entities}, ERNIE, was introduced by a Beijing team \cite{zhang2019ernie} looking to ''enhance language representation  with  external  knowledge'' \cite[1]{zhang2019ernie} by recognizing mentions of named entities in given text and retrieving their positions in a separate knowledge graph (KG).
-The query from knowledge graph, explicit model of facts, is encoded into knowledge embeddings and are taken as input for a BERT-based dual transformer architecture.
+In 2019, \emph{Enhanced Language Representation with Informative Entities}, ERNIE, was introduced by a Beijing team \cite{zhang2019ernie} looking to ''enhance language representation  with  external  knowledge'' \cite[1]{zhang2019ernie} by recognizing mentions of named entities in given text and retrieving their positions in a separate knowledge graph.
+The query from the knowledge graph is encoded into knowledge embeddings which are taken as input for a BERT-based dual transformer architecture.
 The model was during training required to fill in randmoly masked named entities in given sequences using the KG.
 ERNIE was not evaluated on named entity recognition in the original paper, but was evaluated on the \emph{General Language Understanding Evaluation} benchmark \cite{wang2018glue} where it did not outperform BERT.
 
 Later in 2019, a similar idea was proposed in \emph{Knowledge Enhanced Contextual Word Representations} where the model \emph{KnowBert} \cite{peters2019knowbert} was shown to outperform ERNIE and BERT in knowledge related tasks, though GLUE or NER was not tested.
 Here, the key addition was the Knowledge Attention and Recontextualization (KAR) component which allows information to retrieved from multiple KG's of different forms such as WordNET and Wikipedia and represented within the BERT encoder.
 
-In KnowBert, though the KAR weights were trained, the KG was only used for encoding a subset of fixed facts for the model.
+In KnowBert, though the KAR weights were trained, the KG was only used for encoding fixed facts for the model.
 The \emph{Knowledge Graph Language Model} (KGLM) presented in \emph{Barack’s Wife Hillary: Using Knowledge Graphs for Fact-Aware Language Modeling} \cite{logan2019barack} employs a more dynamic use of the knowledge graph.
 The model uses the same approach to representing knowledge graph facts as ERNIE, but also builds a local graph on the sequence level which is grown by a generative model with each new token.
 The paper presents improved fact completion compared to GPT-2 and further analysis has shown that the overall fact completion of KGLM is comparative to KnowBert, though they perform very differently from domain to domain, with KGLM being most dependant on the used knowledge graph \cite{birk2020knowledge}.
@@ -133,7 +135,7 @@ KEPLER does not improve GLUE performance from RoBERTa \cite{liu2019roberta} from
 
 This idea of pretraining a transformer both for MLM and for a new knowledge-guided task has been taken up multiple times, including in LUKE.
 \emph{WKLM}, presented in 2019 in \emph{Pretrained Encyclopedia: Weakly Supervised Knowledge-Pretrained Language Model} \cite{xiong2019wklm}, uses the English Wikipedia, taking hyperlinks to be entities, and trains an unaltered BERT architecture jointly on MLM and on a task involving identifying the randomly replaced entity in a sequence.
-\emph{KALM}, published after LUKE in \emph{Knowledge-Aware Language Model Pretraining}, also keeps the core language model architecture, in this case GPT-2, unchanged, adding a separate entity tokenizer and entity embedding layer for an entity prediction pretraining task.
+\emph{KALM}, published after LUKE in \emph{Knowledge-Aware Language Model Pretraining} \cite{corby2020kalm}, also keeps the core language model architecture, in this case GPT-2, unchanged, adding a separate entity tokenizer and entity embedding layer for an entity prediction pretraining task.
 
 Though these models achieve good performance, with WKLM surpassing BERT and ERNIE on some question answering and entity related benchmarks, and KALM outperforming GPT-2 on some knowledge related zero-shot tasks, the 2020 article \emph{K-Adapter: Infusing Knowledge into Pre-Trained Models with Adapters} \cite{wang2020kadapter} raises a concern with the approach.
 According to the authors, the idea of knowledge-augmenting the pretraining task and then updating the entire model limits the ability to inject versatile knowledge and sets up a heterogeneous learning problem resulting in entangled parameters that are hard to investigate.
@@ -167,7 +169,7 @@ Yamada et al. suggest three reasons for this being the case.
     \item Existing CWR's include no span-level representation of entities, so these will have to be learned from a often small downstream dataset.
     \item While transformers are good at capturing relationships between single words, they have difficulty modelling such relationships between sequences of words, of which entities often consist.
     \item Finally, the word-based pretraining task is not suited for producing entity-level representations, as the masked language model (MLM) mostly learns to predict single words rather than entire entity spans.
-        An example is predicting ''saw'' in ''I came, I [MASK], I conquered'', where predicting the single word is clearly easier than predicting the entire entity.
+        An example is predicting ''Rings'' in ''We watched Peter Jackson's The Lord of the [MASK]'', where predicting the single word is clearly easier than predicting the entire entity.
 \end{itemize}
 LUKE, in contrast to BERT and RoBERTa, also considers entities as tokens, and it takes and inputs both word and entity tokens and produces both CWR's and CER's, respectively.
 This allows LUKE to deal with the listed problems of purely word-based language models.

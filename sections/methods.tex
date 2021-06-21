@@ -268,9 +268,9 @@ All code and documentation is available at \url{https://github.com/peleiden/dalu
 The pretrained model is available with MLM layers at \url{https://nx5746.your-storageshare.de/s/qDM2TE6m9CKmPWd}.
 The model finetuned on DaNE is available at \url{https://nx5746.your-storageshare.de/s/wxbY3TrwfAoYxb9}.
 Our software package is \code{pip} installable and runs on Python 3.8 and above.
-Simply run `pip install daluke` to install it on your computer.
+Simply run \code{pip install daluke} to install it on your computer with the Python package installer \code{pip} available.
 It allows for using DaLUKE for NER on text files directly from the command line.
-For instructions, see the readme on the repository.
+For instructions, see the read me fill on the repository.
 
 \paragraph{Implementation}
 Yamada et al. have made their code\footnote{\url{https://github.com/studio-ousia/luke}. Visited June 11, 2021.} freely available under the Apache License 2.0 \cite{apachelicense}.
@@ -285,7 +285,7 @@ Due to limited GPU availability, cryptic error messages, and an almost complete 
 These reasons compelled us to reimplement the model and training from scratch.
 This would also help us understand LUKE better due to being forced to work with all the details of the model and training tasks.
 Finally, it would make it much easier to fit the code to our needs, as we would have a much better understanding of the code base.
-The forked LUKE repository, available at \code{https://github.com/peleiden/luke}, is used for parts of the data-set preparation, but everything else has been reimplemented.
+The forked LUKE repository, available at \url{https://github.com/peleiden/luke}, is used for parts of the data-set preparation, but everything else has been reimplemented.
 Our code is inspired from the original LUKE code, but we have made efforts to make it more approachable by making the code more readable and better structured and especially by increasing the amount of documentation.
 
 Rewriting code bases always carries a risk of introducing bugs.
