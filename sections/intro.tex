@@ -10,6 +10,7 @@ The successful societal impact of these statistical methods such as deep learnin
 
 A clear example of this issue is the important field of natural language processing (NLP) that attacks the difficult task of understanding human language, one of the distinguishing aspects of our intelligence.
 NLP based on statistical methods from AI has in recent years taken sizable strides towards this understanding with large-scale models with names such as GPT-2, GPT-3, BERT, RoBERTa, ELMo and T5 gaining public attention and seeing practical use.
+%TODO Disse bør nok citeres
 
 The data hunger of these models results in natural languages with low amounts of available data, dubbed low resource languages, lacking severely behind in technical results and thus seeing less practical use of NLP.
 To avoid these regions falling behind in the AI race, these languages, that include Danish, have seen a growing trend of attention from the literature resulting in a diverse set of methods attempting learning in the data sparse case. \cite{hedderich2021survey}
@@ -17,7 +18,7 @@ To avoid these regions falling behind in the AI race, these languages, that incl
 One such possible mitigation is to let the statistical approach be influenced by explicit modelling of knowledge.
 In this project, language understanding in the low resource language Danish will be attempted using a new deep learning technique for NLP that succeeded with this modelling approach in English.
 The model, \emph{Language Understanding Using Knowledge Embeddings} (LUKE), was released in October of 2020 and explicitly handles the difference between single words and \emph{named entities} such as ''Lionel Messi'', ''The United States of America'' or ''Science'' \cite{yamada2020luke}.
-The model had in total seen training from 160 GB of text\footnotemark and achieved state of the art results on a number of classic NLP tasks such as named entity recognition (NER).
+The model had in total seen training from 160 GB of text\footnotemark~and achieved state of the art results on a number of classic NLP tasks such as named entity recognition (NER).
 \footnotetext{This includes all training that had an effect on the final model weights and thus also the data used to pretrain RoBERTa \cite[Sec. 3.2]{liu2019roberta}, the weights of which was used for initializing most of the LUKE weights. Counting only the data used for LUKE itself, the number is not directly reported but was found to be around 7 GB from our own experiments with the English LUKE data pipeline.}
 For Danish, the amount of suitable data for this technique is about 40 times smaller \footnotemark.
 \footnotetext{

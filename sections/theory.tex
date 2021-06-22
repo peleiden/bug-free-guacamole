@@ -1,9 +1,16 @@
+% !TeX spellcheck = en_GB
 \documentclass[main.tex]{subfiles}
 
 \begin{document}
 \chapter{Theory and State of the Art}
 \lhead{Theory and State of the Art}
 \label{chap:theory}
+With the advent of deep learning in the field of NLP, models have risen massively in complexity, requiring ever more compute and data.
+For instance, LUKE required 30 days of training on 16 Nvidia V100's \cite{yamada2020luke}, and that model already took advantage of RoBERTa, which was even more demanding to train \cite{liu2019roberta}.
+For this reason, the training of a language model is typically divided into two separate tasks:
+The pretraining, in which a model is trained that has little practical purpose but has general language understanding and produce \emph{contextualized word representations} (CWR's) that will be introduced in section \ref{sec:transformers}, and a downstream training in which the pretrained model is fine-tuned on a much smaller dataset for some specific language task, e.g. named entity recognition.
+
+Such pretrained models, producing CWR's, are called \emph{general-purpose language models} \cite[Ch. 2]{birk2020knowledge} and will in this project be referred to simply as \emph{language models}.
 
 \section{Named Entity Recognition}
 \begin{enumerate}
@@ -36,50 +43,88 @@ Researchers argue, however, that the task is not yet solved as the generalizatio
 
 The state of the art on English NER benchmarks moves quickly, but almost all algorithms currently (June 2021) achieving high scores in common benchmarks are deep neural networks and of the transformer architecture in particular \cite{ruder21ner, pwc21ner}.
 
-\section{Deep NLP in Danish: Embeddings and Transformers}
-\label{sec:nlpda}
-\begin{enumerate}
-    \item Skal jeg have nogle sjove, konkrete eksempler på embeddings og CWR'er?
-    \item Vis tegning af transformer
-    \item Skal der gives mere plads til at forklare BERT?
-    \item Skal prætrænings/finetunings-workflowet introduceres?
-\end{enumerate}
+\section{Embeddings, Tokenization and The Transformer}
+\label{sec:transformers}
 Danish is, compared to English, a low resource language:
 The world Danish speaking population is smaller than the English speaking population of the largest cities, naturally resulting in significantly fewer and smaller available text datasets, and in less attention from both researchers and practitioners.
 While pushing the performance of current NLP algorithms to their limits is much more difficult in low resource languages, the field of applied NLP in Danish has adopted many of the deep NLP developments of recent years.
 
-Two key, related technologies used in deep Danish NLP will be given short introductions in this section as they are also used in this project:
-Word embeddings and transformer based language models.
+Especially models based on the transformer neural network architecture \cite{vaswani2017att} currently dominate the Danish NER scene \cite{danlp2021}.
+To understand the transformer, a closer look is first taken at traditional word embeddings and their shortcomings.
 
+\paragraph{Word embeddings}
 Word embeddings are one of the most ubiqitous tools in the NLP toolbox and come in many variants, all sharing the general idea of mapping a word token to a real-valued vector representation corresponding to a semantic condensation of the word.
 When using the term \emph{embeddings}, we refer to the static, uncontextualized representations such as the \emph{fasttext}-based, 300-dimensional, Danish embeddings released by Edouard Grave et al. \cite{grave2018learning}.
 
-Word embeddings are part of many NLP pipelines and interact with other models in the large open source NLP frameworks \emph{SpaCy} \cite{honnibal2020spacy} and \emph{Flair} \cite{akbik2019flair} which also release pretrained Danish models.
-These frameworks that combine embeddings with different, ever-improving language models have been successfully used to gain state of the art performance in Danish NLP tasks.
+One of the challenges in language modelling is that many words change their meaning completely depending on the context in which they appear.
+Consider for instance, the sentences "Musen jagtede elefanten" and "Musen blev brugt til at styre computeren".
+"Musen" ("the mouse" in English) appears identically in both sentences, but with widely different meanings, which embeddings have a hard time modelling.
+In the latent space of the embeddings, one would expect "musen" to be close to other species from the animal kingdom, but also close to computer parts.
+This would in turn cause computer parts to be placed close to animals, which is not ideal.
+This issue with embeddings is where the transformer comes in.
+
+%TODO Eksempler på embeddings og CWRs af "musen"
+
+\paragraph{The Transformer}
+Introduced by Ashish Vaswani et al. in 2017 \cite{vaswani2017att}, the goal of the transformer is to produce \emph{contextualized word representations} (CWR) given static, but learned embeddings.
+CWR's are similar to embeddings in that they are real-valued vector representations of words that take into account the context.
+
+Transformers are not the first attempt to solve this problem of producing effective CWR's.
+Older architectures such as recurrent neural networks \cite[Ch. 10]{Goodfellow-et-al-2016} and long short-term memory networks \cite{hochreiter1997lstm} have yielded good results, but they have three weaknesses: First of, they only include context up to the given word, and secondly, they struggle with long-term dependencies due to their sequential nature resulting in poor information preservation \cite{Goodfellow-et-al-2016}.
+Finally, the sequentiality of their calculations also limits how parallelized training and inference can be.
+The first issue has been solved by the introduction of bi-directional versions of these network types \cite{schuster1997birnn}.
+The second issue of long-term dependencies and the third of parallelizability is what the transformer seeks to tackle.
+
+Both of these issues are solved by the attention mechanism.
+Instead of sequentially letting each token update the state as in traditional language models, the relevance of all tokens to all other tokens are calculated simultaneously, which can be done in parallel while not loosing any information to an iterative state update.
+
+The transformer uses an encoder-decoder structure with the encoder producing the CWR's.
+The encoder is made of several attention blocks feeding into each other with feed forward networks and layer normalizations in between.
+The attention blocks are each made up of three learnable matrices: the query, key, and value matrices.
+The word embeddings are structured in a single matrix with token embeddings in the rows and multiplied upon the three matrices before the attention scores calculated.
+This allows every token to be considered simultaneously, independently, and equally, solving both the described issues.
+\cite{vaswani2017att}
+
+Models based directly on the transformer have been trained on very large corpora to produce English language models such as BERT \cite{devlin2019bert}, RoBERTa \cite{liu2019roberta} and GPT-3 \cite{brown2020language} that have achieved state of the art in several downstream language tasks.
+%TODO Skal der gives mere plads til at forklare BERT?
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\linewidth]{imgs/transformer}
+    \caption{The transformer model as introduced by Vaswani et al. \cite{vaswani2017att}}
+    \label{fig:transformer}
+\end{figure}\noindent
+
+\paragraph{Tokenization}
+So far, all discussion regarding tokenization has simply regarded all unique words in the corpus as tokens.
+However, this is not an optimal way to tokenize text due to how many forms words can exist in.
+Just consider, for instance, how many ways a verb can be conjugated.
+It still carries much of the same meaning, but an embedding will have to be learned for every single conjugation.
+One way to handle this is through lemmatization where words are reduced to their stems.
+However, this method is prone to information loss.
+A more efficient way of tokenizing has been presented by Sennrich et al. \cite{sennrich-etal-2016-neural} that uses the byte-pair encoding (BPE) compression algorithm.
+This method produces a token vocabulary of a given size from the corpus where each token is either a full word or a sub-word.
+BERT uses the WordPiece BPE token vocabulary which contains 30,000 tokens that have been learned with heuristic tokenization rules \cite{wu2016tokenize} \cite{devlin2019bert}.
+Radford et al. \cite{Radford2019gpt2} modify BPE tokenization for the GPT-2 transformer such that splits are made on the byte level rather than on the character level, which works better on corpora containing many non-ASCII characters.
+This method is used by RoBERTa to produce a token vocabulary of size 50,000 \cite{liu2019roberta}.
+LUKE directly uses RoBERTa's tokenizer \cite{yamada2020luke}.
+
+\section{Deep Natural Language Processing in Danish}
+\label{sec:nlpda}
+As mentioned earlier, static embeddings are a core part of many NLP pipelines and have been for a long time.
+In the large, open source NLP frameworks \emph{SpaCy} \cite{honnibal2020spacy} and \emph{Flair} \cite{akbik2019flair}, which also release pretrained Danish models, the embeddings interact with different, ever-improving language models.
+This has successfully resulted in state of the art on multiple Danish NLP tasks.
 The Alexandra Institute, a Denmark based AI research and development organization, release versions of both Flair and SpaCy finetuned on a number of benchmarks, including NER, and acquire close to state of the art performance using these.
 The benchmarks, results and finetuned, Danish models are released as a part of their open source DaNLP project gathering resources for Danish NEk\cite{danlp2021}.
 Another application of exsting NLP frameworks was performed by Kenneth Enevoldsen, Center of Humanities Computing, Aarhus University in releasing the model \emph{DaCy}, based on version 3 of SpaCy \cite{enevoldsen2020dacy}.
 
-These frameworks use more than static word embeddings under the hood, however:
-The current, high performing NLP algorithms in Danish rely on representing language contextually; that is, letting the vector representation of a token be dependant on its' context.
-This simple idea expresses the common sense notion that the word \emph{dark} should be treated differently by NLP algorithms in the examples ''Her thoughts were dark'', ''Her hair was dark''.
-This requires the substitution of the simple dictionary mappings used for the static embeddings with, instead, models that can take the text as input and represents the context.
-Such models, producing vector representations of tokens in documents using the document context, are called \emph{general-purpose language models} \cite[Chap. 2]{birk2020knowledge} or \emph{contextualized word representation language models} \cite[Sec. 2]{yamada2020luke} and will in this project be referred to simply as \emph{language models}.
+In Danish, the most significant, pretrained language model is in our estimation a Danish version of BERT, released by the company BotXO in 2019 \cite{botxo2019dabert} .
+This model, in the following called \emph{da-BERT}, is produced by pretraining the base version of the very influential architecture \emph{Bidirectional Encoder Representations from Transformers} (BERT) \cite{devlin2019bert} on 10 GB of Danish text predominantly acquired from web scrapes.
+The da-BERT model has been finetuned on most Danish benchmarks in the DaNLP project and consistently yield top results \cite{danlp2021, hvingelby2020dane}.
 
-Multiple architectures exist for these language models, but the state of the art in Danish NLP benchmarks is dominated by one type: The transformer.
-This deep neural network-based model employs the idea of \emph{attention}:
-Calculating weights between the tokens in the document expressing their relevance for each other by scaled dot products with learned, real-valued matrices.
-In the transformer, these attention calculations are done iteratively for a number of layers making up the \emph{encoder} which produces the contextualized word representations (CWR's) from the static word embeddings of each token.
-This architecture, proposed in 2017 by Ashish Vaswani et al. \cite{vaswani2017att}, has been trained on very large corpora to produce state of the art, English language models such as BERT \cite{devlin2019bert}, RoBERTa \cite{liu2019roberta} and GPT-3 \cite{brown2020language}.
-
-In Danish, the most significant, pretrained language model is in our estimation a Danish version of the transfomer BERT released by the company BotXO in 2019 \cite{botxo2019dabert} .
-This model, in the following called \emph{daBERT}, is produced by pretraining the base version of the very influential architecture \emph{Bidirectional Encoder Representations from Transformers} (BERT) \cite{devlin2019bert} on 10 GB of Danish text predominantly acquired from web scrapes.
-The daBERT model has been finetuned on most Danish benchmarks in the DaNLP project and consistently yield top results \cite{danlp2021, hvingelby2020dane}.
-
-Another, more recent, Danish transformer is the adaption of the more ressource efficient language model Electra to Danish under the name Ælæctra by Malte Hømark-Bertelsen, KMD and Aarhus University \cite{bertelsen2020lctra}.
+Another, more recent, Danish transformer is the adaption of the more resource efficient language model Electra to Danish under the name Ælæctra by Malte Hømark-Bertelsen, KMD and Aarhus University \cite{bertelsen2020lctra}.
 NER finetuned versions of Ælæctra and some multilingual transformers have been released by Ekstra Bladet Analyse under the project \emph{NER for Danish} (NERDA) \cite{kjeldgaard2020nerda}.
 
-Of this plethora of Danish language models and NLP frameworks, the current (June 2021) state of the art (SOTA) on central NER benchmarks is, according to DaNLP, the 2021 newcomer DaCy which surpassed DaNLP's fine-tuned daBERT model which was SOTA at the beginning of this project \footnotemark.
+Of this plethora of Danish language models and NLP frameworks, the current (June 2021) state of the art (SOTA) on central NER benchmarks is, according to DaNLP, the 2021 newcomer DaCy which surpassed DaNLP's fine-tuned da-BERT model which was SOTA at the beginning of this project \footnotemark.
 \footnotetext{
     A table of the results can be seen at the DaNLP repository at \url{https://github.com/alexandrainst/danlp} under \code{docs/docs/tasks/ner.md}.
 }

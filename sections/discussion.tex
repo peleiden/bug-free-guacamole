@@ -398,7 +398,7 @@ The NER performance of this model was, following the approach in the previous ex
     \end{tabular}
     \caption{The finetuning results of the entity vocabulary limiting pretraining experiment.}
     \label{tab:ent-limit}
-\end{table}
+\end{table}\noindent
 % 2021-06-11 15:26:30.316    INFO                      precision    recall  f1-score   support
 
 %                                                 LOC     0.8878    0.9062    0.8969        96
@@ -409,7 +409,6 @@ The NER performance of this model was, following the approach in the previous ex
 %                                           micro avg     0.8506    0.7957    0.8222       558
 %                                           macro avg     0.8402    0.7934    0.8150       558
 %                                        weighted avg     0.8455    0.7957    0.8188       558
-
 Conclusively, the results of this experiment are close to the baseline, signifying robustness in the approach.
 However, with these hyperparameters, the removal of entities does not seem promising for the Danish data set.
 
@@ -822,12 +821,8 @@ Two fine-tuning experiments are performed by altering this entity feature approa
 \label{subsec:mlmpreds}
 \begin{enumerate}
     \item Måske ryk noget af det følgende ævl op i teori
+    \item I pap udskære
 \end{enumerate}
-The transformer architecture \cite{vaswani2017att} is designed handle long-term dependencies better than older network architectures used for language modelling such as recurrent neural networks and long short-term memory networks \cite{hochreiter1997lstm}.
-Furthermore, the traditional versions of these models only include context up to the word in question.
-If context is given in the next word or sentence, it would not be included.
-While bidirectional versions of these architectures make sure all context is included \cite{schuster1997birnn}, they still struggle with long-term dependencies.
-\cite{Goodfellow-et-al-2016}
 
 To demonstrate DaLUKE's ability to consider context, an example with various subsets is constructed.
 \begin{align*}
