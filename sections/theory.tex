@@ -211,32 +211,44 @@ Yamada et al. show that this approach leads to state of the art results on a num
     \item Finally, the word-based pretraining task is not suited for producing entity-level representations, as the masked language model (MLM) mostly learns to predict single words rather than entire entity spans.
         An example is predicting ''Rings'' in ''We watched Peter Jackson's The Lord of the [MASK]'', where predicting the single word is clearly easier than predicting the entire entity.
 \end{itemize}
-The LUKE idea is to consider entities as first-class citizens in language modelling along with words, maintaining vocabularies of both entity and word tokens.
+The LUKE idea is to consider entities as first-class citizens of text documents along with words, maintaining vocabularies of both entity and word tokens.
 
-\subsection{Architecture}
-LUKE is a transformer that operates on input sequences using trainable word and entity embeddings which are encoded by 24 self-attention transformer layers.
-% \begin{figure}[H]
-%     \centering
-%         \includegraphics[width=\linewidth]{}
-%     \caption{}
-%     \label{fig:}
-% \end{figure}\noindent
+\paragraph{Tokenization}
+An input example for LUKE consists both of a sequence of words and a set of entities mentioned in the document, such as:
+\begin{itemize}
+    \item ''Biden is oldest president of the United States to date.''
+    \item $\{\text{\emph{Joe Biden} at word \#1}, \text{\emph{The United States of America} at words \#7-8}\}$.
+\end{itemize}
+The text sequence is tokenized into $m$ subword tokens using the RoBERTa tokenizer.
+The entities are all converted to $n$ entity tokens; integer values corresponding to indeces in a vocabulary of known, named entities.
+The positions of the entities are included in the further inference as \emph{position ids}.
 
+\paragraph{Entity Embeddings}
+The subword tokens are forward passed through the same word embedding architecture as that of RoBERTa,
 
-After these, the model can be extended with a decoder consisting of bi-directional classifications heads for pretraining, or it can be extended with linear layers for downstream tasks.
-
-\subsubsection{BERT Architecture}
-The word/entity duality of LUKE means that a large part of the model performs the same task as the conventional word-based language models.
-For this reason, the word embeddings in LUKE follow the BERT architecture and Yamada et al. initialize these embeddings to those found in RoBERTa.
-In the pre-training of Yamada et al., the encoder of LUKE is also equivalent with that of BERT and is initialized the weights of RoBERTa.
-
-\subsubsection{Entity Embeddings}
-The only architectural difference between LUKE and BERT in the pretraining of Yamada et al. (apart from pretraining specific heads) is the addition of a map from entity id's and entity position id's to entity embeddings.
+% The only architectural difference between LUKE and BERT in the \emph{pretraining} performed Yamada et al. (apart from pretraining specific heads) is the addition of a map from entity id's and entity position id's to entity embeddings.
 This part of the model consists of lookup tables that store values for each possible id.
 For the entity token id embedding, the size of the lookup table corresponds to the size of the entity vocabulary.
 
 The entity embeddings are concatenated to the word embeddings and are passed through the encoder such that the two token domains exist in the same latent space.
 After the encoding, the output can be split into representations for the words and entities in the sequence.
+
+\begin{figure}[H]
+    \centering
+        \input{imgs/luke_tikz.tex}
+    \caption{
+        Overview of the LUKE pipeline from annotated text to contextualized representations of both words and entities.
+        $w_i, e_i, x_i$ all reside $\in \RR^H$ with $H=768$ in the LUKE implementation.
+    }
+    \label{fig:}
+\end{figure}\noindent
+After these, the model can be extended with a decoder consisting of bi-directional classifications heads for pretraining, or it can be extended with linear layers for downstream tasks.
+
+\paragraph{BERT Architecture}
+The word/entity duality of LUKE means that a large part of the model performs the same task as the conventional word-based language models.
+For this reason, the word embeddings in LUKE follow the BERT architecture and Yamada et al. initialize these embeddings to those found in RoBERTa.
+In the pre-training of Yamada et al., the encoder of LUKE is also equivalent with that of BERT and is initialized the weights of RoBERTa.
+
 
 \subsubsection{Entity-aware Self-attention}
 \label{subsubsec:entityaware}

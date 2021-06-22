@@ -1,0 +1,60 @@
+\begin{tikzpicture}[shorten >=1pt,->,draw=black!90]
+\tikzstyle{every pin edge}=[<-,shorten <=1pt]
+\tikzstyle{path} = [ultra thick]
+\tikzstyle{neuron}=[circle,fill=black!25,minimum size=17pt,inner sep=0pt]
+
+\tikzstyle{shared neuron}=[neuron, fill=purple!90];
+\tikzstyle{word neuron}=[neuron, fill=blue!90];
+\tikzstyle{entity neuron}=[neuron, fill=red!90];
+
+\tikzstyle{annot} = [text width=10em, text centered]
+
+\node[annot] (I) at (-2, 0) {\footnotesize Text sequence with annotated entities};
+
+\node[word neuron] (T-W) at (0, 2) {};
+\node[entity neuron] (T-E) at (0, -2) {};
+\node[annot, above of=T-W, node distance=1 cm] {Word tokenizer};
+\node[annot, below of=T-E, node distance=1 cm] {Entity tokenizer};
+
+\path (I) edge (T-W);
+\path (I) edge (T-E);
+
+\node[word neuron] (E-W) at (4, 2) {};
+\node[entity neuron] (E-E) at (4, -2) {};
+\node[annot, above of=E-W, node distance=1 cm] {Word embeddings};
+\node[annot, below of=E-E, node distance=1 cm] {Entity embeddings};
+
+\path (T-W) edge (E-W);
+\path (T-E) edge (E-E);
+
+\node[annot] at (2, 2.25) {\footnotesize $m$ subword ids};
+\node[annot, text width=5em] at (2, -2) {\footnotesize $n$ entity and position ids};
+
+\node[rectangle, draw = black,
+    text = white,
+    align=center,
+    fill = Plum,
+    minimum width = 4cm,
+    minimum height = 2cm
+    ] (T) at (6,0) {Transformer:\\\(24\times\text{attention}\)};
+
+\path (E-W) edge (T);
+\path (E-E) edge (T);
+
+\node[annot, text width=4em] at (5.25, 1.5) {\footnotesize $\mathbf w_{1, \ldots, m}$};
+\node[annot, text width=4em] at (5.25, -1.5) {\footnotesize $\mathbf e_{1, \ldots, n}$};
+
+\node[annot, text width=1em] at (9,0) {\footnotesize
+    $\begin{bmatrix}
+    \textcolor{blue!90}{\mathbf x_1}     \\
+    \textcolor{blue!90}{\vdots}  \\
+    \textcolor{blue!90}{\mathbf x_{m}}   \\
+    \textcolor{red!90}{\mathbf x_{m+1}} \\
+    \textcolor{red!90}{\vdots}  \\
+    \textcolor{red!90}{\mathbf x_{m + n}}
+    \end{bmatrix}
+    $
+};
+\path (T) edge (8.75, 0);
+
+\end{tikzpicture}
