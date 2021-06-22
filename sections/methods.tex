@@ -9,9 +9,6 @@
 \section{Benchmarking Named Entity Recognition}
 \subsection{Evaluation of NER}
 \label{subsec:nereval}
-\begin{enumerate}
-    \item Nævn med/uden MISC, eller er det for åbenlyst?
-\end{enumerate}
 As explained in Section \ref{subsec:annoschemes}, all datasets used in the project supply an annotation label in IOB format \cite{ramshaw1995IOB} for each word in each sequence.
 Comparing two such sequences, there are a number of potential error patterns as both the span and the type of the entity is to be guessed, see Table~\ref{tab:eval}.
 \begin{table}[H]
@@ -60,7 +57,13 @@ Following previous literature, the main score on which the system performance wa
     \label{eq:f1}
     \text{F1} = \dfrac{2}{\nicefrac 1 {\text{Precision}} + \nicefrac 1 {\text{Recall}}}.
 \end{equation}
+
 The reported score were obtained using a Python sequence evaluation library \cite{seqeval}, also used by the original LUKE paper and DaNLP, with whom comparisons are made.
+
+Two of the three used datasets contains MISC annotations and existing literature disagrees on whether to consider this class in evaluations with DaNLP arguing
+''We are only reporting the scores on the LOC, ORG and PER entities as the MISC category has limited practical use'' \cite[Sec. ''Benchmarks'' in NER page]{danlp2021}.
+We trained all models with the MISC annotation and also include it in our evaluations.
+When comparing with models trained without MISC, a non-MISC average F1 score is also reported (by treating all MISC predictions as null clas pridctions).
 \subsection{Fine-tuning English LUKE}
 Yamada et al. benchmark LUKE, on Named Entity Recognition using the CoNLL-2003 dataset \cite{yamada2020luke}.
 
@@ -194,15 +197,11 @@ Top 1, 3, 5, and 10 accuracies are calculated for both the masked word and maske
 
 \subsection{Fine-tuning DaLUKE for Named Entity Recognition}%
 \label{sub:finetune-ner}
-The fine-tuning of DaLUKE largely follows that of LUKE, described in section \ref{sec:LUKE}.
-Fine-tuning is performed on the three Danish NER datasets DaNE, Plank, and Wiki-ANN.
-Unlike Wiki-ANN, DaNE and Plank both contain MISC annotations.
-Existing models are inconsistent in whether or not they train and/or evaluate using MISC on these datasets (see table \ref{tab:daNERdata}).
-For this reason, we always train using MISC but evaluate both with and without it.
-When evaluating without MISC, MISC predictions are treated as non-entity predictions.
+The fine-tuning of DaLUKE largely followed that of LUKE, described in section \ref{sec:LUKE}.
+The main DaLUKE NER model was produced by fine-tuning on DaNE.
 
-After each epoch, the model is evaluated on the development (validation) split of the dataset.
-If it gets a better score than the hitherto best checkpoint, the checkpoint is overwritten.
+After each epoch, the model was evaluated on the development (validation) split of the dataset.
+When better score than the hitherto best checkpoint was found, the checkpoint is overwritten.
 The best checkpoint of the model was used for evaluation on the test set.
 
 \paragraph{Learning rate}
@@ -213,10 +212,9 @@ Howard and Ruder have also shown that the slanted triangle approach for fine-tun
 Due to the nature of the $ n $-grams, only very few spans actually cover entities, making the O class dominate the dataset.
 For instance, in the training set of DaNE, the O class accounts for 99.3\pro\ of spans.
 Furthermore, the actual entities themselves are not perfectly balanced as all things should be.
-This naturally poses the question: Will class-weighted cross entropy loss perform better?
+This motivated us to implement class frequency-weighted, the performance of which is discussed in section \ref{subsec:lossexp}.
 
-This is investigated in section \ref{sec:finetuning-exp}.
-The class-weighted loss $ l_w $ is calculated similarly to the unweighted loss in equation \eqref{eq:crossentropyloss}:
+The class-weighted loss $ l_w $ was calculated similarly to the unweighted loss in equation \eqref{eq:crossentropyloss}:
 \begin{equation}\label{eq:w-crossentropyloss}
     l_w = \frac{1}{\sum_{j=1}^{C} w_j}
     \sum_{i=1}^N w_{c_i} \left(
@@ -224,14 +222,12 @@ The class-weighted loss $ l_w $ is calculated similarly to the unweighted loss i
     \right)
 \end{equation}
 where $ w_j $ is weight of class $ j $ \cite{pytorchcel}.
-There are multiple ways to define the class weights.
-Arguably the simplest, and the one used here, is the reciprocal of the number of occurrences of each class in the dataset.
+We used the reciprocal of the number of occurences of each class in the training dataset.
 
-Unless otherwise stated, all fine-tunings presented in the rest of the paper use the non-weighted loss.
+Unless otherwise stated, all fine-tunings presented in the rest of the report use the non-weighted loss.
 
 \paragraph{Hyperparameter search}
-The used finetuning datasets all include development (validation) datasets in addition to the training and testing splits.
-The development set of DaNE was used to guide the search for fine-tuning hyperparameters for the final model.
+The development set of DaNE was used to guide a simple search for fine-tuning hyperparameters for the final model.
 The search is performed by repeating the training procedure with all combinations of the following parameter values that were chosen based on previous, informal experimentation.
 \begin{enumerate}
     \item Batch size $\in\{8, 16\}$

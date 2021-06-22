@@ -13,10 +13,6 @@ Unless stated otherwise, the hyperparameters from table \ref{tab:pretrain-hyper}
 The experiments were trained primarily on a $ 1\times$A100 configuration.
 Due to its negative effect on runtime on A100's (see figure \ref{fig:runtime}), AMP is not used for any of the following experiments.
 %TODO Lukas' ting om da-BERTs undertræning. Måske et andet sted end her
-
-All of the models presented here are evaluated on the DaNE test set \emph{with} MISC annotations included.
-This is because only the performances relative to the baseline model rather than other NER models is interesting.
-
 \subsection{The Parameter Population}
 Figure \ref{fig:weight-dist} shows the distribution before and after pretraining divided by whether or not a given parameter was initialized from da-BERT.
 \begin{figure}[H]
@@ -773,6 +769,31 @@ To add detail to the ability to generalize across these three datasets, DaLUKE i
     \item Inkluder ref fig:dadatadist og tab:danedist
 \end{enumerate}
 
+\subsection{Class-weighted Loss}
+\label{subsec:lossexp}
+Cross entropy loss weighted by the number of training examples in each class was speculated to improve performance on the class-imbalanced NER task in which 99.3\pro\ of spans are not entities.
+In the hyperparameter search, all combinations of learning hyperparameters were also tried with this weighting of loss defined in formula \eqref{eq:w-crossentropyloss}.
+From the results at Table~\ref{tab:hyperres}, no general improvement could be seen when weighting and the best combinations were slightly worse when using this approach.
+However, two experiments with suboptimal hyperparameters of high learning rate, high dropout and low weight decay resulted in the model degenerating to predicting the positive entity classes much too often as seen from Table~\ref{tab:clsgood}.
+Interestingly, this problem was mitigated when using class-weighted loss, an unintuitive result in our estimation as we expected this weighting to motivate more positive predictions.
+
+\begin{table}[H]
+    \footnotesize
+    \begin{tabular}{lllll|rrr}
+        Batch size & Learning rate & Weight decay & Dropout & Loss weight & F1    &  Precision & Recall\\\hline
+        8& 5\ctp{-5}& 0.01& 0.1& Yes         & 84.96 &  80.45 &  90.00\\
+        8& 5\ctp{-5}& 0.01& 0.1& No          & 31.53 &  19.86 &  76.46\\
+        16& 5\ctp{-5}& 0.01& 0.1& Yes        & 82.66 &  76.88 &  89.38\\
+        16& 5\ctp{-5}& 0.01& 0.1& No         & 29.21 &  18.08 &  76.04
+    \end{tabular}
+    \caption{
+        The only hyperparameter search experiments in which class-weighted loss clearly improved performance.
+        The unweighted experiments suffer from very high recall and low precision, corresponding to many false positives
+    }
+    \label{tab:clsgood}
+\end{table}\noindent
+Conclusively, this idea did not benefit our main results, a testament to the robustness of gradient learning, but gave an example of how strategies for class imbalance can be necessary when the learning is less stable.
+
 \subsection{Feature Usage}%
 \label{sub:Feature Usage}
 An entity candidate forward passed through the final, classifying layer in the NER model is comprised of the concatenation of word representations of first and final sub-word tokens, and, novelly for LUKE, a contextual representation of the entity span.
@@ -794,8 +815,6 @@ Two fine-tuning experiments are performed by altering this entity feature approa
     }
     \label{tab:concat}
 \end{table}
-
-% \subsection{Class-weighted Loss} %TODO: Interessant
 
 \section{Predictions: What Is Learned?}
 

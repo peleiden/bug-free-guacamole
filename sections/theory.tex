@@ -20,18 +20,12 @@ For the string
     }
 \]
 a correct result could be
-\begin{align*}
-    & \text{
-        ''\emph{Caesar} is a person,
-        \emph{marched} is not a NE,
-        \emph{on} is not a NE,
-        \emph{Rome} is a location,
-    }\\
-    &\text{
-        \emph{defying} is not a NE,
-        \emph{the Senate of the Roman Republic} is an organization''.
-    }
-\end{align*}
+\begin{itemize}
+    \item \emph{Caesar} is a person 
+    \item \emph{Rome} is a location,
+    \item \emph{the Senate of the Roman Republic} is an organization,
+    \item and all other words are not part of named entities.
+\end{itemize}
 There are multiple ambiguities in this formulation of the problem but this is a common issue for the problem, as the set of NE types varies between benchmarks and as the definition of a NE is unsettled with possible answers including proper nouns, rigid designators and unique identifiers \cite[Sec. 4]{marrero2013ner}.
 For the benchmarks used in this project, the NE categories and annotation formats are introduced in Section~\ref{sec:nerdata} while the evaluation of the performance of NER algorithms is discussed in Section~\ref{subsec:nereval}.
 
