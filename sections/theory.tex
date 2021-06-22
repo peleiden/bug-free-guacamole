@@ -155,21 +155,29 @@ On all benchmarks tested by the LUKE team \cite{yamada2020luke}, none of the abo
 LUKE (Language Understanding with Knowledge-based Embeddings) is a language model introduced by Yamada et al. in November of 2020 \cite{yamada2020luke}.
 As the model is tested and extended in this project, key properties of the architecture and pretraining methodology are presented in this section.
 
-While architecturally similar to models such as BERT \cite{devlin2019bert} and RoBERTa \cite{liu2019roberta}, LUKE not only produces contextualized word representations (CWR), but also contextualized entity representations (CER), which, as Yamada et al. show, leads to state-of-the-art results on a number of entity-related tasks.
+As other new models discussed previously, LUKE builds on the BERT transformer architecture \cite{devlin2019bert}, adding a knowledge-enhancing pretraining task.
+But the LUKE encoder does not only produces contextualized word representations (CWR); 
+\emph{entities} are also represented by the encoder by mapping each entity to the same latent space as the words.
 
-BERT \cite{devlin2019bert} and RoBERTa \cite{liu2019roberta} yield strong, general-purpose CWR's that are effective for many different NLP tasks but are often suboptimal for entity-related tasks.
-Yamada et al. suggest three reasons for this being the case.
+Yamada et al. show that this approach leads to state of the art results on a number of entity-related tasks, such as NER, and argue that the LUKE approach mitigates the following issues with existing methods:
 \begin{itemize}
-    \item Existing CWR's include no span-level representation of entities, so these will have to be learned from a often small downstream dataset.
+    \item Existing CWR's cannot represent spans of multiple words requiring more downstream learning for language tasks in which word spans are important.
     \item While transformers are good at capturing relationships between single words, they have difficulty modelling such relationships between sequences of words, of which entities often consist.
     \item Finally, the word-based pretraining task is not suited for producing entity-level representations, as the masked language model (MLM) mostly learns to predict single words rather than entire entity spans.
         An example is predicting ''Rings'' in ''We watched Peter Jackson's The Lord of the [MASK]'', where predicting the single word is clearly easier than predicting the entire entity.
 \end{itemize}
-LUKE, in contrast to BERT and RoBERTa, also considers entities as tokens, and it takes and inputs both word and entity tokens and produces both CWR's and CER's, respectively.
-This allows LUKE to deal with the listed problems of purely word-based language models.
+The LUKE idea is to consider entities as first-class citizens in language modelling along with words, maintaining vocabularies of both entity and word tokens.
 
 \subsection{Architecture}
 LUKE is a transformer that operates on input sequences using trainable word and entity embeddings which are encoded by 24 self-attention transformer layers.
+% \begin{figure}[H]
+%     \centering
+%         \includegraphics[width=\linewidth]{}
+%     \caption{}
+%     \label{fig:}
+% \end{figure}\noindent
+
+
 After these, the model can be extended with a decoder consisting of bi-directional classifications heads for pretraining, or it can be extended with linear layers for downstream tasks.
 
 \subsubsection{BERT Architecture}
