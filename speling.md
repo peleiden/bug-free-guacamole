@@ -10,3 +10,4 @@
 - DaNLP
 - named entity recognition
 - subword
+- art of the state

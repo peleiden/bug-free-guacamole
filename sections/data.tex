@@ -1,3 +1,4 @@
+% !TeX spellcheck = en_GB
 \documentclass[main.tex]{subfiles}
 
 \begin{document}
@@ -10,12 +11,12 @@
 For pretraining LUKE, a corpus of entity annotated text is needed.
 Entity annotations consist of two things: The word span and the name of the entity.
 No text is written directly with such annotations in mind.
-However, embedded hyperlinks implicitly provide the word spans, however these often point to other articles, pages, etc. rather than specific items.
+However, some texts such as news articles often contain embedded hyperlinks that implicitly provide the word spans, but these often point to other articles rather than specific items.
 On Wikipedia this is not the case, as hyperlinks point to articles on specific topics, which makes it useful for LUKE's pretraining task.
 Given its size, Wikipedia then is a particularly useful pretraining dataset.
 
-The Danish Wikipedia from March 1st, 2021 is used for building the dataset.
-It contains 80,187,419 words spanning 287,594 content pages, the titles of which make up the entity vocabulary.
+As of June 23rd, the Danish Wikipedia has 267,408 content pages containing a total of 81,822,460 words\footnote{\url{https://da.wikipedia.org/wiki/Speciel:Statistik}. Visited June 23, 2021.}.
+The Danish Wikipedia from March 1st, 2021, which is marginally smaller, is used for building the dataset.
 Yamada et al. limit the entity vocabulary to the 500,000 most often linked pages \cite{yamada2020luke}.
 As the Danish Wikipedia is only roughly 2.5\pro\ the size of the English Wikipedia, no limit on the entity vocabulary is imposed to preserve data.
 
@@ -29,16 +30,15 @@ Word spans over tokens is also saved, as the MLM pretraining task is done on a w
 Sub-word and entity tokens are masked using the [MASK] token.
 The [UNK] special token is reserved for sub-words that are not part of the tokenizer's vocabulary.
 
+%TODO Make sure itemize is not broken up with a page
 Thus, an entry in the dataset -- called an example -- consists of the following:
 \begin{itemize}
-%TODO Spacing
     \item An array of at most 512 sub-words token ID's
     \item An array of at most 128 entity ID's
     \item An array of two-tuples containing the start and end indices for every entity
     \item An array of two-tuples containing the start and end indices for every word
 \end{itemize}
-The dataset is the set of all examples from all articles.
-%TODO List all special tokens
+The pretraining dataset is the set of all examples from all articles.
 
 \subsection{Entity Augmentations}
 \label{subsec:entaug}
@@ -51,7 +51,7 @@ This results in false negatives where entities are not annotated.
 In order to augment the entity annotations, we perform preprocessing on Wikipedia prior to pretraining.
 Our preprocessing consists of the following two steps applied article-wise:
 \begin{enumerate}
-    \item Get set of mentioned articles including the title of the article itself.
+    \item Get the set of mentioned articles including the title of the article itself.
     Only include titles of at least three characters.
     \item For each title, check if it matches a sequence of characters following a whitespace, ignoring casing.
     If there is a match, annotate and go to next whitespace.
@@ -89,7 +89,7 @@ Table \ref{tab:metadata} shows how these augmentation steps change the propertie
 
 \subsection{Danish NER Test Sets}
 \label{subsec:daNERdata}
-For the task of evaluating benchmarking both existing and new Danish Named Entity Recognition (NER) models, three publicly available datasets previously used in the literature were identified.
+For the task of benchmarking both existing and new Danish Named Entity Recognition (NER) models, three publicly available datasets previously used in the literature were identified.
 
 \paragraph{Danish Universal Dependencies}
 Danish Universal Dependencies of Danish Dependency Treebank (UD-DDT) is a grammatically annotated dataset produced by converting the Danish Dependency Treebank corpus \cite{kromann2003ddt} to the Universal Dependency annotation format \cite{johann2015udddt}.

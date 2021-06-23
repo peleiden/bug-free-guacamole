@@ -28,7 +28,7 @@ For the string
 \]
 a correct result could be
 \begin{itemize}
-    \item \emph{Caesar} is a person 
+    \item \emph{Caesar} is a person,
     \item \emph{Rome} is a location,
     \item \emph{the Senate of the Roman Republic} is an organization,
     \item and all other words are not part of named entities.
@@ -38,15 +38,15 @@ For the benchmarks used in this project, the NE categories and annotation format
 
 NER is not just used as a benchmark for language understanding:
 In the applied field of information retrieval, semantic annotation and question answering systems rely on NER to control the information focus \cite[Sec. 2]{marrero2013ner}.
-This task of both research and practical interest was defined in the 90's and has been active and competitive, especially in English where state of the art methods achieve close to human performance on some classic benchmarks \cite{wiki2021ner, marrero2013ner}.
+This task of both research and practical interest was defined in the 90's and has been active and competitive, especially in English where SOTA methods achieve close to human performance on some classic benchmarks \cite{wiki2021ner, marrero2013ner}.
 Researchers argue, however, that the task is not yet solved as the generalization of the statistical algorithms fitted to one NER data set to new examples is poor \cite[Sec. 7.2]{marrero2013ner}.
 
-The state of the art on English NER benchmarks moves quickly, but almost all algorithms currently (June 2021) achieving high scores in common benchmarks are deep neural networks and of the transformer architecture in particular \cite{ruder21ner, pwc21ner}.
+The SOTA on English NER benchmarks moves quickly, but almost all algorithms currently (June 2021) achieving high scores in common benchmarks are deep neural networks and of the transformer architecture in particular \cite{ruder21ner, pwc21ner}.
 
 \section{Embeddings, Tokenization and The Transformer}
 \label{sec:transformers}
 Danish is, compared to English, a low resource language:
-The world Danish speaking population is smaller than the English speaking population of the largest cities, naturally resulting in significantly fewer and smaller available text datasets, and in less attention from both researchers and practitioners.
+The world's Danish speaking population is smaller than the English speaking population of large cities, naturally resulting in significantly fewer and smaller available text datasets, and in less attention from both researchers and practitioners.
 While pushing the performance of current NLP algorithms to their limits is much more difficult in low resource languages, the field of applied NLP in Danish has adopted many of the deep NLP developments of recent years.
 
 Especially models based on the transformer neural network architecture \cite{vaswani2017att} currently dominate the Danish NER scene \cite{danlp2021}.
@@ -63,7 +63,7 @@ In the latent space of the embeddings, one would expect "musen" to be close to o
 This would in turn cause computer parts to be placed close to animals, which is not ideal.
 This issue with embeddings is where the transformer comes in.
 
-%TODO Eksempler på embeddings og CWRs af "musen"
+%TODO Eksempler på embeddings og CWRs af "musen"?
 
 \paragraph{The Transformer}
 Introduced by Ashish Vaswani et al. in 2017 \cite{vaswani2017att}, the goal of the transformer is to produce \emph{contextualized word representations} (CWR) given static, but learned embeddings.
@@ -85,7 +85,7 @@ The word embeddings are structured in a single matrix with token embeddings in t
 This allows every token to be considered simultaneously, independently, and equally, solving both the described issues.
 \cite{vaswani2017att}
 
-Models based directly on the transformer have been trained on very large corpora to produce English language models such as BERT \cite{devlin2019bert}, RoBERTa \cite{liu2019roberta} and GPT-3 \cite{brown2020language} that have achieved state of the art in several downstream language tasks.
+Models based directly on the transformer have been trained on very large corpora to produce English language models such as BERT \cite{devlin2019bert}, RoBERTa \cite{liu2019roberta} and GPT-3 \cite{brown2020language} that have achieved SOTA in several downstream language tasks.
 %TODO Skal der gives mere plads til at forklare BERT?
 \begin{figure}[H]
     \centering
@@ -112,19 +112,19 @@ LUKE directly uses RoBERTa's tokenizer \cite{yamada2020luke}.
 \label{sec:nlpda}
 As mentioned earlier, static embeddings are a core part of many NLP pipelines and have been for a long time.
 In the large, open source NLP frameworks \emph{SpaCy} \cite{honnibal2020spacy} and \emph{Flair} \cite{akbik2019flair}, which also release pretrained Danish models, the embeddings interact with different, ever-improving language models.
-This has successfully resulted in state of the art on multiple Danish NLP tasks.
-The Alexandra Institute, a Denmark based AI research and development organization, release versions of both Flair and SpaCy finetuned on a number of benchmarks, including NER, and acquire close to state of the art performance using these.
-The benchmarks, results and finetuned, Danish models are released as a part of their open source DaNLP project gathering resources for Danish NEk\cite{danlp2021}.
+This has successfully resulted in SOTA on multiple Danish NLP tasks.
+The Alexandra Institute, a Denmark based AI research and development organization, release versions of both Flair and SpaCy finetuned on a number of benchmarks, including NER, and acquire close to SOTA performance using these.
+The benchmarks, results and finetuned, Danish models are released as a part of their open source DaNLP project gathering resources for Danish NER \cite{danlp2021}.
 Another application of exsting NLP frameworks was performed by Kenneth Enevoldsen, Center of Humanities Computing, Aarhus University in releasing the model \emph{DaCy}, based on version 3 of SpaCy \cite{enevoldsen2020dacy}.
 
 In Danish, the most significant, pretrained language model is in our estimation a Danish version of BERT, released by the company BotXO in 2019 \cite{botxo2019dabert} .
-This model, in the following called \emph{da-BERT}, is produced by pretraining the base version of the very influential architecture \emph{Bidirectional Encoder Representations from Transformers} (BERT) \cite{devlin2019bert} on 10 GB of Danish text predominantly acquired from web scrapes.
-The da-BERT model has been finetuned on most Danish benchmarks in the DaNLP project and consistently yield top results \cite{danlp2021, hvingelby2020dane}.
+This model, in the following called \emph{da-BERT}, is produced by pretraining the base version of the very influential architecture \emph{Bidirectional Encoder Representations from Transformers} (BERT) \cite{devlin2019bert} on 9,5 GB of Danish text predominantly acquired from web scrapes.
+The da-BERT model has been fine-tuned on most Danish benchmarks in the DaNLP project and consistently yield top results \cite{danlp2021, hvingelby2020dane}.
 
 Another, more recent, Danish transformer is the adaption of the more resource efficient language model Electra to Danish under the name Ælæctra by Malte Hømark-Bertelsen, KMD and Aarhus University \cite{bertelsen2020lctra}.
 NER finetuned versions of Ælæctra and some multilingual transformers have been released by Ekstra Bladet Analyse under the project \emph{NER for Danish} (NERDA) \cite{kjeldgaard2020nerda}.
 
-Of this plethora of Danish language models and NLP frameworks, the current (June 2021) state of the art (SOTA) on central NER benchmarks is, according to DaNLP, the 2021 newcomer DaCy which surpassed DaNLP's fine-tuned da-BERT model which was SOTA at the beginning of this project \footnotemark.
+Of this plethora of Danish language models and NLP frameworks, the current (June 2021) SOTA (SOTA) on central NER benchmarks is, according to DaNLP, the 2021 newcomer DaCy which surpassed DaNLP's fine-tuned da-BERT model which was SOTA at the beginning of this project \footnotemark.
 \footnotetext{
     A table of the results can be seen at the DaNLP repository at \url{https://github.com/alexandrainst/danlp} under \code{docs/docs/tasks/ner.md}.
 }
@@ -137,8 +137,8 @@ A 2019 paper by NLP researchers at the same university surveyed the availability
 Other overviews of Danish NLP resources include those published by the Alexandra Institute at DaNLP \cite{danlp2021} and the comprehensive list maintained by Finn Årup Nielsen, DTU Compute \cite{arup21awesome}.
 
 \section{Deep, Knowledge-enhanced NLP}
-The combination of statistical methods and explicit human crafted domain knowledge was the state of the art in many natural language processing (NLP) tasks in the 1990's and up into the 2000's \cite[Sec. 22.5]{russell2016ai}.
-As with most other fields of AI, the emergence of performant deep learning methods disrupted NLP in the 2010's, popularizing the methodology of using deep architectures, generally reccurent neural networks or transformers, as general purpose language models that can be fine tuned to a number of different tasks \cite{otter18dlnlp}.
+The combination of statistical methods and explicit human crafted domain knowledge was the SOTA in many natural language processing (NLP) tasks in the 1990's and up into the 2000's \cite[Sec. 22.5]{russell2016ai}.
+As with most other fields of AI, the emergence of performant deep learning methods disrupted NLP in the 2010's, popularizing the methodology of using deep architectures such as recurrent neural networks or transformers as general purpose language models that can be fine-tuned to a number of different tasks \cite{otter18dlnlp}.
 This approach rarely includes any modelling of knowledge that is not induced implicitly by the contextual representations generated during pretraining on an unannotated text corpus.
 
 The Defense Advanced Research Projects Agency (DARPA) identify the future wave of AI as one of \emph{contextual adaption}; a combination of deep learning for perception and latent representations and symbolic modelling methods \cite{darpa17ai}.
@@ -160,7 +160,7 @@ Here, the key addition was the Knowledge Attention and Recontextualization (KAR)
 In KnowBert, though the KAR weights were trained, the KG was only used for encoding fixed facts for the model.
 The \emph{Knowledge Graph Language Model} (KGLM) presented in \emph{Barack’s Wife Hillary: Using Knowledge Graphs for Fact-Aware Language Modeling} \cite{logan2019barack} employs a more dynamic use of the knowledge graph.
 The model uses the same approach to representing knowledge graph facts as ERNIE, but also builds a local graph on the sequence level which is grown by a generative model with each new token.
-The paper presents improved fact completion compared to GPT-2 and further analysis has shown that the overall fact completion of KGLM is comparative to KnowBert, though they perform very differently from domain to domain, with KGLM being most dependant on the used knowledge graph \cite{birk2020knowledge}.
+The paper presents improved fact completion compared to GPT-2 and further analysis has shown that the overall fact completion of KGLM is comparative to KnowBert, though they perform very differently from domain to domain, with KGLM being most dependent on the used knowledge graph \cite{birk2020knowledge}.
 
 \subsection{Pretraining augmentations}
 A strength of the statistical, deep approach that implicitly models knowledge is the potential for generalizable results:
@@ -168,7 +168,7 @@ You do not need a new domain specific KG for every application if enough general
 Motivated by the hope of this elusive generalizability, a number of methods have been proposed to enhance specifically the pretraining of language models to better have handle factual knowledge.
 LUKE, the subject of this project, is one of these attempts.
 
-An example of this weaker knowledge modelling is found in the 2019 model \emph{KEPLER: A Unified Model for Knowledge Embedding and Pre-trained Language Representation} \cite{wang2021kepler} where downstream inference can be performed without any additional resources than the transformer structure itself.
+An example of this weaker knowledge modelling is found in the 2019 model \emph{KEPLER: A Unified Model for Knowledge Embedding and Pre-trained Language Representation} \cite{wang2021kepler} where downstream inference can be performed without any additional resources other than the transformer structure itself.
 The knowledge enhancement of this BERT-based language model is, however, in the pretraining where the model optimizes over a joint task of both performing masked language modelling (MLM) and a novel knowledge graph objective requiring the model to learn knowledge embeddings.
 KEPLER does not improve GLUE performance from RoBERTa \cite{liu2019roberta} from which it was initialized, but beats both classical language models and knowledge enhanced ones such as ERNIE and KnowBERT on a number of knowledge related tasks.
 
@@ -201,7 +201,7 @@ But the LUKE encoder does not only produces contextualized word representations 
 \emph{entities} are also represented by the encoder by mapping each entity to the same latent space as the words.
 In the pretraining of LUKE, entities correspond to Wikipedia articles.
 
-Yamada et al. show that this approach leads to state of the art results on a number of entity-related tasks, such as NER, and argue that the LUKE approach mitigates the following issues with existing methods:
+Yamada et al. show that this approach leads to SOTA results on a number of entity-related tasks, such as NER, and argue that the LUKE approach mitigates the following issues with existing methods:
 \begin{itemize}
     \item Existing CWR's cannot represent spans of multiple words which requires more downstream learning for language tasks in which word spans are important.
     \item While transformers are good at capturing relationships between single words, they have difficulty modelling such relationships between sequences of words, of which entities often consist.
