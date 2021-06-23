@@ -9,4 +9,4 @@
 - pretraining
 - DaNLP
 - named entity recognition
-- 
+- subword
