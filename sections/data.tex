@@ -62,7 +62,7 @@ When matching, such matches are annotated as we expect it to remove a large numb
 To reduce the number of false positives, we only perform extra annotations with titles of at least three characters.
 This prevents the article on "A" to be linked at every word starting with "A".
 We also only match titles already linked in the articles, as we assume that any article that should be linked to has already been linked at least once.
-This further reduces the number of false positives.
+This further reduces the number of false positives and whether this has positive effect on learning is subject to an experiment presented in Section~\ref{subsec:dataexp}.
 
 Table \ref{tab:metadata} shows how these augmentation steps change the properties of the dataset.
 \begin{table}[H]

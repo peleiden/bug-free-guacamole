@@ -5,6 +5,9 @@
 \chapter{Methods}
 \lhead{Methods}
 \label{chap:methods}
+\begin{enumerate}
+    \item Husk at skrive datid!
+\end{enumerate}
 
 \section{Benchmarking Named Entity Recognition}
 \subsection{Evaluation of NER}
@@ -136,28 +139,34 @@ The reproduction was performed using Python version 3.7.10 and the dependency ve
 }
 \section{DaLUKE}
 
+We pretrained and released DaLUKE, a new Danish language model based on the LUKE methodology.
+The model was benchmarked by fine-tuning on NER.
+
 \subsection{Pretraining Methodology and Hyperparameters}%
 \label{sub:dalpre}
 \begin{enumerate}
-    \item Måske mere detaljeret beskrivelse af arkitektur -- og illustration?
-    \item Vis LR her
-    \item Det her afsnit skal være lidt mere detaljeret IMO: Fortæl kort om vores optimeringsmetode + loss + gradientakkulumation
-    \item Top $K$
+    \item Stadig for udetaljeret?
 \end{enumerate}
-DaLUKE's pretraining largely follows LUKE's with some differences:
-\begin{itemize}
-    \item The entity-augmented Danish Wikipedia described in section \ref{subsec:entaug} is used.
-    \item Entity-aware self-attention is used for the pretraining.
-    \item Weights are initialized from da-BERT.
-    All four attention matrices described in section \ref{subsubsec:entityaware} are initialized to the same attention matrix in da-BERT.
-    \item The full entity vocabulary is used.
-\end{itemize}
-Due to the memory intensive nature of the transformer architecture, we follow Yamada et al. and use gradient accumulation over multiple subbatches within each batch.
+Our pretraining approach followed the one used by Yamada et al, as described in Section \ref{subsec:lukepre}, with four key differences:
+\begin{enumerate}
+    \item The entity-augmented Danish Wikipedia described in section \ref{subsec:entaug} was used.
+    \item Entity-aware self-attention was used in the pretraining as this was expected to positively impact the modelling of knowledge. This speculation is tested in Section~\ref{subsec:selfatt} .
+    \item 
+        The model follows the architecture of BERT base instead of BERT large, and weights were initialized from BotXO's da-BERT \cite{botxo2019dabert} as no Danish RoBERTa or BERT large is available.
+        An ablation study on this transfer learning from da-BERT is introduced in Section~\ref{subsec:dabertexp}.
+    \item
+        The entity vocabulary, consisting of all mentioned Wikipedia articles, was limited in the English LUKE for computational efficiency \cite[Sec. 3.4]{yamada2020luke}.
+        We do not perform such limiting as the number of mentioned Wikipedia articles is much smaller in the Danish corpus.
+        An experiment of limiting the vocabulary is explained in Section~\ref{subsec:entvocexp}.
+\end{enumerate}
+
+Due to the memory intensive nature of the transformer architecture, we follow Yamada et al. and used gradient accumulation over multiple subbatches within each batch, that is each parameter update consists of multiple forward passes of the model.
 
 As with LUKE, the cross entropy loss is calculated using equation \ref{eq:crossentropyloss} for each classification task, with the only difference being that the final loss is the average rather than the sum of the individual task losses.
 This effectively just scales the loss and has no effect on the learning if the learning rate is adjusted accordingly.
 
 The hyperparameters used for pretraining are shown in table \ref{tab:pretrain-hyper}.
+These were chosen based on informal experiments and intuitive understanding of hyperparameter impact, as structured hyperparameter search was too not within time frame.
 \begin{table}[H]
     \centering
     \begin{tabular}{l|r}
@@ -177,7 +186,6 @@ The hyperparameters used for pretraining are shown in table \ref{tab:pretrain-hy
     \caption{Hyperparameters for DaLUKE pretraining.}\label{tab:pretrain-hyper}
 \end{table}\noindent
 
-\paragraph{Learning rate}
 LUKE follows BERT and increases its learning rate linearly from 0 to the peak learning rate followed by a linear decrease to 0 for the rest of the learning rate - the slanted triangle learning rate (STLR). \cite{devlin2019bert} \cite{yamada2020luke} \cite{howardruder2018universal}
 
 For pretraining, DaLUKE also employs linear warmup for the first 6\pro\ of parameter updates, after which it decreases polynomially with a power of $ \sqrt{3} $ and a final learning rate of one tenth the peak learning rate.

@@ -273,8 +273,11 @@ To handle this explicitly, the idea of \emph{entity-aware self-attention} change
     \end{cases}.
 \end{equation}
 LUKE, however, is not pretrained using this mechanism, but for the fine-tuning tasks, Yamada et al. show in ablation experiments that using this addition consistently yields better performance \cite[Sec. 5.2]{yamada2020luke}.
+This new mechanism, theorized to improve entity knowledge by Yamada et al., was  not used in preatraining with the following explanation:
+''We perform pretraining using the original self-attention mechanism rather than our entity-aware self-attention mechanism because we want an ablation study of our mechanism but can not afford to run pretraining twice'' \cite[Sec. 3.4]{yamada2020luke}.
 
 \subsection{Pretraining}
+\label{subsec:lukepre}
 Yamada et. al perform the pretraining of LUKE by extending the MLM task of BERT \cite{devlin2019bert}.
 Where BERT is trained to predict randomly masked words, LUKE is trained to predict both randomly masked words and entities, such as
 \begin{itemize}

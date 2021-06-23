@@ -143,6 +143,7 @@ The results of the baseline experiment together with the following experiments a
  %                                       weighted avg     0.8612    0.7849   0.8180       558
 
 \subsection{Dataset Augmentation}
+\label{subsec:dataexp}
 
 \ref{tab:metadata}
 A key addition to the pretraining pipeline was the addition of extra entity annotations not already in the Wikipedia articles themselves using pattern matching as explained in Section~\ref{subsec:entaug}.
@@ -221,6 +222,7 @@ Much needed entirely new LUKE pretraining data sets could be produced from raw t
 Such lower standard annotations used to achieve extra data might be necessary for continued improvement in low-resource languages such as Danish but should be used carefully and with an analysis of the trade off between quality and quantity of data.
 
 \subsection{Entity-aware Self-attention}
+\label{subsec:selfatt}
 One of Yamada et al.'s key contributions to the transformer is the addition of query matrices for relations between entities and words.
 They do not use these extra matrices in the pretraining but instead let them be learned during downstream tasks, initializing them to the word-to-word matrices of RoBERTa.
 They perform ablation studies on multiple datasets, showing an improvement in every case over original attention.
@@ -272,6 +274,7 @@ After finetuning, the following results were achieved:
 \end{enumerate}
 
 \subsection{Impact of Danish BERT}
+\label{subsec:dabertexp}
 As described in section \ref{sec:LUKE}, many of the weights are initialized from a base transformer.
 This transfer step ideally gives DaLUKE all the contextual language understanding of da-BERT without having to learn it all.
 In order to test this hypothesis, a pretraining is conducted without initializing the weights to da-BERT.
@@ -340,6 +343,7 @@ A similar experiment with weights unlocked and initialization from da-BERT showe
 \end{enumerate}
 
 \subsection{Entity Vocabulary Size}
+\label{subsec:entvocexp}
 For the English LUKE, Yamada et al. used an entity vocabulary of the $500\ctp3$ entities \cite[Sec. 3.4]{yamada2020luke} even though the English Wikipedia contains $\sim 6\ctp6$ content pages\footnotemark.
 \footnotetext{English Wikipedia Statistics: \url{https://en.wikipedia.org/wiki/Special:Statistics}. Visited March 3, 2021.}
 This is, apart from crude filtering of non-entity pages, a result of cutting the entity domain down to the most frequent hyperlinks.
