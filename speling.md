@@ -1,0 +1,12 @@
+- fine-tuning
+- dataset
+- training set
+- dev. set
+- test set
+- WikiANN
+- da-BERT
+- DaLUKE
+- pretraining
+- DaNLP
+- named entity recognition
+- 
