@@ -1213,8 +1213,27 @@ Another interesting pattern lies in the strength of the multilingual model used 
     \label{tab:dacyex}
 \end{table}\noindent
 
-\section{Summary}
-%TODO Bedre navn, så 6.1.8 ikke gentages
+\section{Future Work}
+We see promise in this approach of lightly sprinkling some explicit knowledge on top of the usual large model fitting approach for languages such as Danish.
+The results are, in our estimation, solid and encouraging.
+DaLUKE did not, however, sweep away the classic language modelling approach and was intercepted for the NER crown by the larger model presented in DaCy.
+Some further improvement which have the potential to push this method are proposed.
 
+\paragraph{Data}
+As in any deep learning project, we end it by crying out for more data.
+Multiple of the pretraining experiments presented in Section~\ref{sec:pretrainpls} show signs of this approach overfitting to the limited Danish Wikipedia.
+An immediate idea is to include NORSK
+\begin{enumerate}
+    \item Mere data
+        \subitem Norsk Wikipedia
+        \subitem Automatisk annotering af almindeligt tekstdata: Behøver måske ikke positionelle id'er
+\end{enumerate}
+
+
+\paragraph{Modelling}
+\begin{enumerate}
+    \item Brug Multilingual RoBERTa Large
+    \item Gentænke fremgangsmåde: Måske mere eksplicit vidensmodellering -- hvad med relationelle tokens?
+\end{enumerate}
 
 \end{document}
