@@ -111,7 +111,9 @@ The balanced training, development and test splits from Rahimi et al. are used \
 
 \paragraph{Summary}
 The test sets of these three NER-annotated datasets were used and a summary of their counts is shown in Table~\ref{tab:daNERdata}.
-DaNE is considered the main public, Danish NER dataset, as it is produced with the highest degree of expert supervision and used for training most of the models compared in Section~\ref{sec:exidan}.
+DaNE is considered the main public Danish NER dataset, as it is produced with the highest degree of expert supervision and used for training most of the models compared in Section~\ref{sec:exidan}.
+However, as shown on on Table \ref{tab:danedist} and Figure \ref{fig:dadatadist}, DaNE and Plank suffer from uneven label distributions in the different subsets.
+As most model training assumes that the training data has the same distribution as the true distribution, this could cause evaluations on the test sets to give a poor view of real-world performance.
 Previous literature has highlighted the scarcity of accessible, gold-standard, Danish NER as a limitation in the field \cite[Sec. 2.1]{plank2019neural}.
 \begin{table}[H]
     \centering
