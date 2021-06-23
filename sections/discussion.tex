@@ -474,9 +474,11 @@ This conceptual argument somewhat supported by the experimental results suggests
 As with pretraining, fine-tuning has a number of interesting elements that are worth investigating further.
 For these experiments, the main pretrained model from section \ref{sec:Pretraining of daLUKE} are used but with the optimized fine-tuning hyperparameters from table \ref{tab:main-hyper}.
 Following the pretraining experiments, all results are reported with MISC.
-\subsection{Stability of LUKE Finetuning}
 
-\subsubsection{Reproducability of English LUKE}
+\subsection{Stability of LUKE Finetuning}
+\label{sec:luke-stability}
+
+\paragraph{Reproducability of English LUKE}
 For the reproduction of the English LUKE, the results were initially underwhelming as five repetitions of the finetuning of LUKE large on CoNLL2003 consistently, slightly underperformed the reported result of 94.3\pro\ micro average as seen at table \ref{tab:EnLUKE-wrong}.
 After investigating, this somewhat disappointing result was revealed to be overturned when finetuning with Python version 3.6 and PyTorch 1.2 instead of using newer versions as done in the initial run.
 Using these correct versions, the same as Yamada et al. reported in their package file, the results were succesfully reproduced as shown in the central results in Section \ref{sec:English LUKE Reproduction}.
@@ -502,9 +504,7 @@ All in all, the slight hiccups in reproducing the finetuning results show the di
     \label{tab:EnLUKE-wrong}
 \end{table}
 
-\subsubsection{Randomness of DaLUKE Results}
 \paragraph{Random number generation variance}
-
 The same repetition of the finetuning procedure as carried out for English LUKE is done for the main DaLUKE pretrained model by training with five different random number generation (RNG) seeds.
 The results are shown in table \ref{tab:seeds}.
 

@@ -107,8 +107,14 @@ The loss shown on Figure \ref{fig:loss} mirrors the accuracy with masked subword
         \caption{F1\pro-scores of Danish NER models of the DaNE testing dataset consisting of 565 sentences.}
         \label{tab:DaNE}
 \end{table}\noindent
+DaLUKE fails to achieve SOTA on DaNE, being beaten only by DaCy Large.
+However, it does beat da-BERT on which it is based, indicating that the extra pretraining and entity understanding indeed has added some value to the model.
+Interestingly, DaLUKE still manages to pull off a first place in the LOC category and ties DaCy large in PER, while falling behind in both ORG and MISC.
+One possible reason may be the pretraining dataset.
+Excluding the transferred da-BERT weights, it is pretrained solely on Wikipedia unlike DaCy.
+While we have not investigated it further, it is possible that there are more articles on locations and people than there are on organizations and miscellaneous entities.
 
-
+Ultimately, DaLUKE still performs at a high level and shows its promise for entity modelling.
 
 \subsection{Additional Datasets}
               % precision    recall  f1-score   support
@@ -148,7 +154,7 @@ The loss shown on Figure \ref{fig:loss} mirrors the accuracy with masked subword
                         daner         & ITU CDT        & --             & --             & --             & 59.89                        & 58.16 & 73.63 & 26.09 & -- \\
                 \end{tabular}
         \end{center}
-        \caption{F1\pro-scores of Danish NER models of the Plank testing dataset consisting of 565 sentences.}
+        \caption{F1\pro\ scores of Danish NER models of the Plank test set consisting of 565 sentences.}
         \label{tab:Plank}
 \end{table}
 
@@ -180,8 +186,26 @@ The loss shown on Figure \ref{fig:loss} mirrors the accuracy with masked subword
                         daner & ITU CDT & 46.59 & 51.54 & 42.51 & 56.15 & 54.51 & 14.76 \\
                 \end{tabular}
         \end{center}
-        \caption{F1\pro-scores of Danish NER models of the WikiANN testing dataset consisting of 10000 sentences.}
+        \caption{F1\pro\ scores of Danish NER models of the WikiANN test set consisting of 10,000 sentences.}
         \label{tab:WikiANN}
 \end{table}
+When fine-tuned on DaNE, DaLUKE achieves achieves SOTA both when evaluated on the Plank and WikiANN test sets, though only by a small margin on Plank.
+This is unexpected given that DaLUKE is beaten on the DaNE test set.
+It may indicate a better generalization ability, which, if true, is indeed a desirable property.
+However, less exciting reasons for this behaviour may well be more likely.
+With Plank, the difference is miniscule and may simply be explained by variance.
+As shown in Section \ref{sec:English LUKE Reproduction} and \ref{sec:luke-stability}, this affects LUKE on CoNLL2003 and DaLUKE on DaNE.
+The performance discrepancy on WikiANN may be even less exciting:
+That DaLUKE is pretrained directly on Wikipedia, breaking the principle that the training and test sets should be independent.
 
 \end{document}
+
+
+
+
+
+
+
+
+
+
