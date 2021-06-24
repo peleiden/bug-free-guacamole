@@ -296,8 +296,7 @@ These ranged from domain specific such as accidentally leaving category pages in
 In that regard, using the original code would be safer, as this has been proven to work.
 However, the original code is also not error free.
 For instance, we discovered a bug in the masking where the unmasking and random word replacements would either be done or not done for an entire sequence, rather than being probabilistic for every masked sub-word token.
-We have opened an issue on the LUKE repository that can be followed here.
-%TODO Make issue
+We have opened an issue on the LUKE repository that can be followed at \url{https://github.com/studio-ousia/luke/issues/93}.
 
 \paragraph{Floating Point Precision}
 The model is trained using PyTorch Automatic Mixed Precision (AMP) \cite{pytorchamp}, which -- ideally, at least -- should decrease training time with little to no penalty to accuracy \cite{huang2020amp}.

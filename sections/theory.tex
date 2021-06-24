@@ -7,7 +7,7 @@
 \label{chap:theory}
 \paragraph{Pretraining and Fine-tuning}
 With the advent of deep learning in the field of NLP, models have risen massively in complexity, requiring ever more compute and data.
-For instance, LUKE required 30 days of training on 16 Nvidia V100's \cite{yamada2020luke}, and that model already took advantage of RoBERTa, which was even more demanding to train \cite{liu2019roberta}.
+For instance, LUKE required 30 days of training on 16 NVIDIA V100's \cite{yamada2020luke}, and that model already took advantage of RoBERTa, which was even more demanding to train \cite{liu2019roberta}.
 For this reason, the training of a language model is typically divided into two separate tasks:
 First, the \emph{pretraining}, in which a model is trained that has little direct practical use but has general language understanding used to produce \emph{contextualized word representations} (CWR's), a construction that will be introduced in section \ref{sec:transformers}
 Secondly a \emph{fine-tuning}, or downstream training, in which the pretrained model undergoes further, specialized training for some specific language task, e.g. named entity recognition.
