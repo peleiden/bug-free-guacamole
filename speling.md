@@ -11,3 +11,5 @@
 - named entity recognition
 - subword
 - art of the state
+- table
+- figure
