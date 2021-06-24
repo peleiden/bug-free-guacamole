@@ -13,7 +13,7 @@
 		\begin{tabular}{l c c c c c}
 			Model & Micro avg. & LOC & PER & ORG & MISC \\
 			\hline
-			LUKE large & $94.00 \pm  0.2$ & $94.99 \pm  0.09$ & $97.19 \pm  0.1$ & $93.63 \pm  0.3$ & $85.29 \pm  1.0$ \\
+			LUKE large & $94.00 \pm  0.2$ & $94.99 \pm  0.1$ & $97.19 \pm  0.1$ & $93.63 \pm  0.3$ & $85.29 \pm  1.0$ \\
 			LUKE base & $93.42 \pm  0.2$ & $94.67 \pm  0.2$ & $96.89 \pm  0.2$ & $92.41 \pm  0.2$ & $84.94 \pm  0.7$
 		\end{tabular}
 	\end{center}
@@ -22,10 +22,11 @@
 \end{table}
 Yamada et al. report micro avg. F1 scores of 94.3\pro\ and 93.3\pro\ for LUKE large and base, respectively \cite{yamada2020luke}.
 In both cases, this is within two standard deviations of our fine-tuning results.
-This is expected and shows that the reproduction was successful.
-However, it also highlights the variability of the fine-tuning.
-With margins between top-performing models being as small as they are \cite{pwc21ner}, whoever can claim SOTA may well come down to who got the luckiest seeds.
-This could be mitigated by reporting the mean of several fine-tunings, but Yamada et al. at least do not mention having done multiple fine-tunings.
+This is expected and we conclude that the reproduction was successful.
+However, the variability of fine-tuning is also highlighted here and will be discussed in Section~\ref{sec:finetuning-exp}.
+% However, it also highlights the variability of the fine-tuning.
+% With margins between top-performing models being as small as they are \cite{pwc21ner}, whoever can claim SOTA may well come down to who got the luckiest seeds.
+% This could be mitigated by reporting the mean of several fine-tunings, but Yamada et al. at least do not mention having done multiple fine-tunings.
 
 \section{Pretraining of daLUKE}
 \label{sec:Pretraining of daLUKE}
@@ -39,7 +40,7 @@ This could be mitigated by reporting the mean of several fine-tunings, but Yamad
     \end{tabular}
     \caption{
         The main pretrained model performance in the last of 150 epochs.
-        The measures are frequency of correct prediction on the two mask prediction tasks, when considering a prediction to be correct if the true token is one $K$ most likely labels according to the model softmax output.
+        The measures are frequency of correct prediction on the two mask prediction tasks, when considering a prediction to be correct if the true token is one $k$ most likely labels according to the model softmax output.
     }
     \label{tab:mainpre}
 \end{table}\noindent
@@ -197,16 +198,6 @@ However, less exciting reasons for this behaviour may well be more likely.
 With Plank, the difference is miniscule and may simply be explained by variance.
 As shown in Section \ref{sec:English LUKE Reproduction} and \ref{sec:luke-stability}, this affects LUKE on CoNLL2003 and DaLUKE on DaNE.
 The performance discrepancy on WikiANN may be even less exciting:
-That DaLUKE is pretrained directly on Wikipedia, breaking the principle that the training and test sets should be independent.
+That DaLUKE is pretrained directly on very similar annotated Wikipedia data, violating the principle that the training and test sets should be disjoint.
 
 \end{document}
-
-
-
-
-
-
-
-
-
-

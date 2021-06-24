@@ -9,12 +9,12 @@
 \section{What Is Going on in the Pretraining?}
 \label{sec:pretrainpls}
 In order to investigate what affects pretraining effectiveness, several ablation studies are performed.
-Unless stated otherwise, the hyperparameters from table \ref{tab:pretrain-hyper} are used, but with 50 epochs due to limited compute.
+Unless stated otherwise, the main hyperparameters from table \ref{tab:pretrain-hyper} are used, but with 50 epochs due to limited compute.
 The experiments were trained primarily on a $ 1\times$A100 configuration.
 Due to its negative effect on runtime on A100's (see figure \ref{fig:runtime}), AMP is not used for any of the following experiments.
-%TODO Lukas' ting om da-BERTs undertræning. Måske et andet sted end her
 \subsection{The Parameter Population}
-Figure \ref{fig:weight-dist} shows the distribution before and after pretraining divided by whether or not a given parameter was initialized from da-BERT.
+The first model analysis is a global view of the DaLUKE parameters
+Figure \ref{fig:weight-dist} shows the model parameter value distribution before and after pretraining divided by whether or not a given parameter was initialized from da-BERT.
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{weights}
@@ -25,7 +25,7 @@ Figure \ref{fig:weight-dist} shows the distribution before and after pretraining
         DaLUKE $ \backslash $ da-BERT are the remaining parameters.
         These are made up of the entity embeddings (58 million parameters) and the entity decoder (58 million parameters).
         In total, the model has 273 million parameters.
-        Notetice that DaLUKE $ \cap $ da-BERT and DaLUKE $ \backslash $ da-BERT are not full probability densities but rather subsets that together make up the DaLUKE graph, which is a full probability density.
+        Note that DaLUKE $ \cap $ da-BERT and DaLUKE $ \backslash $ da-BERT are not full probability densities but rather subsets that together make up the DaLUKE graph, which is a full probability density.
     }
     \label{fig:weight-dist}
 \end{figure}\noindent
@@ -38,6 +38,7 @@ Furthermore, all parameters from da-BERT (barring the three sets of DaLUKE exclu
 When they are finally unlocked, both the loss and learning rate have dropped significantly resulting in less change.
 
 \subsection{Effect of More Pretraining}
+\label{subsec:effmore}
 How more pretraining affects the language understanding of the model can be hard to quantify.
 Obviously, there is the loss and by extension the top $ k $ accuracy, but these follow directly from the pretraining task and are not direct measures of language understanding.
 High scores may also indicate overfitting, especially on small datasets.
@@ -56,7 +57,7 @@ At least for NER, extra pretraining only yields improved results up to five epoc
 After the first five epochs, fine-tuning performance is stagnant.
 In fact, the performance curve mirrors that of the masked sub-word accuracy of the MLM (see table \ref{fig:pretrain-acc}).
 On the other hand, there is hardly any correlation between the performance and the masked entity accuracy.
-This indicates that fine-tuning overwhelmingly relies on the knowledge gained from the BERT part of the model.
+This surprising result indicates that NER task primarily relies on the knowledge gained from the BERT part of the model.
 
 \subsection{Baseline}
 For a baseline model, the main model is retrained using only 50 epochs, but otherwise using the same hyperparameters, shown in Table \ref{tab:pretrain-hyper}.
@@ -145,8 +146,6 @@ The results of the baseline experiment together with the following experiments a
 
 \subsection{Dataset Augmentation}
 \label{subsec:dataexp}
-
-\ref{tab:metadata}
 A key addition to the pretraining pipeline was the addition of extra entity annotations not already in the Wikipedia articles themselves using pattern matching as explained in Section~\ref{subsec:entaug}.
 This resulted in a 47\pro\ growth in the number of annotations as shown in Table~\ref{tab:metadata}.
 While it was argued that it should improve performance, it was all theoretical.
@@ -167,7 +166,7 @@ The pretraining terminated to the following performance.
     }
     \label{tab:old-data-mlm}
 \end{table}
-At a first glance, these masked language modelling results that strictly dominate the numbers for the baseline seems to suggest that the dataset augmentation was ill-advised.
+At a first glance, these masked language modelling results that strictly dominate the numbers for the baseline seem to suggest that the dataset augmentation was ill-advised.
 There is, however, a large issue (apart from the obvious problem of judging a model by it's performance on the training data set) with the metric in this case:
 The dataset augmentation also changed the benchmark itself as the masking task of the baseline model also includes automatically annotated, and thus somewhat dubious, entity links.
 This can explain the clear gain in entity masking performance.
@@ -221,14 +220,17 @@ If anything, the addition of automatic pattern-matched annotations worsened the 
 As the addition of these $47\pro$ bronze standard annotations did not directly stop the learning, we still propose such automated annotation  as an avenue for further development of DaLUKE.
 \subsection{Entity-aware Self-attention}
 \label{subsec:selfatt}
-One of Yamada et al.'s key contributions to the transformer is the addition of query matrices for relations between entities and words.
-They do not use these extra matrices in the pretraining but instead let them be learned during downstream tasks, initializing them to the word-to-word matrices of RoBERTa.
-They perform ablation studies on multiple datasets, showing an improvement in every case over original attention.
-\cite{yamada2020luke}
+The entity-aware self-attention mechanism, one of Yamada et al.'s key contributions to the transformer, was used for our pretraining task.
+An experiment using the traditional attention, which does not discrimante between word and entity tokens, was performed.
+% is the addition of query matrices for relations between entities and words.
+% They do not use these extra matrices in the pretraining but instead let them be learned during downstream tasks, initializing them to the word-to-word matrices of RoBERTa.
+% They perform ablation studies on multiple datasets, showing an improvement in every case over original attention.
+% \cite{yamada2020luke}
 
-These results suggest that training the extra query matrices in the pretraining also might have a positive impact.
-For this reason, entity-aware self-attention has been used here for all pretrainings bar this one, where its effects on pretraining is investigated.
+% These results suggest that training the extra query matrices in the pretraining also might have a positive impact.
+% For this reason, entity-aware self-attention has been used here for all pretrainings bar this one, where its effects on pretraining is investigated.
 
+This model yields worse results than the main model on the pretraining task shown at Table~\ref{tab:bert-attention-mlm}.
 \begin{table}[H]
     \centering
     \small
@@ -242,7 +244,7 @@ For this reason, entity-aware self-attention has been used here for all pretrain
     }
     \label{tab:bert-attention-mlm}
 \end{table}\noindent
-After finetuning, the following results were achieved:
+After fine-tuning, the following results were achieved:
 
 \begin{table}[H]
     \centering
@@ -256,6 +258,8 @@ After finetuning, the following results were achieved:
     \label{tab:bertatt}
 \end{table}
 
+From the lower NER and masked language performances, it is concluded that this mechanism explicitly modelling the difference between the two token domains is an important part of the DaLUKE results.
+
 % 2021-06-12 12:21:29.881    INFO                      precision    recall  f1-score   support
 
 %                                                 LOC     0.7191    0.6667    0.6919        96
@@ -266,15 +270,11 @@ After finetuning, the following results were achieved:
 %                                           micro avg     0.7022    0.4480    0.5470       558
 %                                           macro avg     0.6926    0.4685    0.5490       558
 %                                        weighted avg     0.6941    0.4480    0.5354       558
-\begin{enumerate}
-    \item Performance og træningskurver uden entity-aware attention
-%    \item Køretidssammenligning på de to modeller
-\end{enumerate}
 
 \subsection{Impact of Danish BERT}
 \label{subsec:dabertexp}
 As described in section \ref{sec:LUKE}, many of the weights are initialized from a base transformer.
-This transfer step ideally gives DaLUKE all the contextual language understanding of da-BERT without having to learn it all.
+This transfer learning method ideally gives DaLUKE all the contextual language understanding of da-BERT.
 In order to test this hypothesis, a pretraining is conducted without initializing the weights to da-BERT.
 
 \begin{table}[H]
@@ -323,21 +323,21 @@ This did not happen - in fact, results were much worse than the baseline.
     All curves are smoothed using a rolling average.}
     \label{fig:nobert-acc}
 \end{figure}\noindent
-The transfer learning from da-BERT clearly turns out to be a help here.
+This result is unintuitive in that a model scoring highly on \emph{both} masking tasks can underperform on NER.
+While the running fine-tuning presented in Section~\ref{sec:effmore} showed partial decoupling between entity masking and NER results, this result further raises the issue of the masked task overfitting on the limited dataset even though the masking is dynamic.
+
+Thus, the transfer learning from da-BERT clearly turns out to be a help here.
 From figure \ref{fig:nobert-acc}, the initialization seems to provide two things other than initial MLM accuracy:
 \begin{itemize}
     \item A regulazation effect that prevents the model from overfitting to the dataset.
     \item Increased pretraining stability.
     The accuracy curves contain a number of sudden jumps and drops that are much rarer in other pretrainings.
 \end{itemize}
-It should be noted that because no weights came from da-BERT, no weights were ever locked throughout pretraining.
+This stabilization effect is supported by the stable distribution of parameters inherited from da-BERT shown at figures \ref{fig:weight-dist}.
+It should be noted that because no weights came from da-BERT, no weights were ever locked throughout the pretraining in this experiment.
 A similar experiment with weights unlocked and initialization from da-BERT showed pretraining accuracies much closer to the baseline, indicating that the regualizing effect is indeed da-BERT.
-%TODO Under-undereksperimentet skal måske formaliseres mere
-
 \begin{enumerate}
-    \item Performance og træningskurver for eksperimentet, hvor BERT-vægte ikke bruges
-    \item Her rapporteres under-eksperimentet med performance for da-BERT på vores datasæt
-    \item Her kan henvises til parameterplotsene i en diskussion af BERT-vægtenes rolle
+    \item Lav et appendiks-afsnit til dette eksperiment
 \end{enumerate}
 
 \subsection{Entity Vocabulary Size}
@@ -367,7 +367,8 @@ After pretraining for 50 epochs with the same hyperparameters as the main experi
     \label{tab:few-ents-acc}
 \end{table}\noindent
 The performance on the word prediction task is slightly worse for this entity vocabulary experiment, while clearly higher scores are seen on the masked entity task.
-As for the data augmentation experiment, attention must again be put on the changes in the benchmark itself as the accuracy of 31\pro in calculated in a $\sim 20\ctp3$ class problem while the baseline accuracy of 29\pro is calculated over almost ten times as many classes.
+As for the data augmentation experiment, attention must again be put on the changes in the benchmark itself;
+the accuracy of 31\pro is calculated in a $\sim 20\ctp3$ class problem while the baseline accuracy of 29\pro is calculated over almost ten times as many classes.
 
 % 2021-06-11 19:38:47.989    INFO        K=1
 %                                        Word:   23.905
@@ -416,11 +417,14 @@ However, with these hyperparameters, the removal of entities does not seem promi
 
 This experimental filtering of the DaLUKE entities preserves $7\pro$ of the content pages, while $8\pro$ were preserved for the English LUKE.
 Intuitively, it would make sense that the same proportional filtering works better in English, as the absolute number of entities making up the implicit knowledge base of the model might be important:
-Smaller datasets, corresponding to smaller language areas, do not equate a smaller shared world of named entities.
+Smaller datasets, corresponding to smaller language areas, do not equate a smaller shared worlds of named entities.
 
 This conceptual argument somewhat supported by the experimental results suggests that more of the rare entities should be included when working with smaller datasets, though a more continuous experimental search of this filtering parameter might yield a better trade-off than our main model solution of including all entities.
 
 \subsection{Summary} \label{subsec:preoverview}
+\begin{enumerate}
+    \item Skal der være tekst-opsamling på vores tanker om finetuningen og bekymringen for overfit her?
+\end{enumerate}
 
 \begin{table}[H]
     \centering
@@ -466,8 +470,6 @@ This conceptual argument somewhat supported by the experimental results suggests
 \begin{enumerate}
     \item Statistiske metoder til sammenligning af scores (????)
     \item Prec. vs rec. - bør måske være i 6.3, da det jo er mere analyse-agtigt?
-%    \item Gør det klart, at alle bruger den store Carlos
-    \item Gør det klart, hvad baseline er
 \end{enumerate}
 As with pretraining, fine-tuning has a number of interesting elements that are worth investigating further.
 For these experiments, the main pretrained model from section \ref{sec:Pretraining of daLUKE} are used but with the optimized fine-tuning hyperparameters from table \ref{tab:main-hyper}.
@@ -477,7 +479,7 @@ Following the pretraining experiments, all results are reported with MISC.
 \label{sec:luke-stability}
 
 \paragraph{Reproducability of English LUKE}
-For the reproduction of the English LUKE, the results were initially underwhelming as five repetitions of the finetuning of LUKE large on CoNLL2003 consistently, slightly underperformed the reported result of 94.3\pro\ micro average as seen at table \ref{tab:EnLUKE-wrong}.
+For the reproduction of the English LUKE, our results were initially underwhelming as five repetitions of the finetuning of LUKE large on CoNLL2003 consistently, slightly underperformed the reported result of 94.3\pro\ micro average as seen at table \ref{tab:EnLUKE-wrong}.
 After investigating, this somewhat disappointing result was revealed to be overturned when finetuning with Python version 3.6 and PyTorch 1.2 instead of using newer versions as done in the initial run.
 Using these correct versions, the same as Yamada et al. reported in their package file, the results were succesfully reproduced as shown in the central results in Section \ref{sec:English LUKE Reproduction}.
 For the large model, only one of the five repetitions yielded the reported performance.
