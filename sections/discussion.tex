@@ -165,7 +165,7 @@ The pretraining terminated to the following performance.
         The top $k$ accuracy of the pretrained model trained without dataset augmentation in the 50'th and last epoch.
     }
     \label{tab:old-data-mlm}
-\end{table}
+\end{table}\noindent
 At a first glance, these masked language modelling results that strictly dominate the numbers for the baseline seem to suggest that the dataset augmentation was ill-advised.
 There is, however, a large issue (apart from the obvious problem of judging a model by it's performance on the training data set) with the metric in this case:
 The dataset augmentation also changed the benchmark itself as the masking task of the baseline model also includes automatically annotated, and thus somewhat dubious, entity links.
@@ -256,8 +256,7 @@ After fine-tuning, the following results were achieved:
     \end{tabular}
    \caption{The finetuning results of the traditional attention experiment.}
     \label{tab:bertatt}
-\end{table}
-
+\end{table}\noindent
 From the lower NER and masked language performances, it is concluded that this mechanism explicitly modelling the difference between the two token domains is an important part of the DaLUKE results.
 
 % 2021-06-12 12:21:29.881    INFO                      precision    recall  f1-score   support
@@ -403,12 +402,10 @@ The NER performance of this model was, following the approach in the previous ex
     \label{tab:ent-limit}
 \end{table}\noindent
 % 2021-06-11 15:26:30.316    INFO                      precision    recall  f1-score   support
-
 %                                                 LOC     0.8878    0.9062    0.8969        96
 %                                                MISC     0.7358    0.6446    0.6872       121
 %                                                 ORG     0.7986    0.6894    0.7400       161
 %                                                 PER     0.9385    0.9333    0.9359       180
-
 %                                           micro avg     0.8506    0.7957    0.8222       558
 %                                           macro avg     0.8402    0.7934    0.8150       558
 %                                        weighted avg     0.8455    0.7957    0.8188       558
@@ -422,10 +419,7 @@ Smaller datasets, corresponding to smaller language areas, do not equate a small
 This conceptual argument somewhat supported by the experimental results suggests that more of the rare entities should be included when working with smaller datasets, though a more continuous experimental search of this filtering parameter might yield a better trade-off than our main model solution of including all entities.
 
 \subsection{Summary} \label{subsec:preoverview}
-\begin{enumerate}
-    \item Skal der være tekst-opsamling på vores tanker om finetuningen og bekymringen for overfit her?
-\end{enumerate}
-
+Table \ref{tab:mlmsummary} and \ref{tab:nersummary} show the masked language and entity modelling results and fine-tuning results, respectively, of all the just discussed experiments for easier comparison.
 \begin{table}[H]
     \centering
     \footnotesize
@@ -670,105 +664,36 @@ It must be noted that we cannot claim to present an unbiased estimate of the gen
 \paragraph{Dataset generalization ability}
 It was noted with the results that DaLUKE seems to generalize well to the two other Danish NER datasets
 To add detail to the ability to generalize across these three datasets, DaLUKE is also fine-tuned for the two other datasets and the results for each model is reported across datasets at Table~\ref{tab:datasets}.
-% 2021-06-17 09:18:23.044    INFO                      precision    recall  f1-score   support
-
-%                                                 LOC     0.7526    0.7604    0.7565        96
-%                                                MISC     0.3333    0.0248    0.0462       121
-%                                                 ORG     0.6875    0.3416    0.4564       161
-%                                                 PER     0.9195    0.8889    0.9040       180
-
-%                                           micro avg     0.8083    0.5215    0.6340       558
-%                                           macro avg     0.6732    0.5039    0.5408       558
-%                                        weighted avg     0.6967    0.5215    0.5634       558
-
-%                                           micro avg     0.8205    0.6590    0.7310       437
-
-
-% 2021-06-17 09:18:53.064    INFO                      precision    recall  f1-score   support
-
-%                                                 LOC     0.7629    0.7629    0.7629        97
-%                                                MISC     0.8889    0.2667    0.4103        30
-%                                                 ORG     0.5500    0.4681    0.5057        94
-%                                                 PER     0.8908    0.9172    0.9038       169
-
-%                                           micro avg     0.7806    0.7205    0.7493       390
-%                                           macro avg     0.7731    0.6037    0.6457       390
-%                                        weighted avg     0.7767    0.7205    0.7348       390
-
-%                                           micro avg     0.7778    0.7583    0.7679       360
-
-
-
-% 2021-06-17 15:19:25.195    INFO                      precision    recall  f1-score   support
-
-%                                                 LOC     0.6187    0.6375    0.6280      5242
-%                                                 ORG     0.5568    0.1322    0.2136      4078
-%                                                 PER     0.7370    0.7558    0.7463      4378
-
-%                                           micro avg     0.6621    0.5249    0.5856     13698
-%                                           macro avg     0.6375    0.5085    0.5293     13698
-%                                        weighted avg     0.6381    0.5249    0.5424     13698
-
-
-
-% 2021-06-19 11:21:06.296    INFO                      precision    recall  f1-score   support
-
-%                                                 LOC     0.6134    0.7604    0.6791        96
-%                                                 ORG     0.4104    0.6832    0.5128       161
-%                                                 PER     0.8729    0.8778    0.8753       180
-
-%                                           micro avg     0.6004    0.7803    0.6786       437
-%                                           macro avg     0.6323    0.7738    0.6891       437
-%                                        weighted avg     0.6455    0.7803    0.6987       437
-
-% 2021-06-19 11:22:49.940    INFO                      precision    recall  f1-score   support
-
-%                                                 LOC     0.6218    0.7629    0.6852        97
-%                                                 ORG     0.1978    0.5638    0.2928        94
-%                                                 PER     0.8508    0.9112    0.8800       169
-
-%                                           micro avg     0.4947    0.7806    0.6056       360
-%                                           macro avg     0.5568    0.7460    0.6193       360
-%                                        weighted avg     0.6186    0.7806    0.6742       360
-
-% 2021-06-17 09:22:33.046    INFO                      precision    recall  f1-score   support
-
-%                                                 LOC     0.9351    0.9348    0.9349      5242
-%                                                 ORG     0.9011    0.8673    0.8839      4078
-%                                                 PER     0.9452    0.9491    0.9471      4378
-
-%                                           micro avg     0.9285    0.9193    0.9239     13698
-%                                           macro avg     0.9271    0.9171    0.9220     13698
-%                                        weighted avg     0.9282    0.9193    0.9236     13698
-
 \begin{table}[H]
     \centering
     \footnotesize
-            \begin{tabular}{l l | c c c c | c c c c}
-                \multirow{2}{*}{Test set} & \multirow{2}{*}{Model trained on} & \multicolumn{4}{c|}{Micro Avg. [\pro]} & \multicolumn{4}{c}{Class F1 [\pro]}\\
-                            &         & F1    & & Prec. & Rec.  F1 {\tiny\textdiscount MISC} & LOC   & PER   & ORG   & MISC \\\hline
-                    DaNE    & DaNE    & 82.89 & & 84.67 & 81.18 85.18                        & 87.00 & 94.15 & 73.15 & 74.58 \\
-                    DaNE    & Plank   & 69.02 & & 60.54 & 80.26 78.86                        & 81.68 & 92.53 & 56.03 & 13.24 \\
-                    DaNE    & WikiAnn &  --   & & 72.67 & 61.87 66.84                        & 73.46 & 74.89 & 44.18 & -- \\\hline
-                    Plank   & DaNE    & 63.49 & & 80.83 & 52.15 73.10                        & 76.04 & 90.40 & 45.64 & 4.62 \\
-                    Plank   & Plank   & 74.93 & & 78.06 & 72.05 74.93                        & 76.29 & 90.38 & 50.57 & 41.03 \\
-                    Plank   & WikiANN & --    & & 66.21 & 52.49 58.46                        & 62.80 & 74.63 & 21.36 & -- \\\hline
-                    WikiANN & DaNE    &  --   & & 60.04 & 78.03 67.86                        & 67.91 & 87.53 & 51.28 & -- \\
-                    WikiANN & Plank   &  --   & & 49.47 & 78.06 60.56                        & 68.52 & 88.00 & 29.28 & -- \\
-                    WikiANN & WikiANN &  --   & & 92.85 & 91.93 93.49                        & 93.49 & 94.71 & 88.38 & --
-            \end{tabular}
+    \begin{tabular}{l l | c c c c | c c c c}
+        \multirow{2}{*}{Test set} & \multirow{2}{*}{Model trained on} & \multicolumn{4}{c|}{Micro Avg. [\pro]} & \multicolumn{4}{c}{Class F1 [\pro]}\\
+                    &         & F1    & Prec. & Rec. & F1 {\tiny\textdiscount MISC} & LOC   & PER   & ORG   & MISC \\\hline
+            DaNE    & DaNE    & 82.89 & 84.67 & 81.18 & 85.18                        & 87.00 & 94.15 & 73.15 & 74.58 \\
+            DaNE    & Plank   & 69.02 & 60.54 & 80.26 & 78.86                        & 81.68 & 92.53 & 56.03 & 13.24 \\
+            DaNE    & WikiAnn &  --   & -- & -- & 66.84                        & 73.46 & 74.89 & 44.18 & -- \\\hline
+            Plank   & DaNE    & 63.49 & 80.83 & 52.15 & 73.10                        & 76.04 & 90.40 & 45.64 & 4.62 \\
+            Plank   & Plank   & 74.93 & 78.06 & 72.05 & 74.93                        & 76.29 & 90.38 & 50.57 & 41.03 \\
+            Plank   & WikiANN &  --   & -- & -- & 58.46                        & 62.80 & 74.63 & 21.36 & -- \\\hline
+            WikiANN & DaNE    &  --   & -- & -- & 67.86                        & 67.91 & 87.53 & 51.28 & -- \\
+            WikiANN & Plank   &  --   & -- & -- & 60.56                        & 68.52 & 88.00 & 29.28 & -- \\
+            WikiANN & WikiANN &  --   & -- & -- & 93.49                        & 93.49 & 94.71 & 88.38 & --
+    \end{tabular}
     \caption{
         Results when fine-tuning and evaluating across datasets.
-        Results without the MISC categories are included as WikiANN doe snot include this category.
+        Results without the MISC categories are included as WikiANN does not include this category.
     }
     \label{tab:datasets}
-\end{table}
-
-\begin{enumerate}
-    \item Fjern precision og recall for ikke-MISC modeller/datasæt.
-    \item Mangler diskussion: Vi skal problematisere NER-opgavens generaliserbarhed; bl.a. de forskellige forståelse af begreberne of entititer.
-    \item Inkluder evt. ref fig:dadatadist og tab:danedist
-\end{enumerate}
+\end{table}\noindent
+As the table shows, generalizability is not a given.
+While some LOC and PER generalize fairly well between datasets, ORG, and especially MISC, see very poor performance when evaluated on another dataset than the model was fine-tuned on.
+One cause for this may be the different distributions of labels both between datasets and within the training, dev., and test sets of each dataset (see Table \ref{tab:danedist} and Figure \ref{fig:dadatadist} for details).
+Another is that the understanding of what the entity categories actually cover.
+WikiANN is automatically annotated and so is obviously different from the human-annotated DaNE and Plank, where human language understanding played a role.
+However, as DaNE and Plank have different annotations, clearly the authors had different interpretations of what the categories meant (as is especially clear with the MISC category), even though both used the CoNLL2003 guidelines.
+These issues cast doubt on the generalizability of NER.
+\cite{hvingelby2020dane, plank2019neural, pan2017wikiann, tjang2003conll}
 
 \subsection{Class-weighted Loss}
 \label{subsec:lossexp}
