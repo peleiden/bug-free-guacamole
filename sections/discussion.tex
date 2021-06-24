@@ -742,9 +742,13 @@ Two fine-tuning experiments are performed by altering this entity feature approa
     \label{tab:concat}
 \end{table}
 
-\begin{enumerate}
-    \item Diskussion, hvor vi glæder os over, at det samlede er bedst, men spekulerer i, at NER kunne køres helt uden ord-repræsentationer.
-\end{enumerate}
+From the results shown at Table~\ref{tab:concat}, it is learned that the model is able to perform the NER task with high performance using any of the three feature combinations.
+This is explainable by both entities and words interacting with eachothers representations in the transformer and thus affecting the final representations given to the classifier no matter how these are chosen.
+The combination of both representation types seems to outperform the others though this might be due to the high RNG variance discussed in Section~\ref{sec:luke-stability} .
+
+The experiment where only the entity tokens are used is arguably a simple and more elegant NER approach as the selection of the first and last subword tokens to describe a span seems arbitrary.
+These results make such an approach seem to be viable.
+
 
 \section{Predictions: What Is Learned?}
 Until this point, we have used the benchmark performance to judge the model.
@@ -925,7 +929,7 @@ Analysing when the model is right or wrong may provide valuable insight into how
 For this reason, a confusion matrix (table \ref{tab:pred-true-confmat}) is constructed for the DaNE testset that shows predicted labels against the true labels\footnotemark.
 \footnotetext{
     All confusion matrices in this section are for simplicity and nuance done on the word level and not on entire entity span level.
-    This means that these confusion matrices do not correspond exactly to the reported precision and recall scores, as these were calculated on span level as explained in Section~\ref{sec:nereval}.
+    This means that these confusion matrices do not correspond exactly to the reported precision and recall scores, as these were calculated on span level as explained in Section~\ref{subsec:nereval}.
 }
 
 %      | O    | LOC | PER | ORG | MISC
@@ -954,14 +958,14 @@ For this reason, a confusion matrix (table \ref{tab:pred-true-confmat}) is const
 From the table, there are two major sources for errors:
 \begin{enumerate}
     \item LOC is often erroneously predicted on ORG entities -- but not the other way around.
-    \item O is often predicted on true labels, especially on ORG and MISC. This results in the relatively low recall of $81.18\pro$ holding back performance compared to the precision of $84.67\pro$.
+    \item O (outside entity classes) is often predicted on true labels, especially on ORG and MISC. This results in the relatively low recall of $81.18\pro$ holding back performance compared to the precision of $84.67\pro$.
 \end{enumerate}
 Point 1 may have a relatively simple explanation: 
 That many organizations are named after a geographic location while locations more rarely adopts the name of an organization.
 Consider for instance the organization entity "Bakken" in the (verbatim) test example: ''Alle som én er en hyldest til Bakken.''.
 
-The model predicts LOC, but while the amusement park, Bakken, would be refer to the physical location in another context, this sentence is about an homage to the spirit or tradition of the park as an institution and is as such marked as ORG.
-While the model is contextual meaning correctly predicting such entities is possible, examples with as little context as this one requires a degree of very minute real world knowledge currently not obtained by DaLUKE.
+The model predicts LOC, but while the amusement park, Bakken, would refer to the physical location in another context, this sentence is about an homage to the spirit or tradition of the park as an institution and is as such marked as ORG.
+While the model is contextual, meaning correctly predicting such entities is possible, examples with as little context as this one requires a degree of very minute real world knowledge currently not obtained by DaLUKE.
 This error pattern also occurred with names of theatres, libraries and municipalities.
 \begin{table}[H]
     \footnotesize
@@ -985,8 +989,10 @@ This error pattern also occurred with names of theatres, libraries and municipal
     }
     \label{tab:dalukeerrors}
 \end{table}\noindent
-Point 2, the prevalence of false negatives (prediction case III, following table~\ref{tab:eval}), can be a calibration problem as examined in CALIBRATION, but is also, in our estimation, one of the most difficult parts of this dataset, as the definition of named entities starts becoming quite difficult.
-One common cause found is missing a number of adjectives marked as MISC including ''borgerlig'', ''indremissionsk'' and ''olympisk''.
+Point 2, the prevalence of false negatives (prediction case III, following table~\ref{tab:eval}), can be a calibration problem,
+%as examined in CALIBRATION,
+but is also, in our estimation, one of the most difficult parts of this dataset, as the definition of named entities starts becoming quite murky.
+One common cause found is the model missing a number of adjectives marked as MISC including ''borgerlig'', ''indremissionsk'' and ''olympisk''.
 The classification of these as named entities as MISC is correct following CONLL-2003 definition (see Section~\ref{subsec:annoschemes}) but we speculate that this might be a difference in language understanding between English and Danish as this categorization seems non-intuitive in Danish -- in which adjectives are also never capitalized.
 
 In the missed organizations, two possible causes are found.
@@ -996,8 +1002,7 @@ Here, the model only predicts the first word as an organization and gets the ent
 As ''EFs'' might follow a pattern more common in the training data than ''EFs ministerråd'', the former has higher estimated probability by the model and is greedily selected.
 This tendency to predict subspans highlights a weakness of the method of greedily selecting partially overlapping spans.
 
-From this qualitative impression of the errors, a subset of which are shown in Table~\ref{tab:dalukeerrors}, no smoking gun was found that problematizes this specific model;
-contextual understanding and some degree of factural knowledge were exemplifyied for the model in Section~\ref{subsec:mlmpreds}.
+From this qualitative impression of the errors, a subset of which are shown in Table~\ref{tab:dalukeerrors}, no smoking gun was found that problematizes this specific model.
 Rather, most errors shown here are examples that genuinely are difficult applications of language knowledge.
 To get more insight into the prediction patterns of DaLUKE specifically, the NER predictions are compared with those of other Danish NER algorithms.
 
@@ -1106,7 +1111,7 @@ Here, the biggest differences lies in cases where the models have to discern bet
         DaCy Large predictions vs. DaLUKE predictions.
     }
 \end{table}\noindent
-Examples where DaCy is right, but DaLUKE wrong is shown at Table~\ref{tab:dacyex}.
+Examples where DaCy is right, but DaLUKE wrong, are shown at Table~\ref{tab:dacyex}.
 These give more possible causes of the improvement, adding to the initial explanation of DaCy employing a BERT \emph{large}-sized transformer, adding flexibility to the model, theoretically allowing higher level language features to be learned compared to the base size model used by DaLUKE.
 One cause is the use of the case sensitive byte-pair encoding tokenizer of RoBERTa \cite{conneau2020unsupervised} which we speculate helps discovering more entities, relating to the high recall of DaCy (83.7\pro versus the 81.2\pro of DaLUKE).
 Another interesting pattern lies in the strength of the multilingual model used by DaCy correctly predicting entities in foreign languages.
@@ -1161,6 +1166,7 @@ Another interesting pattern lies in the strength of the multilingual model used 
 We see promise in this approach of lightly sprinkling some explicit knowledge on top of the model fitting approach for languages such as Danish.
 The results are, in our estimation, solid and encouraging.
 DaLUKE did not, however, sweep away the classic language modelling approach and was intercepted for the NER crown by the larger model presented in DaCy.
+Some parts of the pretraining approach also seemed misguided on the small dataset.
 To further understand the DaLUKE performance, the results from other downstream tasks than NER would be of great interest, including coreference resolution on the Dacoref dataset \cite{kromann2004cdt, danlp2021} or dependency parsing on the Danish Dependency Treebank \cite{kromann2003ddt}.
 It would also improve the insight to pretrain DaLUKE with a subset of the corpus left out as a testing set.
 Some further changes which have the potential to improve performance are proposed.
@@ -1184,7 +1190,7 @@ The primary, open dataset for which we see promise in automated annotation is th
 
 \paragraph{Modelling}
 Motivated by the impressive success of DaCy, the most direct model improvement is to use the multilingual RoBERTa \cite{conneau2020unsupervised} instead of the Danish BERT \cite{botxo2019dabert}.
-The Danish BERT has previously been criticized for being under trained \cite{derc2021giga, nielsen2020textsum}.
+The Danish BERT has previously been criticized for being under trained \cite{derc2021giga, nielsen2020textsum} and for not being case-sensitive.
 Furthermore, there exists a large version of the multilingual RoBERTa, and, finally, we speculate that our pretraining task will help the multilingual model catch up to possibly missing Danish specific knowledge.
 The large version will, however, require more computational resources or more patience.
 
