@@ -12,11 +12,13 @@ Furthermore, the both released LUKE models (large and base) are fine-tuned on th
 
 Both the general-purpose pretrained and the fine-tuned DaLUKE are made publicly available under the open source MIT license \cite{mitlicense} along with a \code{pip} installable package, \code{daluke}, that allows for easy use and integration into existing code bases.
 
-A number of ablation studies are conducted to investigate the effects on the pretraining of both the applied data engineering consisting of adding more entities to the dataset, Yamada et al.'s proposed entity-aware self-attention, reducing the entity vocabulary \cite{yamada2020luke}, and the effects of transfer learning by initializing much of the model weights to those of Danish BERT.
-Using DaNE as a benchmark, we find that entity-aware self-attention and a full entity vocabulary helps learning, and that especially transfer learning is important to the performance of the model.
-Without transfer learning, the model seems to overfit on the pretraining dataset, which is always a concern with small datasets as risks being the case on low-resource language such as Danish.
+Ablation studies are conducted to investigate the effects on the pretraining of the applied data engineering consisting of adding more entities to the dataset, Yamada et al.'s proposed entity-aware self-attention, reducing the entity vocabulary \cite{yamada2020luke}, and transfer learning by initializing much of the model weights to those of Danish BERT.
+Using DaNE as a benchmark, entity-aware self-attention and a full entity vocabulary are found to help learning, and that especially transfer learning is important to the performance of the model.
+Without transfer learning, the model seems to overfit on the pretraining dataset, which is a concern with small datasets as risks being the case on low-resource languages like Danish.
 Our data-engineering, however, results in slightly worse performance (though within margin of error), highlighting how changes in the pretraining dataset can have unintuitive consequences and should be applied carefully.
 
-The stability of the fine-tuning is also explored; we find it to be highly sensitive to hyperparameters unlike the pretraining, and even the seed used for random number generation plays a large role in the results -- enough to where it may influence what model actually performs the best on DaNE.
+The fine-tuning stability is also explored; we find it to sensitive to hyperparameters and especially the random number generation seed -- enough to where the seed may influence what model actually performs the best on DaNE.
+
+All in all, DaLUKE shows good results but has several paths that are worth exploring to further improve performance.
 
 \end{document}
