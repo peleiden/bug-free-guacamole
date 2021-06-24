@@ -45,6 +45,9 @@ The SOTA on English NER benchmarks moves quickly, but almost all algorithms curr
 
 \section{Embeddings, Tokenization and The Transformer}
 \label{sec:transformers}
+\begin{enumerate}
+    \item Mere plads til BERT?
+\end{enumerate}
 Danish is, compared to English, a low resource language:
 The world's Danish speaking population is smaller than the English speaking population of large cities, naturally resulting in significantly fewer and smaller available text datasets, and in less attention from both researchers and practitioners.
 While pushing the performance of current NLP algorithms to their limits is much more difficult in low resource languages, the field of applied NLP in Danish has adopted many of the deep NLP developments of recent years.
@@ -62,8 +65,6 @@ Consider for instance, the sentences "Musen jagtede elefanten" and "Musen blev b
 In the latent space of the embeddings, one would expect "musen" to be close to other species from the animal kingdom, but also close to computer parts.
 This would in turn cause computer parts to be placed close to animals, which is not ideal.
 This issue with embeddings is where the transformer comes in.
-
-%TODO Eksempler på embeddings og CWRs af "musen"?
 
 \paragraph{The Transformer}
 Introduced by Ashish Vaswani et al. in 2017 \cite{vaswani2017att}, the goal of the transformer is to produce \emph{contextualized word representations} (CWR) given static, but learned embeddings.
@@ -86,12 +87,26 @@ This allows every token to be considered simultaneously, independently, and equa
 \cite{vaswani2017att}
 
 Models based directly on the transformer have been trained on very large corpora to produce English language models such as BERT \cite{devlin2019bert}, RoBERTa \cite{liu2019roberta} and GPT-3 \cite{brown2020language} that have achieved SOTA in several downstream language tasks.
-%TODO Skal der gives mere plads til at forklare BERT?
+BERT is the first model to use the masked language model pretraining objective as it is employed by e.g. RoBERTa and LUKE.
+Early transformer-based models such as OpenAI's GPT \cite{rashford2018gpt} use a unidirectional pretraining task, letting only tokens appearing to the left of the token to predict have any impact.
+BERT instead masks some tokens in the given sequence and allow all tokens to attend to all other tokens when predicting the masked ones -- this is what is known as a masked language model.
+BERT also employs another pretraining task, "next sentence prediction", that pretrains text-pair representations.
+These changes allow BERT to achieve then-SOTA on a number of downstream tasks such as question answering.
+Figure \ref{fig:transformer-bert} shows both the transformer architecture and the BERT pretraining and fine-tuning.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.3\linewidth]{imgs/transformer}
-    \caption{The transformer model as introduced by Vaswani et al. \cite{vaswani2017att}}
-    \label{fig:transformer}
+    \begin{minipage}{0.23\linewidth}
+        \includegraphics[width=\linewidth]{imgs/transformer}
+    \end{minipage}\hfill
+    \begin{minipage}{0.75\linewidth}
+        \includegraphics[width=\linewidth]{imgs/bert}
+    \end{minipage}
+    \caption{
+        To the left, the transformer architecture is shown as proposed by Vaswani et al. \cite{vaswani2017att}
+        The right-hand side shows the BERT pipeline as introduced by Devlin et al. \cite{devlin2019bert}
+        Both figures are taken from their respective papers.
+    }
+    \label{fig:transformer-bert}
 \end{figure}\noindent
 
 \paragraph{Tokenization}
