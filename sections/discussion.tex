@@ -49,7 +49,7 @@ The result is shown in figure \ref{fig:running}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=.8\textwidth]{running}
-    \caption{Fine-tuning results using different pretraining checkpoints.}
+    \caption{Fine-tuning results on DaNE using different pretraining checkpoints.}
     \label{fig:running}
 \end{figure}\noindent
 At least for NER, extra pretraining only yields improved results up to five epochs -- or maybe even less, but no checkpoints were saved to test that hypothesis.
@@ -98,7 +98,8 @@ The final results of this pretraining are summarized in table \ref{tab:baseline-
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{baseline-acc}
-    \caption{Baseline masked language and masked entity accuracy throughout pretraining.}
+    \caption{Baseline masked language and masked entity accuracy throughout pretraining.
+    All curves are smoothed using a rolling average.}
     \label{fig:baseline-acc}
 \end{figure}\noindent
 The model is afterwards finetuned for named entity recognition on DaNE following the approach described in Section~\ref{sub:finetune-ner} and the following hyperparameters, non-systematically selected:
@@ -312,7 +313,7 @@ This did not happen - in fact, results were much worse than the baseline.
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
     No transfer learning    & 71.04&79.05&83.57&55.42&61.74      & 76.99                          & 65.95
     \end{tabular}
-    \caption{The finetuning results of the experiment where weights were trained from scratch}
+    \caption{The fine-tuning results of the experiment where weights were trained from scratch.}
     \label{tab:nobert}
 \end{table}
 \begin{figure}[H]
@@ -354,9 +355,9 @@ After pretraining for 50 epochs with the same hyperparameters as the main experi
 
 \begin{table}[H]
     \centering
-    \small
+    \footnotesize
     \begin{tabular}{l|l|cccccc}
-        Model                                 & Top $k$-accuracy [\pro]  & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
+        Model                                 & Top $k$ accuracy [\pro]  & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
         \multirow{2}{*}{Limited entity vocab.}& Masked words             & 23.91  & 30.50 & 33.90 & 39.19  & 47.11  & 53.03 \\
                                               & Masked entities          & 30.56  & 42.15 & 48.87 & 55.79  & 65.91  & 66.32
     \end{tabular}
@@ -490,9 +491,7 @@ All in all, the slight hiccups in reproducing the finetuning results show the di
     \begin{tabular}{l r r r r r}
             Model & Micro avg. & LOC & PER & ORG & MISC \\
             \hline
-            LUKE large & $93.97 \pm  0.07$ & $95.06 \pm  0.2$ & $97.19 \pm  0.08$ & $93.51 \pm  0.2$ & $85.15 \pm  0.4$ \\
-                &  &  &  &  &  \\
-            Support & 5616 & 1666 & 1602 & 1647 & 701 \\
+            LUKE large & $93.97 \pm  0.07$ & $95.06 \pm  0.2$ & $97.19 \pm  0.08$ & $93.51 \pm  0.2$ & $85.15 \pm  0.4$
     \end{tabular}
     \caption{
         Results when pre-training and evaluating LUKE with Python version 3.8 and PyTorch 1.4.
@@ -657,10 +656,13 @@ The cross validation test sets will thus be larger, as no development set is use
                     Mean &  87.49 & 90.06 & 94.59 & 79.12 & 83.63 & 88.46 & 87.34\\
                     Std. &  1.1  & 1.6 & 0.7 & 2.8& 3.0 & 0.8 & 1.7
     \end{tabular}
-    \caption{}
+    \caption{
+        5-fold cross validation results over the DaNE dataset.
+        The training, dev. and test sets were all combined and then split in five different ways with each split having 80\pro\ training data and 20\pro\ test data, on which the F1 score is calculated.
+    }
     \label{tab:cross}
 \end{table}\noindent
-It must be noted that we cannot claim to present an unbiased estimate of the generalization performance, even to datasets following the same distribution, as the main experiment hyperparameters, that were also used here, were chosen based on performance on much of the data.
+It must be noted that we cannot claim to present an unbiased estimate of the generalization performance, even on datasets following the same distribution, as the main experiment hyperparameters, that were also used here, were chosen based on performance on much of the data.
 \paragraph{Dataset generalization ability}
 \begin{enumerate}
     \item Diskutér hovedresultatets genereraliseringsevne først
@@ -1009,7 +1011,7 @@ For this reason, a confusion matrix (table \ref{tab:pred-true-confmat}) is const
             & MISC & 0  & 0    & 16  & 114 & 29  \\
             & O    & 5  & 0    & 8   & 14  & 9,197
     \end{tabular}
-    \caption{Predicted labels versus the true labels on the DaNE testset.}
+    \caption{Predicted labels versus the true labels on the DaNE test set.}
     \label{tab:pred-true-confmat}
 \end{table}\noindent
 From the table, there are two major sources for errors:
@@ -1024,9 +1026,6 @@ Consider for instance the organization entity "Bakken" in the (verbatim) test ex
 The model predicts LOC, but while the amusement park, Bakken, would be refer to the physical location in another context, this sentence is about an homage to the spirit or tradition of the park as an institution and is as such marked as ORG.
 While the model is contextual meaning correctly predicting such entities is possible, examples with as little context as this one requires a degree of very minute real world knowledge currently not obtained by DaLUKE.
 This error pattern also occurred with names of theatres, libraries and municipalities.
-For many of these cases, the task is of differentiating between ORG and LOC is further complicated by the fact that the LOC makes up only a subset of the full name.
-This means that the model not only has to choose between ORG an LOC for a given entity candidate, but also has to select between a LOC entity and an ORG entity spanning a superset of the LOC span.
-If the LOC is the easier prediction, the model will be more confident on that and due to the greedy selection among overlapping spans will not predict ORG.
 \begin{table}[H]
     \footnotesize
     \begin{tabular}{l|llllllllll}
@@ -1181,31 +1180,42 @@ Another interesting pattern lies in the strength of the multilingual model used 
         Text:             & $\ldots$  & opus    & VIII    & der  & hedder  \\
         Truth:            & $\ldots$  & B-MISC  & I-MISC  & O    & O       \\\hline
         DaLUKE pred.:     & $\ldots$  & B-MISC  & I-MISC  & O    & O       \\
-        DaCy pred.:       & $\ldots$  & O       & O       & O    & O       
+        DaCy pred.:       & $\ldots$  & O       & O       & O    & O
     \end{tabular}
     (continued)\\
     \begin{tabular}{c} % The spooky, scary, invisible ghost table for formatting!
-        \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad 
+        \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad
     \end{tabular}
-                \begin{tabular}{llllll}
-                     Il      & Cimento  & dell'Armonia  & e       & dell'Invenzione \\
-                     B-MISC  & I-MISC   & I-MISC        & I-MISC  & I-MISC          \\\hline
-                     O       & O        & O             & O       & O               \\
-                     B-MISC  & I-MISC   & I-MISC        & I-MISC  & I-MISC          
-                \end{tabular}\par
+    \begin{tabular}{llllll}
+            Il      & Cimento  & dell'Armonia  & e       & dell'Invenzione \\
+            B-MISC  & I-MISC   & I-MISC        & I-MISC  & I-MISC          \\\hline
+            O       & O        & O             & O       & O               \\
+            B-MISC  & I-MISC   & I-MISC        & I-MISC  & I-MISC
+    \end{tabular}\vspace*{1em}
     \begin{tabular}{l|llllllll}
-        Text:             & Der  & ligger  & fire  & skodder  & plus  & en  & hel  & Camel   \\ 
+        Text:             & Der  & ligger  & fire  & skodder  & plus  & en  & hel  & Camel   \\
         Truth:            & O    & O       & O     & O        & O     & O   & O    & B-MISC  \\\hline
-        DaLUKE pred.:     & O    & O       & O     & O        & O     & O   & O    & O       \\ 
+        DaLUKE pred.:     & O    & O       & O     & O        & O     & O   & O    & O       \\
         DaCy pred.:    & O    & O       & O     & O        & O     & O   & O    & B-MISC
-    \end{tabular}\par
-    \begin{tabular}{l|llllllllll}
-        Text:            & Den  & modtog  & han  & i  & øvrigt  & Kulturministeriets  & børnebogspris  & for  & i  & 1990 \\
-        Truth:           & O    & O       & O    & O  & O       & B-ORG               & O              & O    & O  & O    \\\hline
-        DaLUKE  pred.:   & O    & O       & O    & O  & O       & O                   & O              & O    & O  & O    \\
-        DaCy pred.:   & O    & O       & O    & O  & O       & B-ORG               & O              & O    & O  & O    
+    \end{tabular}\vspace*{1em}
+    \begin{tabular}{l|llllll}
+        Text:            & Den  & modtog  & han  & i  & øvrigt  & Kulturministeriets\\
+        Truth:           & O    & O       & O    & O  & O       & B-ORG             \\\hline
+        DaLUKE  pred.:   & O    & O       & O    & O  & O       & O                 \\
+        DaCy pred.:   & O    & O       & O    & O  & O       & B-ORG
+    \end{tabular}
+    (continued)\\
+    \begin{tabular}{c} % The spooky, scary, invisible ghost table for formatting!
+        \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad
+    \end{tabular}
+    \begin{tabular}{llll}
+        børnebogspris  & for  & i  & 1990  \\
+        O              & O    & O  & O     \\\hline
+        O              & O    & O  & O     \\
+        O              & O    & O  & O
     \end{tabular}
     \caption{
+        Examples from the DaNE test set where DaCy large gives the correct predictions and DaLUKE gives the wrong predictions.
     }
     \label{tab:dacyex}
 \end{table}\noindent

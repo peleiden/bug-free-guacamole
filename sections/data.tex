@@ -87,7 +87,7 @@ Table \ref{tab:metadata} shows how these augmentation steps change the propertie
 \section{Named Entity Recognition Benchmarks}
 \label{sec:nerdata}
 
-\subsection{Danish NER Test Sets}
+\subsection{Danish NER Datasets}
 \label{subsec:daNERdata}
 For the task of benchmarking both existing and new Danish Named Entity Recognition (NER) models, three publicly available datasets previously used in the literature were identified.
 
@@ -97,7 +97,8 @@ The dataset consists of 5512 sentences and 100,733 tokens from the Danish PAROLE
 UD-DDT is split into training, development and test sets consisting of 4383, 564 and 565 sentences, respectively.
 Two Named Entity Recognition (NER) annotations of this dataset are considered.
 \begin{itemize}
-    \item \emph{DaNE} is a 2020 NER annotation of the entire UD-DDT into four categories PER(son), ORG(anisation), LOC(ation), MISC(ellaneous) performed once by a linguist and once by non-linguists for the Alexandra Institute \cite[Sec. 4]{hvingelby2020dane}
+    \item \emph{DaNE} is a 2020 NER annotation of the entire UD-DDT into four categories PER(son), ORG(anisation), LOC(ation), MISC(ellaneous) performed once by a linguist and once by non-linguists for the Alexandra Institute \cite[Sec. 4]{hvingelby2020dane}.
+    The categories are described in closer detail in Section \ref{subsec:annoschemes}.
     \item A NER annotation of the development and test subsets of UD-DDT into the same four entity categories was performed by Barbara Plank in 2019 \cite{plank2019neural}.
     A subset of the training data was also annotated.
     This annotation will be called \emph{Plank}.
@@ -154,7 +155,11 @@ Previous literature has highlighted the scarcity of accessible, gold-standard, D
     \begin{minipage}[t]{0.32\textwidth}
         \includegraphics[width=\textwidth]{datadist_wikiann}
     \end{minipage}
-    \caption{Distribution of entity labels in the three Danish NER datasets.}
+    \caption{
+        Distribution of entity labels in the three Danish NER datasets.
+        Notably, DaNE and Plank do not have the same distributions the three datasubsets, with e.g. LOC being under-represented in the DaNE test set and MISC being under-represented in the Plank training set.
+        WikiANN is the only dataset that has the same distribution in all three subsets.
+    }
     \label{fig:dadatadist}
 \end{figure}\noindent
 
@@ -191,7 +196,7 @@ Wiki-ANN follows the same categories, excluding MISC.
 All datasets follow the Inside-outside-beginning (IOB) format that ascribes a word the "I-X" tag if it is inside a named entity of type X, "B-X" if it begins the X entity and "O" if it is outside named entities (e.g. the null class).
 This format proposed by Ramshaw and Marcus in 1995 is widely used but does allow entities to be nested or to overlap \cite{ramshaw1995IOB}.
 
-The definition of the annotation categories are given in the CoNLL-2003 guidelines \footnotemark and are summarized here:
+The definition of the annotation categories are given in the CoNLL-2003 guidelines\footnotemark~and are summarized here:
 \footnotetext{
     These are available here: \url{https://www.clips.uantwerpen.be/conll2003/ner/annotation.txt} (collected 27/02-2021)
 }

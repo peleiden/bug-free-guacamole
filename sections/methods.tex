@@ -58,9 +58,8 @@ Thus, using this approach, the error types IV, V and VI are not considered\footn
 Following previous literature, the main score on which the system performance was judged is the F1 score, the harmonic mean of precision of recall;
 \begin{equation}
     \label{eq:f1}
-    \text{F1} = \dfrac{2}{\nicefrac 1 {\text{Precision}} + \nicefrac 1 {\text{Recall}}}.
+    \text{F1} = \dfrac{2}{\text{Precision}^{-1} + \text{Recall}^{-1}}
 \end{equation}
-
 The reported score were obtained using a Python sequence evaluation library \cite{seqeval}, also used by the original LUKE paper and DaNLP, with whom comparisons are made.
 
 Two of the three used datasets contains MISC annotations and existing literature disagrees on whether to consider this class in evaluations with DaNLP arguing
@@ -82,20 +81,20 @@ The finetuning procedure was repeated five times for each of the two released LU
 } 
 \begin{table}[H]
     \centering
-%    TODO The number of parameters is clearly mixed up. Is the learning rate too?
     \begin{tabular}{l|rr}
         Pre-trained model
-                                    & LUKE large \textsuperscript{\ref{foot:fnt}}\
+                                    & LUKE large\textsuperscript{\ref{foot:fnt}}\
                                                 & LUKE base\textsuperscript{\ref{foot:fnt}}\\\hline
-        Pre-trained model parameters & $253\ctp 6$ & $483\ctp 6$\\
+        Pre-trained model parameters & $483\ctp 6$ & $253\ctp 6$\\
         Pre-trained model entity vocabulary & $500\ctp3$ & $500\ctp3$\\
         Learning rate               & $10^{-5}$ & $5\ctp{-5}$\\
         Effective batch size        & 16 & 16\\
         Gradient accumulation steps & 2 & 2\\
         Numeric precision           & \multicolumn{2}{l}{Mixed FP16/FP32 (Nvidia APEX)}\\
-        Training code               & \multicolumn{2}{l}{PyTorch-based \code{luke}-repository \protect\footnotemark}\\
+        Training code               & \multicolumn{2}{l}{PyTorch-based \code{luke}-repository\protect\footnotemark}\\
         Software version            & \multicolumn{2}{l}{Python 3.6, PyTorch 1.2}
     \end{tabular}
+    \caption{Hyperparameters used to fine-tune LUKE large and LUKE base on the CoNLL2003 dataset.}
     \label{tab:params}
 \end{table}
 
@@ -183,17 +182,16 @@ These were chosen based on informal experiments and intuitive understanding of h
         AdamW $ \beta_2 $ & $ 0.999 $\\
         AdamW $ \epsilon $ & $ 10^{-6} $
     \end{tabular}
-    \caption{Hyperparameters for DaLUKE pretraining.}\label{tab:pretrain-hyper}
+    \caption{Hyperparameters used for DaLUKE pretraining.}\label{tab:pretrain-hyper}
 \end{table}\noindent
-
-LUKE follows BERT and increases its learning rate linearly from 0 to the peak learning rate followed by a linear decrease to 0 for the rest of the learning rate - the slanted triangle learning rate (STLR). \cite{devlin2019bert} \cite{yamada2020luke} \cite{howardruder2018universal}
+LUKE follows BERT and increases its learning rate linearly from 0 to the peak learning rate followed by a linear decrease to 0 for the rest of the learning rate - the slanted triangle learning rate (STLR). \cite{devlin2019bert, yamada2020luke, howardruder2018universal}
 
 For pretraining, DaLUKE also employs linear warmup for the first 6\pro\ of parameter updates, after which it decreases polynomially with a power of $ \sqrt{3} $ and a final learning rate of one tenth the peak learning rate.
 This results in a more aggressive decrease in learning rate after the warmup period but a slightly higher learning rate in the final steps compared to STLR.
 The learning rate development is shown on figure \ref{fig:lr}.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.7\textwidth]{lr}
+    \includegraphics[width=.6\textwidth]{lr}
     \caption{Learning rate during the pretraining.}
     \label{fig:lr}
 \end{figure}\noindent
@@ -240,7 +238,7 @@ The search is performed by repeating the training procedure with all combination
 \begin{enumerate}
     \item Batch size $\in\{8, 16\}$
     \item Peak learning rate $\in\{10^{-5}, 5\ctp{5}\}$
-    \item Dropout (last linear layer) $\in\{0.025, 0.1\}$
+    \item Dropout (final, linear layer) $\in\{0.025, 0.1\}$
     \item Whether or not to use class-weighted loss $\in\{\text{Yes}, \text{No}\}$
 \end{enumerate}
 For each combination, the resulting model was evaluated on the development set, shown in Table~\ref{tab:hyperres} and the hyperparameters with highest average F1 score was chosen and the final model using which the final model was produced by finetuning again to avoid selection bias.
@@ -259,7 +257,7 @@ The chosen hyperparameters are reported below together with the used hyperparame
         Weight decay                    & $ 0.01 $\\
         Loss weighting                  & No
     \end{tabular}
-    \caption{Hyperparameters used for fine-tuning DaLUKE for named entity recognition}
+    \caption{Hyperparameters used for fine-tuning DaLUKE for named entity recognition.}
     \label{tab:main-hyper}
 \end{table}\noindent
 
