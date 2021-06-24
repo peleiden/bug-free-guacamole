@@ -1224,30 +1224,44 @@ Another interesting pattern lies in the strength of the multilingual model used 
 We see promise in this approach of lightly sprinkling some explicit knowledge on top of the model fitting approach for languages such as Danish.
 The results are, in our estimation, solid and encouraging.
 DaLUKE did not, however, sweep away the classic language modelling approach and was intercepted for the NER crown by the larger model presented in DaCy.
-Some further improvement which have the potential to push this method are proposed.
+To further understand the DaLUKE performance, the results from other downstream tasks than NER would be of great interest, including coreference resolution on the Dacoref dataset \cite{kromann2004cdt, danlp2021} or dependency parsing on the Danish Dependency Treebank \cite{kromann2003ddt}.
+It would also improve the insight to pretrain DaLUKE with a subset of the corpus left out as a testing set.
+Some further changes which have the potential to improve performance are proposed.
 
 \paragraph{Data}
 As in any deep learning project, we end up crying out for more data.
 Multiple of the pretraining experiments presented in Section~\ref{sec:pretrainpls} show signs of the model overfitting to the limited Danish Wikipedia.
-An immediate idea is to include the Norweigan Wikipedia as the language (At least \emph{bokmål}) is syntactically, and vocabulary wise similar to Danish.
+An immediate idea is to include the Norweigan Wikipedia as the language (in \emph{bokmål}) is syntactically, and vocabulary wise similar to Danish.
 There are some technical issues with the entities, as the same entity might be spelled differently in both languages, but we speculate that an oversized entity vocabulary would not be a problem.
 While the Norwegian Wikipedia has 156M words \footnotemark compared to the 81M of the Danish Wikipedia, this might be too little to dramatically change the results.
 \footnotetext{Norwegian Wikipedia statistics: \url{https://no.wikipedia.org/wiki/Spesial:Statistikk}}
 
-A more comprehensive improvement could be extracted from our dataset augmentation idea, though it did not improve results at for the Danish Wikipedia.
+A more impactful improvement could be found from our dataset augmentation idea, though it did not improve results for the Danish Wikipedia.
 Much needed entirely new LUKE pretraining data sets could be produced from raw text corpora by automatically annotating them using pattern matching.
 Such lower standard annotations used to achieve extra data might be necessary for continued improvement in low-resource languages such as Danish but should be used carefully and with an analysis of the trade off between quality and quantity of data.
 Other automatic annotaters than simple pattern matching might also be beneficial as field of entity linking has been applied to Wikipedia \cite{brochier2021wikilink} including ready-to-use tools such as the Danish version of DBpedia Spotlight \cite{isem2013daiber}.
-It might hold that the quality of the entity annotations is not paramount, in which case tools that link sentences or paragraphs to entities without localizing them exactly might be used, as the entity potition ids thus could be omitted.
+It might hold that the quality of the entity annotations is not all-important, in which case tools that link entire sentences or paragraphs to entities without localizing them exactly might be used, as the entity potition ids can be omitted.
 Here, Danish tools for explicit semantic analysis \cite{hansen2017esa} could help.
 
-NÆVN GIGA-ORD!!!
-\paragraph{Modelling}
-Motivated by the impressive success, of DaCy, the most direct model improvement is to use the multilingual RoBERTa large
+The primary, open dataset for which we see promise in automated annotation is the recently published Danish Gigaword corpus which includes documents that are more diverse in domain and dialect than the Danish Wikipedia \cite{derc2021giga}.
 
-\begin{enumerate}
-    \item Brug Multilingual RoBERTa Large
-    \item Gentænke fremgangsmåde: Måske mere eksplicit vidensmodellering -- hvad med relationelle tokens?
-\end{enumerate}
+\paragraph{Modelling}
+Motivated by the impressive success of DaCy, the most direct model improvement is to use the multilingual RoBERTa \cite{conneau2020unsupervised} instead of the Danish BERT \cite{botxo2019dabert}.
+The Danish BERT has previously been criticized for being under trained \cite{derc2021giga, nielsen2020textsum}.
+Furthermore, there exists a large version of the multilingual RoBERTa, and, finally, we speculate that our pretraining task will help the multilingual model catch up to possibly missing Danish specific knowledge.
+The large version will, however, require more computational resources or more patience.
+
+Further improvement might be found if the LUKE approach is not followed directly.
+The LUKE knowledge-enhancement is very subtle and requires any hierarchical and relational modelling of knowledge to be learned implicitly from the flat world of entities stored in the vocabulary.
+A unification of models that use subtle knowledge-enhancement in pretraining and those that use explicit knowledge bases might be beneficial for Danish.
+An approach to this, that maintains a flexible, general model, might be introducing additional tokens coding for knowledge as input for the entity embeddings.
+We imagine a hierarchical token that uses the article classification of Wikipedia (see Figure~\ref{fig:wikipedia-cat}) to code the type of token to beneficial in pretraining.
+\begin{figure}[H]
+    \centering
+        \includegraphics[width=\linewidth]{wikipedia-cat}
+    \caption{An example of categories included in Wikipedia articles. It is imagined that these can be mined as additional, helpful annotation of entity types for the pretraining.}
+    \label{fig:wikipedia-cat}
+\end{figure}\noindent
+
 
 \end{document}
