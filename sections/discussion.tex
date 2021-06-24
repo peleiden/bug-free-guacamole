@@ -472,18 +472,16 @@ This conceptual argument somewhat supported by the experimental results suggests
     \item Prec. vs rec. - bør måske være i 6.3, da det jo er mere analyse-agtigt?
 \end{enumerate}
 As with pretraining, fine-tuning has a number of interesting elements that are worth investigating further.
-For these experiments, the main pretrained model from section \ref{sec:Pretraining of daLUKE} are used but with the optimized fine-tuning hyperparameters from table \ref{tab:main-hyper}.
+For these experiments, the main pretrained model from section \ref{sec:Pretraining of daLUKE} are used but with the optimized fine-tuning hyperparameters from Table \ref{tab:main-hyper}.
 Following the pretraining experiments, all results are reported with MISC.
 
 \subsection{Stability of LUKE Finetuning}
 \label{sec:luke-stability}
 
 \paragraph{Reproducability of English LUKE}
-For the reproduction of the English LUKE, our results were initially underwhelming as five repetitions of the finetuning of LUKE large on CoNLL2003 consistently, slightly underperformed the reported result of 94.3\pro\ micro average as seen at table \ref{tab:EnLUKE-wrong}.
+For the reproduction of the English LUKE, our results were initially underwhelming as five repetitions of the finetuning of LUKE large on CoNLL2003 consistently, slightly underperformed the reported result of 94.3\pro\ micro average as seen at Table \ref{tab:EnLUKE-wrong}.
 After investigating, this somewhat disappointing result was revealed to be overturned when finetuning with Python version 3.6 and PyTorch 1.2 instead of using newer versions as done in the initial run.
 Using these correct versions, the same as Yamada et al. reported in their package file, the results were succesfully reproduced as shown in the central results in Section \ref{sec:English LUKE Reproduction}.
-For the large model, only one of the five repetitions yielded the reported performance.
-No criticism can be raised based on this results; the sample size is small and, furthermore, we found that the mean \emph{base} model performance superseded the reported micro average F1 score of 93.3\pro.
 
 All in all, the slight hiccups in reproducing the finetuning results show the difficulties in empiric evaluations of deep methods strongly relying on indeterminism -- especially as the underlying framework, PyTorch, does not guarantee reproducable results across versions and platforms, even if using identical seeds for the random number generator \cite{pytorchrep}.
 
@@ -503,7 +501,7 @@ All in all, the slight hiccups in reproducing the finetuning results show the di
 \end{table}
 
 \paragraph{Random number generation variance}
-The same repetition of the finetuning procedure as carried out for English LUKE is done for the main DaLUKE pretrained model by training with five different random number generation (RNG) seeds.
+The same repetition of the fine-tuning procedure as carried out for English LUKE is done for the main DaLUKE model by training with five different random number generation (RNG) seeds.
 The results are shown in table \ref{tab:seeds}.
 
               % precision    recall  f1-score   support
@@ -579,7 +577,7 @@ Unfortunately, the standard deviation is rather large compared to the margins be
 For reference, seed 1 was used for all experiments bar this one.
 As the seed was fixed for all experiments, the large inter-seed variance is likely not indicative of the experiments being incomparable.
 However, it does cast doubt on the comparison to other Danish NER models.
-As table \ref{tab:seeds} shows, one of the models (seed 3) actually achieves state-of-the-art.
+As table \ref{tab:seeds} shows, one of the models (seed 3) actually achieves state of the art.
 
 \paragraph{Dataset split variance}
 Another way to look at fine-tuning indeterminism is by the randomness in dataset.
@@ -664,11 +662,13 @@ The cross validation test sets will thus be larger, as no development set is use
     }
     \label{tab:cross}
 \end{table}\noindent
+These results imply that the DaNE testing set performance of 82.89\pro\ understates the accuracy of this method.
+An explanation can be that the small testing set (565 sentences) simply contains more difficult examples than other parts of the dataset.
+This theory is substantiated by the differing distributions of entities between DaNE splits (testing contains fewer LOC's and more ORG's, see Figure~\ref{fig:dadatadist}) and that we consistently observed higher performance on the development set than on the testing (such as in the hyperparameter optimization results at Table~\ref{tab:hyperres}),
+
 It must be noted that we cannot claim to present an unbiased estimate of the generalization performance, even on datasets following the same distribution, as the main experiment hyperparameters, that were also used here, were chosen based on performance on much of the data.
 \paragraph{Dataset generalization ability}
-\begin{enumerate}
-    \item Diskutér hovedresultatets genereraliseringsevne først
-\end{enumerate}
+It was noted with the results that DaLUKE seems to generalize well to the two other Danish NER datasets
 To add detail to the ability to generalize across these three datasets, DaLUKE is also fine-tuned for the two other datasets and the results for each model is reported across datasets at Table~\ref{tab:datasets}.
 % 2021-06-17 09:18:23.044    INFO                      precision    recall  f1-score   support
 
@@ -765,8 +765,9 @@ To add detail to the ability to generalize across these three datasets, DaLUKE i
 \end{table}
 
 \begin{enumerate}
-    \item Spørgsmålstegn ved generaliserbarhed
-    \item Inkluder ref fig:dadatadist og tab:danedist
+    \item Fjern precision og recall for ikke-MISC modeller/datasæt.
+    \item Mangler diskussion: Vi skal problematisere NER-opgavens generaliserbarhed; bl.a. de forskellige forståelse af begreberne of entititer.
+    \item Inkluder evt. ref fig:dadatadist og tab:danedist
 \end{enumerate}
 
 \subsection{Class-weighted Loss}
@@ -816,7 +817,13 @@ Two fine-tuning experiments are performed by altering this entity feature approa
     \label{tab:concat}
 \end{table}
 
+\begin{enumerate}
+    \item Diskussion, hvor vi glæder os over, at det samlede er bedst, men spekulerer i, at NER kunne køres helt uden ord-repræsentationer.
+\end{enumerate}
+
 \section{Predictions: What Is Learned?}
+Until this point, we have used the benchmark performance to judge the model.
+To get a better understanding of the model, this section includes attempts to interpret the model predictions.
 
 \subsection{Masked Language Predictions}
 \label{subsec:mlmpreds}
@@ -825,20 +832,22 @@ Two fine-tuning experiments are performed by altering this entity feature approa
     \item I pap udskære
 \end{enumerate}
 
-To demonstrate DaLUKE's ability to consider context, an example with various subsets is constructed.
-\begin{align*}
-    &\text{
-    '''[MASK]' blev angrebet af 'USA' i '2003' som følge af 'terrorangrebet
-    }\\
-    &\text{
-         den 11. september 2001'. 'Saddam Hussein' blev fanget i december.''
-    }\footnote{
-    In English, it reads "[MASK] war attacked by the US in 2003 following the terrorist attack of September 11, 2001. Saddam Hussein was captured in December."}
-\end{align*}
-[MASK] masks "Irak" ("Iraq" in English).
-Five entities (marked with single quotes) are also given to the model, with the first one being masked.
-For clarity, both the word "Irak" and the entity "Irak" are masked.
-
+To demonstrate DaLUKE's ability to consider context, an example, and some variations on it, are constructed.
+The example is given below with text sequence first, followed by entity annotations.
+\begin{itemize}
+    \item ''[MASK] blev angrebet af USA i 2003 som følge af terrorangrebet den 11. september 2001. Saddam Hussein blev fanget i december.''
+        \subitem Truth: ''Irak''
+    \item $\{
+            \text{\emph{[MASK]} at word \#1},
+            \text{\emph{USA} at word \#5},
+            \text{\emph{2003} at word \#6},
+        $\\
+        $
+            \text{\emph{Terrorangrebet den 11. september 2001} at words \#11-15},
+            \text{\emph{Saddam Hussein} at words \#12-13}
+        \}$
+        \subitem Truth: ''Irak''.
+\end{itemize}
 First consider the shorter version: "[MASK] blev angrebet af USA i 2003 som følge af terrorangrebet d. 11. september 2001."
 Given this text piece, DaLUKE predicts "afghanistan"\footnote{Model predictions are lower-cased, as the da-BERT tokenizer is lower-cased.} with a certainty of 15.95\pro.
 While certainly a reasonable guess, it is incorrect, as Afghanistan was attacked in 2001.
@@ -851,9 +860,9 @@ This example highlights how DaLUKE is able to take advantage of context to subst
 The following examples show similar results.
 For simplicity, no entities are included.
 \begin{itemize}
-    \item "I [MASK] spises der meget and." -- "danmark" is predicted, which is a good guess but not "december" as intended.\\
-    "I [MASK] spises der meget and. Det er nemlig julemåneden." -- "december" is correctly predicted.
-    \item "Danmarks vigtigste lov er [MASK]." -- "bekendtgørelser", which while grammatically correct does not make sense in the context.\\
+    \item "I [MASK] spises der meget and." -- "danmark" is predicted, which makes perfect sense but was not "december" as was first intended with the sentence.\\
+    "I [MASK] spises der meget and. Det er nemlig julemåneden." -- "december" is now predicted.
+    \item "Danmarks vigtigste lov er [MASK]." -- "bekendtgørelser", which while grammatically correct does not make much sense in the context.\\
     "Danmarks vigtigste lov er [MASK]. Den blev underskrevet i 1849." -- "grundloven" is correctly predicted.
 \end{itemize}
 
@@ -861,7 +870,7 @@ For simplicity, no entities are included.
 \subsection{DaLUKE Representations: The NER Geometry}
 DaLUKE produces contextualized representations of both words and entities and these were, for the NER task, successfully adapted to show a level of language understanding.
 These abstract representations which, ideally, condense language understanding into 768 reals are here subjected to some examination.
-The entity span representations, the concatenation of contextual word and entity representations $\mathbf v_i \in \RR^{2304}$, are analyzed by conducting pretrained DaLUKE inference on every possible span in DaNE training data, and saving each result, thus producing a sequence of representations $\mathbf v_{1, \ldots, 975,312}$.
+The entity span representations, the concatenation of contextual word and entity representations $\mathbf v_i \in \RR^{2304}$, are analyzed by conducting pretrained DaLUKE inference on every possible span in the DaNE training data, and saving each result, thus producing a sequence of representations $\mathbf v_{1, \ldots, 975,312}$.
 Dimensionality reduction for visualization on the representations was performed using principal component analysis, the $t$-SNE ($t$-distributed stochastic neighbour embedding) algorithm \cite{maaten2008tsne} and the UMAP (uniform manifold approximation and projection for dimensionality reduction) algorithm \cite{mcinnes2020umap}.
 
 Implementation wise, Sci-Kit Learn was used for $t$-SNE \cite{pedregosa2011scikit} and UMAP Learn was used for UMAP \cite{mcinnes2018umap-software} with hyperparameters shown at Table~\ref{tab:dimreducer-hyper}.
@@ -883,7 +892,7 @@ Even with this limit and with hyperparameters chosen to favour global structure,
         All other hyperparameters followed the defaults in Sci-Kit Learn 0.24.1 and UMAP Learn 0.5.1.
     }\label{tab:dimreducer-hyper}
 \end{table}\noindent
-Dimensionality reduction on the full dataset yield weakly structured visualizations of the geometry, mostly dominated by giant clusters, as seen for PCA at figure \ref{fig:all-pca}, which also shows some clustering of true entities, and at the others in Appendix~\ref{sec:dimredu}.
+Dimensionality reduction on the full dataset yields weakly structured visualizations of the geometry, mostly dominated by giant clusters, as seen for PCA at figure \ref{fig:all-pca}, which also shows some clustering of true entities, and at the others in Appendix~\ref{sec:dimredu}.
 The true, underlying dimensionality of the representations also seems high as the first 100 components principal components only explain less than 60\pro\ of data variance, see figure \ref{fig:full-varex}, an indication of well-learned representations which, ideally, should exploit all vector coordinates by having minimal latent dimension covariance.
 
 \begin{figure}[H]
@@ -895,7 +904,7 @@ The true, underlying dimensionality of the representations also seems high as th
     }
     \label{fig:all-pca}
 \end{figure}\noindent
-For the reductions in the positive label-only dataset, even more meaningful structure is apparent with all three methods, at figures \ref{fig:pos-pca}, \ref{fig:pos-tsne}, \ref{fig:repvslen}, showing slight grouping of entities in the same NER class, indicating that the pretrained model, even before finetuning, represents language in a way that is adjacent to the human annotated dataset.
+For the reductions in the positive label-only dataset, even more meaningful structure is apparent with all three methods, at figures \ref{fig:pos-pca}, \ref{fig:pos-tsne}, \ref{fig:repvslen}, showing slight grouping of entities in the same NER class, indicating that the pretrained model, even before finetuning, represents language in a way that is lose to the human annotated dataset.
 
 \begin{figure}[H]
     \centering
@@ -952,13 +961,14 @@ We mostly leave this task for further work, but go through a some of the example
     }
     \label{tab:dimexamples}
 \end{table}\noindent
+
+The following observations were made when looking through the predictions.
 \begin{itemize}
-    % TODO: Skal flere understøttende eksempler med i appendiks? - har dem i min local_data
     \item
-        The second principal component in the dataset including all data seems to tell something about span position, as the highest values in this dimension almost all correspond to examples with the span at the very end of the sentence.
+        The second principal component in the dataset including all data seems to express something related to span position, as the highest values in this dimension almost all correspond to examples with the span at the very end of the sentence.
         Based on this, it makes sense that the plots in Figure~\ref{fig:all-pca} shows the actual entities having moderate values.
     \item
-        Low values of the fourth principal component in the positive-label only dataset seems to correspond for a very specific type of words:
+        Low values of the fourth principal component in the positive-label only dataset seems to correspond to a very specific type of words:
         Adjectivizations of political, geographic regions such as "Danish" or "English".
         As explained in Section~\ref{subsec:annoschemes}, such entities should have the label MISC.
         This observation fits with Figure~\ref{fig:pos-pca} showing MISC generally having the lowest 4th dimension values and LOC coming in second.

@@ -137,6 +137,7 @@ Another application of exsting NLP frameworks was performed by Kenneth Enevoldse
 In Danish, the most significant, pretrained language model is in our estimation a Danish version of BERT, released by the company BotXO in 2019 \cite{botxo2019dabert} .
 This model, in the following called \emph{da-BERT}, is produced by pretraining the base version of BERT \cite{devlin2019bert} on 10 GB of Danish text predominantly acquired from web scrapes.
 The da-BERT model has been fine-tuned on most Danish benchmarks in the DaNLP project and consistently yield top results \cite{danlp2021, hvingelby2020dane}.
+The model and its tokenizer are trained on lowercased text.
 
 Another, more recent, Danish transformer is the adaption of the more resource efficient language model Electra to Danish under the name Ælæctra by Malte Hømark-Bertelsen, KMD and Aarhus University \cite{bertelsen2020lctra}.
 NER finetuned versions of Ælæctra and some multilingual transformers have been released by Ekstra Bladet Analyse under the project \emph{NER for Danish} (NERDA) \cite{kjeldgaard2020nerda}.
