@@ -9,9 +9,9 @@
 \section{What Is Going on in the Pretraining?}
 \label{sec:pretrainpls}
 In order to investigate what affects pretraining effectiveness, several ablation studies are performed.
-Unless stated otherwise, the main hyperparameters from table \ref{tab:pretrain-hyper} are used, but with 50 epochs due to limited compute.
+Unless stated otherwise, the main hyperparameters from Table \ref{tab:pretrain-hyper} are used, but with 50 epochs due to limited compute.
 The experiments were trained primarily on a $ 1\times$A100 configuration.
-Due to its negative effect on runtime on A100's (see figure \ref{fig:runtime}), AMP is not used for any of the following experiments.
+Due to its negative effect on runtime on A100's (see Figure \ref{fig:runtime}), AMP is not used for any of the following experiments.
 \subsection{The Parameter Population}
 The first model analysis is a global view of the DaLUKE parameters
 Figure \ref{fig:weight-dist} shows the model parameter value distribution before and after pretraining divided by whether or not a given parameter was initialized from da-BERT.
@@ -31,7 +31,7 @@ Figure \ref{fig:weight-dist} shows the model parameter value distribution before
 \end{figure}\noindent
 Two observations stand out:
 Firstly, DaLUKE exclusive parameters, which consist of entity embeddings and the entity part of the decoder, are spread out.
-This includes the notable peak that comes from biases and layer normalizations being initialized to 0.
+This includes the noTable peak that comes from biases and layer normalizations being initialized to 0.
 Secondly, the shared parameters are more or less unchanged in their distribution.
 This makes sense, as they are already trained, and so further training on similar data with a similar task should not make result in any significant change.
 Furthermore, all parameters from da-BERT (barring the three sets of DaLUKE exclusive query matrices) are not changed for the first half of training.
@@ -45,8 +45,8 @@ High scores may also indicate overfitting, especially on small datasets.
 
 One way to glimpse into the pretraining black box is to observe the performance of downstream language tasks on a number of checkpoints produced during the pretraining.
 Such a checkpoint was produced just after model initialization and following that after roughly every fifth epoch for a total of 32 checkpoints from the main model.
-At every checkpoint, fine-tuning was performed using the hyperparameters from table \ref{tab:baseline-hyper}.
-The result is shown in figure \ref{fig:running}.
+At every checkpoint, fine-tuning was performed using the hyperparameters from Table \ref{tab:baseline-hyper}.
+The result is shown in Figure \ref{fig:running}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=.8\textwidth]{running}
@@ -55,7 +55,7 @@ The result is shown in figure \ref{fig:running}.
 \end{figure}\noindent
 At least for NER, extra pretraining only yields improved results up to five epochs -- or maybe even less, but no checkpoints were saved to test that hypothesis.
 After the first five epochs, fine-tuning performance is stagnant.
-In fact, the performance curve mirrors that of the masked sub-word accuracy of the MLM (see table \ref{fig:pretrain-acc}).
+In fact, the performance curve mirrors that of the masked subword accuracy of the MLM (see Table \ref{fig:pretrain-acc}).
 On the other hand, there is hardly any correlation between the performance and the masked entity accuracy.
 This surprising result indicates that NER task primarily relies on the knowledge gained from the BERT part of the model.
 
@@ -63,7 +63,7 @@ This surprising result indicates that NER task primarily relies on the knowledge
 For a baseline model, the main model is retrained using only 50 epochs, but otherwise using the same hyperparameters, shown in Table \ref{tab:pretrain-hyper}.
 This allows for a comparison to a number of ablation studies where compute resources did not allow full 150 epoch pretraining.
 
-The final results of this pretraining are summarized in table \ref{tab:baseline-mlm} with the accuracy development shown on figure \ref{fig:baseline-acc}.
+The final results of this pretraining are summarized in Table \ref{tab:baseline-mlm} with the accuracy development shown on Figure \ref{fig:baseline-acc}.
 
 \begin{table}[H]
     \centering
@@ -103,7 +103,7 @@ The final results of this pretraining are summarized in table \ref{tab:baseline-
     All curves are smoothed using a rolling average.}
     \label{fig:baseline-acc}
 \end{figure}\noindent
-The model is afterwards finetuned for named entity recognition on DaNE following the approach described in Section~\ref{sub:finetune-ner} and the following hyperparameters, non-systematically selected:
+The model is afterwards fine-tuned for named entity recognition on DaNE following the approach described in Section~\ref{sub:fine-tune-ner} and the following hyperparameters, non-systematically selected:
 \begin{table}[H]
     \centering
     \small
@@ -118,9 +118,9 @@ The model is afterwards finetuned for named entity recognition on DaNE following
         Weight decay & $ 0.05 $\\
         Loss weighting & No
     \end{tabular}
-    \caption{Hyperparameters for baseline finetuning experiment and the following ablation experiments.}\label{tab:baseline-hyper}
+    \caption{Hyperparameters for baseline fine-tuning experiment and the following ablation experiments.}\label{tab:baseline-hyper}
 \end{table}\noindent
-This resulted in the following performance on the DaNE test data-set.
+This resulted in the following performance on the DaNE test dataset.
 \begin{table}[H]
     \centering
     \small
@@ -129,7 +129,7 @@ This resulted in the following performance on the DaNE test data-set.
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
     Baseline                & 82.41&89.58&92.90&74.48&68.84      & 86.73                          & 78.49
     \end{tabular}
-    \caption{The baseline finetuning results where avg. refers to the micro average}
+    \caption{The baseline fine-tuning results where avg. refers to the micro average}
     \label{tab:summary}
 \end{table}\noindent
 The results of the baseline experiment together with the following experiments are also shown together in a final overview at Section \ref{subsec:preoverview}.
@@ -167,7 +167,7 @@ The pretraining terminated to the following performance.
     \label{tab:old-data-mlm}
 \end{table}\noindent
 At a first glance, these masked language modelling results that strictly dominate the numbers for the baseline seem to suggest that the dataset augmentation was ill-advised.
-There is, however, a large issue (apart from the obvious problem of judging a model by it's performance on the training data set) with the metric in this case:
+There is, however, a large issue (apart from the obvious problem of judging a model by it's performance on the training dataset) with the metric in this case:
 The dataset augmentation also changed the benchmark itself as the masking task of the baseline model also includes automatically annotated, and thus somewhat dubious, entity links.
 This can explain the clear gain in entity masking performance.
 Whether this explanation has any merit in explaining the increased word accuracy found in this ablation study is less clear to us and relates to the model synergy effects in this joint task.
@@ -190,7 +190,7 @@ Whether this explanation has any merit in explaining the increased word accuracy
 % 2021-06-11 19:38:23.361    INFO        K=50
 %                                        Word:   54.617
 %                                        Entity: 68.818
-As a more unbiased benchmark, this model was finetuned on the DaNE data set using the hyperparameters at Table~\ref{tab:baseline-hyper} resulting in the following performance:
+As a more unbiased benchmark, this model was fine-tuned on the DaNE dataset using the hyperparameters at Table~\ref{tab:baseline-hyper} resulting in the following performance:
 \begin{table}[H]
     \centering
     \small
@@ -199,7 +199,7 @@ As a more unbiased benchmark, this model was finetuned on the DaNE data set usin
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
     No data aug.            & 83.07&84.42&95.18&76.41&72.10      & 85.42                          & 80.82
     \end{tabular}
-    \caption{The finetuning results of the dataset augmentation pretraining experiment.}
+    \caption{The fine-tuning results of the dataset augmentation pretraining experiment.}
     \label{tab:dataaug}
 \end{table}
 % 2021-06-11 16:08:34.724    INFO                      precision    recall  f1-score   support
@@ -254,7 +254,7 @@ After fine-tuning, the following results were achieved:
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
     BERT attention          & 79.62 & 85.86 & 92.84 & 70.95 &   64.84      & 84.51                          & 75.27
     \end{tabular}
-   \caption{The finetuning results of the traditional attention experiment.}
+   \caption{The fine-tuning results of the traditional attention experiment.}
     \label{tab:bertatt}
 \end{table}\noindent
 From the lower NER and masked language performances, it is concluded that this mechanism explicitly modelling the difference between the two token domains is an important part of the DaLUKE results.
@@ -289,8 +289,8 @@ In order to test this hypothesis, a pretraining is conducted without initializin
     }
     \label{tab:nobert-mlm}
 \end{table}\noindent
-It is immediately clear from table \ref{tab:nobert-mlm} that this model performs noticably better at both the masked word and masked entity tasks than other models so far.
-That is despite even starting from 0 in the masked word task (see figure \ref{fig:nobert-acc}).
+It is immediately clear from Table \ref{tab:nobert-mlm} that this model performs noticably better at both the masked word and masked entity tasks than other models so far.
+That is despite even starting from 0 in the masked word task (see Figure \ref{fig:nobert-acc}).
 Because of this, good NER performance could reasonbly be expected.
 This did not happen - in fact, results were much worse than the baseline.
 % 2021-06-12 12:20:54.130    INFO                      precision    recall  f1-score   support
@@ -326,13 +326,13 @@ This result is unintuitive in that a model scoring highly on \emph{both} masking
 While the running fine-tuning presented in Section~\ref{sec:effmore} showed partial decoupling between entity masking and NER results, this result further raises the issue of the masked task overfitting on the limited dataset even though the masking is dynamic.
 
 Thus, the transfer learning from da-BERT clearly turns out to be a help here.
-From figure \ref{fig:nobert-acc}, the initialization seems to provide two things other than initial MLM accuracy:
+From Figure \ref{fig:nobert-acc}, the initialization seems to provide two things other than initial MLM accuracy:
 \begin{itemize}
     \item A regulazation effect that prevents the model from overfitting to the dataset.
     \item Increased pretraining stability.
     The accuracy curves contain a number of sudden jumps and drops that are much rarer in other pretrainings.
 \end{itemize}
-This stabilization effect is supported by the stable distribution of parameters inherited from da-BERT shown at figures \ref{fig:weight-dist}.
+This stabilization effect is supported by the sTable distribution of parameters inherited from da-BERT shown at Figures \ref{fig:weight-dist}.
 It should be noted that because no weights came from da-BERT, no weights were ever locked throughout the pretraining in this experiment.
 A similar experiment with weights unlocked and initialization from da-BERT showed pretraining accuracies much closer to the baseline, indicating that the regualizing effect is indeed da-BERT.
 \begin{enumerate}
@@ -398,7 +398,7 @@ The NER performance of this model was, following the approach in the previous ex
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
     Limited entity vocab.   & 82.22&89.69&93.59&74.00&68.72      & 85.02                          & 79.57
     \end{tabular}
-    \caption{The finetuning results of the entity vocabulary limiting pretraining experiment.}
+    \caption{The fine-tuning results of the entity vocabulary limiting pretraining experiment.}
     \label{tab:ent-limit}
 \end{table}\noindent
 % 2021-06-11 15:26:30.316    INFO                      precision    recall  f1-score   support
@@ -410,7 +410,7 @@ The NER performance of this model was, following the approach in the previous ex
 %                                           macro avg     0.8402    0.7934    0.8150       558
 %                                        weighted avg     0.8455    0.7957    0.8188       558
 Conclusively, the results of this experiment are close to the baseline, signifying robustness in the approach.
-However, with these hyperparameters, the removal of entities does not seem promising for the Danish data set.
+However, with these hyperparameters, the removal of entities does not seem promising for the Danish dataset.
 
 This experimental filtering of the DaLUKE entities preserves $7\pro$ of the content pages, while $8\pro$ were preserved for the English LUKE.
 Intuitively, it would make sense that the same proportional filtering works better in English, as the absolute number of entities making up the implicit knowledge base of the model might be important:
@@ -455,29 +455,29 @@ Table \ref{tab:mlmsummary} and \ref{tab:nersummary} show the masked language and
     No transfer learning    & 71.04&79.05&83.57&55.42&61.74      & 76.99                          & 65.95                       \\
     Limited entity vocab.   & 82.22&\textbf{89.69}&93.59&74.00&68.72      & 85.02                          & 79.57
     \end{tabular}
-    \caption{Overview of the pretraining experiment finetuning results presented in the previous subsections.}
+    \caption{Overview of the pretraining experiment fine-tuning results presented in the previous subsections.}
     \label{tab:nersummary}
 \end{table}
 
-\section{Finetuning Performance}
-\label{sec:finetuning-exp}
+\section{Fine-tuning Performance}
+\label{sec:fine-tuning-exp}
 \begin{enumerate}
     \item Statistiske metoder til sammenligning af scores (????)
     \item Prec. vs rec. - bør måske være i 6.3, da det jo er mere analyse-agtigt?
 \end{enumerate}
 As with pretraining, fine-tuning has a number of interesting elements that are worth investigating further.
-For these experiments, the main pretrained model from section \ref{sec:Pretraining of daLUKE} are used but with the optimized fine-tuning hyperparameters from Table \ref{tab:main-hyper}.
+For these experiments, the main pretrained model from section \ref{sec:Pretraining of DaLUKE} are used but with the optimized fine-tuning hyperparameters from Table \ref{tab:main-hyper}.
 Following the pretraining experiments, all results are reported with MISC.
 
-\subsection{Stability of LUKE Finetuning}
+\subsection{Stability of LUKE Fine-tuning}
 \label{sec:luke-stability}
 
 \paragraph{Reproducability of English LUKE}
-For the reproduction of the English LUKE, our results were initially underwhelming as five repetitions of the finetuning of LUKE large on CoNLL2003 consistently, slightly underperformed the reported result of 94.3\pro\ micro average as seen at Table \ref{tab:EnLUKE-wrong}.
-After investigating, this somewhat disappointing result was revealed to be overturned when finetuning with Python version 3.6 and PyTorch 1.2 instead of using newer versions as done in the initial run.
+For the reproduction of the English LUKE, our results were initially underwhelming as five repetitions of the fine-tuning of LUKE large on CoNLL2003 consistently, slightly underperformed the reported result of 94.3\pro\ micro average as seen at Table \ref{tab:EnLUKE-wrong}.
+After investigating, this somewhat disappointing result was revealed to be overturned when fine-tuning with Python version 3.6 and PyTorch 1.2 instead of using newer versions as done in the initial run.
 Using these correct versions, the same as Yamada et al. reported in their package file, the results were succesfully reproduced as shown in the central results in Section \ref{sec:English LUKE Reproduction}.
 
-All in all, the slight hiccups in reproducing the finetuning results show the difficulties in empiric evaluations of deep methods strongly relying on indeterminism -- especially as the underlying framework, PyTorch, does not guarantee reproducable results across versions and platforms, even if using identical seeds for the random number generator \cite{pytorchrep}.
+All in all, the slight hiccups in reproducing the fine-tuning results show the difficulties in empiric evaluations of deep methods strongly relying on indeterminism -- especially as the underlying framework, PyTorch, does not guarantee reproducable results across versions and platforms, even if using identical seeds for the random number generator \cite{pytorchrep}.
 
 \begin{table}[H]
     \centering
@@ -488,7 +488,7 @@ All in all, the slight hiccups in reproducing the finetuning results show the di
             LUKE large & $93.97 \pm  0.07$ & $95.06 \pm  0.2$ & $97.19 \pm  0.08$ & $93.51 \pm  0.2$ & $85.15 \pm  0.4$
     \end{tabular}
     \caption{
-        Results when pre-training and evaluating LUKE with Python version 3.8 and PyTorch 1.4.
+        Results when pretraining and evaluating LUKE with Python version 3.8 and PyTorch 1.4.
         Values are mean and standard deviance of F1 scores over five repetitions of the fine-tuning.
     }
     \label{tab:EnLUKE-wrong}
@@ -496,7 +496,7 @@ All in all, the slight hiccups in reproducing the finetuning results show the di
 
 \paragraph{Random number generation variance}
 The same repetition of the fine-tuning procedure as carried out for English LUKE is done for the main DaLUKE model by training with five different random number generation (RNG) seeds.
-The results are shown in table \ref{tab:seeds}.
+The results are shown in Table \ref{tab:seeds}.
 
               % precision    recall  f1-score   support
 
@@ -564,18 +564,18 @@ The results are shown in table \ref{tab:seeds}.
      Mean                   & 82.73& 85.24& 93.36& 75.09& 73.81& 85.68& 80.00\\
      Std.                   & 1.4& 2.3& 0.8& 2.8& 1.2& 2.1& 1.3
     \end{tabular}
-    \caption{Repeating the finetuning procedure of the main model, reporting results.}
+    \caption{Repeating the fine-tuning procedure of the main model, reporting results.}
     \label{tab:seeds}
 \end{table}\noindent
 Unfortunately, the standard deviation is rather large compared to the margins between many of the experiments.
 For reference, seed 1 was used for all experiments bar this one.
 As the seed was fixed for all experiments, the large inter-seed variance is likely not indicative of the experiments being incomparable.
 However, it does cast doubt on the comparison to other Danish NER models.
-As table \ref{tab:seeds} shows, one of the models (seed 3) actually achieves state of the art.
+As Table \ref{tab:seeds} shows, one of the models (seed 3) actually achieves state of the art.
 
 \paragraph{Dataset split variance}
 Another way to look at fine-tuning indeterminism is by the randomness in dataset.
-Predefined splits, chosen randomly by the dataset creators at the Alexandra Institute \cite{hvingelby2020dane}, into training, development and testing data sets were used for all experiments.
+Predefined splits, chosen randomly by the dataset creators at the Alexandra Institute \cite{hvingelby2020dane}, into training, development and testing datasets were used for all experiments.
 A less noisy estimate of generalization performance is generally obtained by $K$-fold cross validation as opposed to this simple hold-out testing method \cite[Sec. 1.3]{bishop2006pattern}.
 This is performed using $K=5$ random splits as this gives a training set of approximately same size as for the predefined splits, that is, 4383 examples in the DaNE splits and 4410 in cross validation training.
 The cross validation test sets will thus be larger, as no development set is used.
@@ -672,7 +672,7 @@ To add detail to the ability to generalize across these three datasets, DaLUKE i
                     &         & F1    & Prec. & Rec. & F1 {\tiny\textdiscount MISC} & LOC   & PER   & ORG   & MISC \\\hline
             DaNE    & DaNE    & 82.89 & 84.67 & 81.18 & 85.18                        & 87.00 & 94.15 & 73.15 & 74.58 \\
             DaNE    & Plank   & 69.02 & 60.54 & 80.26 & 78.86                        & 81.68 & 92.53 & 56.03 & 13.24 \\
-            DaNE    & WikiAnn &  --   & -- & -- & 66.84                        & 73.46 & 74.89 & 44.18 & -- \\\hline
+            DaNE    & WikiANN &  --   & -- & -- & 66.84                        & 73.46 & 74.89 & 44.18 & -- \\\hline
             Plank   & DaNE    & 63.49 & 80.83 & 52.15 & 73.10                        & 76.04 & 90.40 & 45.64 & 4.62 \\
             Plank   & Plank   & 74.93 & 78.06 & 72.05 & 74.93                        & 76.29 & 90.38 & 50.57 & 41.03 \\
             Plank   & WikiANN &  --   & -- & -- & 58.46                        & 62.80 & 74.63 & 21.36 & -- \\\hline
@@ -686,7 +686,7 @@ To add detail to the ability to generalize across these three datasets, DaLUKE i
     }
     \label{tab:datasets}
 \end{table}\noindent
-As the table shows, generalizability is not a given.
+As the Table shows, generalizability is not a given.
 While some LOC and PER generalize fairly well between datasets, ORG, and especially MISC, see very poor performance when evaluated on another dataset than the model was fine-tuned on.
 One cause for this may be the different distributions of labels both between datasets and within the training, dev., and test sets of each dataset (see Table \ref{tab:danedist} and Figure \ref{fig:dadatadist} for details).
 Another is that the understanding of what the entity categories actually cover.
@@ -718,12 +718,12 @@ Interestingly, this problem was mitigated when using class-weighted loss, an uni
     }
     \label{tab:clsgood}
 \end{table}\noindent
-Conclusively, this idea did not benefit our main results, a testament to the robustness of gradient learning, but gave an example of how strategies for class imbalance can be necessary when the learning is less stable.
+Conclusively, this idea did not benefit our main results, a testament to the robustness of gradient learning, but gave an example of how strategies for class imbalance can be necessary when the learning is less sTable.
 
 \subsection{Feature Usage}%
 \label{sub:Feature Usage}
-An entity candidate forward passed through the final, classifying layer in the NER model is comprised of the concatenation of word representations of first and final sub-word tokens, and, novelly for LUKE, a contextual representation of the entity span.
-Two fine-tuning experiments are performed by altering this entity feature approach by observing the performance when the sub-word token and entity representations are used individually.
+An entity candidate forward passed through the final, classifying layer in the NER model is comprised of the concatenation of word representations of first and final subword tokens, and, novelly for LUKE, a contextual representation of the entity span.
+Two fine-tuning experiments are performed by altering this entity feature approach by observing the performance when the subword token and entity representations are used individually.
 
 \begin{table}[H]
     \centering
@@ -731,7 +731,7 @@ Two fine-tuning experiments are performed by altering this entity feature approa
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
         & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                        \\ \hline
-        Sub-word tokens & 81.27 & \textbf{87.63} & 92.44 & 70.99 & 71.62 & 84.66 & 78.14 \\
+        Subword tokens & 81.27 & \textbf{87.63} & 92.44 & 70.99 & 71.62 & 84.66 & 78.14 \\
         Entity tokens & 81.75 & 85.15 & 93.22 & 71.48 & 74.01 & \textbf{85.08} & 78.67 \\
         Both (default) & \textbf{82.89} & 87.00 & \textbf{94.15} & \textbf{73.15} & \textbf{74.58} & 84.67 & \textbf{81.18}
     \end{tabular}
@@ -804,7 +804,7 @@ Dimensionality reduction for visualization on the representations was performed 
 
 Implementation wise, Sci-Kit Learn was used for $t$-SNE \cite{pedregosa2011scikit} and UMAP Learn was used for UMAP \cite{mcinnes2018umap-software} with hyperparameters shown at Table~\ref{tab:dimreducer-hyper}.
 The set of 975,312 entity spans in the DaNE training set was randomly subsampled to 100K examples for these nonlinear dimensionality reduction algorithms due to compute limitations.
-Even with this limit and with hyperparameters chosen to favour global structure, $t$-SNE and UMAP results were difficult to intepret, see Appendix~\ref{sec:dimredu}, motivating visualizing the data set where only the 4003 entity spans that corresponded to true entity annotations were included.
+Even with this limit and with hyperparameters chosen to favour global structure, $t$-SNE and UMAP results were difficult to intepret, see Appendix~\ref{sec:dimredu}, motivating visualizing the dataset where only the 4003 entity spans that corresponded to true entity annotations were included.
 
 \begin{table}[H]
     \centering
@@ -821,19 +821,19 @@ Even with this limit and with hyperparameters chosen to favour global structure,
         All other hyperparameters followed the defaults in Sci-Kit Learn 0.24.1 and UMAP Learn 0.5.1.
     }\label{tab:dimreducer-hyper}
 \end{table}\noindent
-Dimensionality reduction on the full dataset yields weakly structured visualizations of the geometry, mostly dominated by giant clusters, as seen for PCA at figure \ref{fig:all-pca}, which also shows some clustering of true entities, and at the others in Appendix~\ref{sec:dimredu}.
-The true, underlying dimensionality of the representations also seems high as the first 100 components principal components only explain less than 60\pro\ of data variance, see figure \ref{fig:full-varex}, an indication of well-learned representations which, ideally, should exploit all vector coordinates by having minimal latent dimension covariance.
+Dimensionality reduction on the full dataset yields weakly structured visualizations of the geometry, mostly dominated by giant clusters, as seen for PCA at Figure \ref{fig:all-pca}, which also shows some clustering of true entities, and at the others in Appendix~\ref{sec:dimredu}.
+The true, underlying dimensionality of the representations also seems high as the first 100 components principal components only explain less than 60\pro\ of data variance, see Figure \ref{fig:full-varex}, an indication of well-learned representations which, ideally, should exploit all vector coordinates by having minimal latent dimension covariance.
 
 \begin{figure}[H]
     \centering
         \includegraphics[width=0.7\linewidth]{full-geo/pca_matrix}
     \caption{
         The first four components visualized against each other from PCA performed on all 975,312 possible entity spans in the DaNE training data.
-        Spans in grey are not marked as entities in the data set.
+        Spans in grey are not marked as entities in the dataset.
     }
     \label{fig:all-pca}
 \end{figure}\noindent
-For the reductions in the positive label-only dataset, even more meaningful structure is apparent with all three methods, at figures \ref{fig:pos-pca}, \ref{fig:pos-tsne}, \ref{fig:repvslen}, showing slight grouping of entities in the same NER class, indicating that the pretrained model, even before finetuning, represents language in a way that is lose to the human annotated dataset.
+For the reductions in the positive label-only dataset, even more meaningful structure is apparent with all three methods, at Figures \ref{fig:pos-pca}, \ref{fig:pos-tsne}, \ref{fig:repvslen}, showing slight grouping of entities in the same NER class, indicating that the pretrained model, even before fine-tuning, represents language in a way that is lose to the human annotated dataset.
 
 \begin{figure}[H]
     \centering
@@ -902,7 +902,7 @@ The following observations were made when looking through the predictions.
         As explained in Section~\ref{subsec:annoschemes}, such entities should have the label MISC.
         This observation fits with Figure~\ref{fig:pos-pca} showing MISC generally having the lowest 4th dimension values and LOC coming in second.
     \item
-        For $t$-SNE on the positive-only data set, no such clear dependencies on coordinate numeric values were observed, explainable by $t$-SNE not returning linear projections, but an approximate recreation of data point distances.
+        For $t$-SNE on the positive-only dataset, no such clear dependencies on coordinate numeric values were observed, explainable by $t$-SNE not returning linear projections, but an approximate recreation of data point distances.
         Two examples very close in $t$-SNE distances are shown in Table~\ref{tab:dimexamples}; these are also semantically very similar in entity type and role.
     \item
         For UMAP fitted to the examples with positive labels, the clear cluster placed around $\begin{bmatrix} -2.5\\ 7\end{bmatrix}$ is examined.
@@ -926,7 +926,7 @@ Furthermore, a key quality of the representations is their contextualized nature
 \subsection{When the Model is Wrong}
 
 Analysing when the model is right or wrong may provide valuable insight into how the classification decisions are made and how to improve this.
-For this reason, a confusion matrix (table \ref{tab:pred-true-confmat}) is constructed for the DaNE testset that shows predicted labels against the true labels\footnotemark.
+For this reason, a confusion matrix (Table \ref{tab:pred-true-confmat}) is constructed for the DaNE testset that shows predicted labels against the true labels\footnotemark.
 \footnotetext{
     All confusion matrices in this section are for simplicity and nuance done on the word level and not on entire entity span level.
     This means that these confusion matrices do not correspond exactly to the reported precision and recall scores, as these were calculated on span level as explained in Section~\ref{subsec:nereval}.
@@ -955,7 +955,7 @@ For this reason, a confusion matrix (table \ref{tab:pred-true-confmat}) is const
     \caption{Predicted labels versus the true labels on the DaNE test set.}
     \label{tab:pred-true-confmat}
 \end{table}\noindent
-From the table, there are two major sources for errors:
+From the Table, there are two major sources for errors:
 \begin{enumerate}
     \item LOC is often erroneously predicted on ORG entities -- but not the other way around.
     \item O (outside entity classes) is often predicted on true labels, especially on ORG and MISC. This results in the relatively low recall of $81.18\pro$ holding back performance compared to the precision of $84.67\pro$.
@@ -993,7 +993,7 @@ Point 2, the prevalence of false negatives (prediction case III, following table
 %as examined in CALIBRATION,
 but is also, in our estimation, one of the most difficult parts of this dataset, as the definition of named entities starts becoming quite murky.
 One common cause found is the model missing a number of adjectives marked as MISC including ''borgerlig'', ''indremissionsk'' and ''olympisk''.
-The classification of these as named entities as MISC is correct following CONLL-2003 definition (see Section~\ref{subsec:annoschemes}) but we speculate that this might be a difference in language understanding between English and Danish as this categorization seems non-intuitive in Danish -- in which adjectives are also never capitalized.
+The classification of these as named entities as MISC is correct following CoNLL-2003 definition (see Section~\ref{subsec:annoschemes}) but we speculate that this might be a difference in language understanding between English and Danish as this categorization seems non-intuitive in Danish -- in which adjectives are also never capitalized.
 
 In the missed organizations, two possible causes are found.
 Firstly, using a case-sensitive tokenizer, which the da-BERT is not \cite{botxo2019dabert}, might help some errors such as ''Markedsudvalget'' and ''Kulturministeriets''.
@@ -1030,7 +1030,7 @@ Surprisingly, the most similar models are the DaCy models, using the multilingua
     }
 \end{table}\noindent
 Compared to the da-BERT predictions, the biggest difference is the higher amount of positive predictions as seen on Table~\ref{tab:dabertcompare}.
-DaNLP da-BERT was not finetuned for MISC, so this difference is natural, but DaLUKE also discovers more organizations.
+DaNLP da-BERT was not fine-tuned for MISC, so this difference is natural, but DaLUKE also discovers more organizations.
 DaLUKE also predicts location more rarely, a class on which DaLUKE outperforms da-BERT (87.0\pro vs. 83.9\pro).
 
 % 2021-06-19 16:31:04.881    INFO        Confusion matrix with DaLUKE results ↓ and results from BERT-DaNE →
@@ -1125,7 +1125,7 @@ Another interesting pattern lies in the strength of the multilingual model used 
         DaCy pred.:       & $\ldots$  & O       & O       & O    & O
     \end{tabular}
     (continued)\\
-    \begin{tabular}{c} % The spooky, scary, invisible ghost table for formatting!
+    \begin{tabular}{c} % The spooky, scary, invisible ghost Table for formatting!
         \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad
     \end{tabular}
     \begin{tabular}{llllll}
@@ -1147,7 +1147,7 @@ Another interesting pattern lies in the strength of the multilingual model used 
         DaCy pred.:   & O    & O       & O    & O  & O       & B-ORG
     \end{tabular}
     (continued)\\
-    \begin{tabular}{c} % The spooky, scary, invisible ghost table for formatting!
+    \begin{tabular}{c} % The spooky, scary, invisible ghost Table for formatting!
         \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad
     \end{tabular}
     \begin{tabular}{llll}
@@ -1180,7 +1180,7 @@ While the Norwegian Wikipedia has 156M words \footnotemark compared to the 81M o
 \footnotetext{Norwegian Wikipedia statistics: \url{https://no.wikipedia.org/wiki/Spesial:Statistikk}}
 
 A more impactful improvement could be found from our dataset augmentation idea, though it did not improve results for the Danish Wikipedia.
-Much needed entirely new LUKE pretraining data sets could be produced from raw text corpora by automatically annotating them using pattern matching.
+Much needed entirely new LUKE pretraining datasets could be produced from raw text corpora by automatically annotating them using pattern matching.
 Such lower standard annotations used to achieve extra data might be necessary for continued improvement in low-resource languages such as Danish but should be used carefully and with an analysis of the trade off between quality and quantity of data.
 Other automatic annotaters than simple pattern matching might also be beneficial as field of entity linking has been applied to Wikipedia \cite{brochier2021wikilink} including ready-to-use tools such as the Danish version of DBpedia Spotlight \cite{isem2013daiber}.
 It might hold that the quality of the entity annotations is not all-important, in which case tools that link entire sentences or paragraphs to entities without localizing them exactly might be used, as the entity potition ids can be omitted.

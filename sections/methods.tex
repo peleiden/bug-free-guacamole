@@ -9,7 +9,7 @@
     \item Husk at skrive datid!
 \end{enumerate}
 
-\section{Benchmarking Named Entity Recognition}
+\section{Benchmarking named entity recognition}
 \subsection{Evaluation of NER}
 \label{subsec:nereval}
 As explained in Section \ref{subsec:annoschemes}, all datasets used in the project supply an annotation label in IOB format \cite{ramshaw1995IOB} for each word in each sequence.
@@ -67,12 +67,12 @@ Two of the three used datasets contains MISC annotations and existing literature
 We trained all models with the MISC annotation and also include it in our evaluations.
 When comparing with models trained without MISC, a non-MISC average F1 score is also reported (by treating all MISC predictions as null clas pridctions).
 \subsection{Fine-tuning English LUKE}
-Yamada et al. benchmark LUKE, on Named Entity Recognition using the CoNLL-2003 dataset \cite{yamada2020luke}.
+Yamada et al. benchmark LUKE, on named entity recognition using the CoNLL-2003 dataset \cite{yamada2020luke}.
 
 Reproduction of these results were attempted by obtaining the pretrained LUKE models from Yamada et al.'s software repository.
 The same hyperparameters as Yamada et al. were used and are shown along with and technical details in Table~\ref{tab:params}.
 
-The finetuning procedure was repeated five times for each of the two released LUKE models, called \emph{large} and \emph{base}, to examine variability in the downstream training.
+The fine-tuning procedure was repeated five times for each of the two released LUKE models, called \emph{large} and \emph{base}, to examine variability in the downstream training.
 %%% Horrible footnote manipulation - it works, dont touch it! %%%
 \addtocounter{footnote}{1}
 \footnotetext{\label{foot:fnt}
@@ -104,22 +104,22 @@ The finetuning procedure was repeated five times for each of the two released LU
 \subsection{Off-the-shelf, Danish models}
 \label{sec:exidan}
 A number of Danish NER models that are publily available and usable by NLP practitioners were collected and evaluated on the testing datasets of the three Danish NER annotations considered in Section \ref{subsec:daNERdata}:
-DaNE, Plank and Wiki-ANN.
+DaNE, Plank and WikiANN.
 
 Most of the models were found through DaNLP \cite{danlp2021} and a number of them are introduced in Section \ref{sec:nlpda}.
 
 \setlist{itemsep=.5em}
 \begin{itemize}
-    \item \textbf{DaNLP da-BERT}: The daBERT model \cite{botxo2019dabert} finetuned for NER on DaNE by DaNLP.
-    \item \textbf{NERDA m-BERT}: The multilingual BERT base released by the original Google Research BERT team \cite{devlin2019bert} finetuned by NERDA \cite{kjeldgaard2020nerda} on DaNE.
-    \item \textbf{NERDA Ælæctra}: The transformer Ælæctra, released by Malte Højmark-Bertelsen, \cite{bertelsen2020lctra} finetuned by NERDA on DaNE.
-    \item \textbf{DaCy}: An adaption of version 3 of the SpaCy framework \cite{honnibal2020spacy} to Danish by Kenneth Enevoldsen including finetuning of on DaNE \cite{enevoldsen2020dacy}.
+    \item \textbf{DaNLP da-BERT}: The da-BERT model \cite{botxo2019dabert} fine-tuned for NER on DaNE by DaNLP.
+    \item \textbf{NERDA m-BERT}: The multilingual BERT base released by the original Google Research BERT team \cite{devlin2019bert} fine-tuned by NERDA \cite{kjeldgaard2020nerda} on DaNE.
+    \item \textbf{NERDA Ælæctra}: The transformer Ælæctra, released by Malte Højmark-Bertelsen, \cite{bertelsen2020lctra} fine-tuned by NERDA on DaNE.
+    \item \textbf{DaCy}: An adaption of version 3 of the SpaCy framework \cite{honnibal2020spacy} to Danish by Kenneth Enevoldsen including fine-tuning of on DaNE \cite{enevoldsen2020dacy}.
         Both the medium and large versions are benchmarked, using the base and large multilingual RoBERTa \cite{conneau2020unsupervised} models, respectively.
         This 2021 model, large version, is the currently reported state of the art.
-    \item \textbf{DaNLP spaCy}: SpaCy, version 2, adapted to Danish by DaNLP and finetuned on DaNE.
-    \item \textbf{DaNLP Flair}: The Flair framework \cite{akbik2019flair} also adapted to Danish by DaNLP and finetuned on DaNE.
+    \item \textbf{DaNLP spaCy}: SpaCy, version 2, adapted to Danish by DaNLP and fine-tuned on DaNE.
+    \item \textbf{DaNLP Flair}: The Flair framework \cite{akbik2019flair} also adapted to Danish by DaNLP and fine-tuned on DaNE.
     \item \textbf{Polyglot}: A NLP framework supporting a wide range of tasks in many languages including NER in 40 different languages.
-        The NER model is finetuned using automatic, language-agnostic annotations generated from Wikipedia and Freebase link structures \cite{rfou2015polyglot}.
+        The NER model is fine-tuned using automatic, language-agnostic annotations generated from Wikipedia and Freebase link structures \cite{rfou2015polyglot}.
     \item \textbf{daner (DKIE Stanford CRF)}: An application of the Stanford CoreNLP Conditional Random Field (CRF) NER classifier \cite{manning2014corenlp} released Leon Derczynski asa part of the DKIE project \cite{derc2014dkie}.
     The model was trained on NER annotations produced at ITU on the Danish Dependency Treebank (DDT) corpus \cite{kromann2003ddt}.
     The released Java-based NER tool is called \code{daner}\footnotemark.
@@ -164,7 +164,7 @@ Due to the memory intensive nature of the transformer architecture, we follow Ya
 As with LUKE, the cross entropy loss is calculated using equation \ref{eq:crossentropyloss} for each classification task, with the only difference being that the final loss is the average rather than the sum of the individual task losses.
 This effectively just scales the loss and has no effect on the learning if the learning rate is adjusted accordingly.
 
-The hyperparameters used for pretraining are shown in table \ref{tab:pretrain-hyper}.
+The hyperparameters used for pretraining are shown in Table \ref{tab:pretrain-hyper}.
 These were chosen based on informal experiments and intuitive understanding of hyperparameter impact, as structured hyperparameter search was too not within time frame.
 \begin{table}[H]
     \centering
@@ -188,7 +188,7 @@ LUKE follows BERT and increases its learning rate linearly from 0 to the peak le
 
 For pretraining, DaLUKE also employs linear warmup for the first 6\pro\ of parameter updates, after which it decreases polynomially with a power of $ \sqrt{3} $ and a final learning rate of one tenth the peak learning rate.
 This results in a more aggressive decrease in learning rate after the warmup period but a slightly higher learning rate in the final steps compared to STLR.
-The learning rate development is shown on figure \ref{fig:lr}.
+The learning rate development is shown on Figure \ref{fig:lr}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=.6\textwidth]{lr}
@@ -202,7 +202,7 @@ Due to the size of the classification problem, especially regarding entities, to
 Top 1, 3, 5, and 10 accuracies are calculated for both the masked word and masked entity task using every example that the model trains on, while top 25 and 50 are calculated using one twentieth of examples for computational efficiency.
 
 \subsection{Fine-tuning DaLUKE for Named Entity Recognition}%
-\label{sub:finetune-ner}
+\label{sub:fine-tune-ner}
 The fine-tuning of DaLUKE largely followed that of LUKE, described in section \ref{sec:LUKE}.
 The main DaLUKE NER model was produced by fine-tuning on DaNE.
 
@@ -241,7 +241,7 @@ The search is performed by repeating the training procedure with all combination
     \item Dropout (final, linear layer) $\in\{0.025, 0.1\}$
     \item Whether or not to use class-weighted loss $\in\{\text{Yes}, \text{No}\}$
 \end{enumerate}
-For each combination, the resulting model was evaluated on the development set, shown in Table~\ref{tab:hyperres} and the hyperparameters with highest average F1 score was chosen and the final model using which the final model was produced by finetuning again to avoid selection bias.
+For each combination, the resulting model was evaluated on the development set, shown in Table~\ref{tab:hyperres} and the hyperparameters with highest average F1 score was chosen and the final model using which the final model was produced by fine-tuning again to avoid selection bias.
 The chosen hyperparameters are reported below together with the used hyperparameters that were not tested.
 \begin{table}[H]
     \centering
@@ -268,7 +268,7 @@ The chosen hyperparameters are reported below together with the used hyperparame
 We publish DaLUKE and all related code under the MIT open source software license \cite{mitlicense}.
 All code and documentation is available at \url{https://github.com/peleiden/daluke}.
 The pretrained model is available with MLM layers at \url{https://nx5746.your-storageshare.de/s/qDM2TE6m9CKmPWd}.
-The model finetuned on DaNE is available at \url{https://nx5746.your-storageshare.de/s/wxbY3TrwfAoYxb9}.
+The model fine-tuned on DaNE is available at \url{https://nx5746.your-storageshare.de/s/wxbY3TrwfAoYxb9}.
 Our software package is \code{pip} installable and runs on Python 3.8 and above.
 Simply run \code{pip install daluke} to install it on your computer with the Python package installer \code{pip} available.
 It allows for using DaLUKE for NER on text files directly from the command line.
@@ -287,7 +287,7 @@ Due to limited GPU availability, cryptic error messages, and an almost complete 
 These reasons compelled us to reimplement the model and training from scratch.
 This would also help us understand LUKE better due to being forced to work with all the details of the model and training tasks.
 Finally, it would make it much easier to fit the code to our needs, as we would have a much better understanding of the code base.
-The forked LUKE repository, available at \url{https://github.com/peleiden/luke}, is used for parts of the data-set preparation, but everything else has been reimplemented.
+The forked LUKE repository, available at \url{https://github.com/peleiden/luke}, is used for parts of the dataset preparation, but everything else has been reimplemented.
 Our code is inspired from the original LUKE code, but we have made efforts to make it more approachable by making the code more readable and better structured and especially by increasing the amount of documentation.
 
 Rewriting code bases always carries a risk of introducing bugs.
@@ -295,13 +295,13 @@ Despite borrowing heavily from Yamada et al., we did introduce a number of bugs 
 These ranged from domain specific such as accidentally leaving category pages in the entity vocabulary to classical ones such as copying pointers instead of the memory stored at them.
 In that regard, using the original code would be safer, as this has been proven to work.
 However, the original code is also not error free.
-For instance, we discovered a bug in the masking where the unmasking and random word replacements would either be done or not done for an entire sequence, rather than being probabilistic for every masked sub-word token.
+For instance, we discovered a bug in the masking where the unmasking and random word replacements would either be done or not done for an entire sequence, rather than being probabilistic for every masked subword token.
 We have opened an issue on the LUKE repository that can be followed at \url{https://github.com/studio-ousia/luke/issues/93}.
 
 \paragraph{Floating Point Precision}
 The model is trained using PyTorch Automatic Mixed Precision (AMP) \cite{pytorchamp}, which -- ideally, at least -- should decrease training time with little to no penalty to accuracy \cite{huang2020amp}.
 This is partially due to half-precision calculations being simpler, and partially due to the lower memory requirements, allowing larger subbatches and thus better GPU utilization.
-However, as figure \ref{fig:runtime} shows, AMP works as intended when training on NVIDIA V100's, but has the opposite effect when training on NVIDIA A100's.
+However, as Figure \ref{fig:runtime} shows, AMP works as intended when training on NVIDIA V100's, but has the opposite effect when training on NVIDIA A100's.
 
 AMP works by automatically casting parts of the model to half precision rather than the usual single precision.
 Some layers are more sensitive than others to precision.
@@ -320,7 +320,7 @@ The main pretraining took approximately a week and used 2-4 V100's.
 For comparison, Yamada et al. train LUKE using 16 V100's over a period of 30 days. \cite{yamada2020luke}
 
 We measure the time needed to train for one epoch on different cluster configurations.
-The results are shown on figure \ref{fig:runtime}.
+The results are shown on Figure \ref{fig:runtime}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=.7\textwidth]{runtime}

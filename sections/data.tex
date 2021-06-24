@@ -27,13 +27,13 @@ Sequences are cut short if necessary to prevent hyperlinks spanning two sequence
 All sequences contain text from at most one paragraph in an article.
 
 Word spans over tokens is also saved, as the MLM pretraining task is done on a word level.
-Sub-word and entity tokens are masked using the [MASK] token.
-The [UNK] special token is reserved for sub-words that are not part of the tokenizer's vocabulary.
+Subword and entity tokens are masked using the [MASK] token.
+The [UNK] special token is reserved for subwords that are not part of the tokenizer's vocabulary.
 
 %TODO Make sure itemize is not broken up with a page
 Thus, an entry in the dataset -- called an example -- consists of the following:
 \begin{itemize}
-    \item An array of at most 512 sub-words token ID's
+    \item An array of at most 512 subwords token ID's
     \item An array of at most 128 entity ID's
     \item An array of two-tuples containing the start and end indices for every entity
     \item An array of two-tuples containing the start and end indices for every word
@@ -89,13 +89,13 @@ Table \ref{tab:metadata} shows how these augmentation steps change the propertie
 
 \subsection{Danish NER Datasets}
 \label{subsec:daNERdata}
-For the task of benchmarking both existing and new Danish Named Entity Recognition (NER) models, three publicly available datasets previously used in the literature were identified.
+For the task of benchmarking both existing and new Danish named entity recognition (NER) models, three publicly available datasets previously used in the literature were identified.
 
 \paragraph{Danish Universal Dependencies}
 Danish Universal Dependencies of Danish Dependency Treebank (UD-DDT) is a grammatically annotated dataset produced by converting the Danish Dependency Treebank corpus \cite{kromann2003ddt} to the Universal Dependency annotation format \cite{johann2015udddt}.
 The dataset consists of 5512 sentences and 100,733 tokens from the Danish PAROLE corpus containing book, newspaper and journal literature from 1983-1992 \cite{christensen1998parole}.
 UD-DDT is split into training, development and test sets consisting of 4383, 564 and 565 sentences, respectively.
-Two Named Entity Recognition (NER) annotations of this dataset are considered.
+Two named entity recognition (NER) annotations of this dataset are considered.
 \begin{itemize}
     \item \emph{DaNE} is a 2020 NER annotation of the entire UD-DDT into four categories PER(son), ORG(anisation), LOC(ation), MISC(ellaneous) performed once by a linguist and once by non-linguists for the Alexandra Institute \cite[Sec. 4]{hvingelby2020dane}.
     The categories are described in closer detail in Section \ref{subsec:annoschemes}.
@@ -106,7 +106,7 @@ Two Named Entity Recognition (NER) annotations of this dataset are considered.
 
 \paragraph{Wikipedia Annotations}
 Pan et al. performed an automatic NER annotation of a Wikipedia corpus in 2017 by transferring English NER of the categories PER, ORG, LOC to 281 languages including Danish \cite{pan2017wikiann}.
-This dataset is known as \emph{Wiki-ANN} (Wikipedia Annotations) and the Danish version includes 40000 sentences.
+This dataset is known as \emph{WikiANN} (Wikipedia Annotations) and the Danish version includes 40000 sentences.
 Pan et al. consider this a "silver-standard" annotation due to its automatic generation which they label Knowledge Base mining \cite[1946]{pan2017wikiann}.
 The balanced training, development and test splits from Rahimi et al. are used \cite{rahimi2019transfer}.
 
@@ -123,7 +123,7 @@ Previous literature has highlighted the scarcity of accessible, gold-standard, D
                                 &\jl{Train} & \jl{Dev.} & \jl{Test} &\multicolumn{1}{|l}{LOC} & \jl{PER} & \jl{ORG} & \jl{MISC} \\\hline
         DaNE        & 4,383 & 564 & 565 & 101 & 318 & 221 & 159 \\
         Plank       & 604  & 564 & 565 & 98  & 309 & 114 & 52 \\
-        Wiki-ANN (da.)   & $20\ctp3$ & $10\ctp3$ & $10\ctp3$ & 7,458 & 10,660 & 10,876 & 0
+        WikiANN (da.)   & $20\ctp3$ & $10\ctp3$ & $10\ctp3$ & 7,458 & 10,660 & 10,876 & 0
     \end{tabular}
     \caption{
         Counts of sentences and test set entities in the three Danish NER benchmarks.
@@ -166,7 +166,7 @@ Previous literature has highlighted the scarcity of accessible, gold-standard, D
 \subsection{CoNLL-2003}
 The shared task for the 2003 Conference on Computational Natural Language Leanring (CoNLL) was language-independent NER for which annotations on English Reuters news wire articles were performed by researchers \cite{tjang2003conll}.
 This corpus consists of 1393 articles that were divided into training, development and test sets as seen in Table~\ref{tab:conll2003}.
-The dataset is the central benchmark in the field of Named Entity Recognition \cite[Sec. 4.3]{yamada2020luke} and has a competitive history with over 50 models submitted to the performance leaderboard at Papers With Code\footnotemark.
+The dataset is the central benchmark in the field of named entity recognition \cite[Sec. 4.3]{yamada2020luke} and has a competitive history with over 50 models submitted to the performance leaderboard at Papers With Code\footnotemark.
 \footnotetext{
     See 
     \url{
@@ -192,7 +192,7 @@ The dataset is the central benchmark in the field of Named Entity Recognition \c
 \subsection{Annotation Schemes: What Do The Tags Mean?}
 \label{subsec:annoschemes}
 The DaNE and Plank sets refer to the CoNLL-2003 as their reference annotation scheme \cite[Sec. 4]{hvingelby2020dane} \cite[Sec. 2.1]{plank2019neural}.
-Wiki-ANN follows the same categories, excluding MISC.
+WikiANN follows the same categories, excluding MISC.
 All datasets follow the Inside-outside-beginning (IOB) format that ascribes a word the "I-X" tag if it is inside a named entity of type X, "B-X" if it begins the X entity and "O" if it is outside named entities (e.g. the null class).
 This format proposed by Ramshaw and Marcus in 1995 is widely used but does allow entities to be nested or to overlap \cite{ramshaw1995IOB}.
 
@@ -211,7 +211,7 @@ Note, that the all-important context of the words is not shown here.
 \begin{itemize}
     \item DaNE: helvede (LOC), Holland (LOC), Astrid Lindgren (PER), Odense Teater (ORG), det danske rigsfællesskab (ORG), afghansk (MISC), Camel (MISC)
     \item Plank: Bagdad (LOC), Bjarne (PER), USA (ORG), Københavns Kommune (ORG), DR-dokumentar (MISC), Levi's jeans (MISC)
-    \item Wiki-ANN (da.): Dinariske Alper (LOC), Esbjerg Kommune (LOC), Jorge Luis Borges (PER), FC Barcelona (ORG), kommunehospitals (ORG)
+    \item WikiANN (da.): Dinariske Alper (LOC), Esbjerg Kommune (LOC), Jorge Luis Borges (PER), FC Barcelona (ORG), kommunehospitals (ORG)
     \item CoNLL-2003: Buenos Aires (LOC), Whistler Mountain (LOC), Katja Seizinger (PER),  FIFA (ORG), Asian Cup (MISC), Swede (MISC)
 \end{itemize}
 

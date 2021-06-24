@@ -41,7 +41,7 @@ For the benchmarks used in this project, the NE categories and annotation format
 NER is not just used as a benchmark for language understanding:
 In the applied field of information retrieval, semantic annotation and question answering systems rely on NER to control the information focus \cite[Sec. 2]{marrero2013ner}.
 This task of both research and practical interest was defined in the 90's and has been active and competitive, especially in English where state of the art (SOTA) methods achieve close to human performance on some classic benchmarks \cite{wiki2021ner, marrero2013ner}.
-Researchers argue, however, that the task is not yet solved as the generalization of the statistical algorithms fitted to one NER data set to new examples is poor \cite[Sec. 7.2]{marrero2013ner}.
+Researchers argue, however, that the task is not yet solved as the generalization of the statistical algorithms fitted to one NER dataset to new examples is poor \cite[Sec. 7.2]{marrero2013ner}.
 
 The SOTA on English NER benchmarks moves quickly, but almost all algorithms currently (June 2021) achieving high scores in common benchmarks are deep neural networks and of the transformer architecture in particular \cite{ruder21ner, pwc21ner}.
 
@@ -106,7 +106,7 @@ Figure \ref{fig:transformer-bert} shows both the transformer architecture and th
     \caption{
         To the left, the transformer architecture is shown as proposed by Vaswani et al. \cite{vaswani2017att}
         The right-hand side shows the BERT pipeline as introduced by Devlin et al. \cite{devlin2019bert}
-        Both figures are taken from their respective papers.
+        Both Figures are taken from their respective papers.
     }
     \label{fig:transformer-bert}
 \end{figure}\noindent
@@ -119,7 +119,7 @@ A verb, for example, still carries much of the same meaning between conjugations
 While this might be solved by lemmatizing words to their stems, this introduces a problem of information loss.
 
 A more effective way of tokenizing has been presented by Sennrich et al. \cite{sennrich-etal-2016-neural} that uses the byte-pair encoding (BPE) compression algorithm.
-This method produces a token vocabulary of a given size from the corpus where each token is either a full word or a sub-word.
+This method produces a token vocabulary of a given size from the corpus where each token is either a full word or a subword.
 BERT uses the WordPiece BPE token vocabulary which contains 30,000 tokens that have been learned with heuristic tokenization rules \cite{wu2016tokenize} \cite{devlin2019bert}.
 Radford et al. \cite{Radford2019gpt2} modify BPE tokenization for the GPT-2 transformer such that splits are made on the byte level rather than on the character level, which works better on corpora containing many non-ASCII characters.
 This method is used by RoBERTa to produce a token vocabulary of size 50,000 \cite{liu2019roberta}.
@@ -130,8 +130,8 @@ LUKE directly uses RoBERTa's tokenizer when dealing with words \cite{yamada2020l
 As mentioned earlier, static embeddings are a core part of many NLP pipelines and have been for a long time.
 In the large, open source NLP frameworks \emph{SpaCy} \cite{honnibal2020spacy} and \emph{Flair} \cite{akbik2019flair}, which also release pretrained Danish models, the embeddings interact with different, ever-improving language models.
 This has successfully resulted in SOTA on multiple Danish NLP tasks.
-The Alexandra Institute, a Denmark based AI research and development organization, release versions of both Flair and SpaCy finetuned on a number of benchmarks, including NER, and acquire close to SOTA performance using these.
-The benchmarks, results and finetuned Danish models are released as a part of their open source DaNLP project gathering resources for Danish NER \cite{danlp2021}.
+The Alexandra Institute, a Denmark based AI research and development organization, release versions of both Flair and SpaCy fine-tuned on a number of benchmarks, including NER, and acquire close to SOTA performance using these.
+The benchmarks, results and fine-tuned Danish models are released as a part of their open source DaNLP project gathering resources for Danish NER \cite{danlp2021}.
 Another application of exsting NLP frameworks was performed by Kenneth Enevoldsen, Center of Humanities Computing, Aarhus University in releasing the model \emph{DaCy}, based on version 3 of SpaCy \cite{enevoldsen2020dacy}.
 
 In Danish, the most significant, pretrained language model is in our estimation a Danish version of BERT, released by the company BotXO in 2019 \cite{botxo2019dabert} .
@@ -140,11 +140,11 @@ The da-BERT model has been fine-tuned on most Danish benchmarks in the DaNLP pro
 The model and its tokenizer are trained on lowercased text.
 
 Another, more recent, Danish transformer is the adaption of the more resource efficient language model Electra to Danish under the name Ælæctra by Malte Hømark-Bertelsen, KMD and Aarhus University \cite{bertelsen2020lctra}.
-NER finetuned versions of Ælæctra and some multilingual transformers have been released by Ekstra Bladet Analyse under the project \emph{NER for Danish} (NERDA) \cite{kjeldgaard2020nerda}.
+NER fine-tuned versions of Ælæctra and some multilingual transformers have been released by Ekstra Bladet Analyse under the project \emph{NER for Danish} (NERDA) \cite{kjeldgaard2020nerda}.
 
 Of this plethora of Danish language models and NLP frameworks, the current (June 2021) state of the art on central NER benchmarks is, according to DaNLP, the 2021 newcomer DaCy which surpassed DaNLP's fine-tuned da-BERT model which was SOTA at the beginning of this project \footnotemark.
 \footnotetext{
-    A table of the results can be seen at the DaNLP repository at \url{https://github.com/alexandrainst/danlp} under \code{docs/docs/tasks/ner.md}.
+    A Table of the results can be seen at the DaNLP repository at \url{https://github.com/alexandrainst/danlp} under \code{docs/docs/tasks/ner.md}.
 }
 These results are reproduced and compared with DaLUKE in the project.
 The NER benchmark will be presented in Section \ref{subsec:daNERdata}, the reproduction method in Section \ref{sec:exidan}, and the results in Section \ref{sec:nerres}.
@@ -164,7 +164,7 @@ The Defense Advanced Research Projects Agency (DARPA) identify the future wave o
 In NLP, knowledge-enhancing deep neural networks is not just an idea for the future:
 Several approaches using explicit knowledge to improve pretrained contextual word representations (CRW's) have been presented in recent years, a subset of which will be summarized here.
 
-\subsection{Static, separate knowledge graphs}
+\subsection{Static, Separate Knowledge Graphs}
 A direct way to use explicit knowledge is to maintain a separate representation of facts which can be incorporated into both pretraining and inference of deep language models.
 This representation is often called a knowledge base (KB)  -- or knowledge graph (KG) if the relational facts or entities are modelled.
 
@@ -181,7 +181,7 @@ The \emph{Knowledge Graph Language Model} (KGLM) presented in \emph{Barack’s W
 The model uses the same approach to representing knowledge graph facts as ERNIE, but also builds a local graph on the sequence level which is grown by a generative model with each new token.
 The paper presents improved fact completion compared to GPT-2 and further analysis has shown that the overall fact completion of KGLM is comparative to KnowBert, though they perform very differently from domain to domain, with KGLM being most dependent on the used knowledge graph \cite{birk2020knowledge}.
 
-\subsection{Pretraining augmentations}
+\subsection{Pretraining Augmentations}
 A strength of the statistical, deep approach that implicitly models knowledge is the potential for generalizable results:
 You do not need a new domain specific KG for every application if enough general knowledge has been caught in your weights.
 Motivated by the hope of this elusive generalizability, a number of methods have been proposed to enhance specifically the pretraining of language models to better have handle factual knowledge.
@@ -201,7 +201,7 @@ The model \emph{K-Adapter} instead uses ''adapters'', add-ons for the transforme
 The resulting model outperforms BERT, WKLM, ERNIE, KEPLER and KnowBERT on central knowledge related tasks.
 
 Another issue, raised more recently, with this jungle of knowledge enhanced models is that they do not unify generative and discriminative tasks, limiting their generalizability to fewer downstream tasks.
-This is voiced in \emph{KgPLM: Knowledge-guided Language Model Pre-training via Generative and Discriminative Learning} \cite{he2020kgplm} where the model KgPLM, pretrained by both generating masked entities and discriminating replaced ones, is proposed as a solution.
+This is voiced in \emph{KgPLM: Knowledge-guided Language Model Pretraining via Generative and Discriminative Learning} \cite{he2020kgplm} where the model KgPLM, pretrained by both generating masked entities and discriminating replaced ones, is proposed as a solution.
 
 Which of the knowledge-enhanced models result in the best general performance for practitioners is beyond the scope of this project, as the continuous improvement of many of the models and large amount of different benchmarks used in the articles makes direct comparisons of general language understanding ability challenging.
 On all benchmarks tested by the LUKE team \cite{yamada2020luke}, none of the above models have presented higher scores than LUKE \cite[Sec. 4]{yamada2020luke}.
@@ -240,7 +240,7 @@ The positions of the entities are included in the further inference as \emph{pos
 \paragraph{Entity Embeddings}
 The subword tokens are forward passed through the same, static word embedding architecture as that of BERT which outputs $m$ vectors of dimension $H$ for each subword.
 For the entity and entity position tokens, the new additions to the inference, a similar component which maps id's to $n$ vectors, also $\in \RR^H$.
-These are called entity embeddings and are computed using trainable lookup tables, which, for the entity id case, corresponds to the entity vocabulary.
+These are called entity embeddings and are computed using trainable lookup Tables, which, for the entity id case, corresponds to the entity vocabulary.
 
 The produced word and entity embeddings are concatenated to a matrix $\in \RR^{(n+m)\times H}$.
 
@@ -302,10 +302,10 @@ Where BERT is trained to predict randomly masked words, LUKE is trained to predi
     \item $\{\text{\emph{[MASK]} at words \#1-2}, \text{\emph{World War II} at word \#11}\}$
         \subitem Truth: ''Franklin D. Roosevelt''.
 \end{itemize}
-Following RoBERTa \cite{liu2019roberta}, sub-word tokens making up 15\pro\ of full words in each sequence are randomly replaced with the [MASK] token.
+Following RoBERTa \cite{liu2019roberta}, subword tokens making up 15\pro\ of full words in each sequence are randomly replaced with the [MASK] token.
 Of these, 10\pro\ are unmasked again, and another 10\pro\ are replaced by a random token from the vocabulary instead of [MASK].
 Similarly, 15\pro\ of entity tokens are replaced with [MASK], but none of these are unmasked or replaced with random entities.
-The model is then trained to predict all sub-word tokens.
+The model is then trained to predict all subword tokens.
 From these, the model is to classify the tokens at the mask positions in both sequences.
 The model parameters are then updated by the stochastic gradient optimization algorithm known as \emph{Adam with weight decay fix} (AdamW) \cite{hutter2019adamw}.
 
@@ -330,7 +330,7 @@ This new prediction head follows the architecture of the masked word scorer just
 The masked entity tokens are thus scored as corresponding to one of the entities in the entity vocabulary by two linear layers between which an activation function and layer normalization are placed.
 
 \subsection{Fine-tuning for Named Entity Recognition}
-\label{subsec:finetuning-theory}
+\label{subsec:fine-tuning-theory}
 Yamada et al. base their NER fine-tuning on the method from Sohrab and Miwa \cite{sohrab2018nestedner}.
 All possible spans over the entire sequence (or $n$-grams) are calculated and saved as entity candidates.
 Spans longer than 16 words and spans that cross sentence boundaries are discarded.
@@ -349,7 +349,7 @@ An issue with the $ n $-grams is the large amount of overlaps between spans.
 This is solved by greedily selecting spans based on the class scores from the classifier.
 Thus, if two (partially) overlapping spans both are predicted to cover an entity, only the one with the highest score is kept, while the other is predicted to be a non-entity.
 
-Following BERT \cite{devlin2019bert}, the maximal document context is included in the target document, allowing each entity prediction to use as much context as the dataset provides, limited only by the maximum of 512 sub-word tokens given to LUKE.
+Following BERT \cite{devlin2019bert}, the maximal document context is included in the target document, allowing each entity prediction to use as much context as the dataset provides, limited only by the maximum of 512 subword tokens given to LUKE.
 This plays to the strengths of the transformer, which is good at retaining attention over long sequences of text \cite{vaswani2017att}.
 \cite{yamada2020luke}
 
