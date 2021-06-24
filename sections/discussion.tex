@@ -473,7 +473,7 @@ Following the pretraining experiments, all results are reported with MISC.
 \label{sec:luke-stability}
 
 \paragraph{Reproducability of English LUKE}
-For the reproduction of the English LUKE, our results were initially underwhelming as five repetitions of the fine-tuning of LUKE large on CoNLL2003 consistently, slightly underperformed the reported result of 94.3\pro\ micro average as seen at Table \ref{tab:EnLUKE-wrong}.
+For the reproduction of the English LUKE, our results were initially underwhelming as five repetitions of the fine-tuning of LUKE large on CoNLL-2003 consistently, slightly underperformed the reported result of 94.3\pro\ micro average as seen at Table \ref{tab:EnLUKE-wrong}.
 After investigating, this somewhat disappointing result was revealed to be overturned when fine-tuning with Python version 3.6 and PyTorch 1.2 instead of using newer versions as done in the initial run.
 Using these correct versions, the same as Yamada et al. reported in their package file, the results were succesfully reproduced as shown in the central results in Section \ref{sec:English LUKE Reproduction}.
 
@@ -691,7 +691,7 @@ While some LOC and PER generalize fairly well between datasets, ORG, and especia
 One cause for this may be the different distributions of labels both between datasets and within the training, dev., and test sets of each dataset (see Table \ref{tab:danedist} and Figure \ref{fig:dadatadist} for details).
 Another is that the understanding of what the entity categories actually cover.
 WikiANN is automatically annotated and so is obviously different from the human-annotated DaNE and Plank, where human language understanding played a role.
-However, as DaNE and Plank have different annotations, clearly the authors had different interpretations of what the categories meant (as is especially clear with the MISC category), even though both used the CoNLL2003 guidelines.
+However, as DaNE and Plank have different annotations, clearly the authors had different interpretations of what the categories meant (as is especially clear with the MISC category), even though both used the CoNLL-2003 guidelines.
 These issues cast doubt on the generalizability of NER.
 \cite{hvingelby2020dane, plank2019neural, pan2017wikiann, tjang2003conll}
 
