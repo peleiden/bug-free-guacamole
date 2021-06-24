@@ -214,13 +214,10 @@ As a more unbiased benchmark, this model was finetuned on the DaNE data set usin
 %                                        weighted avg     0.8532    0.8082    0.8291       558
 The ablation study gets substantially higher recall than the baseline resulting in a higher micro average F1 score on the NER task, though the baseline outperforms in precision.
 
-All in all, these benchmarks cannot be used to argue that the theorized problem of of false negatives in the volunteer-produced annotations is mitigated by this augmentation approach resulting in a better language understanding.
+All in all, these benchmarks cannot be used to support our theorized problem of of false negatives in the volunteer-produced annotations or at least not that it is is mitigated by this augmentation approach resulting in a better language understanding.
 If anything, the addition of automatic pattern-matched annotations worsened the performance slightly.
 
-As the addition of these $47\pro$ bronze standard annotations did directly stop the learning, we still propose this approach as an avenue for further development of DaLUKE.
-Much needed entirely new LUKE pretraining data sets could be produced from raw text corpora by automatically annotating them using pattern matching.
-Such lower standard annotations used to achieve extra data might be necessary for continued improvement in low-resource languages such as Danish but should be used carefully and with an analysis of the trade off between quality and quantity of data.
-
+As the addition of these $47\pro$ bronze standard annotations did not directly stop the learning, we still propose such automated annotation  as an avenue for further development of DaLUKE.
 \subsection{Entity-aware Self-attention}
 \label{subsec:selfatt}
 One of Yamada et al.'s key contributions to the transformer is the addition of query matrices for relations between entities and words.
@@ -1214,23 +1211,30 @@ Another interesting pattern lies in the strength of the multilingual model used 
 \end{table}\noindent
 
 \section{Future Work}
-We see promise in this approach of lightly sprinkling some explicit knowledge on top of the usual large model fitting approach for languages such as Danish.
+We see promise in this approach of lightly sprinkling some explicit knowledge on top of the model fitting approach for languages such as Danish.
 The results are, in our estimation, solid and encouraging.
 DaLUKE did not, however, sweep away the classic language modelling approach and was intercepted for the NER crown by the larger model presented in DaCy.
 Some further improvement which have the potential to push this method are proposed.
 
 \paragraph{Data}
-As in any deep learning project, we end it by crying out for more data.
-Multiple of the pretraining experiments presented in Section~\ref{sec:pretrainpls} show signs of this approach overfitting to the limited Danish Wikipedia.
-An immediate idea is to include NORSK
-\begin{enumerate}
-    \item Mere data
-        \subitem Norsk Wikipedia
-        \subitem Automatisk annotering af almindeligt tekstdata: Behøver måske ikke positionelle id'er
-\end{enumerate}
+As in any deep learning project, we end up crying out for more data.
+Multiple of the pretraining experiments presented in Section~\ref{sec:pretrainpls} show signs of the model overfitting to the limited Danish Wikipedia.
+An immediate idea is to include the Norweigan Wikipedia as the language (At least \emph{bokmål}) is syntactically, and vocabulary wise similar to Danish.
+There are some technical issues with the entities, as the same entity might be spelled differently in both languages, but we speculate that an oversized entity vocabulary would not be a problem.
+While the Norwegian Wikipedia has 156M words \footnotemark compared to the 81M of the Danish Wikipedia, this might be too little to dramatically change the results.
+\footnotetext{Norwegian Wikipedia statistics: \url{https://no.wikipedia.org/wiki/Spesial:Statistikk}}
 
+A more comprehensive improvement could be extracted from our dataset augmentation idea, though it did not improve results at for the Danish Wikipedia.
+Much needed entirely new LUKE pretraining data sets could be produced from raw text corpora by automatically annotating them using pattern matching.
+Such lower standard annotations used to achieve extra data might be necessary for continued improvement in low-resource languages such as Danish but should be used carefully and with an analysis of the trade off between quality and quantity of data.
+Other automatic annotaters than simple pattern matching might also be beneficial as field of entity linking has been applied to Wikipedia \cite{brochier2021wikilink} including ready-to-use tools such as the Danish version of DBpedia Spotlight \cite{isem2013daiber}.
+It might hold that the quality of the entity annotations is not paramount, in which case tools that link sentences or paragraphs to entities without localizing them exactly might be used, as the entity potition ids thus could be omitted.
+Here, Danish tools for explicit semantic analysis \cite{hansen2017esa} could help.
 
+NÆVN GIGA-ORD!!!
 \paragraph{Modelling}
+Motivated by the impressive success, of DaCy, the most direct model improvement is to use the multilingual RoBERTa large
+
 \begin{enumerate}
     \item Brug Multilingual RoBERTa Large
     \item Gentænke fremgangsmåde: Måske mere eksplicit vidensmodellering -- hvad med relationelle tokens?
