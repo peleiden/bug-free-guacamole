@@ -19,7 +19,7 @@ Comparing two such sequences, there are a number of potential error patterns as 
     \centering
     \begin{tabular}{l|llllll}
         Sentence                    & Gaul & is & divided & into & three & parts.\\
-        Truth                       & B-LOC & O & O & O & O & O \\\hline
+        True annoation              & B-LOC & O & O & O & O & O \\\hline
         I (TP): Complete match      & B-LOC & O & O & O & O & O \\
         II (FP): Spurious entity    & B-LOC & O & O & O & O & B-MISC \\
         III (FN): Missing entity    & O     & O & O & O & O & O \\
@@ -48,7 +48,7 @@ Using the terminology of Table~\ref{tab:eval}, these measures are, assuming the 
 \end{equation}
 From these class level metrics, global values of precision and recall were reported using the \emph{micro average}, that is, by aggregating the number of prediction outcomes (I, II, III) across classes before using the formulae \eqref{eq:precrec}.
 In the report, every reference to an average of metrics over NER classes refers to this micro average.
-Thus, using this approach, the error types IV, V and VI are not considered\footnotemark.
+Thus, using this approach, the error types IV, V and VI are discriminated\footnotemark.
 \footnotetext{
     Using this approach, the cases IV and VI in Table~\ref{tab:eval} would for the evaluation of the LOC class be treated as case III and for the evaluation of the ORG class be treated as case II.
     V would, similarly, be counted as both a case II and III for ORG.
@@ -62,12 +62,12 @@ Following previous literature, the main score on which the system performance wa
 \end{equation}
 The reported score were obtained using a Python sequence evaluation library \cite{seqeval}, also used by the original LUKE paper and DaNLP, with whom comparisons are made.
 
-Two of the three used datasets contains MISC annotations and existing literature disagrees on whether to consider this class in evaluations with DaNLP arguing
+Two of the three used datasets contains MISC annotation,s and existing literature disagrees on whether to consider this class in evaluations with DaNLP arguing
 ''We are only reporting the scores on the LOC, ORG and PER entities as the MISC category has limited practical use'' \cite[Sec. ''Benchmarks'' in NER page]{danlp2021}.
 We trained all models with the MISC annotation and also include it in our evaluations.
 When comparing with models trained without MISC, a non-MISC average F1 score is also reported (by treating all MISC predictions as null clas pridctions).
 \subsection{Fine-tuning English LUKE}
-Yamada et al. benchmark LUKE, on named entity recognition using the CoNLL-2003 dataset \cite{yamada2020luke}.
+Yamada et al. benchmark LUKE on named entity recognition using the CoNLL-2003 dataset \cite{yamada2020luke}.
 
 Reproduction of these results were attempted by obtaining the pretrained LUKE models from Yamada et al.'s software repository.
 The same hyperparameters as Yamada et al. were used and are shown along with and technical details in Table~\ref{tab:params}.
@@ -138,9 +138,6 @@ The reproduction was performed using Python version 3.7.10 and the dependency ve
 }
 \section{DaLUKE}
 
-We pretrained and released DaLUKE, a new Danish language model based on the LUKE methodology.
-The model was benchmarked by fine-tuning on NER.
-
 \subsection{Pretraining Methodology and Hyperparameters}%
 \label{sub:dalpre}
 \begin{enumerate}
@@ -149,7 +146,7 @@ The model was benchmarked by fine-tuning on NER.
 Our pretraining approach followed the one used by Yamada et al, as described in Section \ref{subsec:lukepre}, with four key differences:
 \begin{enumerate}
     \item The entity-augmented Danish Wikipedia described in section \ref{subsec:entaug} was used.
-    \item Entity-aware self-attention was used in the pretraining as this was expected to positively impact the modeling of knowledge. This speculation is tested in Section~\ref{subsec:selfatt} .
+    \item Entity-aware self-attention was used in the pretraining, as this was expected to positively impact the modeling of knowledge. This speculation is tested in Section~\ref{subsec:selfatt}.
     \item 
         The model follows the architecture of BERT base instead of BERT large, and weights were initialized from BotXO's da-BERT \cite{botxo2019dabert} as no Danish RoBERTa or BERT large is available.
         An ablation study on this transfer learning from da-BERT is introduced in Section~\ref{subsec:dabertexp}.
@@ -159,13 +156,13 @@ Our pretraining approach followed the one used by Yamada et al, as described in 
         An experiment of limiting the vocabulary is explained in Section~\ref{subsec:entvocexp}.
 \end{enumerate}
 
-Due to the memory intensive nature of the transformer architecture, we follow Yamada et al. and used gradient accumulation over multiple subbatches within each batch, that is each parameter update consists of multiple forward passes of the model.
+Due to the memory intensive nature of the transformer architecture, we followed Yamada et al. and used gradient accumulation over multiple subbatches within each batch, that is each parameter update consists of multiple forward passes of the model.
 
 As with LUKE, the cross entropy loss is calculated using equation \ref{eq:crossentropyloss} for each classification task, with the only difference being that the final loss is the average rather than the sum of the individual task losses.
 This effectively just scales the loss and has no effect on the learning if the learning rate is adjusted accordingly.
 
 The hyperparameters used for pretraining are shown in Table \ref{tab:pretrain-hyper}.
-These were chosen based on informal experiments and intuitive understanding of hyperparameter impact, as structured hyperparameter search was too not within time frame.
+These were chosen based on informal experiments, as structured hyperparameter search was not within time frame.
 \begin{table}[H]
     \centering
     \begin{tabular}{l|r}
@@ -188,6 +185,7 @@ LUKE follows BERT and increases its learning rate linearly from 0 to the peak le
 
 For pretraining, DaLUKE also employs linear warmup for the first 6\pro\ of parameter updates, after which it decreases polynomially with a power of $ \sqrt{3} $ and a final learning rate of one tenth the peak learning rate.
 This results in a more aggressive decrease in learning rate after the warmup period but a slightly higher learning rate in the final steps compared to STLR.
+This was used as the compute time frame was not known in advance, and this approach would work well with both early stopping and continued training.
 The learning rate development is shown on Figure \ref{fig:lr}.
 \begin{figure}[H]
     \centering
@@ -207,11 +205,11 @@ The fine-tuning of DaLUKE largely followed that of LUKE, described in section \r
 The main DaLUKE NER model was produced by fine-tuning on DaNE.
 
 After each epoch, the model was evaluated on the development (validation) split of the dataset.
-When better score than the hitherto best checkpoint was found, the checkpoint is overwritten.
+When a better score than the hitherto best checkpoint was found, the checkpoint is overwritten.
 The best checkpoint of the model was used for evaluation on the test set.
 
 \paragraph{Learning rate}
-Unlike in the pretraining, we do as Yamada et al. and use a slanted triangle learning rate \cite{yamada2020luke}.
+Unlike in the pretraining, we did as Yamada et al. and used a slanted triangle learning rate \cite{yamada2020luke}.
 Howard and Ruder have also shown that the slanted triangle approach for fine-tuning tasks improve results over a linear decaying learning rates without warmup \cite{howardruder2018universal}.
 
 \paragraph{Loss}
@@ -237,12 +235,12 @@ The development set of DaNE was used to guide a simple search for fine-tuning hy
 The search is performed by repeating the training procedure with all combinations of the following parameter values that were chosen based on previous, informal experimentation.
 \begin{enumerate}
     \item Batch size $\in\{8, 16\}$
-    \item Peak learning rate $\in\{10^{-5}, 5\ctp{5}\}$
+    \item Peak learning rate $\in\{10^{-5}, 5\ctp{-5}\}$
     \item Dropout (final, linear layer) $\in\{0.025, 0.1\}$
     \item Whether or not to use class-weighted loss $\in\{\text{Yes}, \text{No}\}$
 \end{enumerate}
 For each combination, the resulting model was evaluated on the development set, shown in Table~\ref{tab:hyperres} and the hyperparameters with highest average F1 score was chosen and the final model using which the final model was produced by fine-tuning again to avoid selection bias.
-The chosen hyperparameters are reported below together with the used hyperparameters that were not tested.
+The chosen hyperparameters are reported on Table~\ref{tab:main-hyper} together with the used hyperparameters that were not tested.
 \begin{table}[H]
     \centering
     \small
@@ -272,7 +270,7 @@ The model fine-tuned on DaNE is available at \url{https://nx5746.your-storagesha
 Our software package is \code{pip} installable and runs on Python 3.8 and above.
 Simply run \code{pip install daluke} to install it on your computer with the Python package installer \code{pip} available.
 It allows for using DaLUKE for NER on text files directly from the command line.
-For instructions, see the read me fill on the repository.
+For instructions, see the read-me fill on the repository.
 
 \paragraph{Implementation}
 Yamada et al. have made their code\footnote{\url{https://github.com/studio-ousia/luke}. Visited June 11, 2021.} freely available under the Apache License 2.0 \cite{apachelicense}.
@@ -280,7 +278,7 @@ We highly appreciate this, and our original plan was to use their code and then 
 However, we quickly ran into a number of issues with this approach:
 Getting all dependencies installed with the correct versions proved to be a very challenging task.
 To solve this, we forked the repository and updated both Python and several of the dependencies to newer versions, but this in itself required major code rewrites.
-When that worked, we started pretraining, which had more mysterious issues:
+When that worked, we started pretraining, which presented more mysterious issues:
 Training on a single GPU worked, but two GPU's slowed training by a factor of three, and three or more GPU's simply did not work.
 Due to limited GPU availability, cryptic error messages, and an almost complete lack of documentation, debugging once again became very challenging.
 
@@ -299,7 +297,7 @@ For instance, we discovered a bug in the masking where the unmasking and random 
 We have opened an issue on the LUKE repository that can be followed at \url{https://github.com/studio-ousia/luke/issues/93}.
 
 \paragraph{Floating Point Precision}
-The model is trained using PyTorch Automatic Mixed Precision (AMP) \cite{pytorchamp}, which -- ideally, at least -- should decrease training time with little to no penalty to accuracy \cite{huang2020amp}.
+The model was trained using PyTorch Automatic Mixed Precision (AMP) \cite{pytorchamp}, which -- ideally, at least -- should decrease training time with little to no penalty to accuracy \cite{huang2020amp}.
 This is partially due to half-precision calculations being simpler, and partially due to the lower memory requirements, allowing larger subbatches and thus better GPU utilization.
 However, as Figure \ref{fig:runtime} shows, AMP works as intended when training on NVIDIA V100's, but has the opposite effect when training on NVIDIA A100's.
 
@@ -317,9 +315,9 @@ Especially given the parallelizable nature of the transformer compared to recurr
 The pretraining took roughly a week.
 Due to varying GPU availability, varying numbers of A100's and V100's were used for pretraining and the experiments in section \ref{sec:pretrainpls}.
 The main pretraining took approximately a week and used 2-4 V100's.
-For comparison, Yamada et al. train LUKE using 16 V100's over a period of 30 days. \cite{yamada2020luke}
+For comparison, Yamada et al. trained LUKE using 16 V100's over a period of 30 days. \cite{yamada2020luke}
 
-We measure the time needed to train for one epoch on different cluster configurations.
+We measured the time needed to train for one epoch on different cluster configurations.
 The results are shown on Figure \ref{fig:runtime}.
 \begin{figure}[H]
     \centering

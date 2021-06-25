@@ -12,7 +12,7 @@ For pretraining LUKE, a corpus of entity annotated text is needed.
 Entity annotations consist of two things: The word span and the name of the entity.
 No text is written directly with such annotations in mind.
 However, some texts such as news articles often contain embedded hyperlinks that implicitly provide the word spans, but these often point to other articles rather than specific items.
-On Wikipedia this is not the case, as hyperlinks point to articles on specific topics, which makes it useful for LUKE's pretraining task.
+On Wikipedi,a this is not the case, as hyperlinks point to articles on specific topics, which makes it useful for LUKE's pretraining task.
 Given its size, Wikipedia then is a particularly useful pretraining dataset.
 
 As of June 23rd, the Danish Wikipedia has 267,408 content pages containing a total of 81,822,460 words\footnote{\url{https://da.wikipedia.org/wiki/Speciel:Statistik}. Visited June 23, 2021.}.
@@ -62,7 +62,8 @@ When matching, such matches are annotated as we expect it to remove a large numb
 To reduce the number of false positives, we only perform extra annotations with titles of at least three characters.
 This prevents the article on "A" to be linked at every word starting with "A".
 We also only match titles already linked in the articles, as we assume that any article that should be linked to has already been linked at least once.
-This further reduces the number of false positives and whether this has positive effect on learning is subject to an experiment presented in Section~\ref{subsec:dataexp}.
+This further reduces the number of false positives.
+Whether this has positive effect on learning is subject to an experiment presented in Section~\ref{subsec:dataexp}.
 
 Table \ref{tab:metadata} shows how these augmentation steps change the properties of the dataset.
 \begin{table}[H]
@@ -114,7 +115,7 @@ The balanced training, development and test splits from Rahimi et al. are used \
 The test sets of these three NER-annotated datasets were used and a summary of their counts is shown in Table~\ref{tab:daNERdata}.
 DaNE is considered the main public Danish NER dataset, as it is produced with the highest degree of expert supervision and used for training most of the models compared in Section~\ref{sec:exidan}.
 However, as shown on on Table \ref{tab:danedist} and Figure \ref{fig:dadatadist}, DaNE and Plank suffer from uneven label distributions in the different subsets.
-As most model training assumes that the training data has the same distribution as the true distribution, this could cause evaluations on the test sets to give a poor view of real-world performance.
+As most model training assumes that the training data has the same distribution as the true distribution, this could cause evaluations on the test sets to give a poor approximation of real-world performance.
 Previous literature has highlighted the scarcity of accessible, gold-standard, Danish NER as a limitation in the field \cite[Sec. 2.1]{plank2019neural}.
 \begin{table}[H]
     \centering
@@ -157,14 +158,14 @@ Previous literature has highlighted the scarcity of accessible, gold-standard, D
     \end{minipage}
     \caption{
         Distribution of entity labels in the three Danish NER datasets.
-        Notably, DaNE and Plank do not have the same distributions the three datasubsets, with e.g. LOC being under-represented in the DaNE test set and MISC being under-represented in the Plank training set.
+        Notably, DaNE and Plank do not have the same distributions in the three datasubsets, with e.g. LOC being under-represented in the DaNE test set and MISC being under-represented in the Plank training set.
         WikiANN is the only dataset that has the same distribution in all three subsets.
     }
     \label{fig:dadatadist}
 \end{figure}\noindent
 
 \subsection{CoNLL-2003}
-The shared task for the 2003 Conference on Computational Natural Language Leanring (CoNLL) was language-independent NER for which annotations on English Reuters news wire articles were performed by researchers \cite{tjang2003conll}.
+The shared task for the 2003 Conference on Computational Natural Language Learning (CoNLL) was language-independent NER for which annotations on English Reuters news wire articles were performed by researchers \cite{tjang2003conll}.
 This corpus consists of 1393 articles that were divided into training, development and test sets as seen in Table~\ref{tab:conll2003}.
 The dataset is the central benchmark in the field of named entity recognition \cite[Sec. 4.3]{yamada2020luke} and has a competitive history with over 50 models submitted to the performance leaderboard at Papers With Code\footnotemark.
 \footnotetext{
@@ -178,13 +179,13 @@ The dataset is the central benchmark in the field of named entity recognition \c
     \centering
     \begin{tabular}{l|rrr|rrrr}
     CoNLL-2003 English  & Articles  & Sentences  & Tokens   & LOC   & PER   & ORG   & MISC  \\ \hline
-    Training set        & 946       & 14,987     & 203,621  & 7140  & 6600  & 6321  & 3438   \\
-    Development set     & 216       & 3466      & 51,362   & 1837  & 1842  & 1341  & 922    \\
-    Test set            & 231       & 3684      & 46,435   & 1668  & 1617  & 1661  & 702    \\
+    Training set        & 946       & 14,987     & 203,621  & 7,140  & 6,600  & 6,321  & 3,438   \\
+    Development set     & 216       & 3,466      & 51,362   & 1,837  & 1,842  & 1,341  & 922    \\
+    Test set            & 231       & 3,684      & 46,435   & 1,668  & 1,617  & 1,661  & 702    \\
     \end{tabular}
     \caption{
         Dataset counts for the canonical NER dataset CoNLL-2003.
-        Note the more even distribution of entities when compared to the Danish NER datasets shown at Table~\ref{tab:daNERdata}, highlighting the difference in entities between short news texts and more general-purpose literature.
+        Note the more even distribution between entity classes when compared to the Danish NER datasets shown at Table~\ref{tab:daNERdata}, highlighting the difference in entities between short news texts and more general-purpose literature.
     }
     \label{tab:conll2003}
 \end{table}
@@ -202,8 +203,8 @@ The definition of the annotation categories are given in the CoNLL-2003 guidelin
 }
 \begin{itemize}
     \item LOC: Geographical regions, natural locations and public and commercial places. Also includes abstract places.
-    \item PER: Names, aliases of people, animals and fictional characters.
-    \item ORG: Companies, brands, government bodies, movements, clubs and subdivisions thereof.
+    \item PER: Names, aliases of people, animals, and fictional characters.
+    \item ORG: Companies, brands, government bodies, movements, clubs, and subdivisions thereof.
     \item MISC: Titles of media, nationalities, languages, religions, ideologies, wars, slogans, eras, but also both adjectives and word combinations that are derived from one of the other tags.
 \end{itemize}
 To end the introduction of the data, some examples of named entities in each testing dataset are shown.

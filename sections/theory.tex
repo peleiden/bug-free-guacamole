@@ -237,7 +237,7 @@ The positions of the entities are included in the further inference as \emph{pos
 \paragraph{Entity Embeddings}
 The subword tokens are forward passed through the same, static word embedding architecture as that of BERT which outputs $m$ vectors of dimension $H$ for each subword.
 For the entity and entity position tokens, the new additions to the inference, a similar component which maps id's to $n$ vectors, also $\in \RR^H$.
-These are called entity embeddings and are computed using trainable lookup Tables, which, for the entity id case, corresponds to the entity vocabulary.
+These are called entity embeddings and are computed using trainable lookup tables, which, for the entity id case, corresponds to the entity vocabulary.
 
 The produced word and entity embeddings are concatenated to a matrix $\in \RR^{(n+m)\times H}$.
 
@@ -245,22 +245,22 @@ The produced word and entity embeddings are concatenated to a matrix $\in \RR^{(
 The representations of words and entities are forward passed through a transformer operating on the entire sequences of embeddings without distinction between words and entities.
 This component is dubbed the encoder and, after $N$ attention blocks with same input and output dimensionality, outputs the final contextualized $H$-dimensional representations:
 The first $m$ correspond to words and the last $n$ to entities.
-The main LUKE model, LUKE large, has, following BERT, $N=24$, $H=1024$
+The main LUKE model, LUKE large, has, following BERT, $N=24$ and $H=1024$.
 
-After the computation of the representations, the model can be extended with a decoder consisting of bi-directional classifications heads for pretraining, or it can be extended with linear layers for downstream tasks.
+After the computation of the representations, the model can be extended with a decoder consisting of bi-directional classifications heads for pretraining, or it can be extended with a linear layer for downstream tasks.
 \begin{figure}[H]
     \centering
         \input{imgs/luke_tikz.tex}
     \caption{
         Overview of the LUKE pipeline from annotated text to contextualized representations of both words and entities.
-        $w_i, e_i, x_i$ all reside $\in \RR^H$ with $H=768$ in the LUKE implementation.
+        $w_i, e_i, x_i$ all reside $\in \RR^H$ with $H=1024$ in the LUKE implementation.
     }
     \label{fig:luke}
 \end{figure}\noindent
 
 \paragraph{Transfer Learning}
 The word/entity duality of LUKE means that a large part of the model performs the same task as the conventional word-based language models.
-For this reason, the word embeddings in LUKE follow the BERT architecture and Yamada et al. initialize these embeddings to those found in RoBERTa.
+For this reason, the word embeddings in LUKE follow the BERT architecture, and Yamada et al. initialize these embeddings to those found in RoBERTa.
 In the pretraining of Yamada et al., the encoder of LUKE is also equivalent with that of BERT and is initialized using the weights of RoBERTa.
 
 
@@ -286,13 +286,13 @@ To handle this explicitly, the idea of \emph{entity-aware self-attention} change
     \end{cases}.
 \end{equation}
 LUKE, however, is not pretrained using this mechanism, but for the fine-tuning tasks, Yamada et al. show in ablation experiments that using this addition consistently yields better performance \cite[Sec. 5.2]{yamada2020luke}.
-This new mechanism, theorized to improve entity knowledge by Yamada et al., was  not used in preatraining with the following explanation:
+This new mechanism, theorized to improve entity knowledge by Yamada et al., was  not used in pretraining with the following explanation:
 ''We perform pretraining using the original self-attention mechanism rather than our entity-aware self-attention mechanism because we want an ablation study of our mechanism but can not afford to run pretraining twice'' \cite[Sec. 3.4]{yamada2020luke}.
 
 \subsection{Pretraining}
 \label{subsec:lukepre}
-Yamada et. al perform the pretraining of LUKE by extending the MLM task of BERT \cite{devlin2019bert}.
-Where BERT is trained to predict randomly masked words, LUKE is trained to predict both randomly masked words and entities, such as
+Yamada et. al perform the pretraining of LUKE by extending the MLM task of RoBERTa \cite{liu2019roberta}.
+Where RoBERTa is trained to predict randomly masked words, LUKE is trained to predict both randomly masked words and entities, such as
 \begin{itemize}
     \item ''Franklin Roosevelt did not [MASK] to see the [MASK] of WWII.''
         \subitem Truth: ''live'', ''end''.
@@ -316,7 +316,7 @@ For each of the two classification tasks, the cross entropy loss $ l $ is then c
 where $ c_i $ is the true class of the $ i $'th example \cite{pytorchcel}.
 The total loss is then calculated as the sum of individual losses for both tasks.
 
-Yamada et al. \cite{yamada2020luke} use weight decay for the entire model barring bias and layer normalizations.
+Yamada et al. \cite{yamada2020luke} use weight decay for the entire model, barring bias and layer normalizations.
 According to Krogh and Hertz \cite{krogh1991weight}, weight decay improves generalizability in feed-forward networks.
 This is due to the suppression of irrelevant parameters, letting the smallest possible parameters solve the problems.
 Larger parameters naturally lead to larger sensitivity to noise and thus poorer generalization.
@@ -324,7 +324,7 @@ Larger parameters naturally lead to larger sensitivity to noise and thus poorer 
 \paragraph{Entity Mask Prediction Head}
 For the entity pretraining task, LUKE is equipped with another classifier structure in addition to the masked language model prediction head inherited from BERT.
 This new prediction head follows the architecture of the masked word scorer just operating on the entity representations.
-The masked entity tokens are thus scored as corresponding to one of the entities in the entity vocabulary by two linear layers between which an activation function and layer normalization are placed.
+The masked entity tokens are thus scored as corresponding to one of the entities in the entity vocabulary by two linear layers, between which an activation function and layer normalization are placed.
 
 \subsection{Fine-tuning for Named Entity Recognition}
 \label{subsec:fine-tuning-theory}
@@ -336,7 +336,7 @@ Each span along with the text in which it appears is saved as a NER example.
 An example is forward passed through LUKE by marking the candidate entity with the [MASK] entity id.
 For each named entity candidate, the computed representation of this [MASK] entity and the CWR's of the first and last word tokens in the span are concatenated.
 [MASK] is used as NE candidate as this it was used for a similar prediction task in the pretraining.
-Only [MASK], and [PAD], are used out of all the entity embeddings that LUKE contains.
+Only [MASK] and [PAD] are used out of all the entity embeddings that LUKE contains.
 
 The combined representation from the pretrained model is then given to a single linear layer that learns to classify the entity as either a non-entity or one of the classes in the dataset.
 For a dataset with $ n $ classes, the learning problem is then an $ n+1 $ class classification task.
@@ -347,7 +347,6 @@ This is solved by greedily selecting spans based on the class scores from the cl
 Thus, if two (partially) overlapping spans both are predicted to cover an entity, only the one with the highest score is kept, while the other is predicted to be a non-entity.
 
 Following BERT \cite{devlin2019bert}, the maximal document context is included in the target document, allowing each entity prediction to use as much context as the dataset provides, limited only by the maximum of 512 subword tokens given to LUKE.
-This plays to the strengths of the transformer, which is good at retaining attention over long sequences of text \cite{vaswani2017att}.
-\cite{yamada2020luke}
+This plays to the strengths of the transformer, which is good at retaining attention over long sequences of text \cite{vaswani2017att, yamada2020luke}.
 
 \end{document}

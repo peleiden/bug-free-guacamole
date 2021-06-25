@@ -19,7 +19,7 @@ In this project, language understanding in the low resource language Danish will
 The model, \emph{Language Understanding Using Knowledge Embeddings} (LUKE), was released in October of 2020 and explicitly handles the difference between single words and \emph{named entities} such as ''Lionel Messi'', ''The United States of America'' or ''Science'' \cite{yamada2020luke}.
 The model had in total seen training from 160 GB of text\footnotemark~and achieved state of the art (SOTA) results on a number of classic NLP tasks such as named entity recognition (NER).
 \footnotetext{This includes all training that had an effect on the final model weights and thus also the data used to pretrain RoBERTa \cite[Sec. 3.2]{liu2019roberta}, the weights of which was used for initializing most of the LUKE weights. Counting only the data used for LUKE itself, the number is not directly reported but was found to be around 7 GB from our own experiments with the English LUKE data pipeline.}
-For Danish, the amount of suiTable data for this technique is about 40 times smaller\footnotemark.
+For Danish, the amount of suitable data for this technique is about 40 times smaller\footnotemark.
 \footnotetext{
     The pretraining method uses the special format of Wikipedia. The English Wikipedia dump used by LUKE contained 3.5 billion words \cite[App. A]{yamada2020luke}, while the Danish Wikipedia consists of 81 million words.
 }
