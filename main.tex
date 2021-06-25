@@ -46,11 +46,11 @@
     {\large \today\par}
 \end{titlepage}
 \begin{abstract}
-    The advent of deep learning has led to significant advances in the field of natural language processing in recent years, but many models, while good at modelling natural language lack explicit knowledge, making entity related tasks challenging.
-    LUKE, proposed by Yamada et al. \cite{yamada2020luke} in October, 2020, is a transformer \cite{vaswani2017att} based architecture that explicitly models entities, allowing it to achieve state of the art on several entity related benchmarks, including named entity recognition (NER).
+    The advent of deep learning has led to significant advances in the field of natural language processing in recent years, but many models, while good at modelling natural language, lack explicit knowledge, making entity related tasks challenging.
+    LUKE, proposed by Yamada et al. \cite{yamada2020luke} in October 2020, is a transformer \cite{vaswani2017att} based architecture that explicitly models entities, allowing it to achieve state of the art on several entity related benchmarks, including named entity recognition (NER).
     In this report, LUKE's NER results are reproduced along with leading Danish NER results, and an open source Danish LUKE, DaLUKE, is produced and released in two versions:
     Firstly, a pretrained model for producing contextualized word and entity representations.
-    Secondly, a fine-tuned model trained on the leading Danish NER dataset, DaNE \cite{hvingelby2020dane}, on which it achieves close to state of the art, beating BotXO's Danish BERT \cite{botxo2019dabert}.
+    Secondly, a fine-tuned model trained on the central Danish NER dataset, DaNE \cite{hvingelby2020dane}, on which it achieves close to state of the art, beating BotXO's Danish BERT \cite{botxo2019dabert}.
     Several ablation studies are conducted to explore what effects different techniques have on performance.
     Finally, an open source software package, \code{daluke}, is released with the goal of making DaLUKE easy to use.
 \end{abstract}
@@ -64,7 +64,7 @@
 
 \subfile{sections/intro}
 
-\subfile{sections/theory.tex}
+\subfile{sections/theory}
 
 \subfile{sections/data}
 

@@ -149,7 +149,7 @@ The model was benchmarked by fine-tuning on NER.
 Our pretraining approach followed the one used by Yamada et al, as described in Section \ref{subsec:lukepre}, with four key differences:
 \begin{enumerate}
     \item The entity-augmented Danish Wikipedia described in section \ref{subsec:entaug} was used.
-    \item Entity-aware self-attention was used in the pretraining as this was expected to positively impact the modelling of knowledge. This speculation is tested in Section~\ref{subsec:selfatt} .
+    \item Entity-aware self-attention was used in the pretraining as this was expected to positively impact the modeling of knowledge. This speculation is tested in Section~\ref{subsec:selfatt} .
     \item 
         The model follows the architecture of BERT base instead of BERT large, and weights were initialized from BotXO's da-BERT \cite{botxo2019dabert} as no Danish RoBERTa or BERT large is available.
         An ablation study on this transfer learning from da-BERT is introduced in Section~\ref{subsec:dabertexp}.

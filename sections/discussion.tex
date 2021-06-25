@@ -166,7 +166,7 @@ The pretraining terminated to the following performance.
     }
     \label{tab:old-data-mlm}
 \end{table}\noindent
-At a first glance, these masked language modelling results that strictly dominate the numbers for the baseline seem to suggest that the dataset augmentation was ill-advised.
+At a first glance, these masked language modeling results that strictly dominate the numbers for the baseline seem to suggest that the dataset augmentation was ill-advised.
 There is, however, a large issue (apart from the obvious problem of judging a model by it's performance on the training dataset) with the metric in this case:
 The dataset augmentation also changed the benchmark itself as the masking task of the baseline model also includes automatically annotated, and thus somewhat dubious, entity links.
 This can explain the clear gain in entity masking performance.
@@ -257,7 +257,7 @@ After fine-tuning, the following results were achieved:
    \caption{The fine-tuning results of the traditional attention experiment.}
     \label{tab:bertatt}
 \end{table}\noindent
-From the lower NER and masked language performances, it is concluded that this mechanism explicitly modelling the difference between the two token domains is an important part of the DaLUKE results.
+From the lower NER and masked language performances, it is concluded that this mechanism explicitly modeling the difference between the two token domains is an important part of the DaLUKE results.
 
 % 2021-06-12 12:21:29.881    INFO                      precision    recall  f1-score   support
 
@@ -419,7 +419,7 @@ Smaller datasets, corresponding to smaller language areas, do not equate a small
 This conceptual argument somewhat supported by the experimental results suggests that more of the rare entities should be included when working with smaller datasets, though a more continuous experimental search of this filtering parameter might yield a better trade-off than our main model solution of including all entities.
 
 \subsection{Summary} \label{subsec:preoverview}
-Table \ref{tab:mlmsummary} and \ref{tab:nersummary} show the masked language and entity modelling results and fine-tuning results, respectively, of all the just discussed experiments for easier comparison.
+Table \ref{tab:mlmsummary} and \ref{tab:nersummary} show the masked language and entity modeling results and fine-tuning results, respectively, of all the just discussed experiments for easier comparison.
 \begin{table}[H]
     \centering
     \footnotesize
@@ -1165,7 +1165,7 @@ Another interesting pattern lies in the strength of the multilingual model used 
 \section{Future Work}
 We see promise in this approach of lightly sprinkling some explicit knowledge on top of the model fitting approach for languages such as Danish.
 The results are, in our estimation, solid and encouraging.
-DaLUKE did not, however, sweep away the classic language modelling approach and was intercepted for the NER crown by the larger model presented in DaCy.
+DaLUKE did not, however, sweep away the classic language modeling approach and was intercepted for the NER crown by the larger model presented in DaCy.
 Some parts of the pretraining approach also seemed misguided on the small dataset.
 To further understand the DaLUKE performance, the results from other downstream tasks than NER would be of great interest, including coreference resolution on the Dacoref dataset \cite{kromann2004cdt, danlp2021} or dependency parsing on the Danish Dependency Treebank \cite{kromann2003ddt}.
 It would also improve the insight to pretrain DaLUKE with a subset of the corpus left out as a testing set.
@@ -1188,14 +1188,14 @@ Here, Danish tools for explicit semantic analysis \cite{hansen2017esa} could hel
 
 The primary, open dataset for which we see promise in automated annotation is the recently published Danish Gigaword corpus which includes documents that are more diverse in domain and dialect than the Danish Wikipedia \cite{derc2021giga}.
 
-\paragraph{Modelling}
+\paragraph{Modeling}
 Motivated by the impressive success of DaCy, the most direct model improvement is to use the multilingual RoBERTa \cite{conneau2020unsupervised} instead of the Danish BERT \cite{botxo2019dabert}.
 The Danish BERT has previously been criticized for being under trained \cite{derc2021giga, nielsen2020textsum} and for not being case-sensitive.
 Furthermore, there exists a large version of the multilingual RoBERTa, and, finally, we speculate that our pretraining task will help the multilingual model catch up to possibly missing Danish specific knowledge.
 The large version will, however, require more computational resources or more patience.
 
 Further improvement might be found if the LUKE approach is not followed directly.
-The LUKE knowledge-enhancement is very subtle and requires any hierarchical and relational modelling of knowledge to be learned implicitly from the flat world of entities stored in the vocabulary.
+The LUKE knowledge-enhancement is very subtle and requires any hierarchical and relational modeling of knowledge to be learned implicitly from the flat world of entities stored in the vocabulary.
 A unification of models that use subtle knowledge-enhancement in pretraining and those that use explicit knowledge bases might be beneficial for Danish.
 An approach to this, that maintains a flexible, general model, might be introducing additional tokens coding for knowledge as input for the entity embeddings.
 We imagine a hierarchical token that uses the article classification of Wikipedia (see Figure~\ref{fig:wikipedia-cat}) to code the type of token to beneficial in pretraining.

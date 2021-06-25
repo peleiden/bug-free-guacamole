@@ -61,7 +61,7 @@ However, the variability of fine-tuning is also highlighted here and will be dis
 \end{figure}\noindent
 The masked subwords and masked entity accuracies are shown on Figure \ref{fig:pretrain-acc}.
 The former converges quickly, achieving close to top accuracy in less than a tenth of the full training time, while the latter keeps improving throughout the training.
-That the masked language modelling performance from BERT is quickly maximized is, however, perhaps not surprising, as many of the relevant weights are initialized from an already trained model which has been pretrained on the exact same task.
+That the masked language modeling performance from BERT is quickly maximized is, however, perhaps not surprising, as many of the relevant weights are initialized from an already trained model which has been pretrained on the exact same task.
 The loss shown on Figure \ref{fig:loss} mirrors the accuracy with masked subword loss converging quickly, after which falling entity loss becomes the driving factor behind the falling total loss.
 
 \section{Danish Named Entity Recognition}%
@@ -120,7 +120,7 @@ One possible reason may be the pretraining dataset.
 Excluding the transferred da-BERT weights, it is pretrained solely on Wikipedia unlike DaCy.
 While we have not investigated it further, it is possible that there are more articles on locations and people than there are on organizations and miscellaneous entities.
 
-Ultimately, DaLUKE still performs at a high level and shows its promise for entity modelling.
+Ultimately, DaLUKE still performs at a high level and shows its promise for entity modeling.
 
 \subsection{Additional Datasets}
               % precision    recall  f1-score   support
