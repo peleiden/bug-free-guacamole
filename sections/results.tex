@@ -113,6 +113,21 @@ The loss shown on Figure \ref{fig:loss} mirrors the accuracy with masked subword
         \caption{F1\pro-scores of Danish NER models of the DaNE testing dataset consisting of 565 sentences.}
         \label{tab:DaNE}
 \end{table}\noindent
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{.49\textwidth}
+        \includegraphics[width=\textwidth]{loss-fine}
+    \end{minipage}\hfill
+    \begin{minipage}{.49\textwidth}
+        \includegraphics[width=\textwidth]{dev-dists}
+    \end{minipage}
+    \caption{
+        To the left, the development of loss and accuracy on the DaNE training and dev. sets.
+        To the right, the number of predictions of each class on the dev. set is shown along with the actual number of each class.
+    }
+    \label{fig:main-fine-tune}
+\end{figure}\noindent
 DaLUKE fails to achieve SOTA on DaNE, being beaten only by DaCy large.
 However, it does beat da-BERT on which it is based, indicating that the extra pretraining and entity understanding indeed has added some value to the model.
 Interestingly, DaLUKE still manages to pull off a first place in the LOC category and ties DaCy large in PER, while falling behind in both ORG and MISC.
