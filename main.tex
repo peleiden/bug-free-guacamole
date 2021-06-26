@@ -18,11 +18,13 @@
 %https://en.wikibooks.org/wiki/LaTeX/Title_Creation
 \begin{titlepage}
     \centering
-    {\scshape\LARGE Technical University of Denmark \par}
-    \vspace{1cm}
-    {\scshape\Large Bachelor project in Artificial Intelligence and Data\par}
+    {\huge\bfseries DaLUKE: Using Knowledge for Deep Learning of Danish\par}
     \vspace{1.5cm}
-    {\huge\bfseries DaLUKE: The Entity-aware, Danish Language Model\par}
+    \includegraphics[width=0.2\linewidth]{dtu-logo}\\[4ex]
+    \vspace{.5cm}
+    {\scshape\LARGE Technical University of Denmark \par}
+    \vspace{.5cm}
+    {\scshape\large Bachelor's Project in Artificial Intelligence and Data\par}
     \vspace{2cm}
     \begin{large}
         \centering
@@ -32,12 +34,8 @@
         \end{tabular}
     \end{large}\par
     \vfill
-    Project: \textit{An Open Source Danish Knowledge Graph Language Model}\par
-    Software repository:
-    \code{\href{https://github.com/peleiden/daLUKE}{github.com/peleiden/daluke}}\par
     % Demonstration:
     % \code{\href{https://peleiden.github.io/daLUKE}{peleiden.github.io/daLUKE}}\par
-    \vspace{2cm}
     Supervisors:\par
     Lars Kai Hansen, DTU Compute\\
     Michael Riis Andersen, DTU Compute\\
@@ -46,16 +44,33 @@
     {\large \today\par}
 \end{titlepage}
 \begin{abstract}
-    The advent of deep learning has led to significant advances in the field of natural language processing in recent years, but many models, while good at modelling natural language, lack explicit knowledge, making entity related tasks challenging.
-    LUKE, proposed by Yamada et al. \cite{yamada2020luke} in October 2020, is a transformer \cite{vaswani2017att} based architecture that explicitly models entities, allowing it to achieve state of the art on several entity related benchmarks, including named entity recognition (NER).
+    The advent of deep learning has led to significant advances in the field of natural language processing in recent years, but many models, while good at modelling natural language, lack explicit knowledge, making tasks involving real-world, factual entities challenging.
+    LUKE, proposed by Yamada et al. in October 2020, is a transformer based architecture that explicitly models entities, allowing it to achieve state of the art on several benchmarks, including named entity recognition (NER).
     In this report, LUKE's NER results are reproduced along with leading Danish NER results, and an open source Danish LUKE, DaLUKE, is produced and released in two versions:
     Firstly, a pretrained model for producing contextualized word and entity representations.
-    Secondly, a fine-tuned model trained on the central Danish NER dataset, DaNE \cite{hvingelby2020dane}, on which it achieves close to state of the art, beating BotXO's Danish BERT \cite{botxo2019dabert}.
+    Secondly, a model is presented which is trained on the central Danish NER dataset, DaNE, achieving close to state of the art and beating BotXO's Danish BERT.
     Several ablation studies are conducted to explore what effects different techniques have on performance.
-    Finally, an open source software package, \code{daluke}, is released with the goal of making DaLUKE easy to use.
+    Finally, an open source software package, \code{daluke}, is released with the goal of making knowledge-based deep learning for Danish easy to use.
 \end{abstract}
 
+\chapter*{Preface}
+This project has been completed to fulfil the requirements to obtain the bachelor's degree in Artificial Intelligence and Data at the Technical University of Denmark.
+Per author, the project was assigned a workload of 15 ECTS corresponding to approximately 420 working hours.
+The software presented in the project is available at \code{\href{https://github.com/peleiden/daLUKE}{github.com/peleiden/daluke}}.
+
+We are incredibly grateful for the large amount of help we received from DTU and the broader Danish natural language processing community.
+We must mention Rasmus Arpe and Martin Nielsen from Danspeech, Finn Årup Nielsen from DTU Compute, and Kasper Lindskou and Lukas Nielsen from Ekstra Bladet Analyse for valuable advice, especially on data concerns.
+We are also grateful for the help of Ikuya Yamada, Studio Ousia for publishing LUKE and openly answering all our questions on modeling details.
+
+A special thank you goes out to Johannes Kruse for continuous feedback and insight.
+All of our three supervisors gave us invaluable guidance and encouragement crucial for the project.
+We would never have learned so much about this exciting field without the ever insisting ambition of Lars Kai Hansen.
+The help of all these brilliant individuals leaves us wondering about the nature of our own contributions.
+
+Finally, we note that this project presents a number of text examples in Danish that are not translated to English.
+A report meant for a broader audience would require such translations.
 % \setcounter{tocdepth}{1}
+
 \tableofcontents
 % \setcounter{tocdepth}{2}
 
