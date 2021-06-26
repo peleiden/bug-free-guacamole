@@ -44,7 +44,7 @@ The SOTA on English NER benchmarks moves quickly, but almost all algorithms curr
 
 \section{Embeddings, Tokenization and the Transformer}
 \label{sec:transformers}
-A short primer on key NLP technologies used in this project and by other important, Danish algorithms is given here.
+
 \paragraph{Word embeddings}
 Word embeddings are one of the most ubiqitous tools in the NLP toolbox and come in many variants, all sharing the general idea of mapping a word token to a real-valued vector representation corresponding to a semantic condensation of the word.
 When using the term \emph{embeddings}, we refer to the static, uncontextualized representations such as the \emph{fasttext}-based, 300-dimensional, Danish embeddings released by Edouard Grave et al. \cite{grave2018learning}.
@@ -84,22 +84,6 @@ Early transformer based models such as OpenAI's GPT \cite{rashford2018gpt} use a
 BERT instead masks some tokens in the given sequence and allows all tokens to attend to all other tokens when predicting the masked ones -- this is what is known as a masked language model (MLM).
 BERT achieved SOTA on a large amount of downstream tasks such as the important question answering task and has been described as revolutionary for its impact on NLP \cite{raj2019bert}.
 Figure \ref{fig:transformer-bert} shows both the transformer architecture and the BERT pretraining and fine-tuning.
-\begin{figure}[H]
-    \centering
-    \begin{minipage}{0.29\linewidth}
-        \includegraphics[width=\linewidth]{imgs/transformer}
-    \end{minipage}\hfill
-    \begin{minipage}{0.7\linewidth}
-        \includegraphics[width=\linewidth]{imgs/bert}
-    \end{minipage}
-    \caption{
-        To the left, a diagram of the transformer architecture is shown as proposed by Vaswani et al. \cite{vaswani2017att}.
-        While the general approach is not followed in the project, do note the simple attention block on the right.
-        The right-hand side shows the BERT pipeline as introduced by Devlin et al. \cite{devlin2019bert} where the masked pretraining followed by the specialized fine-tuning is visualized.
-        Both figures are taken from their respective papers.
-    }
-    \label{fig:transformer-bert}
-\end{figure}\noindent
 
 \paragraph{Tokenization}
 The input for these language models must naturally be sequences of words.

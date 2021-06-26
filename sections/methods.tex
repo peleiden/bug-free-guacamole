@@ -5,9 +5,6 @@
 \chapter{Methods}
 \lhead{Methods}
 \label{chap:methods}
-\begin{enumerate}
-    \item Husk at skrive datid!
-\end{enumerate}
 
 \section{Benchmarking named entity recognition}
 \subsection{Evaluation of NER}
@@ -141,7 +138,8 @@ The reproduction was performed using Python version 3.7.10 and the dependency ve
 \subsection{Pretraining Methodology and Hyperparameters}%
 \label{sub:dalpre}
 \begin{enumerate}
-    \item Mangler introduktion af størrelsen (repræsentationsdimensionalitet + antal opmærksomhedsblokke, men også flere tal).
+    \item Find antal opmærksomhedsblokke.
+    \item Fiks dimensionalitet af entity embeddings (og dobbeltjek ord)
 \end{enumerate}
 Our pretraining approach followed the one used by Yamada et al, as described in Section \ref{subsec:lukepre}, with four key differences:
 \begin{enumerate}
@@ -150,12 +148,12 @@ Our pretraining approach followed the one used by Yamada et al, as described in 
     \item 
         The model follows the architecture of BERT base instead of BERT large, and weights were initialized from BotXO's da-BERT \cite{botxo2019dabert} as no Danish RoBERTa or BERT large is available.
         An ablation study on this transfer learning from da-BERT is introduced in Section~\ref{subsec:dabertexp}.
+        Because of this, token embedding and contextualized representations reside in a 768 dimensional latent space rather than the 1024 dimensions used by LUKE \cite[Sec. 3.4]{yamada2020luke}.
     \item
         The entity vocabulary, consisting of all mentioned Wikipedia articles, was limited in the English LUKE for computational efficiency \cite[Sec. 3.4]{yamada2020luke}.
         We do not perform such limiting as the number of mentioned Wikipedia articles is much smaller in the Danish corpus.
         An experiment of limiting the vocabulary is explained in Section~\ref{subsec:entvocexp}.
 \end{enumerate}
-
 Due to the memory intensive nature of the transformer architecture, we followed Yamada et al. and used gradient accumulation over multiple subbatches within each batch, that is each parameter update consists of multiple forward passes of the model.
 
 As with LUKE, the cross entropy loss is calculated using equation \ref{eq:crossentropyloss} for each classification task, with the only difference being that the final loss is the average rather than the sum of the individual task losses.
@@ -185,9 +183,9 @@ LUKE follows BERT and increases its learning rate linearly from 0 to the peak le
 
 For pretraining, DaLUKE also employs linear warmup for the first 6\pro\ of parameter updates, after which it decreases polynomially with a power of $ \sqrt{3} $ and a final learning rate of one tenth the peak learning rate.
 This results in a more aggressive decrease in learning rate after the warmup period but a slightly higher learning rate in the final steps compared to STLR.
-This was used as the compute time frame was not known in advance, and this approach would work well with both early stopping and continued training.
+This was used as the amount of available compute was not known in advance, and this approach would work well with both early stopping and continued training.
 The learning rate development is shown on Figure \ref{fig:lr}.
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=.6\textwidth]{lr}
     \caption{Learning rate during the pretraining.}
