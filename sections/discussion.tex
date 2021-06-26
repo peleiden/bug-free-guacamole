@@ -19,8 +19,7 @@ Figure \ref{fig:weight-dist} shows the model parameter value distribution before
     \centering
     \includegraphics[width=\textwidth]{weights}
     \caption{
-        The parameter distribution before and after pretraining.
-        The decoder is included but only makes up a relatively small part.
+        The parameter distribution before and after pretraining, including the decoder.
         DaLUKE $ \cap $ da-BERT refers to the parameters that are set in DaLUKE from da-BERT including the query matrices that are strictly not part of da-BERT.
         DaLUKE $ \backslash $ da-BERT are the remaining parameters.
         These are made up of the entity embeddings (58 million parameters) and the entity decoder (58 million parameters).
@@ -31,11 +30,11 @@ Figure \ref{fig:weight-dist} shows the model parameter value distribution before
 \end{figure}\noindent
 Two observations stand out:
 Firstly, DaLUKE exclusive parameters, which consist of entity embeddings and the entity part of the decoder, are spread out.
-This includes the noTable peak that comes from biases and layer normalizations being initialized to 0.
+This includes the notable peak that comes from biases and layer normalizations being initialized to 0.
 Secondly, the shared parameters are more or less unchanged in their distribution.
-This makes sense, as they are already trained, and so further training on similar data with a similar task should not make result in any significant change.
+This makes sense, as they are already trained, and so further training on similar data with a similar task should not result in any significant change.
 Furthermore, all parameters from da-BERT (barring the three sets of DaLUKE exclusive query matrices) are not changed for the first half of training.
-When they are finally unlocked, both the loss and learning rate have dropped significantly resulting in less change.
+When they are finally unlocked, both the loss and learning rate have dropped significantly, resulting in less change.
 
 \subsection{Effect of More Pretraining}
 \label{subsec:effmore}
@@ -201,7 +200,7 @@ As a more unbiased benchmark, this model was fine-tuned on the DaNE dataset usin
     \end{tabular}
     \caption{The fine-tuning results of the dataset augmentation pretraining experiment.}
     \label{tab:dataaug}
-\end{table}
+\end{table}\noindent
 % 2021-06-11 16:08:34.724    INFO                      precision    recall  f1-score   support
 
 %                                                 LOC     0.8155    0.8750    0.8442        96
@@ -230,7 +229,7 @@ An experiment using the traditional attention, which does not discrimante betwee
 % These results suggest that training the extra query matrices in the pretraining also might have a positive impact.
 % For this reason, entity-aware self-attention has been used here for all pretrainings bar this one, where its effects on pretraining is investigated.
 
-This model yields worse results than the main model on the pretraining task shown at Table~\ref{tab:bert-attention-mlm}.
+This model yields worse results than the main model on the pretraining task shown on Table~\ref{tab:bert-attention-mlm}.
 \begin{table}[H]
     \centering
     \small
@@ -323,7 +322,7 @@ This did not happen - in fact, results were much worse than the baseline.
     \label{fig:nobert-acc}
 \end{figure}\noindent
 This result is unintuitive in that a model scoring highly on \emph{both} masking tasks can underperform on NER.
-While the running fine-tuning presented in Section~\ref{sec:effmore} showed partial decoupling between entity masking and NER results, this result further raises the issue of the masked task overfitting on the limited dataset even though the masking is dynamic.
+While the running fine-tuning presented in Section~\ref{subsec:effmore} showed partial decoupling between entity masking and NER results, this result further raises the issue of the masked task overfitting on the limited dataset even though the masking is dynamic.
 
 Thus, the transfer learning from da-BERT clearly turns out to be a help here.
 From Figure \ref{fig:nobert-acc}, the initialization seems to provide two things other than initial MLM accuracy:
@@ -334,17 +333,17 @@ From Figure \ref{fig:nobert-acc}, the initialization seems to provide two things
 \end{itemize}
 This stabilization effect is supported by the sTable distribution of parameters inherited from da-BERT shown at Figures \ref{fig:weight-dist}.
 It should be noted that because no weights came from da-BERT, no weights were ever locked throughout the pretraining in this experiment.
-A similar experiment with weights unlocked and initialization from da-BERT showed pretraining accuracies much closer to the baseline, indicating that the regualizing effect is indeed da-BERT.
+A similar experiment with weights unlocked and initialization from da-BERT showed pretraining accuracies much closer to the baseline, indicating that the reguralizing effect is indeed the use of da-BERT.
 \begin{enumerate}
     \item Lav et appendiks-afsnit til dette eksperiment
 \end{enumerate}
 
 \subsection{Entity Vocabulary Size}
 \label{subsec:entvocexp}
-For the English LUKE, Yamada et al. used an entity vocabulary of the $500\ctp3$ entities \cite[Sec. 3.4]{yamada2020luke} even though the English Wikipedia contains $\sim 6\ctp6$ content pages\footnotemark.
+For the English LUKE, Yamada et al. used an entity vocabulary of the $500\ctp3$ entities \cite[Sec. 3.4]{yamada2020luke}m even though the English Wikipedia contains $\sim 6\ctp6$ content pages\footnotemark.
 \footnotetext{English Wikipedia Statistics: \url{https://en.wikipedia.org/wiki/Special:Statistics}. Visited March 3, 2021.}
 This is, apart from crude filtering of non-entity pages, a result of cutting the entity domain down to the most frequent hyperlinks.
-For the Danish Wikipedia, however, the number of content pages is $\sim 267\ctp3$ \footnotemark resulting in the DaLUKE entity vocabulary containing $\sim 225\ctp3$ entities.
+For the Danish Wikipedia, however, the number of content pages\footnotemark is $\sim 267\ctp3$ resulting in the DaLUKE entity vocabulary containing $\sim 225\ctp3$ entities.
 \footnotetext{Danish Wikipedia Statistics: \url{https://da.wikipedia.org/wiki/Speciel:Statistik} Visited March 3, 2021.}
 As this is a much smaller world of entities, the entity vocabulary of the main DaLUKE model was not cut by frequency.
 
@@ -367,7 +366,7 @@ After pretraining for 50 epochs with the same hyperparameters as the main experi
 \end{table}\noindent
 The performance on the word prediction task is slightly worse for this entity vocabulary experiment, while clearly higher scores are seen on the masked entity task.
 As for the data augmentation experiment, attention must again be put on the changes in the benchmark itself;
-the accuracy of 31\pro is calculated in a $\sim 20\ctp3$ class problem while the baseline accuracy of 29\pro is calculated over almost ten times as many classes.
+the accuracy of 31\pro\ is calculated in a $\sim 20\ctp3$ class problem while the baseline accuracy of 29\pro\ is calculated over almost ten times as many classes.
 
 % 2021-06-11 19:38:47.989    INFO        K=1
 %                                        Word:   23.905
@@ -463,7 +462,6 @@ Table \ref{tab:mlmsummary} and \ref{tab:nersummary} show the masked language and
 \label{sec:fine-tuning-exp}
 \begin{enumerate}
     \item Statistiske metoder til sammenligning af scores (????)
-    \item Prec. vs rec. - bør måske være i 6.3, da det jo er mere analyse-agtigt?
 \end{enumerate}
 As with pretraining, fine-tuning has a number of interesting elements that are worth investigating further.
 For these experiments, the main pretrained model from section \ref{sec:Pretraining of DaLUKE} are used but with the optimized fine-tuning hyperparameters from Table \ref{tab:main-hyper}.
@@ -658,11 +656,11 @@ The cross validation test sets will thus be larger, as no development set is use
 \end{table}\noindent
 These results imply that the DaNE testing set performance of 82.89\pro\ understates the accuracy of this method.
 An explanation can be that the small testing set (565 sentences) simply contains more difficult examples than other parts of the dataset.
-This theory is substantiated by the differing distributions of entities between DaNE splits (testing contains fewer LOC's and more ORG's, see Figure~\ref{fig:dadatadist}) and that we consistently observed higher performance on the development set than on the testing (such as in the hyperparameter optimization results at Table~\ref{tab:hyperres}),
+This theory is substantiated by the differing distributions of entities between DaNE splits (testing contains fewer LOC's and more ORG's, see Figure~\ref{fig:dadatadist}) and that we consistently observed higher performance on the development set than on the testing (such as in the hyperparameter optimization results at Table~\ref{tab:hyperres}).
 
 It must be noted that we cannot claim to present an unbiased estimate of the generalization performance, even on datasets following the same distribution, as the main experiment hyperparameters, that were also used here, were chosen based on performance on much of the data.
 \paragraph{Dataset generalization ability}
-It was noted with the results that DaLUKE seems to generalize well to the two other Danish NER datasets
+It was noted with the results that DaLUKE seems to generalize well to the two other Danish NER datasets.
 To add detail to the ability to generalize across these three datasets, DaLUKE is also fine-tuned for the two other datasets and the results for each model is reported across datasets at Table~\ref{tab:datasets}.
 \begin{table}[H]
     \centering
@@ -686,7 +684,7 @@ To add detail to the ability to generalize across these three datasets, DaLUKE i
     }
     \label{tab:datasets}
 \end{table}\noindent
-As the Table shows, generalizability is not a given.
+As the table shows, generalizability is not a given.
 While some LOC and PER generalize fairly well between datasets, ORG, and especially MISC, see very poor performance when evaluated on another dataset than the model was fine-tuned on.
 One cause for this may be the different distributions of labels both between datasets and within the training, dev., and test sets of each dataset (see Table \ref{tab:danedist} and Figure \ref{fig:dadatadist} for details).
 Another is that the understanding of what the entity categories actually cover.
@@ -700,7 +698,7 @@ These issues cast doubt on the generalizability of NER.
 Cross entropy loss weighted by the number of training examples in each class was speculated to improve performance on the class-imbalanced NER task in which 99.3\pro\ of spans are not entities.
 In the hyperparameter search, all combinations of learning hyperparameters were also tried with this weighting of loss defined in formula \eqref{eq:w-crossentropyloss}.
 From the results at Table~\ref{tab:hyperres}, no general improvement could be seen when weighting and the best combinations were slightly worse when using this approach.
-However, two experiments with suboptimal hyperparameters of high learning rate, high dropout and low weight decay resulted in the model degenerating to predicting the positive entity classes much too often as seen from Table~\ref{tab:clsgood}.
+However, two experiments with suboptimal hyperparameters of high learning rate, high dropout, and low weight decay resulted in the model degenerating to predicting the positive entity classes much too often as seen from Table~\ref{tab:clsgood}.
 Interestingly, this problem was mitigated when using class-weighted loss, an unintuitive result in our estimation as we expected this weighting to motivate more positive predictions.
 
 \begin{table}[H]
@@ -714,7 +712,7 @@ Interestingly, this problem was mitigated when using class-weighted loss, an uni
     \end{tabular}
     \caption{
         The only hyperparameter search experiments in which class-weighted loss clearly improved performance.
-        The unweighted experiments suffer from very high recall and low precision, corresponding to many false positives
+        The unweighted experiments suffer from very high recall and low precision, corresponding to many false positives.
     }
     \label{tab:clsgood}
 \end{table}\noindent
@@ -740,11 +738,10 @@ Two fine-tuning experiments are performed by altering this entity feature approa
         Best results are marked in bold.
     }
     \label{tab:concat}
-\end{table}
-
+\end{table}\noindent
 From the results shown at Table~\ref{tab:concat}, it is learned that the model is able to perform the NER task with high performance using any of the three feature combinations.
-This is explainable by both entities and words interacting with eachothers representations in the transformer and thus affecting the final representations given to the classifier no matter how these are chosen.
-The combination of both representation types seems to outperform the others though this might be due to the high RNG variance discussed in Section~\ref{sec:luke-stability} .
+This is explainable by both entities and words interacting with each others representations in the transformer and thus affecting the final representations given to the classifier no matter how these are chosen.
+The combination of both representation types seems to outperform the others though this might be due to the high RNG variance discussed in Section~\ref{sec:luke-stability}.
 
 The experiment where only the entity tokens are used is arguably a simple and more elegant NER approach as the selection of the first and last subword tokens to describe a span seems arbitrary.
 These results make such an approach seem to be viable.
@@ -756,11 +753,6 @@ To get a better understanding of the model, this section includes attempts to in
 
 \subsection{Masked Language Predictions}
 \label{subsec:mlmpreds}
-\begin{enumerate}
-    \item Måske ryk noget af det følgende ævl op i teori
-    \item I pap udskære
-\end{enumerate}
-
 To demonstrate DaLUKE's ability to consider context, an example, and some variations on it, are constructed.
 The example is given below with text sequence first, followed by entity annotations.
 \begin{itemize}
@@ -799,12 +791,13 @@ For simplicity, no entities are included.
 \subsection{DaLUKE Representations: The NER Geometry}
 DaLUKE produces contextualized representations of both words and entities and these were, for the NER task, successfully adapted to show a level of language understanding.
 These abstract representations which, ideally, condense language understanding into 768 reals are here subjected to some examination.
-The entity span representations, the concatenation of contextual word and entity representations $\mathbf v_i \in \RR^{2304}$, are analyzed by conducting pretrained DaLUKE inference on every possible span in the DaNE training data, and saving each result, thus producing a sequence of representations $\mathbf v_{1, \ldots, 975,312}$.
-Dimensionality reduction for visualization on the representations was performed using principal component analysis, the $t$-SNE ($t$-distributed stochastic neighbour embedding) algorithm \cite{maaten2008tsne} and the UMAP (uniform manifold approximation and projection for dimensionality reduction) algorithm \cite{mcinnes2020umap}.
+The entity span representations, the concatenation of contextual word and entity representations $\mathbf v_i \in \RR^{2304}$, are analyzed by conducting pretrained DaLUKE inference on every possible span in the DaNE training data, and saving each result, thus producing a sequence of representations $\mathbf v_{1, \ldots, 975312}$.
+The pretrained, but not fine-tuned model was used.
+Dimensionality reduction for visualization on the representations was performed using principal component analysis (PCA), the $t$-SNE ($t$-distributed stochastic neighbour embedding) algorithm \cite{maaten2008tsne} and the UMAP (uniform manifold approximation and projection for dimensionality reduction) algorithm \cite{mcinnes2020umap}.
 
-Implementation wise, Sci-Kit Learn was used for $t$-SNE \cite{pedregosa2011scikit} and UMAP Learn was used for UMAP \cite{mcinnes2018umap-software} with hyperparameters shown at Table~\ref{tab:dimreducer-hyper}.
+Implementation wise, Sci-Kit Learn was used for $t$-SNE \cite{pedregosa2011scikit} and UMAP Learn was used for UMAP \cite{mcinnes2018umap-software} with hyperparameters shown on Table~\ref{tab:dimreducer-hyper}.
 The set of 975,312 entity spans in the DaNE training set was randomly subsampled to 100K examples for these nonlinear dimensionality reduction algorithms due to compute limitations.
-Even with this limit and with hyperparameters chosen to favour global structure, $t$-SNE and UMAP results were difficult to intepret, see Appendix~\ref{sec:dimredu}, motivating visualizing the dataset where only the 4003 entity spans that corresponded to true entity annotations were included.
+Even with this limit and with hyperparameters chosen to favour global structure, $t$-SNE and UMAP results were difficult to intepret, see Appendix~\ref{sec:dimredu}, motivating visualizing the dataset where only the 4,003 entity spans that corresponded to true entity annotations were included.
 
 \begin{table}[H]
     \centering
@@ -839,7 +832,7 @@ For the reductions in the positive label-only dataset, even more meaningful stru
     \centering
         \includegraphics[width=0.7\linewidth]{pos-geo/pca_matrix}
     \caption{
-        The first four components visualized against each other from PCA performed on only the 4003 entity spans that are annotated to a NE class in the DaNE training data.
+        The first four components visualized against each other from PCA performed on only the 4,003 entity spans that are annotated to a NE class in the DaNE training data.
     }
     \label{fig:pos-pca}
 \end{figure}\noindent
@@ -905,7 +898,7 @@ The following observations were made when looking through the predictions.
         For $t$-SNE on the positive-only dataset, no such clear dependencies on coordinate numeric values were observed, explainable by $t$-SNE not returning linear projections, but an approximate recreation of data point distances.
         Two examples very close in $t$-SNE distances are shown in Table~\ref{tab:dimexamples}; these are also semantically very similar in entity type and role.
     \item
-        For UMAP fitted to the examples with positive labels, the clear cluster placed around $\begin{bmatrix} -2.5\\ 7\end{bmatrix}$ is examined.
+        For UMAP fitted to the examples with positive labels, the clear cluster placed around $\left( -2.5, 7\right)$ is examined.
         Here, every entity is revealed to a derivative of the word \emph{Denmark}.
         Some of these are MISC (adjectivizations, demonyms) and some LOC (\emph{Denmark} itself) as seen at Figure~\ref{fig:pos-tsne}.
 \end{itemize}
@@ -955,10 +948,10 @@ For this reason, a confusion matrix (Table \ref{tab:pred-true-confmat}) is const
     \caption{Predicted labels versus the true labels on the DaNE test set.}
     \label{tab:pred-true-confmat}
 \end{table}\noindent
-From the Table, there are two major sources for errors:
+From the table, there are two major sources for errors:
 \begin{enumerate}
     \item LOC is often erroneously predicted on ORG entities -- but not the other way around.
-    \item O (outside entity classes) is often predicted on true labels, especially on ORG and MISC. This results in the relatively low recall of $81.18\pro$ holding back performance compared to the precision of $84.67\pro$.
+    \item O is often predicted on true labels, especially on ORG and MISC. This results in the relatively low recall of $81.18\pro$ holding back performance compared to the precision of $84.67\pro$.
 \end{enumerate}
 Point 1 may have a relatively simple explanation: 
 That many organizations are named after a geographic location while locations more rarely adopts the name of an organization.
@@ -1025,13 +1018,13 @@ Surprisingly, the most similar models are the DaCy models, using the multilingua
     \end{tabular}
     \label{tab:covar}
     \caption{
-        Covariances between DaLUKE predictions and those of other Danish NER algorithms on the DaLUKE testing dataset.
+        Co-prediction frequencies between DaLUKE and other Danish NER algorithms on the DaLUKE testing dataset.
         This calculation is performed on the word level.
     }
 \end{table}\noindent
 Compared to the da-BERT predictions, the biggest difference is the higher amount of positive predictions as seen on Table~\ref{tab:dabertcompare}.
 DaNLP da-BERT was not fine-tuned for MISC, so this difference is natural, but DaLUKE also discovers more organizations.
-DaLUKE also predicts location more rarely, a class on which DaLUKE outperforms da-BERT (87.0\pro vs. 83.9\pro).
+DaLUKE also predicts location more rarely and clearly outperforms da-BERT on these (F1: 87.0\pro\ vs. 83.9\pro).
 
 % 2021-06-19 16:31:04.881    INFO        Confusion matrix with DaLUKE results ↓ and results from BERT-DaNE →
 % 2021-06-19 16:58:48.906    INFO             | LOC | PER | ORG | MISC | O
@@ -1175,7 +1168,7 @@ Some further changes which have the potential to improve performance are propose
 As in any deep learning project, we end up crying out for more data.
 Multiple of the pretraining experiments presented in Section~\ref{sec:pretrainpls} show signs of the model overfitting to the limited Danish Wikipedia.
 An immediate idea is to include the Norweigan Wikipedia as the language (in \emph{bokmål}) is syntactically, and vocabulary wise similar to Danish.
-There are some technical issues with the entities, as the same entity might be spelled differently in both languages, but we speculate that an oversized entity vocabulary would not be a problem.
+There are some technical issues such as the choice of tokenizer, but also the entity modeling, as the same entity might be spelled differently in both languages.
 While the Norwegian Wikipedia has 156M words \footnotemark compared to the 81M of the Danish Wikipedia, this might be too little to dramatically change the results.
 \footnotetext{Norwegian Wikipedia statistics: \url{https://no.wikipedia.org/wiki/Spesial:Statistikk}}
 
@@ -1197,7 +1190,7 @@ The large version will, however, require more computational resources or more pa
 Further improvement might be found if the LUKE approach is not followed directly.
 The LUKE knowledge-enhancement is very subtle and requires any hierarchical and relational modeling of knowledge to be learned implicitly from the flat world of entities stored in the vocabulary.
 A unification of models that use subtle knowledge-enhancement in pretraining and those that use explicit knowledge bases might be beneficial for Danish.
-An approach to this, that maintains a flexible, general model, might be introducing additional tokens coding for knowledge as input for the entity embeddings.
+An approach to this that maintains a flexible, general model, might be introducing additional tokens coding for knowledge as input for the entity embeddings.
 We imagine a hierarchical token that uses the article classification of Wikipedia (see Figure~\ref{fig:wikipedia-cat}) to code the type of token to beneficial in pretraining.
 \begin{figure}[H]
     \centering
