@@ -1181,6 +1181,15 @@ Here, Danish tools for explicit semantic analysis \cite{hansen2017esa} could hel
 
 The primary, open dataset for which we see promise in automated annotation is the recently published Danish Gigaword corpus which includes documents that are more diverse in domain and dialect than the Danish Wikipedia \cite{derc2021giga}.
 
+Access to closed datasets such as news articles and internal documents could also be a way to increase the available data.
+However, such documents are closed for a reason.
+In most cases, suppliers of closed documents would have an interest in not risking that these documents could be backwards engineered from the model.
+For this, methods such as differential privacy \cite{GONG2020131} could play a role.
+
+Finally, investigating biases in the pretraining dataset could provide insight into why performance is better on some categories than others (see Table \ref{tab:DaNE}).
+Obviously, Wikipedia does not categorize articles by the four CoNLL-2003 categories, but many articles are still categorized into larger groups that could light a path to putting all or most articles into the CoNLL boxes.
+Such an investigation would be especially important if automatically annotated datasets are incorporated.
+
 \paragraph{Modeling}
 Motivated by the impressive success of DaCy, the most direct model improvement is to use the multilingual RoBERTa \cite{conneau2020unsupervised} instead of the Danish BERT \cite{botxo2019dabert}.
 The Danish BERT has previously been criticized for being under trained \cite{derc2021giga, nielsen2020textsum} and for not being case-sensitive.
@@ -1194,10 +1203,21 @@ An approach to this that maintains a flexible, general model, might be introduci
 We imagine a hierarchical token that uses the article classification of Wikipedia (see Figure~\ref{fig:wikipedia-cat}) to code the type of token to beneficial in pretraining.
 \begin{figure}[H]
     \centering
-        \includegraphics[width=\linewidth]{wikipedia-cat}
+    \includegraphics[width=\linewidth]{wikipedia-cat}
     \caption{An example of categories included in Wikipedia articles. It is imagined that these can be mined as additional, helpful annotation of entity types for the pretraining.}
     \label{fig:wikipedia-cat}
 \end{figure}\noindent
 
+\paragraph{Ethics}
+As with all applications of AI, there are significant ethical concerns.
+Language models capable of generating text that looks human written can be used for fake news, an ever increasing problem.
+For instance, OpenAI's GPT-2 \cite{Radford2019gpt2} proved so good at generating fake news articles that the company decided not to release it initially and only incrementally later, citing fears of misuse\footnote{\url{https://www.technologyreview.com/2019/08/29/133218/openai-released-its-fake-news-ai-gpt-2/}. Visited June 26, 20201.}.
+Especially models that incorporate knowledge in one way or another could be given false facts to produce articles with specific agendas.
+
+Another concern is that of hate speech and offensive language.
+In order to acquire the amounts of data necessary to train effective language models, many have turned to uncurated web scrapes.
+As the internet has no shortage of hate speech, the models will naturally learn these parts of language.
+Having understanding of foul and offensive language is definitely useful for some tasks such as hate speech detection, as done for Danish by Sigurbergsson and Derczynski \cite{sigurbergsson-derczynski-2020-offensive}, but it can also have more harmful consequences, generating offensive language, whether intentional or not.
+Such behaviour has for instance been observed with GPT-3 \cite{brown2020language}, the largest language model in existence as of writing\footnote{\url{https://www.technologyreview.com/2020/10/23/1011116/chatbot-gpt3-openai-facebook-google-safety-fix-racist-sexist-language-ai/}. Visited June 26, 2021.}.
 
 \end{document}

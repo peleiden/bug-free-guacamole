@@ -894,10 +894,40 @@ note = "8th Language and Technology Conference , LTC 2017 ; Conference date: 17-
 }
 
 @misc{hendrycks2020gelu,
-      title={Gaussian Error Linear Units (GELUs)}, 
+      title={Gaussian Error Linear Units (GELUs)},
       author={Dan Hendrycks and Kevin Gimpel},
       year={2020},
       eprint={1606.08415},
       archivePrefix={arXiv},
-      primaryClass={cs.LG}
+      primaryClass={cs.LG},
+}
+
+@article{GONG2020131,
+    title = {Preserving differential privacy in deep neural networks with relevance-based adaptive noise imposition},
+    journal = {Neural Networks},
+    volume = {125},
+    pages = {131-141},
+    year = {2020},
+    issn = {0893-6080},
+    doi = {https://doi.org/10.1016/j.neunet.2020.02.001},
+    url = {https://www.sciencedirect.com/science/article/pii/S0893608020300460},
+    author = {Maoguo Gong and Ke Pan and Yu Xie and A.K. Qin and Zedong Tang},
+    keywords = {Deep neural networks, Differential privacy, Relevance analysis},
+    abstract = {In recent years, deep learning achieves remarkable results in the field of artificial intelligence. However, the training process of deep neural networks may cause the leakage of individual privacy. Given the model and some background information of the target individual, the adversary can maliciously infer the sensitive feature of the target individual. Therefore, it is imperative to preserve the sensitive information in the training data. Differential privacy is a state-of-the-art paradigm for providing the privacy guarantee of datasets, which protects the private and sensitive information from the attack of adversaries significantly. However, the existing privacy-preserving models based on differential privacy are less than satisfactory since traditional approaches always inject the same amount of noise into parameters to preserve the sensitive information, which may impact the trade-off between the model utility and the privacy guarantee of training data. In this paper, we present a general differentially private deep neural networks learning framework based on relevance analysis, which aims to bridge the gap between private and non-private models while providing an effective privacy guarantee of sensitive information. The proposed model perturbs gradients according to the relevance between neurons in different layers and the model output. Specifically, during the process of backward propagation, more noise is added to gradients of neurons that have less relevance to the model output, and vice-versa. Experiments on five real datasets demonstrate that our mechanism not only bridges the gap between private and non-private models, but also prevents the disclosure of sensitive information effectively.}
+}
+
+@inproceedings{sigurbergsson-derczynski-2020-offensive,
+    title = "Offensive Language and Hate Speech Detection for {D}anish",
+    author = "Sigurbergsson, Gudbjartur Ingi  and
+      Derczynski, Leon",
+    booktitle = "Proceedings of the 12th Language Resources and Evaluation Conference",
+    month = may,
+    year = "2020",
+    address = "Marseille, France",
+    publisher = "European Language Resources Association",
+    url = "https://www.aclweb.org/anthology/2020.lrec-1.430",
+    pages = "3498--3508",
+    abstract = "The presence of offensive language on social media platforms and the implications this poses is becoming a major concern in modern society. Given the enormous amount of content created every day, automatic methods are required to detect and deal with this type of content. Until now, most of the research has focused on solving the problem for the English language, while the problem is multilingual. We construct a Danish dataset DKhate containing user-generated comments from various social media platforms, and to our knowledge, the first of its kind, annotated for various types and target of offensive language. We develop four automatic classification systems, each designed to work for both the English and the Danish language. In the detection of offensive language in English, the best performing system achieves a macro averaged F1-score of 0.74, and the best performing system for Danish achieves a macro averaged F1-score of 0.70. In the detection of whether or not an offensive post is targeted, the best performing system for English achieves a macro averaged F1-score of 0.62, while the best performing system for Danish achieves a macro averaged F1-score of 0.73. Finally, in the detection of the target type in a targeted offensive post, the best performing system for English achieves a macro averaged F1-score of 0.56, and the best performing system for Danish achieves a macro averaged F1-score of 0.63. Our work for both the English and the Danish language captures the type and targets of offensive language, and present automatic methods for detecting different kinds of offensive language such as hate speech and cyberbullying.",
+    language = "English",
+    ISBN = "979-10-95546-34-4",
 }

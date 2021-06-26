@@ -131,9 +131,7 @@ The loss shown on Figure \ref{fig:loss} mirrors the accuracy with masked subword
 DaLUKE fails to achieve SOTA on DaNE, being beaten only by DaCy large.
 However, it does beat da-BERT on which it is based, indicating that the extra pretraining and entity understanding indeed has added some value to the model.
 Interestingly, DaLUKE still manages to pull off a first place in the LOC category and ties DaCy large in PER, while falling behind in both ORG and MISC.
-One possible reason may be the pretraining dataset.
-Excluding the transferred da-BERT weights, it is pretrained solely on Wikipedia unlike DaCy.
-While we have not investigated it further, it is possible that there are more articles on locations and people than there are on organizations and miscellaneous entities.
+One possible explanation for this could be that the pretraining dataset is biased towards locations and people, but this is not investigated further.
 
 Ultimately, DaLUKE still performs at a high level and shows its promise for entity modeling.
 
