@@ -138,11 +138,12 @@ The reproduction was performed using Python version 3.7.10 and the dependency ve
 \label{sub:dalpre}
 Our pretraining approach followed the one used by Yamada et al, as described in Section \ref{subsec:lukepre}, with four key differences:
 \begin{enumerate}
-    \item The entity-augmented Danish Wikipedia described in section \ref{subsec:entaug} was used.
     \item
         Entity-aware self-attention was used in the pretraining, as this was expected to positively impact the modeling of knowledge.
         This speculation is tested in Section~\ref{subsec:selfatt}.
-    \item 
+    \item
+        The entity-augmented Danish Wikipedia described in section \ref{subsec:entaug} was used.
+    \item
         The model followed the architecture of BERT base instead of BERT large, and weights were initialized from BotXO's da-BERT \cite{botxo2019dabert} as no Danish RoBERTa or BERT large is available.
         An ablation study on this transfer learning from da-BERT is introduced in Section~\ref{subsec:dabertexp}.
         Because of this, token embeddings and contextualized representations both reside in a 768 dimensional latent space rather than the 1024 dimensions used by LUKE.

@@ -286,9 +286,9 @@ Yamada et. al perform the pretraining of LUKE by extending the MLM task of RoBER
 Where RoBERTa is trained to predict randomly masked words, LUKE is trained to predict both randomly masked words and entities, such as
 \begin{itemize}
     \item ''Franklin Roosevelt did not [MASK] to see the [MASK] of WWII.''
-        \subitem Truth: ''live'', ''end''.
+    \item[] Truth: ''live'', ''end''.
     \item $\{\text{\emph{[MASK]} at words \#1-2}, \text{\emph{World War II} at word \#11}\}$
-        \subitem Truth: ''Franklin D. Roosevelt''.
+    \item[] Truth: ''Franklin D. Roosevelt''.
 \end{itemize}
 Following RoBERTa \cite{liu2019roberta}, subword tokens making up 15\pro\ of full words in each sequence are randomly replaced with the [MASK] token.
 Of these, 10\pro\ are unmasked again, and another 10\pro\ are replaced by a random token from the vocabulary instead of [MASK].
