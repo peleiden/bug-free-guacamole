@@ -10,7 +10,7 @@
 \subsection{Evaluation of NER}
 \label{subsec:nereval}
 As explained in Section \ref{subsec:annoschemes}, all datasets used in the project supply an annotation label in IOB format \cite{ramshaw1995IOB} for each word in each sequence.
-Comparing two such sequences, there are a number of potential error patterns as both the span and the type of the entity is to be guessed, see Table~\ref{tab:eval}.
+Comparing a sequence of true annotations and predictions, there are a number of potential error patterns as both the span and the type of the entity is to be guessed, see Table~\ref{tab:eval}.
 \begin{table}[H]
     \footnotesize
     \centering
@@ -43,7 +43,7 @@ Using the terminology of Table~\ref{tab:eval}, these measures are, assuming the 
     \label{eq:precrec}
     \text{Precision} = \frac{\text{\# case I}}{\text{\# case I} + \text{\# case II}},\quad \text{Recall} = \frac{\text{\# case I}}{\text{\# case I} + \text{\# case III}}.
 \end{equation}
-From these class level metrics, global values of precision and recall were reported using the \emph{micro average}, that is, by aggregating the number of prediction outcomes (I, II, III) across classes before using the formulae \eqref{eq:precrec}.
+From these class level metrics, global values of precision and recall were reported using the \emph{micro average}, that is, by aggregating the number of prediction outcomes (I, II, III) across classes before using formulae \eqref{eq:precrec}.
 In the report, every reference to an average of metrics over NER classes refers to this micro average.
 Thus, using this approach, the error types IV, V and VI are discriminated\footnotemark.
 \footnotetext{
@@ -57,12 +57,12 @@ Following previous literature, the main score on which the system performance wa
     \label{eq:f1}
     \text{F1} = \dfrac{2}{\text{Precision}^{-1} + \text{Recall}^{-1}}
 \end{equation}
-The reported score were obtained using a Python sequence evaluation library \cite{seqeval}, also used by the original LUKE paper and DaNLP, with whom comparisons are made.
+The reported scores were obtained using a Python sequence evaluation library \cite{seqeval}, also used by the original LUKE paper and DaNLP, with whom comparisons are made.
 
 Two of the three used datasets contains MISC annotation,s and existing literature disagrees on whether to consider this class in evaluations with DaNLP arguing
 ''We are only reporting the scores on the LOC, ORG and PER entities as the MISC category has limited practical use'' \cite[Sec. ''Benchmarks'' in NER page]{danlp2021}.
 We trained all models with the MISC annotation and also include it in our evaluations.
-When comparing with models trained without MISC, a non-MISC average F1 score is also reported (by treating all MISC predictions as null clas pridctions).
+When comparing with models trained without MISC, a non-MISC average F1 score is also reported (by treating all MISC predictions as null class predictions).
 \subsection{Fine-tuning English LUKE}
 Yamada et al. benchmark LUKE on named entity recognition using the CoNLL-2003 dataset \cite{yamada2020luke}.
 
@@ -86,7 +86,6 @@ The fine-tuning procedure was repeated five times for each of the two released L
         Pre-trained model entity vocabulary & $500\ctp3$ & $500\ctp3$\\
         Learning rate               & $10^{-5}$ & $5\ctp{-5}$\\
         Effective batch size        & 16 & 16\\
-        Gradient accumulation steps & 2 & 2\\
         Numeric precision           & \multicolumn{2}{l}{Mixed FP16/FP32 (Nvidia APEX)}\\
         Training code               & \multicolumn{2}{l}{PyTorch-based \code{luke}-repository\protect\footnotemark}\\
         Software version            & \multicolumn{2}{l}{Python 3.6, PyTorch 1.2}
@@ -117,7 +116,7 @@ Most of the models were found through DaNLP \cite{danlp2021} and a number of the
     \item \textbf{DaNLP Flair}: The Flair framework \cite{akbik2019flair} also adapted to Danish by DaNLP and fine-tuned on DaNE.
     \item \textbf{Polyglot}: A NLP framework supporting a wide range of tasks in many languages including NER in 40 different languages.
         The NER model is fine-tuned using automatic, language-agnostic annotations generated from Wikipedia and Freebase link structures \cite{rfou2015polyglot}.
-    \item \textbf{daner (DKIE Stanford CRF)}: An application of the Stanford CoreNLP Conditional Random Field (CRF) NER classifier \cite{manning2014corenlp} released Leon Derczynski asa part of the DKIE project \cite{derc2014dkie}.
+    \item \textbf{daner (DKIE Stanford CRF)}: An application of the Stanford CoreNLP Conditional Random Field (CRF) NER classifier \cite{manning2014corenlp} released by Leon Derczynski asa part of the DKIE project \cite{derc2014dkie}.
     The model was trained on NER annotations produced at ITU on the Danish Dependency Treebank (DDT) corpus \cite{kromann2003ddt}.
     The released Java-based NER tool is called \code{daner}\footnotemark.
 \footnotetext{
@@ -127,7 +126,7 @@ Most of the models were found through DaNLP \cite{danlp2021} and a number of the
 \setlist{noitemsep}
 \noindent
 The weights of all these finished NER models were downloaded and evaluated in accordance with Section \ref{subsec:nereval}.
-The code for performing inference for all the models on the three datasets and measuring the F1 scores can be found in module \code{reproduction.danish\_ner} in the DaLUKE repository\footnotemark.
+The code for performing inference for all the models on the three datasets and measuring the F1 scores can be found in the module \code{reproduction.danish\_ner} in the DaLUKE repository\footnotemark.
 The reproduction was performed using Python version 3.7.10 and the dependency versions defined in the requirements of DaNLP and NERDA.
 \footnotetext{
     The reproduction code is available here:
@@ -144,9 +143,11 @@ The reproduction was performed using Python version 3.7.10 and the dependency ve
 Our pretraining approach followed the one used by Yamada et al, as described in Section \ref{subsec:lukepre}, with four key differences:
 \begin{enumerate}
     \item The entity-augmented Danish Wikipedia described in section \ref{subsec:entaug} was used.
-    \item Entity-aware self-attention was used in the pretraining, as this was expected to positively impact the modeling of knowledge. This speculation is tested in Section~\ref{subsec:selfatt}.
+    \item
+        Entity-aware self-attention was used in the pretraining, as this was expected to positively impact the modeling of knowledge.
+        This speculation is tested in Section~\ref{subsec:selfatt}.
     \item 
-        The model follows the architecture of BERT base instead of BERT large, and weights were initialized from BotXO's da-BERT \cite{botxo2019dabert} as no Danish RoBERTa or BERT large is available.
+        The model followed the architecture of BERT base instead of BERT large, and weights were initialized from BotXO's da-BERT \cite{botxo2019dabert} as no Danish RoBERTa or BERT large is available.
         An ablation study on this transfer learning from da-BERT is introduced in Section~\ref{subsec:dabertexp}.
         Because of this, token embedding and contextualized representations reside in a 768 dimensional latent space rather than the 1024 dimensions used by LUKE \cite[Sec. 3.4]{yamada2020luke}.
     \item
@@ -154,7 +155,7 @@ Our pretraining approach followed the one used by Yamada et al, as described in 
         We do not perform such limiting as the number of mentioned Wikipedia articles is much smaller in the Danish corpus.
         An experiment of limiting the vocabulary is explained in Section~\ref{subsec:entvocexp}.
 \end{enumerate}
-Due to the memory intensive nature of the transformer architecture, we followed Yamada et al. and used gradient accumulation over multiple subbatches within each batch, that is each parameter update consists of multiple forward passes of the model.
+Due to the memory intensive nature of the transformer architecture, we followed Yamada et al. and used gradient accumulation over multiple subbatches within each batch, that is, each parameter update consists of multiple forward passes of the model.
 
 As with LUKE, the cross entropy loss is calculated using equation \ref{eq:crossentropyloss} for each classification task, with the only difference being that the final loss is the average rather than the sum of the individual task losses.
 This effectively just scales the loss and has no effect on the learning if the learning rate is adjusted accordingly.
@@ -194,7 +195,7 @@ The learning rate development is shown on Figure \ref{fig:lr}.
 
 \paragraph{Accuracy measures}
 In order to measure the performance of the pretraining model, the accuracy of word and entity predictions are calculated throughout the training.
-Due to the size of the classification problem, especially regarding entities, top $ k $ accuracies are calculated for each - that is, if the true token was among the $ k $ tokens given the highest probability by the model.
+Due to the size of the classification problem, especially regarding entities, top $ k $ accuracies are calculated - that is, if the true token was among the $ k $ tokens given the highest probability by the model.
 Top 1, 3, 5, and 10 accuracies are calculated for both the masked word and masked entity task using every example that the model trains on, while top 25 and 50 are calculated using one twentieth of examples for computational efficiency.
 
 \subsection{Fine-tuning DaLUKE for Named Entity Recognition}%
@@ -202,8 +203,8 @@ Top 1, 3, 5, and 10 accuracies are calculated for both the masked word and maske
 The fine-tuning of DaLUKE largely followed that of LUKE, described in section \ref{sec:LUKE}.
 The main DaLUKE NER model was produced by fine-tuning on DaNE.
 
-After each epoch, the model was evaluated on the development (validation) split of the dataset.
-When a better score than the hitherto best checkpoint was found, the checkpoint is overwritten.
+After each epoch, the model was evaluated on the development split of the dataset.
+When a better score than the hitherto best checkpoint was found, the checkpoint was overwritten.
 The best checkpoint of the model was used for evaluation on the test set.
 
 \paragraph{Learning rate}
@@ -237,7 +238,8 @@ The search is performed by repeating the training procedure with all combination
     \item Dropout (final, linear layer) $\in\{0.025, 0.1\}$
     \item Whether or not to use class-weighted loss $\in\{\text{Yes}, \text{No}\}$
 \end{enumerate}
-For each combination, the resulting model was evaluated on the development set, shown in Table~\ref{tab:hyperres} and the hyperparameters with highest average F1 score was chosen and the final model using which the final model was produced by fine-tuning again to avoid selection bias.
+For each combination, the resulting model was evaluated on the development set, shown in Table~\ref{tab:hyperres}, and the hyperparameters with highest average F1 score was chosen.
+The final model was produced by fine-tuning again to limit selection bias.
 The chosen hyperparameters are reported on Table~\ref{tab:main-hyper} together with the used hyperparameters that were not tested.
 \begin{table}[H]
     \centering
@@ -266,23 +268,22 @@ All code and documentation is available at \url{https://github.com/peleiden/dalu
 The pretrained model is available with MLM layers at \url{https://nx5746.your-storageshare.de/s/qDM2TE6m9CKmPWd}.
 The model fine-tuned on DaNE is available at \url{https://nx5746.your-storageshare.de/s/wxbY3TrwfAoYxb9}.
 Our software package is \code{pip} installable and runs on Python 3.8 and above.
-Simply run \code{pip install daluke} to install it on your computer with the Python package installer \code{pip} available.
-It allows for using DaLUKE for NER on text files directly from the command line.
+Simply run \code{pip install daluke} to install it on your computer.
+It allows for using DaLUKE both for MLM and NER on text files or inputted strings directly from the command line.
 For instructions, see the read-me fill on the repository.
 
 \paragraph{Implementation}
 Yamada et al. have made their code\footnote{\url{https://github.com/studio-ousia/luke}. Visited June 11, 2021.} freely available under the Apache License 2.0 \cite{apachelicense}.
-We highly appreciate this, and our original plan was to use their code and then as necessary fit it to our needs.
+We highly appreciate this, and our original plan was to base our implementation on this.
 However, we quickly ran into a number of issues with this approach:
-Getting all dependencies installed with the correct versions proved to be a very challenging task.
-To solve this, we forked the repository and updated both Python and several of the dependencies to newer versions, but this in itself required major code rewrites.
+Getting all dependencies installed with the correct versions on our computing cluster proved to be a very challenging task.
+To solve this, we forked the repository and updated both Python and several of the dependencies to newer versions, but this in itself required significant code rewrites.
 When that worked, we started pretraining, which presented more mysterious issues:
 Training on a single GPU worked, but two GPU's slowed training by a factor of three, and three or more GPU's simply did not work.
-Due to limited GPU availability, cryptic error messages, and an almost complete lack of documentation, debugging once again became very challenging.
+Due to limited GPU availability, cryptic error messages, and an almost complete lack of documentation, debugging once again became difficult.
 
 These reasons compelled us to reimplement the model and training from scratch.
-This would also help us understand LUKE better due to being forced to work with all the details of the model and training tasks.
-Finally, it would make it much easier to fit the code to our needs, as we would have a much better understanding of the code base.
+This allowed us to fit the software to our needs and gave better insight into the LUKE method.
 The forked LUKE repository, available at \url{https://github.com/peleiden/luke}, is used for parts of the dataset preparation, but everything else has been reimplemented.
 Our code is inspired from the original LUKE code, but we have made efforts to make it more approachable by making the code more readable and better structured and especially by increasing the amount of documentation.
 
@@ -297,7 +298,7 @@ We have opened an issue on the LUKE repository that can be followed at \url{http
 \paragraph{Floating Point Precision}
 The model was trained using PyTorch Automatic Mixed Precision (AMP) \cite{pytorchamp}, which -- ideally, at least -- should decrease training time with little to no penalty to accuracy \cite{huang2020amp}.
 This is partially due to half-precision calculations being simpler, and partially due to the lower memory requirements, allowing larger subbatches and thus better GPU utilization.
-However, as Figure \ref{fig:runtime} shows, AMP works as intended when training on NVIDIA V100's, but has the opposite effect when training on NVIDIA A100's.
+However, as Figure \ref{fig:runtime} shows, AMP works as intended when training on NVIDIA Tesla V100's, but had the opposite effect when training on NVIDIA A100's.
 
 AMP works by automatically casting parts of the model to half precision rather than the usual single precision.
 Some layers are more sensitive than others to precision.
@@ -329,7 +330,7 @@ The results are shown on Figure \ref{fig:runtime}.
         The poor scaling is partially explained by Amdahl's law \cite{klein2011amdahl}: The sequential parts of the code do not get faster along with the GPU and so take up a relatively larger amount of the runtime.
         The A100's also do not have an NVLink bridge unlike the V100's and must therefore communicate over PCIe, which is slower.
         The poor AMP performance, however, is harder to explain.
-        According to our cluster specialist, it is caused by different \code{gemm} implementations, but we have not investigated it any further.
+        According to Hans Henrik Sørensen, DTU Computing Center, it is caused by different \code{gemm} implementations, but we have not investigated it any further.
         Python 3.8.4 using PyTorch 1.8.1 compiled with CUDA 11.1 was used.
     }
     \label{fig:runtime}
