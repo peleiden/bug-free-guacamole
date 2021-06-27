@@ -78,12 +78,28 @@ The word embeddings are structured in a single matrix with token embeddings in t
 This allows every token to be considered simultaneously, independently, and equally, solving both the described issues.
 \cite{vaswani2017att}
 
+\begin{figure}[H]
+    \centering
+        \includegraphics[width=0.49\linewidth]{encoder}
+        \includegraphics[width=0.49\linewidth]{attention}
+    \label{fig:transformer}
+    \caption{
+        On the left, a simple visualization of an attention block, a single component computing representations, is shown.
+        The right image exemplifies attention between all words in as the BERT encoder computes it.
+        \protect\footnotemark
+    }
+\end{figure}\noindent
+\footnotetext{
+    The left image is produced by Jay Alammar in "The Illustrated Transformer", \url{jalammar.github.io/illustrated-transformer/}.
+    The right is a product of the Tensor2Tensor visualization tool produced by Llion Jones and used for BERT by Jesse Vig in ''Deconstructing BERT'', \url{https://towardsdatascience.com/deconstructing-bert-part-2-visualizing-the-inner-workings-of-attention-60a16d86b5c1}.
+    Both visited 27/6 2021.
+}
 Models based directly on the transformer have been trained on very large corpora to produce English language models such as BERT (\emph{Bidirectional Encoder Representations from Transformers}) \cite{devlin2019bert}, RoBERTa \cite{liu2019roberta} and GPT-3 \cite{brown2020language} that have achieved SOTA in several downstream language tasks.
 BERT is the first model to use the masking pretraining objective as it is employed by e.g. RoBERTa and LUKE.
 Early transformer based models such as OpenAI's GPT \cite{rashford2018gpt} use a unidirectional pretraining task, letting only tokens appearing to the left of the token to predict have any impact.
 BERT instead masks some tokens in the given sequence and allows all tokens to attend to all other tokens when predicting the masked ones -- this is what is known as a masked language model (MLM).
 BERT achieved SOTA on a large amount of downstream tasks such as the important question answering task and has been described as revolutionary for its impact on NLP \cite{raj2019bert}.
-Figure \ref{fig:transformer-bert} shows both the transformer architecture and the BERT pretraining and fine-tuning.
+Figure \ref{fig:transformer} visualizes the BERT concepts.
 
 \paragraph{Tokenization}
 The input for these language models must naturally be sequences of words.
