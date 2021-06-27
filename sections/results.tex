@@ -25,7 +25,7 @@
 	\label{tab:lukeF1s}
 \end{table}
 Yamada et al. report micro avg. F1 scores of 94.3\pro\ and 93.3\pro\ for LUKE large and base, respectively \cite{yamada2020luke}.
-In both cases, the reported scores are within two standard deviations on observed F1 scores, estimated on training repetition.
+In both cases, the reported scores are within two standard deviations on observed F1 scores, which were estimated on training repetition.
 This is expected and we conclude that the reproduction was successful.
 However, the variability of fine-tuning is also highlighted here and will be discussed in Section~\ref{sec:fine-tuning-exp}.
 % However, it also highlights the variability of the fine-tuning.
@@ -101,21 +101,22 @@ That the masked language modeling performance from BERT is quickly maximized is,
         \begin{center}
                 \begin{tabular}{l l | c c c c | c c c c}
                     \multirow{2}{*}{Model name} & \multirow{2}{*}{Trained on} & \multicolumn{4}{c|}{Micro Avg. [\pro]} & \multicolumn{4}{c}{Class F1 [\pro]}\\
-                                      &           & F1            & Prec.         & Rec.          & F1 {\tiny\textdiscount MISC} & LOC            & PER            & ORG            & MISC \\\hline
-                        DaLUKE        & DaNE      & 82.9          & 84.7          & 81.2          & 85.2                        & \textbf{87.0} & \textbf{94.2} & 73.2          & 74.6 \\\hline
-                        DaNLP da-BERT & DaNE      & --            & --            & --            & 84.0                        & 83.9          & 92.8          & 73.0          & -- \\
-                        NERDA m-BERT  & DaNE      & 79.2          & 82.1          & 76.5          & 81.7                        & 83.5          & 92.6          & 66.9          & 70.3 \\
-                        NERDA Ælæctra & DaNE      & 70.6          & 76.1          & 65.8          & 74.5                        & 77.3          & 86.9          & 56.2          & 56.4 \\
-                        DaCy medium   & DaNE      & 78.3          & 78.3          & 78.3          & 80.5                        & 84.0          & 90.4          & 66.2          & 70.1 \\
-                        DaCy large    & DaNE      & \textbf{84.9} & \textbf{86.2} & \textbf{83.7} & \textbf{86.9}               & 85.3          & \textbf{94.2} & \textbf{79.0} & \textbf{78.1} \\
-                        DaNLP spaCy   & DaNE      & 73.8          & 76.1          & 71.5          & 75.7                        & 76.0          & 87.8          & 59.6          & 66.1 \\
-                        DaNLP Flair   & DaNE      & --            & --            & --            & 81.8                        & 84.8          & 93.2          & 63.0          & -- \\
-                        Polyglot      & Wikipedia & --            & --            & --            & 64.2                        & 65.0          & 78.7          & 39.3          & -- \\
-                        daner         & ITU CDT   & --            & --            & --            & 56.5                        & 59.4          & 70.4          & 28.3          & --
+                    &         & F1                   & Prec.         & Rec.          & F1 {\tiny\textdiscount MISC} & LOC            & PER            & ORG            & MISC \\\hline
+    DaLUKE        & DaNE      & 82.9 $\pm 3$         & 84.7          & 81.2          & 85.2         $\pm 3$         & \textbf{87.0} & \textbf{94.2} & 73.2          & 74.6 \\\hline
+    DaNLP da-BERT & DaNE      & --                   & --            & --            & 84.0         $\pm 3$         & 83.9          & 92.8          & 73.0          & -- \\
+    NERDA m-BERT  & DaNE      & 79.2 $\pm 3$         & 82.1          & 76.5          & 81.7         $\pm 4$         & 83.5          & 92.6          & 66.9          & 70.3 \\
+    NERDA Ælæctra & DaNE      & 70.6 $\pm 4$         & 76.1          & 65.8          & 74.5         $\pm 4$         & 77.3          & 86.9          & 56.2          & 56.4 \\
+    DaCy medium   & DaNE      & 78.3 $\pm 3$         & 78.3          & 78.3          & 80.5         $\pm 4$         & 84.0          & 90.4          & 66.2          & 70.1 \\
+    DaCy large    & DaNE      & \textbf{84.9} $\pm 3$& \textbf{86.2} & \textbf{83.7} & \textbf{86.9}$\pm 3$         & 85.3          & \textbf{94.2} & \textbf{79.0} & \textbf{78.1} \\
+    DaNLP spaCy   & DaNE      & 73.8 $\pm 4$         & 76.1          & 71.5          & 75.7         $\pm 4$         & 76.0          & 87.8          & 59.6          & 66.1 \\
+    DaNLP Flair   & DaNE      & --                   & --            & --            & 81.8         $\pm 4$         & 84.8          & 93.2          & 63.0          & -- \\
+    Polyglot      & Wikipedia & --                   & --            & --            & 64.2         $\pm 4$         & 65.0          & 78.7          & 39.3          & -- \\
+    daner         & ITU CDT   & --                   & --            & --            & 56.5         $\pm 5$         & 59.4          & 70.4          & 28.3          & --
                 \end{tabular}
         \end{center}
         \caption{
-            F1\pro-scores of Danish NER models of the DaNE testing dataset consisting of 565 sentences.
+            Results of Danish NER models of the DaNE \cite{hvingelby2020dane} testing dataset consisting of 565 sentences.
+            $\pm$ on the average F1's is notation for the approximate $95\pro$ confidence interval calculated using \eqref{eq:ci}.
         Missing numbers is due to a number of models not being trained on the MISC annotations.
         We see the transformer based models dominate the scores, spearheaded by the large implementation of DaCy.
         }
@@ -137,16 +138,18 @@ That the masked language modeling performance from BERT is quickly maximized is,
     }
     \label{fig:main-fine-tune}
 \end{figure}\noindent
-We conclude, when comparing with the June 2021 DaNLP NER table\footnotemark \cite{danlp2021}, the results of all NER algorithms previously reported on DaNE are successfully reproduced with most being exactly correct and a few varying within a percentage point.
+We conclude, when comparing with the June 2021 DaNLP NER table\footnotemark \cite{danlp2021}, that the results of all NER results previously reported on DaNE are successfully reproduced with most  scores corresponding exactly and a few varying within a percentage point.
 \footnotetext{
     Table is available at \url{github.com/alexandrainst/danlp/blob/master/docs/docs/tasks/ner.md} and was compared at the 27/6, 2021 at commit SHA \code{584d5c7}.
 }
-DaLUKE fails to achieve SOTA on DaNE, being beaten only by DaCy large.
-However, it does beat da-BERT on which it is based, indicating that the extra pretraining and entity understanding indeed has added some knowledge to the model.
-Interestingly, DaLUKE still manages to pull off a first place in the LOC category and ties DaCy large in PER, while falling behind in both ORG and MISC.
-Future analysis of DaLUKE should examine whether this is due to bias in the Wikipedia pretraining dataset.
+Taking these results at face value, DaLUKE fails to achieve SOTA on DaNE, being beaten only by DaCy large, but suprassing da-BERT on which it is based.
+However, when considering the approximate uncertainties estimates, the small test set makes these conclusions baseless, instead identifying a \emph{group} of transformer based NER models leading the scoreboard.
 
-Ultimately, DaLUKE still performs at a high level and shows its promise for entity modeling.
+Still, the considerable improvements in some categories when comparing to da-BERT is taken as an encouragement, suggesting that the extra pretraining and entity understanding indeed has added some knowledge to the model.
+The improvements of DaLUKE compared to da-BERT are examined further in the following chapter.
+Additionally, it is noted from considering the differences between algorithm performance across classes that future analysis of DaLUKE should examine how entity class performance is related to article bias in the Wikipedia pretraining dataset.
+
+Ultimately, DaLUKE performs at a high level and shows promise for entity modeling.
 
 \subsection{Additional Datasets}
               % precision    recall  f1-score   support
@@ -174,20 +177,21 @@ Ultimately, DaLUKE still performs at a high level and shows its promise for enti
                 \begin{tabular}{l l | c c c c | c c c c}
                     \multirow{2}{*}{Model name} & \multirow{2}{*}{Trained on} & \multicolumn{4}{c|}{Micro Avg. [\pro]} & \multicolumn{4}{c}{Class F1 [\pro]}\\
                                       &                & F1             & Prec.        & Rec.           & F1 {\tiny\textdiscount MISC} & LOC & PER & ORG & MISC \\\hline
-                        DaLUKE        & DaNE           & \textbf{69.0} & \textbf{60.5} & 80.3          & 78.9         & \textbf{81.7} & \textbf{92.5}   & 56.0          & 13.2 \\\hline
-                        DaNLP da-BERT & DaNE           & --            & --            & --            & \textbf{79.2}& 78.6          & 93.4            & \textbf{56.9} & -- \\
-                        NERDA m-BERT  & DaNE           & 66.4          & 58.1          & 77.4          & 76.6         & 76.3          & 92.1            & 52.5          & 12.4 \\
-                        NERDA Ælæctra & DaNE           & 66.3          & 60.0          & 74.1          & 76.1         & 74.9          & 90.3            & 53.0          & 13.2 \\
-                        DaCy medium   & DaNE           & 65.6          & 55.7          & 79.7          & 75.0         & 76.1          & 92.1            & 48.7          & 12.6 \\
-                        DaCy large    & DaNE           & 68.5          & 58.9          & \textbf{81.8} & 79.0         & 79.0          & \textbf{92.5}   & 58.0          & \textbf{15.5} \\
-                        DaNLP spaCy   & DaNE           & 64.1          & 55.9          & 75.1          & 72.7         & 72.7          & 88.3            & 46.5          & 12.3 \\
-                        DaNLP Flair   & DaNE           & --            & --            & --            & 76.2         & 80.2          & 94.4            & 36.1          & -- \\
-                        Polyglot      & Wikipedia      & --            & --            & --            & 64.1         & 69.7          & 78.4            & 24.7          & -- \\
-                        daner         & ITU CDT        & --            & --            & --            & 59.8         & 58.2          & 73.6            & 26.1          & --
+                        DaLUKE        & DaNE           & \textbf{69.0} $\pm 5$& \textbf{60.5} & 80.3          & 78.9         $\pm 4$& \textbf{81.7} & \textbf{92.5}   & 56.0          & 13.2 \\\hline
+                        DaNLP da-BERT & DaNE           & --                   & --            & --            & \textbf{79.2}$\pm 4$& 78.6          & 93.4            & \textbf{56.9} & -- \\
+                        NERDA m-BERT  & DaNE           & 66.4          $\pm 5$& 58.1          & 77.4          & 76.6         $\pm 4$& 76.3          & 92.1            & 52.5          & 12.4 \\
+                        NERDA Ælæctra & DaNE           & 66.3          $\pm 5$& 60.0          & 74.1          & 76.1         $\pm 4$& 74.9          & 90.3            & 53.0          & 13.2 \\
+                        DaCy medium   & DaNE           & 65.6          $\pm 5$& 55.7          & 79.7          & 75.0         $\pm 4$& 76.1          & 92.1            & 48.7          & 12.6 \\
+                        DaCy large    & DaNE           & 68.5          $\pm 5$& 58.9          & \textbf{81.8} & 79.0         $\pm 4$& 79.0          & \textbf{92.5}   & 58.0          & \textbf{15.5} \\
+                        DaNLP spaCy   & DaNE           & 64.1          $\pm 5$& 55.9          & 75.1          & 72.7         $\pm 5$& 72.7          & 88.3            & 46.5          & 12.3 \\
+                        DaNLP Flair   & DaNE           & --                   & --            & --            & 76.2         $\pm 4$& 80.2          & 94.4            & 36.1          & -- \\
+                        Polyglot      & Wikipedia      & --                   & --            & --            & 64.1         $\pm 5$& 69.7          & 78.4            & 24.7          & -- \\
+                        daner         & ITU CDT        & --                   & --            & --            & 59.8         $\pm 5$& 58.2          & 73.6            & 26.1          & --
                 \end{tabular}
         \end{center}
         \caption{
-        F1\pro\ scores of Danish NER models of the Plank test set consisting of 565 sentences.
+            Danish NER algorithm performance on the Plank \cite{plank2019neural} test set consisting of 565 sentences.
+            These models fine-tuned on DaNE perform very poorly on the Plank MISC entities in particular, highlighting NE annotater disagreement.
         }
         \label{tab:Plank}
 \end{table}
@@ -208,28 +212,30 @@ Ultimately, DaLUKE still performs at a high level and shows its promise for enti
                     \multirow{2}{*}{Model name} & \multirow{2}{*}{Trained on} & \multicolumn{3}{c|}{Micro Avg. [\pro]} & \multicolumn{3}{c}{Class F1 [\pro]}\\
                         & & F1 & Prec. & Rec. & LOC & PER & ORG \\
                         \hline
-                        DaLUKE          & DaNE      & \textbf{66.8} & \textbf{72.7} & 61.9          & 73.5          & 74.9          & 44.2 \\\hline
-                        DaNLP da-BERT   & DaNE      & 65.7          & 68.6          & 63.2          & 72.1          & 74.5          & 40.1 \\
-                        NERDA m-BERT    & DaNE      & 63.4          & 61.3          & 65.7          & 70.7          & 76.9          & 48.4 \\
-                        NERDA Ælæctra   & DaNE      & 48.7          & 48.3          & 49.0          & 56.6          & 69.9          & 24.0 \\
-                        DaCy medium     & DaNE      & 60.1          & 58.4          & 61.8          & 70.7          & 73.7          & 39.3 \\
-                        DaCy large      & DaNE      & 64.6          & 62.2          & \textbf{67.1} & \textbf{74.1} & \textbf{77.2} & \textbf{49.8} \\
-                        DaNLP spaCy     & DaNE      & 59.6          & 58.5          & 60.6          & 68.7          & 71.6          & 38.8 \\
-                        DaNLP Flair     & DaNE      & 65.0          & 70.7          & 60.2          & 70.1          & 74.4          & 43.7 \\
-                        Polyglot        & Wikipedia & 62.9          & 66.3          & 58.2          & 72.4          & 69.2          & 35.3 \\
-                        daner           & ITU CDT   & 46.6          & 51.5          & 42.5          & 56.2          & 54.5          & 14.8
+                        DaLUKE          & DaNE      & \textbf{66.8}$\pm 0.1$ & \textbf{72.7} & 61.9          & 73.5          & 74.9          & 44.2 \\\hline
+                        DaNLP da-BERT   & DaNE      & 65.7         $\pm 0.1$ & 68.6          & 63.2          & 72.1          & 74.5          & 40.1 \\
+                        NERDA m-BERT    & DaNE      & 63.4         $\pm 0.1$ & 61.3          & 65.7          & 70.7          & 76.9          & 48.4 \\
+                        NERDA Ælæctra   & DaNE      & 48.7         $\pm 0.1$ & 48.3          & 49.0          & 56.6          & 69.9          & 24.0 \\
+                        DaCy medium     & DaNE      & 60.1         $\pm 0.1$ & 58.4          & 61.8          & 70.7          & 73.7          & 39.3 \\
+                        DaCy large      & DaNE      & 64.6         $\pm 0.1$ & 62.2          & \textbf{67.1} & \textbf{74.1} & \textbf{77.2} & \textbf{49.8} \\
+                        DaNLP spaCy     & DaNE      & 59.6         $\pm 0.1$ & 58.5          & 60.6          & 68.7          & 71.6          & 38.8 \\
+                        DaNLP Flair     & DaNE      & 65.0         $\pm 0.1$ & 70.7          & 60.2          & 70.1          & 74.4          & 43.7 \\
+                        Polyglot        & Wikipedia & 62.9         $\pm 0.1$ & 66.3          & 58.2          & 72.4          & 69.2          & 35.3 \\
+                        daner           & ITU CDT   & 46.6         $\pm 0.1$ & 51.5          & 42.5          & 56.2          & 54.5          & 14.8
                 \end{tabular}
         \end{center}
-        \caption{F1\pro\ scores of Danish NER models of the WikiANN test set consisting of 10,000 sentences.}
+        \caption{
+            Results of Danish NER models on the WikiANN \cite{pan2017wikiann, rahimi2019transfer} test set consisting of 10,000 sentences.
+            This large dataset containing $\sim 14\ctp3$ entities results in small finite sample uncertainties on model performance making DaLUKE appear as a clear winner on this Wikipedia-based dataet.
+        }
         \label{tab:WikiANN}
 \end{table}
-When fine-tuned on DaNE, DaLUKE achieves achieves SOTA both when evaluated on the Plank and WikiANN test sets, though only when including MISC and by a small margin on Plank.
-This is unexpected given that DaLUKE is beaten on the DaNE test set.
+When fine-tuned on DaNE, DaLUKE achieves SOTA on WikiANN and slightly tops DaCy Large on Plank.
+This is unexpected given that DaLUKE was beaten on the DaNE test set.
 It may indicate a better generalization ability, which, if true, is indeed a desirable property.
 However, less exciting reasons for this behaviour may well be more likely.
-With Plank, the difference is miniscule and may simply be explained by variance.
-As shown in Section \ref{sec:English LUKE Reproduction} and \ref{sec:luke-stability}, this affects LUKE on CoNLL-2003 and DaLUKE on DaNE.
-The performance discrepancy on WikiANN may be even less exciting:
-That DaLUKE is pretrained directly on similar, annotated Wikipedia data, violating the principle that the training and test sets should be disjoint.
+With Plank, the difference is miniscule and clearly within random error.
+The performance discrepancy on WikiANN appears surely significant, but may be explained even less exciting:
+DaLUKE is pretrained directly on similar, annotated Wikipedia data, compromising the principle that the training and test sets should be strictly disjoint.
 
 \end{document}

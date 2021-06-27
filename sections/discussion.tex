@@ -712,10 +712,10 @@ Interestingly, this problem was mitigated when using class-weighted loss, an uni
     \footnotesize
     \begin{tabular}{lllll|rrr}
         Batch size & Learning rate & Weight decay & Dropout & Loss weight & F1    &  Precision & Recall\\\hline
-        8& 5\ctp{-5}& 0.01& 0.1& Yes         & 84.96 &  80.45 &  90.00\\
-        8& 5\ctp{-5}& 0.01& 0.1& No          & 31.53 &  19.86 &  76.46\\
-        16& 5\ctp{-5}& 0.01& 0.1& Yes        & 82.66 &  76.88 &  89.38\\
-        16& 5\ctp{-5}& 0.01& 0.1& No         & 29.21 &  18.08 &  76.04
+        8& 5\ctp{-5}& 0.01& 0.1& Yes         & 84.9 &  80.4 &  90.0\\
+        8& 5\ctp{-5}& 0.01& 0.1& No          & 31.5 &  19.8 &  76.4\\
+        16& 5\ctp{-5}& 0.01& 0.1& Yes        & 82.6 &  76.8 &  89.3\\
+        16& 5\ctp{-5}& 0.01& 0.1& No         & 29.2 &  18.0 &  76.0
     \end{tabular}
     \caption{
         The only hyperparameter search experiments in which class-weighted loss clearly improved performance.
@@ -735,10 +735,10 @@ Two fine-tuning experiments are performed by altering this entity feature approa
     \footnotesize
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
-        & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                        \\ \hline
-        Subword tokens & 81.27 & \textbf{87.63} & 92.44 & 70.99 & 71.62 & 84.66 & 78.14 \\
-        Entity tokens & 81.75 & 85.15 & 93.22 & 71.48 & 74.01 & \textbf{85.08} & 78.67 \\
-        Both (default) & \textbf{82.89} & 87.00 & \textbf{94.15} & \textbf{73.15} & \textbf{74.58} & 84.67 & \textbf{81.18}
+                       & Avg.           & LOC            & PER            & ORG            & MISC           & Avg.           & Avg.  \\ \hline
+        Subword tokens & 81.2          & \textbf{87.6} & 92.4          & 70.9          & 71.6          & 84.6          & 78.1 \\
+        Entity tokens  & 81.7          & 85.1          & 93.2          & 71.4          & 74.0          & \textbf{85.0} & 78.6 \\
+        Both (default) & \textbf{82.8} & 87.0          & \textbf{94.1} & \textbf{73.1} & \textbf{74.5} & 84.6          & \textbf{81.1}
     \end{tabular}
     \caption{
         Fine-tuning results using different features for the classifier.

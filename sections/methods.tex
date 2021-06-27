@@ -63,6 +63,30 @@ Two of the three used datasets contains MISC annotation,s and existing literatur
 ''We are only reporting the scores on the LOC, ORG and PER entities as the MISC category has limited practical use'' \cite[Sec. ''Benchmarks'' in NER page]{danlp2021}.
 We trained all models with the MISC annotation and also include it in our evaluations.
 When comparing with models trained without MISC, a non-MISC average F1 score is also reported (by treating all MISC predictions as null class predictions).
+
+When comparisons are made between model average F1 scores, an approximate 95\pro\ confidence interval is included calculated using the normality approximation for binomial observations \cite[Method 7.3]{brockhoff2018stat}.
+That is, when denoting the average F1 score $f$ and the $n$ sample estimate thereof $\hat f$,
+\begin{equation}
+    \label{eq:ci}
+    I = \hat f \pm z_{0.975}
+    \sqrt{
+        \frac
+        {\hat f\left(1-\hat f\right)}
+        {n}
+    }
+    \Rightarrow
+    \mathbb P\left(
+        f \in I
+    \right)
+    \approx 95\pro,
+\end{equation}
+where $z_{0.975}$ is the 97.5\pro\ standard normal distribution percentile.
+For the sample size $n$, the number of true entities\footnotemark in the dataset is used -- this is $558$ for DaNE, $390$ for Plank and $13698$ for WikiANN.
+\footnotetext{
+    Here, the number of entire entity spans in each class is used, not the number of words annotated with the class, as is reported elsewhere.
+    The latter would overstate the amount of independent observations as two words in the same entity obviously share much information.
+}
+
 \subsection{Fine-tuning English LUKE}
 Yamada et al. benchmark LUKE on named entity recognition using the CoNLL-2003 dataset \cite{yamada2020luke}.
 
