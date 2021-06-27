@@ -10,7 +10,7 @@ With the advent of deep learning in the field of NLP, models have risen massivel
 For instance, LUKE required 30 days of training on 16 NVIDIA V100's \cite{yamada2020luke}, and that model already took advantage of RoBERTa, which was even more demanding to train \cite{liu2019roberta}.
 For this reason, the training of a deep, NLP model is typically divided into two separate tasks:
 First, the \emph{pretraining}, in which a model is trained that has limited direct practical use but has general language understanding.
-Secondly, a \emph{fine-tuning}, or downstream training, is performed in which the pretrained model undergoes further, specialized training for some specific language task, e.g. named entity recognition (NER).
+Secondly, a \emph{fine-tuning}, or downstream training, is performed in which the pretrained model undergoes further, specialized training for some specific language task, e.g. named entity recognition.
 
 
 \section{Named Entity Recognition}
@@ -103,7 +103,7 @@ LUKE directly uses RoBERTa's tokenizer when dealing with words \cite{yamada2020l
 \label{sec:nlpda}
 Danish is, compared to English, a low resource language:
 The world's Danish speaking population is smaller than the English speaking population of a large city, naturally resulting in significantly fewer and smaller available text datasets, and in less attention from both researchers and practitioners.
-While pushing the performance of current natural language processing (NLP) algorithms to their limits is much more difficult in low resource languages, the field of applied NLP in Danish has adopted many of the deep learning developments of recent years.
+While pushing the performance of current NLP algorithms to their limits is much more difficult in low resource languages, the field of applied NLP in Danish has adopted many of the deep learning developments of recent years.
 Both word embeddings and transformers are used frequently in Danish NLP.
 
 Word embeddings are used as they are a core component of many NLP pipelines.
@@ -136,7 +136,7 @@ A 2019 paper by NLP researchers at the same university surveyed the availability
 Other overviews of Danish NLP resources include those published by the Alexandra Institute at DaNLP \cite{danlp2021} and the comprehensive list maintained by Finn Årup Nielsen, DTU Compute \cite{arup21awesome}.
 
 \section{Deep, Knowledge-enhanced NLP}
-The combination of statistical methods and explicit human crafted domain knowledge was the SOTA in many natural language processing (NLP) tasks in the 1990's and up into the 2000's \cite[Sec. 22.5]{russell2016ai}.
+The combination of statistical methods and explicit human crafted domain knowledge was the SOTA in many NLP tasks in the 1990's and up into the 2000's \cite[Sec. 22.5]{russell2016ai}.
 As with most other fields of AI, the emergence of performant deep learning methods disrupted NLP in the 2010's, popularizing the methodology of using deep LM's \cite{otter18dlnlp}.
 This approach rarely includes any modeling of knowledge that is not induced implicitly by the contextual representations generated during pretraining on an unannotated text corpus.
 
