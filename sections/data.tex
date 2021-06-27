@@ -120,13 +120,13 @@ Previous literature has highlighted the scarcity of accessible, gold-standard, D
     \centering
     \begin{tabular}{l|rrr|rrrr}
         \multirow{2}{*}{Dataset} & \multicolumn{3}{c|}{Number of sentences} & \multicolumn{4}{c}{Test set entities}\\
-                                &\jl{Train} & \jl{Dev.} & \jl{Test} &\multicolumn{1}{|l}{LOC} & \jl{PER} & \jl{ORG} & \jl{MISC} \\\hline
-        DaNE        & 4,383 & 564 & 565 & 101 & 318 & 221 & 159 \\
-        Plank       & 604  & 564 & 565 & 98  & 309 & 114 & 52 \\
-        WikiANN (da.)   & $20\ctp3$ & $10\ctp3$ & $10\ctp3$ & 7,458 & 10,660 & 10,876 & 0
+                            &\jl{Train} & \jl{Dev.} & \jl{Test} &\multicolumn{1}{|l}{LOC} & \jl{PER} & \jl{ORG} & \jl{MISC} \\\hline
+        DaNE                & 4,383     & 564       & 565       & 96    & 180    & 161    & 121 \\
+        Plank               & 604       & 564       & 565       & 97    & 169    & 94     & 30 \\
+        WikiANN (da.)       & $20\ctp3$ & $10\ctp3$ & $10\ctp3$ & 5,242 & 4,378  & 4,078  & 0
     \end{tabular}
     \caption{
-        Counts of sentences and test set entity words in the three Danish NER benchmarks.
+        Counts of sentences and test set entities in the three Danish NER benchmarks.
         Note the clear differences in annotations between DaNE and Plank, which use the same text corpus.
     }
     \label{tab:daNERdata}
@@ -135,12 +135,12 @@ Previous literature has highlighted the scarcity of accessible, gold-standard, D
 \begin{table}[H]
     \centering
     \begin{tabular}{l|r r r r}
-        Subset of data&LOC	&PER	&ORG   &MISC \\\hline
-        Train&1,144	&2,146	&1,267  &1,273 \\
-        Dev.&126	&277   &131  &138 \\
-        Test&101   &318   &221  &159
+        Subset of data  &LOC    &PER     &ORG    &MISC \\\hline
+        Train.          &945    &1,249   &802    &1,007 \\
+        Dev.            &111    &166     &90     &113 \\
+        Test            &96     &180     &161    &121
     \end{tabular}
-    \caption{DaNE entity word distribution by data split.}
+    \caption{DaNE entity distribution by data split.}
     \label{tab:danedist}
 \end{table}\noindent
 

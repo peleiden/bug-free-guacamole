@@ -133,9 +133,9 @@ This resulted in the following performance on the DaNE test dataset.
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
-    Baseline                & 82.4&89.5&92.9&74.4&68.8      & 86.7                          & 78.4
+    Baseline                & 82.4 $\pm 3$ &89.5&92.9&74.4&68.8      & 86.7                          & 78.4
     \end{tabular}
-    \caption{The baseline fine-tuning results where avg. refers to the micro average}
+    \caption{The baseline fine-tuning results}
     \label{tab:summary}
 \end{table}\noindent
 The results of the baseline experiment together with the following experiments are also shown together in a final overview at Section \ref{subsec:preoverview}.
@@ -184,7 +184,7 @@ After fine-tuning, the following results were achieved:
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
-    BERT attention          & 79.6 & 85.8 & 92.8 & 70.9 &   64.8      & 84.5                          & 75.2
+    BERT attention          & 79.6 $\pm 3$ & 85.8 & 92.8 & 70.9 &   64.8      & 84.5                          & 75.2
     \end{tabular}
    \caption{The fine-tuning results of the traditional attention experiment.}
     \label{tab:bertatt}
@@ -255,7 +255,7 @@ As a more unbiased benchmark, this model was fine-tuned on the DaNE dataset usin
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
-    No data aug.            & 83.0&84.4&95.1&76.4&72.1      & 85.4                          & 80.8
+    No data aug.            & 83.0 $\pm 3$&84.4&95.1&76.4&72.1      & 85.4                          & 80.8
     \end{tabular}
     \caption{The fine-tuning results of the dataset augmentation pretraining experiment.}
     \label{tab:dataaug}
@@ -316,7 +316,7 @@ This did not happen - in fact, results were much worse than the baseline.
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
-    No transfer learning    & 71.0&79.0&83.5&55.4&61.7      & 76.9                          & 65.9
+    No transfer learning    & 71.0 $\pm 4$&79.0&83.5&55.4&61.7      & 76.9                          & 65.9
     \end{tabular}
     \caption{The fine-tuning results of the experiment where weights were trained from scratch.}
     \label{tab:nobert}
@@ -402,7 +402,7 @@ The NER performance of this model was, following the approach in the previous ex
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
-    Limited entity vocab.   & 82.2&89.6&93.5&74.0&68.7      & 85.0                          & 79.5
+    Limited entity vocab.   & 82.2 $\pm 3$ &89.6&93.5&74.0&68.7      & 85.0                          & 79.5
     \end{tabular}
     \caption{The fine-tuning results of the entity vocabulary limiting pretraining experiment.}
     \label{tab:ent-limit}
@@ -453,13 +453,16 @@ Table \ref{tab:mlmsummary} and \ref{tab:nersummary} show the masked language and
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                        \\ \hline
-    Baseline                & 82.4&89.5&92.9&74.4&68.8      & \textbf{86.7}                          & 78.4                       \\
-    BERT attention          & 79.6 & 85.8 & 92.8 & 70.9 &   64.8      & 84.5                          & 75.2 \\
-    No data augmentation    & \textbf{83.0}&84.4&\textbf{95.1}&\textbf{76.4}&\textbf{72.1}      & 85.4                          & \textbf{80.8}                       \\
-    No transfer learning    & 71.0&79.5&83.5&55.4&61.7      & 76.9                          & 65.9                       \\
-    Limited entity vocab.   & 82.2&\textbf{89.6}&93.5&74.00&68.7      & 85.0                          & 79.5
+    Baseline                & 82.4 $\pm 3$&89.5&92.9&74.4&68.8      & \textbf{86.7}                          & 78.4                       \\
+    BERT attention          & 79.6 $\pm 3$& 85.8 & 92.8 & 70.9 &   64.8      & 84.5                          & 75.2 \\
+    No data augmentation    & \textbf{83.0} $\pm 3$&84.4&\textbf{95.1}&\textbf{76.4}&\textbf{72.1}      & 85.4                          & \textbf{80.8}                       \\
+    No transfer learning    & 71.0 $\pm 4$&79.5&83.5&55.4&61.7      & 76.9                          & 65.9                       \\
+    Limited entity vocab.   & 82.2 $\pm 3$&\textbf{89.6}&93.5&74.00&68.7      & 85.0                          & 79.5
     \end{tabular}
-    \caption{Overview of the pretraining experiment fine-tuning results presented in the previous subsections.}
+    \caption{
+        Overview of the pretraining experiment fine-tuning results presented in the previous subsections.
+        Many of the differences are small and within the $95\pro$ finite sample margin of error, so the performance must be judged in conjunction with masked task performance.
+    }
     \label{tab:nersummary}
 \end{table}
 
@@ -736,9 +739,9 @@ Two fine-tuning experiments are performed by altering this entity feature approa
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                        & Avg.           & LOC            & PER            & ORG            & MISC           & Avg.           & Avg.  \\ \hline
-        Subword tokens & 81.2          & \textbf{87.6} & 92.4          & 70.9          & 71.6          & 84.6          & 78.1 \\
-        Entity tokens  & 81.7          & 85.1          & 93.2          & 71.4          & 74.0          & \textbf{85.0} & 78.6 \\
-        Both (default) & \textbf{82.8} & 87.0          & \textbf{94.1} & \textbf{73.1} & \textbf{74.5} & 84.6          & \textbf{81.1}
+        Subword tokens & 81.2         $\pm 3$ & \textbf{87.6} & 92.4          & 70.9          & 71.6          & 84.6          & 78.1 \\
+        Entity tokens  & 81.7         $\pm 3$ & 85.1          & 93.2          & 71.4          & 74.0          & \textbf{85.0} & 78.6 \\
+        Both (default) & \textbf{82.8}$\pm 3$ & 87.0          & \textbf{94.1} & \textbf{73.1} & \textbf{74.5} & 84.6          & \textbf{81.1}
     \end{tabular}
     \caption{
         Fine-tuning results using different features for the classifier.

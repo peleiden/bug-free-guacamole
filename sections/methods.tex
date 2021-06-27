@@ -64,8 +64,8 @@ Two of the three used datasets contains MISC annotation,s and existing literatur
 We trained all models with the MISC annotation and also include it in our evaluations.
 When comparing with models trained without MISC, a non-MISC average F1 score is also reported (by treating all MISC predictions as null class predictions).
 
-When comparisons are made between model average F1 scores, an approximate 95\pro\ confidence interval is included calculated using the normality approximation for binomial observations \cite[Method 7.3]{brockhoff2018stat}.
-That is, when denoting the average F1 score $f$ and the $n$ sample estimate thereof $\hat f$,
+When comparisons are made between model average F1 scores, an approximate 95\pro\ confidence interval is reported (every time $\pm$ is used).
+This is calculated using the normality approximation for binomial observations \cite[Method 7.3]{brockhoff2018stat}, which gives, when denoting the true avg. F1 score $f$ and the $n$ sample estimate thereof $\hat f$, that
 \begin{equation}
     \label{eq:ci}
     I = \hat f \pm z_{0.975}
@@ -83,7 +83,7 @@ That is, when denoting the average F1 score $f$ and the $n$ sample estimate ther
 where $z_{0.975}$ is the 97.5\pro\ standard normal distribution percentile.
 For the sample size $n$, the number of true entities\footnotemark in the dataset is used -- this is $558$ for DaNE, $390$ for Plank and $13698$ for WikiANN.
 \footnotetext{
-    Here, the number of entire entity spans in each class is used, not the number of words annotated with the class, as is reported elsewhere.
+    Here, the number of entire entity spans in each class is used, not the number of words annotated with the class; a unit used for other analysis in the discussion.
     The latter would overstate the amount of independent observations as two words in the same entity obviously share much information.
 }
 
@@ -97,17 +97,17 @@ The fine-tuning procedure was repeated five times for each of the two released L
 %%% Horrible footnote manipulation - it works, dont touch it! %%%
 \addtocounter{footnote}{1}
 \footnotetext{\label{foot:fnt}
-    The pre-trained models were downloaded on 17/02-2021 from the LUKE software repository:
+    The pretrained models were downloaded on 17/02-2021 from the LUKE software repository:
     \url{https://github.com/studio-ousia/luke/tree/6feefe657d97d2f847ace87f61f23b705f75d2aa\#released-models} 
 } 
 \begin{table}[H]
     \centering
     \begin{tabular}{l|rr}
-        Pre-trained model
+        Pretrained model
                                     & LUKE large\textsuperscript{\ref{foot:fnt}}\
                                                 & LUKE base\textsuperscript{\ref{foot:fnt}}\\\hline
-        Pre-trained model parameters & $483\ctp 6$ & $253\ctp 6$\\
-        Pre-trained model entity vocabulary & $500\ctp3$ & $500\ctp3$\\
+        Pretrained model parameters & $483\ctp 6$ & $253\ctp 6$\\
+        Pretrained model entity vocabulary & $500\ctp3$ & $500\ctp3$\\
         Learning rate               & $10^{-5}$ & $5\ctp{-5}$\\
         Effective batch size        & 16 & 16\\
         Numeric precision           & \multicolumn{2}{l}{Mixed FP16/FP32 (Nvidia APEX)}\\
