@@ -76,8 +76,8 @@ The final results of this pretraining are summarized in Table \ref{tab:baseline-
     \small
     \begin{tabular}{l|l|cccccc}
         Model                           & Top $k$ accuracy [\pro]  & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
-        \multirow{2}{*}{Baseline}       & Masked words             & 24.23  & 30.94 & 34.37 & 39.70  & 47.71  & 53.62 \\
-                                        & Masked entities          & 28.80  & 39.01 & 50.64 & 50.64  & 59.57  & 66.32
+        \multirow{2}{*}{Baseline}       & Masked words             & 24.2  & 30.9 & 34.4 & 39.7  & 47.7  & 53.6 \\
+                                        & Masked entities          & 28.8  & 39.0 & 50.6 & 50.6  & 59.6  & 66.3
     \end{tabular}
     \caption{
         The top $k$ accuracy of the baseline model in the 50'th and last epoch.
@@ -168,8 +168,8 @@ This model yields worse results than the main model on the pretraining task show
     \small
     \begin{tabular}{l|l|cccccc}
         Model                               & Top $k$-accuracy [\pro]  & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
-        \multirow{2}{*}{BERT attention}     & Masked words             & 20.63  & 26.29 & 29.41 & 34.58  & 42.44  & 48.73 \\
-                                            & Masked entities          & 12.26  & 20.98 & 25.69 & 32.76  & 42.88 & 51.52
+        \multirow{2}{*}{BERT attention}     & Masked words             & 20.6  & 26.3 & 29.4 & 34.6  & 42.4  & 48.7 \\
+                                            & Masked entities          & 12.3  & 21.0 & 25.7 & 32.8  & 42.9 & 51.5
     \end{tabular}
     \caption{
         The top $k$ accuracy of the pretrained model trained without entity-aware self-attention in the 50'th and last epoch.
@@ -216,8 +216,8 @@ The pretraining terminated to the following performance.
     \small
     \begin{tabular}{l|l|cccccc}
         Model                               & Top $k$-accuracy [\pro]  & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
-        \multirow{2}{*}{No data aug.}       & Masked words             & 25.26  & 32.16 & 35.60 & 40.93  & 48.78  & 54.62 \\
-                                            & Masked entities          & 34.02  & 42.85 & 47.21 & 53.52  & 62.26 & 68.82
+        \multirow{2}{*}{No data aug.}       & Masked words             & 25.3  & 32.2 & 35.6 & 40.9  & 48.8  & 54.6 \\
+                                            & Masked entities          & 34.0  & 42.9 & 47.2 & 53.5  & 62.3 & 68.8
     \end{tabular}
     \caption{
         The top $k$ accuracy of the pretrained model trained without dataset augmentation in the 50'th and last epoch.
@@ -287,8 +287,8 @@ In order to test this hypothesis, a pretraining is conducted without initializin
     \small
     \begin{tabular}{l|l|cccccc}
         Model                                 & Top $k$ accuracy [\pro]  & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
-        No transfer & Masked words             & 47.86  & 59.28 & 63.92 & 69.83  & 76.51  & 81.04 \\
-        learning                                      & Masked entities          & 81.71  & 87.19 & 88.87 & 90.90  & 93.15 & 94.56
+        No transfer & Masked words             & 47.9  & 59.3 & 63.9 & 69.8  & 76.5 & 81.0 \\
+        learning                                      & Masked entities          & 81.7  & 87.2 & 88.9 & 90.9  & 93.2 & 94.6
     \end{tabular}
     \caption{
         The top $K$ accuracy of the pretrained model trained without initializing weights from da-BERT in the 50'th and last epoch.
@@ -363,8 +363,8 @@ After pretraining for 50 epochs with the same hyperparameters as the main experi
     \footnotesize
     \begin{tabular}{l|l|cccccc}
         Model                                 & Top $k$ accuracy [\pro]  & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
-        \multirow{2}{*}{Limited entity vocab.}& Masked words             & 23.91  & 30.50 & 33.90 & 39.19  & 47.11  & 53.03 \\
-                                              & Masked entities          & 30.56  & 42.15 & 48.87 & 55.79  & 65.91  & 66.32
+        \multirow{2}{*}{Limited entity vocab.}& Masked words             & 23.9  & 30.5 & 33.9 & 39.2  & 47.1  & 53.0 \\
+                                              & Masked entities          & 30.6  & 42.2 & 48.9 & 55.8  & 65.9  & 66.3
     \end{tabular}
     \caption{
         The top $k$ accuracy of the entity vocabulary-limited model in the 50'th and last epoch.
@@ -429,16 +429,16 @@ Table \ref{tab:mlmsummary} and \ref{tab:nersummary} show the masked language and
     \footnotesize
     \begin{tabular}{l|l|cccccc}
         Model                                 & Top $k$-accuracy [\pro]  & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
-        \multirow{2}{*}{Baseline}             & Masked words             & 24.23  & 30.94 & 34.37 & 39.70  & 47.71  & 53.62 \\
-                                              & Masked entities          & 28.80  & 39.01 & 50.64 & 50.64  & 59.57  & 66.32 \\\hline
-        \multirow{2}{*}{BERT attention}       & Masked words             & 20.63  & 26.29 & 29.41 & 34.58  & 42.44  & 48.73 \\
-                                              & Masked entities          & 12.26  & 20.98 & 25.69 & 32.76  & 42.88 & 51.52 \\\hline
-        \multirow{2}{*}{No data aug.}         & Masked words             & \underline{25.26}  & \underline{32.16} & \underline{35.60} & \underline{40.93}  & \underline{48.78}  & \underline{54.62} \\
-                                              & Masked entities          & \underline{34.02}  & 42.85 & 47.21 & 53.52  & 62.26 & \underline{68.82} \\\hline
-        \multirow{2}{*}{No transfer learning} & Masked words             & \bfseries 47.86  & \bfseries 59.28 & \bfseries 63.92 & \bfseries 69.83  & \bfseries 76.51  & \bfseries 81.04 \\
-                                              & Masked entities          & \bfseries 81.71  & \bfseries 87.19 & \bfseries 88.87 & \bfseries 90.90  & \bfseries 93.15 & \bfseries 94.56 \\\hline
-        \multirow{2}{*}{Limited entity vocab.}& Masked words             & 23.91  & 30.50 & 33.90 & 39.19  & 47.11  & 53.03 \\
-                                              & Masked entities          & 30.56  & \underline{42.15} & \underline{48.87} & \underline{55.79}  & \underline{65.91}  & 66.32
+        \multirow{2}{*}{Baseline}             & Masked words             & 24.2  & 30.9 & 34.4 & 39.7  & 47.7  & 53.6 \\
+                                              & Masked entities          & 28.8  & 39.0 & 50.6 & 50.6  & 59.6  & 66.3 \\\hline
+        \multirow{2}{*}{BERT attention}       & Masked words             & 20.6  & 26.3 & 29.4 & 34.6  & 42.4  & 48.7 \\
+                                              & Masked entities          & 12.3  & 21.0 & 25.7 & 32.8  & 42.9 & 51.5 \\\hline
+        \multirow{2}{*}{No data aug.}         & Masked words             & \underline{25.3}  & \underline{32.2} & \underline{35.6} & \underline{40.9}  & \underline{48.8}  & \underline{54.6} \\
+                                              & Masked entities          & \underline{34.0}  & 42.9 & 47.2 & 53.5  & 62.3 & \underline{68.8} \\\hline
+        \multirow{2}{*}{No transfer learning} & Masked words             & \bfseries 47.9  & \bfseries 59.3 & \bfseries 63.92& \bfseries 69.8  & \bfseries 76.5  & \bfseries 81.0 \\
+                                              & Masked entities          & \bfseries 81.7  & \bfseries 87.2 & \bfseries 88.9 & \bfseries 90.9  & \bfseries 93.2 & \bfseries 94.6 \\\hline
+        \multirow{2}{*}{Limited entity vocab.}& Masked words             & 23.9  & 30.5 & 33.9 & 39.2  & 47.1  & 53.0 \\
+                                              & Masked entities          & 30.6  & \underline{42.2} & \underline{48.9} & \underline{55.8}  & \underline{65.9}  & 66.3
     \end{tabular}
     \caption{
         Overview of final pretraining results for all the experiments presented previously.
@@ -798,19 +798,19 @@ For simplicity, no entities are annotated.
 \subsection{DaLUKE Representations: The NER Geometry}
 DaLUKE produces contextualized representations of both words and entities and these were, for the NER task, successfully adapted to show a level of language understanding.
 These abstract representations which, ideally, condense language understanding into 768 reals are here subjected to some examination.
-The entity span representations, the concatenation of contextual word and entity representations $\mathbf v_i \in \RR^{2304}$, are analyzed by conducting DaLUKE inference on every possible span in the DaNE training data, and saving each result, thus producing a sequence of representations $\mathbf v_{1, \ldots, 975312}$.
+The entity span representations, the concatenation of contextual word and entity representations $\mathbf v_i \in \RR^{2304}$, are analysed by conducting DaLUKE inference on every possible span in the DaNE training data, and saving each result, thus producing a sequence of representations $\mathbf v_{1, \ldots, 975312}$.
 The pretrained, but not fine-tuned model was used.
 Dimensionality reduction for visualization on the representations was performed using principal component analysis (PCA), the $t$-SNE ($t$-distributed stochastic neighbour embedding) algorithm \cite{maaten2008tsne} and the UMAP (uniform manifold approximation and projection for dimensionality reduction) algorithm \cite{mcinnes2020umap}.
 
 Implementation wise, Sci-Kit Learn was used for $t$-SNE \cite{pedregosa2011scikit} and UMAP Learn was used for UMAP \cite{mcinnes2018umap-software} with hyperparameters shown on Table~\ref{tab:dimreducer-hyper}.
-The set of 975,312 entity spans in the DaNE training set was randomly subsampled to 100K examples for these nonlinear dimensionality reduction algorithms due to compute limitations.
-Even with this limit and with hyperparameters chosen to favour global structure, $t$-SNE and UMAP results were difficult to intepret, see Appendix~\ref{sec:dimredu}, motivating visualizing the dataset where only the 4,003 entity spans that corresponded to true entity annotations were included.
+The set of 975,312 entity spans in the DaNE training set was randomly subsampled to 100K examples for these non-linear dimensionality reduction algorithms due to compute limitations.
+Even with this limit and with hyperparameters chosen to favour global structure, $t$-SNE and UMAP results were difficult to interpret, see Appendix~\ref{sec:dimredu}, motivating visualizing the dataset where only the 4,003 entity spans that corresponded to true entity annotations were included.
 
 \begin{table}[H]
     \centering
     \begin{tabular}{l|r}
         Parameter           &  Value\\\hline
-        $t$-SNE perplexity  &  1000   \\
+        $t$-SNE perplexity  &  1,000   \\
         UMAP $N$ neighbours &  300\\\hline
         \multicolumn{2}{c}{When only including positives}\\\hline
         $t$-SNE perplexity  & 100\\
