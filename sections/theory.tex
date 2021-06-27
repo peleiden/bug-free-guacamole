@@ -217,13 +217,18 @@ An input example for LUKE consists both of a sequence of words and a set of enti
     \item $\{\text{\emph{Joe Biden} at word \#1}, \text{\emph{The United States of America} at words \#7-8}\}$.
 \end{itemize}
 For use of LUKE, the text sequence is tokenized into $m$ subword tokens using the normal tokenizer of RoBERTa, the transformer on which LUKE is based.
-The entities are converted to $n$ entity tokens; integer values corresponding to indeces in a vocabulary of known, named entities.
+The entities are converted to $n$ entity tokens; integer values corresponding to indices in a vocabulary of known, named entities.
 The positions of the entities are included in the further inference as \emph{position id's}.
 
-\paragraph{Entity Embeddings}
-The subword tokens are forward passed through the same, static word embedding architecture as that of BERT which outputs $m$ vectors of dimension $H$, one for each subword.
-For the entity and entity position tokens, the new additions to the inference, a similar component maps id's to $n$ vectors, also $\in \RR^H$.
-These are called entity embeddings and are computed using trainable lookup tables, which, for the entity id case, corresponds to the entity vocabulary.
+\paragraph{Embeddings}
+The subword tokens are passed through the same, static word embedding architecture as that of BERT which outputs $m$ vectors of dimension $H$, one for each subword.
+Entity embeddings are somewhat more complex than a simple lookup table.
+Entities given to the model also include their positions in the sequence.
+The positions and the entities themselves have respective, static embeddings, with the position embeddings residing in $ \RR^H $ and the entity embeddings in $ \RR^h $ where $ h<H $.
+Because of the large entity vocabulary, having the entity embeddings be $ H $ dimensional would be highly memory intensive, hence why they are stored in a smaller latent space.
+A single, linear layer maps the entity embeddings from $ \RR^h $ to $ \RR^H $.
+The mapped entity embeddings are then added to the positional embeddings, making up the final entity embeddings.
+For the rest of the report, references to entity embeddings refer to this combined embedding, unless explicitly stated otherwise.
 
 The produced word and entity embeddings are concatenated to a matrix $\in \RR^{(n+m)\times H}$.
 

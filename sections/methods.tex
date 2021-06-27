@@ -136,10 +136,6 @@ The reproduction was performed using Python version 3.7.10 and the dependency ve
 
 \subsection{Pretraining Methodology and Hyperparameters}%
 \label{sub:dalpre}
-\begin{enumerate}
-    \item Find antal opmærksomhedsblokke.
-    \item Fiks dimensionalitet af entity embeddings (og dobbeltjek ord)
-\end{enumerate}
 Our pretraining approach followed the one used by Yamada et al, as described in Section \ref{subsec:lukepre}, with four key differences:
 \begin{enumerate}
     \item The entity-augmented Danish Wikipedia described in section \ref{subsec:entaug} was used.
@@ -149,7 +145,9 @@ Our pretraining approach followed the one used by Yamada et al, as described in 
     \item 
         The model followed the architecture of BERT base instead of BERT large, and weights were initialized from BotXO's da-BERT \cite{botxo2019dabert} as no Danish RoBERTa or BERT large is available.
         An ablation study on this transfer learning from da-BERT is introduced in Section~\ref{subsec:dabertexp}.
-        Because of this, token embedding and contextualized representations reside in a 768 dimensional latent space rather than the 1024 dimensions used by LUKE \cite[Sec. 3.4]{yamada2020luke}.
+        Because of this, token embeddings and contextualized representations both reside in a 768 dimensional latent space rather than the 1024 dimensions used by LUKE.
+        DaLUKE also has 12 attention blocks rather than 24.
+        \cite[Sec. 3.4]{yamada2020luke}
     \item
         The entity vocabulary, consisting of all mentioned Wikipedia articles, was limited in the English LUKE for computational efficiency \cite[Sec. 3.4]{yamada2020luke}.
         We do not perform such limiting as the number of mentioned Wikipedia articles is much smaller in the Danish corpus.
@@ -291,9 +289,7 @@ Rewriting code bases always carries a risk of introducing bugs.
 Despite borrowing heavily from Yamada et al., we did introduce a number of bugs in the code that had to be fixed, forcing multiple restarts of the training.
 These ranged from domain specific such as accidentally leaving category pages in the entity vocabulary to classical ones such as copying pointers instead of the memory stored at them.
 In that regard, using the original code would be safer, as this has been proven to work.
-However, the original code is also not error free.
-For instance, we discovered a bug in the masking where the unmasking and random word replacements would either be done or not done for an entire sequence, rather than being probabilistic for every masked subword token.
-We have opened an issue on the LUKE repository that can be followed at \url{https://github.com/studio-ousia/luke/issues/93}.
+However, given our results, we feel confident that we managed to iron out all major bugs.
 
 \paragraph{Floating Point Precision}
 The model was trained using PyTorch Automatic Mixed Precision (AMP) \cite{pytorchamp}, which -- ideally, at least -- should decrease training time with little to no penalty to accuracy \cite{huang2020amp}.
