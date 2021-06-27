@@ -8,9 +8,6 @@
 
 \section{What Is Going on in the Pretraining?}
 \label{sec:pretrainpls}
-\begin{enumerate}
-    \item Her skal det flettes bedre ind
-\end{enumerate}
 In order to investigate what affects pretraining effectiveness, several ablation studies are performed.
 Unless stated otherwise, the main hyperparameters from Table \ref{tab:pretrain-hyper} are used, but with 50 epochs due to limited compute.
 The experiments were trained primarily on a $ 1\times$A100 configuration.
@@ -63,6 +60,10 @@ After the first five epochs, fine-tuning performance is stagnant.
 In fact, the performance curve mirrors that of the masked subword accuracy of the MLM (see Table \ref{fig:pretrain-acc}).
 Also, there is hardly any correlation between the performance and the masked entity accuracy.
 This surprising result indicates that NER task primarily relies on the knowledge gained from the BERT part of the model.
+
+\begin{enumerate}
+    \item Adressér dette ret problematisk resultat bedre
+\end{enumerate}
 
 \subsection{Baseline}
 For a baseline model, the main model is retrained using only 50 epochs, but otherwise using the same hyperparameters, shown in Table \ref{tab:pretrain-hyper}.
