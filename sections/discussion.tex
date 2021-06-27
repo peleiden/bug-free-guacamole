@@ -8,20 +8,23 @@
 
 \section{What Is Going on in the Pretraining?}
 \label{sec:pretrainpls}
+\begin{enumerate}
+    \item Her skal det flettes bedre ind
+\end{enumerate}
 In order to investigate what affects pretraining effectiveness, several ablation studies are performed.
 Unless stated otherwise, the main hyperparameters from Table \ref{tab:pretrain-hyper} are used, but with 50 epochs due to limited compute.
 The experiments were trained primarily on a $ 1\times$A100 configuration.
 Due to its negative effect on runtime on A100's (see Figure \ref{fig:runtime}), AMP is not used for any of the following experiments.
 \subsection{The Parameter Population}
-The first model analysis is a global view of the DaLUKE parameters
+The first model analysis is a global view of the DaLUKE parameters.
 Figure \ref{fig:weight-dist} shows the model parameter value distribution before and after pretraining divided by whether or not a given parameter was initialized from da-BERT.
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{weights}
     \caption{
         The parameter distribution before and after pretraining, including the decoder.
-        DaLUKE $ \cap $ da-BERT refers to the parameters that are set in DaLUKE from da-BERT including the query matrices that are strictly not part of da-BERT.
-        DaLUKE $ \backslash $ da-BERT are the remaining parameters.
+        DaLUKE $ \cap $ da-BERT (orange) refers to the parameters that transferred from da-BERT, including the query matrices in the entity-aware self-attention.
+        DaLUKE $ \backslash $ da-BERT (green) are the remaining parameters.
         These are made up of the entity embeddings (58 million parameters) and the entity decoder (58 million parameters).
         In total, the model has 273 million parameters.
         Note that DaLUKE $ \cap $ da-BERT and DaLUKE $ \backslash $ da-BERT are not full probability densities but rather subsets that together make up the DaLUKE graph, which is a full probability density.
@@ -36,6 +39,9 @@ This makes sense, as they are already trained, and so further training on simila
 Furthermore, all parameters from da-BERT (barring the three sets of DaLUKE exclusive query matrices) are not changed for the first half of training.
 When they are finally unlocked, both the loss and learning rate have dropped significantly, resulting in less change.
 
+It is noted that the new DaLUKE parameters after training forms a distribution appearing very close to Gaussian.
+These are mostly made up of entity embeddings which are subjected to layer normalizations which we suspect to be influential on this shape.
+
 \subsection{Effect of More Pretraining}
 \label{subsec:effmore}
 How more pretraining affects the language understanding of the model can be hard to quantify.
@@ -43,7 +49,7 @@ Obviously, there is the loss and by extension the top $ k $ accuracy, but these 
 High scores may also indicate overfitting, especially on small datasets.
 
 One way to glimpse into the pretraining black box is to observe the performance of downstream language tasks on a number of checkpoints produced during the pretraining.
-Such a checkpoint was produced just after model initialization and following that after roughly every fifth epoch for a total of 32 checkpoints from the main model.
+Such a checkpoint was produced just after model initialization and following that after every fifth epoch for a total of 32 checkpoints from the main model.
 At every checkpoint, fine-tuning was performed using the hyperparameters from Table \ref{tab:baseline-hyper}.
 The result is shown in Figure \ref{fig:running}.
 \begin{figure}[H]
@@ -52,10 +58,10 @@ The result is shown in Figure \ref{fig:running}.
     \caption{Fine-tuning results on DaNE using different pretraining checkpoints.}
     \label{fig:running}
 \end{figure}\noindent
-At least for NER, extra pretraining only yields improved results up to five epochs -- or maybe even less, but no checkpoints were saved to test that hypothesis.
+At least for NER, extra pretraining only yields improved results up to five epochs -- or maybe even less.
 After the first five epochs, fine-tuning performance is stagnant.
 In fact, the performance curve mirrors that of the masked subword accuracy of the MLM (see Table \ref{fig:pretrain-acc}).
-On the other hand, there is hardly any correlation between the performance and the masked entity accuracy.
+Also, there is hardly any correlation between the performance and the masked entity accuracy.
 This surprising result indicates that NER task primarily relies on the knowledge gained from the BERT part of the model.
 
 \subsection{Baseline}

@@ -17,7 +17,9 @@
 			LUKE base & $93.42 \pm  0.2$ & $94.67 \pm  0.2$ & $96.89 \pm  0.2$ & $92.41 \pm  0.2$ & $84.94 \pm  0.7$
 		\end{tabular}
 	\end{center}
-	\caption{Mean F1\pro\ scores and standard deviation over five repetitions of fine-tuning and evaluating LUKE on CoNLL-2003 for each model size.}
+	\caption{
+        Mean F1\pro\ scores and standard deviation over five repetitions of fine-tuning and evaluating LUKE on CoNLL-2003 for each model size.
+        }
 	\label{tab:lukeF1s}
 \end{table}
 Yamada et al. report micro avg. F1 scores of 94.3\pro\ and 93.3\pro\ for LUKE large and base, respectively \cite{yamada2020luke}.
@@ -30,6 +32,30 @@ However, the variability of fine-tuning is also highlighted here and will be dis
 
 \section{Pretraining of DaLUKE}
 \label{sec:Pretraining of DaLUKE}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.7\textwidth]{loss}
+    \caption{
+    Cross entropy loss throughout pretraining for both masking tasks as well as effective (weighted) loss, which is the average of the two.
+    The loss on the entity masking (green) seems to drive close to all development in the average loss (blue) after the first few epochs.
+    }
+    \label{fig:loss}
+\end{figure}\noindent
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{pretrain-acc}
+    \caption{
+    Masked subwords and masked entity accuracy throughout pretraining.
+    The curves are smoothed with a rolling average.
+    The frequency of exact correct word guesses quickly rests at 20-25\pro\ while the new task of entity masking starts from 0 and takes time to learn.
+    }
+    \label{fig:pretrain-acc}
+\end{figure}\noindent
+The loss shown on Figure \ref{fig:loss} mirrors the accuracy with masked subword loss converging quickly, after which falling entity loss becomes the driving factor behind the falling total loss.
+The masked subwords and masked entity accuracies are shown on Figure \ref{fig:pretrain-acc}.
+The former converges quickly, achieving close to top accuracy in less than a tenth of the full training time, while the latter keeps improving throughout the training.
+That the masked language modeling performance from BERT is quickly maximized is, however, perhaps not surprising, as many of the relevant weights are initialized from an already trained model which has been pretrained on the exact same task.
 
 \begin{table}[H]
     \centering
@@ -40,38 +66,14 @@ However, the variability of fine-tuning is also highlighted here and will be dis
     \end{tabular}
     \caption{
         The main pretrained model performance in the last of 150 epochs.
-        The measures are frequency of correct prediction on the two mask prediction tasks, when considering a prediction to be correct if the true token is one $k$ most likely labels according to the model softmax output.
+        We note that the model has learned to guess masked entities consistently as the correct entity very often is one of within top 50 guesses.
     }
     \label{tab:mainpre}
 \end{table}\noindent
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{pretrain-acc}
-    \caption{Masked subwords and masked entity accuracy throughout pretraining.
-    The curves are smoothed with a rolling average.}
-    \label{fig:pretrain-acc}
-\end{figure}\noindent
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=.7\textwidth]{loss}
-    \caption{Loss throughout pretraining for both pretraining tasks as well as total (weighted) loss, which is the average of the two.}
-    \label{fig:loss}
-\end{figure}\noindent
-The masked subwords and masked entity accuracies are shown on Figure \ref{fig:pretrain-acc}.
-The former converges quickly, achieving close to top accuracy in less than a tenth of the full training time, while the latter keeps improving throughout the training.
-That the masked language modeling performance from BERT is quickly maximized is, however, perhaps not surprising, as many of the relevant weights are initialized from an already trained model which has been pretrained on the exact same task.
-The loss shown on Figure \ref{fig:loss} mirrors the accuracy with masked subword loss converging quickly, after which falling entity loss becomes the driving factor behind the falling total loss.
-
 \section{Danish Named Entity Recognition}%
 \label{sec:nerres}
 
 \subsection{Main Benchmark: Our Results and Reproduction}
-\begin{enumerate}
-    \item Inkludér træningskurve for NER
-\end{enumerate}
-
               % precision    recall  f1-score   support
 
  % ┆   ┆   LOC     0.8365    0.9062    0.8700        96
@@ -124,14 +126,19 @@ The loss shown on Figure \ref{fig:loss} mirrors the accuracy with masked subword
     \end{minipage}
     \caption{
         To the left, the development of loss and accuracy on the DaNE training and dev. sets.
-        To the right, the number of predictions of each class on the dev. set is shown along with the actual number of each class.
+        Almost all learning happens in the first few epochs, hinting that the pretrained model already holds much of the language knowledge used for NER.
+        To the right, the number of predictions of each class on the dev. set is shown along with the actual number of each class where MISC and ORG initially are under-predicted.
     }
     \label{fig:main-fine-tune}
 \end{figure}\noindent
+We conclude, when comparing with the June 2021 DaNLP NER table\footnotemark \cite{danlp2021}, the results of all NER algorithms previously reported on DaNE are successfully reproduced with most being exactly correct and a few varying within a percentage point.
+\footnotetext{
+    Table is available at \url{github.com/alexandrainst/danlp/blob/master/docs/docs/tasks/ner.md} and was compared at the 27/6, 2021 at commit SHA \code{584d5c7}.
+}
 DaLUKE fails to achieve SOTA on DaNE, being beaten only by DaCy large.
-However, it does beat da-BERT on which it is based, indicating that the extra pretraining and entity understanding indeed has added some value to the model.
+However, it does beat da-BERT on which it is based, indicating that the extra pretraining and entity understanding indeed has added some knowledge to the model.
 Interestingly, DaLUKE still manages to pull off a first place in the LOC category and ties DaCy large in PER, while falling behind in both ORG and MISC.
-One possible explanation for this could be that the pretraining dataset is biased towards locations and people, but this is not investigated further.
+Future analysis of DaLUKE should examine whether this is due to bias in the Wikipedia pretraining dataset.
 
 Ultimately, DaLUKE still performs at a high level and shows its promise for entity modeling.
 
@@ -173,7 +180,11 @@ Ultimately, DaLUKE still performs at a high level and shows its promise for enti
                         daner         & ITU CDT        & --             & --             & --             & 59.89                        & 58.16 & 73.63 & 26.09 & -- \\
                 \end{tabular}
         \end{center}
-        \caption{F1\pro\ scores of Danish NER models of the Plank test set consisting of 565 sentences.}
+        \caption{
+        F1\pro\ scores of Danish NER models of the Plank test set consisting of 565 sentences.
+        Missing numbers is due to a number of models not being trained on the MISC annotations.
+        We see the transformer based models dominate the scores, spearheaded by the large implementation of DaCy.
+        }
         \label{tab:Plank}
 \end{table}
 
