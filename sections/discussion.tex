@@ -133,7 +133,7 @@ This resulted in the following performance on the DaNE test dataset.
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
-    Baseline                & 82.41&89.58&92.90&74.48&68.84      & 86.73                          & 78.49
+    Baseline                & 82.4&89.5&92.9&74.4&68.8      & 86.7                          & 78.4
     \end{tabular}
     \caption{The baseline fine-tuning results where avg. refers to the micro average}
     \label{tab:summary}
@@ -184,7 +184,7 @@ After fine-tuning, the following results were achieved:
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
-    BERT attention          & 79.62 & 85.86 & 92.84 & 70.95 &   64.84      & 84.51                          & 75.27
+    BERT attention          & 79.6 & 85.8 & 92.8 & 70.9 &   64.8      & 84.5                          & 75.2
     \end{tabular}
    \caption{The fine-tuning results of the traditional attention experiment.}
     \label{tab:bertatt}
@@ -255,7 +255,7 @@ As a more unbiased benchmark, this model was fine-tuned on the DaNE dataset usin
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
-    No data aug.            & 83.07&84.42&95.18&76.41&72.10      & 85.42                          & 80.82
+    No data aug.            & 83.0&84.4&95.1&76.4&72.1      & 85.4                          & 80.8
     \end{tabular}
     \caption{The fine-tuning results of the dataset augmentation pretraining experiment.}
     \label{tab:dataaug}
@@ -316,7 +316,7 @@ This did not happen - in fact, results were much worse than the baseline.
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
-    No transfer learning    & 71.04&79.05&83.57&55.42&61.74      & 76.99                          & 65.95
+    No transfer learning    & 71.0&79.0&83.5&55.4&61.7      & 76.9                          & 65.9
     \end{tabular}
     \caption{The fine-tuning results of the experiment where weights were trained from scratch.}
     \label{tab:nobert}
@@ -402,7 +402,7 @@ The NER performance of this model was, following the approach in the previous ex
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
-    Limited entity vocab.   & 82.22&89.69&93.59&74.00&68.72      & 85.02                          & 79.57
+    Limited entity vocab.   & 82.2&89.6&93.5&74.0&68.7      & 85.0                          & 79.5
     \end{tabular}
     \caption{The fine-tuning results of the entity vocabulary limiting pretraining experiment.}
     \label{tab:ent-limit}
@@ -453,11 +453,11 @@ Table \ref{tab:mlmsummary} and \ref{tab:nersummary} show the masked language and
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                        \\ \hline
-    Baseline                & 82.41&89.58&92.90&74.48&68.84      & \textbf{86.73}                          & 78.49                       \\
-    BERT attention          & 79.62 & 85.86 & 92.84 & 70.95 &   64.84      & 84.51                          & 75.27 \\
-    No data augmentation    & \textbf{83.07}&84.42&\textbf{95.18}&\textbf{76.41}&\textbf{72.10}      & 85.42                          & \textbf{80.82}                       \\
-    No transfer learning    & 71.04&79.05&83.57&55.42&61.74      & 76.99                          & 65.95                       \\
-    Limited entity vocab.   & 82.22&\textbf{89.69}&93.59&74.00&68.72      & 85.02                          & 79.57
+    Baseline                & 82.4&89.5&92.9&74.4&68.8      & \textbf{86.7}                          & 78.4                       \\
+    BERT attention          & 79.6 & 85.8 & 92.8 & 70.9 &   64.8      & 84.5                          & 75.2 \\
+    No data augmentation    & \textbf{83.0}&84.4&\textbf{95.1}&\textbf{76.4}&\textbf{72.1}      & 85.4                          & \textbf{80.8}                       \\
+    No transfer learning    & 71.0&79.5&83.5&55.4&61.7      & 76.9                          & 65.9                       \\
+    Limited entity vocab.   & 82.2&\textbf{89.6}&93.5&74.00&68.7      & 85.0                          & 79.5
     \end{tabular}
     \caption{Overview of the pretraining experiment fine-tuning results presented in the previous subsections.}
     \label{tab:nersummary}
@@ -477,22 +477,27 @@ Following the pretraining experiments, all results are reported with MISC.
 
 \paragraph{Reproducability of English LUKE}
 For the reproduction of the English LUKE, our results were initially underwhelming as five repetitions of the fine-tuning of LUKE large on CoNLL-2003 consistently, slightly underperformed the reported result of 94.3\pro\ micro average as seen at Table \ref{tab:EnLUKE-wrong}.
-After investigating, this somewhat disappointing result was revealed to be overturned when fine-tuning with Python version 3.6 and PyTorch 1.2 instead of using newer versions as done in the initial run.
-Using these correct versions, the same as Yamada et al. reported in their package file, the results were succesfully reproduced as shown in the central results in Section \ref{sec:English LUKE Reproduction}.
+This disappointment was backed up by an approximate 95\pro\ confidence interval on the true mean of the avg. F1 score being marginally below the reported value\footnotemark.
+\footnotetext{
+    Using the one sample Student $t$-based confidence interval relying on an unchecked normality assumption on means, \cite[Method 3.9]{brockhoff2018stat} our five repetitions yield a 95\pro\ confidence interval of $[92.53\pro, 94.26\pro ]$.
+    To conclude a significant difference, more repetitions are necessary, but we were initially worried by this result.
+}
+
+After investigating, this, to us, somewhat surprising result was revealed to be overturned when fine-tuning with Python version 3.6 and PyTorch 1.2 instead of using newer versions as done in the initial run.
+Using these correct versions, the same as Yamada et al. reported in their package file, our results were much closer to the reported numbers as shown in Section \ref{sec:English LUKE Reproduction}.
 
 All in all, the slight hiccups in reproducing the fine-tuning results show the difficulties in empiric evaluations of deep methods strongly relying on indeterminism -- especially as the underlying framework, PyTorch, does not guarantee reproducable results across versions and platforms, even if using identical seeds for the random number generator \cite{pytorchrep}.
-
 \begin{table}[H]
     \centering
     \small
-    \begin{tabular}{l r r r r r}
-            Model & Micro avg. & LOC & PER & ORG & MISC \\
+    \begin{tabular}{l l | c c c c c}
+            Model & Over 5 repetitions &Micro avg. & LOC & PER & ORG & MISC \\
             \hline
-            LUKE large & $93.97 \pm  0.07$ & $95.06 \pm  0.2$ & $97.19 \pm  0.08$ & $93.51 \pm  0.2$ & $85.15 \pm  0.4$
+            \multirow{2}{*}{LUKE large}& Mean F1 [\pro] & $93.4$ & $95.2$ & $97.2$ & $93.5$ & $85.2$\\
+                                       & Std. [\pro]    & $0.07$ & $0.2$ & $0.08$ & $0.2$ & $0.4$
     \end{tabular}
     \caption{
         Results when pretraining and evaluating LUKE with Python version 3.8 and PyTorch 1.4.
-        Values are mean and standard deviance of F1 scores over five repetitions of the fine-tuning.
         Using these software versions, the model underperforms reported accuracy slightly.
     }
     \label{tab:EnLUKE-wrong}
@@ -560,12 +565,12 @@ The results are shown in Table \ref{tab:seeds}.
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Seed}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                        \\ \hline
-     1                      & 83.71&85.86&94.32&78.00&72.30  & 88.76                          & 79.21                        \\
-     2                      & 81.58&84.31&92.22&71.92&74.78  & 83.90                          & 79.39                       \\
-     3                      & 84.53&88.66&93.85&78.03&75.11  & 86.93                          & 82.26                       \\
-     4                      & 81.37&82.41&93.18&72.85&72.85  & 83.84                          & 79.03                       \\
-     5                      & 82.47&84.97&93.26&74.68&74.01  & 84.98                          & 80.11                       \\\hline
-     Mean                   & 82.73& 85.24& 93.36& 75.09& 73.81& 85.68& 80.00\\
+     1                      & 83.7&85.8&94.3&78.0&72.3  & 88.7                          & 79.2                        \\
+     2                      & 81.5&84.3&92.2&71.9&74.7  & 83.9                          & 79.3                       \\
+     3                      & 84.5&88.6&93.8&78.0&75.1  & 86.9                          & 82.2                       \\
+     4                      & 81.3&82.4&93.1&72.8&72.8  & 83.8                          & 79.0                       \\
+     5                      & 82.4&84.9&93.2&74.6&74.0  & 84.9                          & 80.1                       \\\hline
+     Mean                   & 82.7& 85.2& 93.3& 75.0& 73.8& 85.6& 80.0\\
      Std.                   & 1.4& 2.3& 0.8& 2.8& 1.2& 2.1& 1.3
     \end{tabular}
     \caption{Repeating the fine-tuning procedure of the main model, reporting results.}
@@ -642,12 +647,12 @@ The cross validation test sets will thus be larger, as no development set is use
     \begin{tabular}{l|ccccc|c|c}
         \multirow{2}{*}{Split}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
                             & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                        \\ \hline
-                    1    &  89.19 & 91.52 & 95.15 & 82.54 & 85.15 & 89.80 & 88.59\\
-                    2    &  86.19 & 87.50 & 94.24 & 76.04 & 82.26 & 88.22 & 88.19\\
-                    3    &  86.95 & 89.72 & 93.57 & 76.77 & 84.55 & 88.36 & 85.58\\
-                    4    &  87.47 & 90.66 & 94.62 & 81.20 & 79.25 & 87.80 & 87.14\\
-                    5    &  87.65 & 90.91 & 95.36 & 79.03 & 86.96 & 88.13 & 87.18\\\hline
-                    Mean &  87.49 & 90.06 & 94.59 & 79.12 & 83.63 & 88.46 & 87.34\\
+                    1    &  89.1 & 91.5 & 95.1 & 82.5 & 85.1 & 89.8 & 88.5\\
+                    2    &  86.1 & 87.5 & 94.2 & 76.0 & 82.2 & 88.2 & 88.1\\
+                    3    &  86.9 & 89.7 & 93.5 & 76.7 & 84.5 & 88.3 & 85.5\\
+                    4    &  87.4 & 90.6 & 94.6 & 81.2 & 79.2 & 87.8 & 87.1\\
+                    5    &  87.6 & 90.9 & 95.3 & 79.0 & 86.9 & 88.1 & 87.1\\\hline
+                    Mean &  87.4 & 90.0 & 94.5 & 79.1 & 83.6 & 88.4 & 87.3\\
                     Std. &  1.1  & 1.6 & 0.7 & 2.8& 3.0 & 0.8 & 1.7
     \end{tabular}
     \caption{
@@ -670,15 +675,15 @@ To add detail to the ability to generalize across these three datasets, DaLUKE i
     \begin{tabular}{l l | c c c c | c c c c}
         \multirow{2}{*}{Test set} & \multirow{2}{*}{Model trained on} & \multicolumn{4}{c|}{Micro Avg. [\pro]} & \multicolumn{4}{c}{Class F1 [\pro]}\\
                     &         & F1    & Prec. & Rec. & F1 {\tiny\textdiscount MISC} & LOC   & PER   & ORG   & MISC \\\hline
-            DaNE    & DaNE    & 82.89 & 84.67 & 81.18 & 85.18                        & 87.00 & 94.15 & 73.15 & 74.58 \\
-            DaNE    & Plank   & 69.02 & 60.54 & 80.26 & 78.86                        & 81.68 & 92.53 & 56.03 & 13.24 \\
-            DaNE    & WikiANN &  --   & -- & -- & 66.84                        & 73.46 & 74.89 & 44.18 & -- \\\hline
-            Plank   & DaNE    & 63.49 & 80.83 & 52.15 & 73.10                        & 76.04 & 90.40 & 45.64 & 4.62 \\
-            Plank   & Plank   & 74.93 & 78.06 & 72.05 & 74.93                        & 76.29 & 90.38 & 50.57 & 41.03 \\
-            Plank   & WikiANN &  --   & -- & -- & 58.46                        & 62.80 & 74.63 & 21.36 & -- \\\hline
-            WikiANN & DaNE    &  --   & -- & -- & 67.86                        & 67.91 & 87.53 & 51.28 & -- \\
-            WikiANN & Plank   &  --   & -- & -- & 60.56                        & 68.52 & 88.00 & 29.28 & -- \\
-            WikiANN & WikiANN &  --   & -- & -- & 93.49                        & 93.49 & 94.71 & 88.38 & --
+            DaNE    & DaNE    & 82.8 & 84.6 & 81.1 & 85.1                   & 87.0 & 94.1 & 73.1 & 74.5 \\
+            DaNE    & Plank   & 69.0 & 60.5 & 80.2 & 78.8                   & 81.6 & 92.5 & 56.0 & 13.2 \\
+            DaNE    & WikiANN &  --  & -- & -- & 66.8                       & 73.4 & 74.8 & 44.1 & -- \\\hline
+            Plank   & DaNE    & 63.4 & 80.8 & 52.1 & 73.1                   & 76.0 & 90.4 & 45.6 & 4.6 \\
+            Plank   & Plank   & 74.9 & 78.0 & 72.0 & 74.9                   & 76.2 & 90.3 & 50.5 & 41.0 \\
+            Plank   & WikiANN &  --  & -- & -- & 58.4                       & 62.8 & 74.6 & 21.3 & -- \\\hline
+            WikiANN & DaNE    &  --  & -- & -- & 67.8                       & 67.9 & 87.5 & 51.2 & -- \\
+            WikiANN & Plank   &  --  & -- & -- & 60.5                       & 68.5 & 88.0 & 29.2 & -- \\
+            WikiANN & WikiANN &  --  & -- & -- & 93.4                       & 93.4 & 94.7 & 88.3 & --
     \end{tabular}
     \caption{
         Results when fine-tuning and evaluating across datasets.
