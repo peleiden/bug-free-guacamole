@@ -8,12 +8,12 @@
 
 \section{Entity-annotated Danish Wikipedia}
 \label{sec:dawiki}
-For pretraining LUKE, a corpus of entity annotated text is needed.
+For the pretraining of LUKE, a corpus of entity-annotated text is needed.
 Entity annotations consist of two things: The word span and the name of the entity.
 No text is written directly with such annotations in mind.
 However, some texts such as news articles often contain embedded hyperlinks that implicitly provide the word spans, but these often point to other articles rather than specific items.
-On Wikipedi,a this is not the case, as hyperlinks point to articles on specific topics, which makes it useful for LUKE's pretraining task.
-Given its size, Wikipedia then is a particularly useful pretraining dataset.
+On Wikipedia, this is not the case, as hyperlinks point to articles on specific topics, which makes it useful for LUKE's pretraining task.
+Given its size, Wikipedia is thus a particularly useful pretraining dataset.
 
 As of June 23rd, the Danish Wikipedia has 267,408 content pages containing a total of 81,822,460 words\footnote{\url{https://da.wikipedia.org/wiki/Speciel:Statistik}. Visited June 23, 2021.}.
 The Danish Wikipedia from March 1st, 2021, which is marginally smaller, is used for building the dataset.
@@ -22,7 +22,7 @@ As the Danish Wikipedia is only roughly 2.5\pro\ the size of the English Wikiped
 
 Every article is a sequence of words with embedded hyperlinks.
 These are split into sequences of at most 512 tokens using BotXO's Danish BERT tokenizer, and the token spans of the hyperlinks are saved.
-The first and last tokens are always [CLS] and [SEP], respectively, with the remaining 510 tokens coming directly from the tokenizer.
+Following BERT \cite{devlin2019bert}, the first and last tokens are always [CLS] and [SEP], respectively, with the remaining 510 tokens coming directly from the tokenizer.
 Sequences are cut short if necessary to prevent hyperlinks spanning two sequences.
 All sequences contain text from at most one paragraph in an article.
 
@@ -38,7 +38,7 @@ Thus, an entry in the dataset -- called an example -- consists of the following:
     \item An array of two-tuples containing the start and end indices for every entity
     \item An array of two-tuples containing the start and end indices for every full word
 \end{itemize}
-The pretraining dataset is the set of all examples from all articles.
+Finally, the pretraining dataset is the set of all examples from all articles.
 
 \subsection{Entity Augmentations}
 \label{subsec:entaug}
@@ -50,19 +50,18 @@ This results in false negatives where entities are not annotated.
 In order to augment the entity annotations, we perform preprocessing on Wikipedia prior to pretraining.
 Our preprocessing consists of the following two steps applied article-wise:
 \begin{enumerate}
-    \item Get the set of mentioned articles including the title of the article itself.
+    \item Collect the set of mentioned articles including the title of the article itself.
     Only include titles of at least three characters.
-    \item For each title, check if it matches a sequence of characters following a whitespace, ignoring casing.
+    \item For each title, check if it matches a sequence of characters following a whitespace, while ignoring casing.
     If there is a match, annotate and go to next whitespace.
 \end{enumerate}
 Many hyperlinks span only the first part of a given word.
 For instance, this allows the words "Wind mills" to link to the article "Wind mill", even if they do not match exactly.
-When matching, such matches are annotated as we expect it to remove a large number of false negatives, while introducing relatively few false positives.
-To reduce the number of false positives, we only perform extra annotations with titles of at least three characters.
-This prevents the article on "A" to be linked at every word starting with "A".
+When matching, such cases are annotated as we expect it to remove a large number of false negatives, while introducing relatively few false positives.
+Not annotating titles shorter than three characters prevents the article on "A" to be linked at every word starting with "A".
 We also only match titles already linked in the articles, as we assume that any article that should be linked to has already been linked at least once.
 This further reduces the number of false positives.
-Whether this has positive effect on learning is subject to an experiment presented in Section~\ref{subsec:dataexp}.
+Whether this has a positive effect on learning is subject to an experiment presented in Section~\ref{subsec:dataexp}.
 
 Table \ref{tab:metadata} shows how these augmentation steps change the properties of the dataset.
 \begin{table}[H]
@@ -87,9 +86,9 @@ Table \ref{tab:metadata} shows how these augmentation steps change the propertie
 \section{Named Entity Recognition Benchmarks}
 \label{sec:nerdata}
 
-\subsection{Danish NER Datasets}
+\subsection{Danish Named Entity Recognition Datasets}
 \label{subsec:daNERdata}
-For the task of benchmarking both existing and new Danish named entity recognition (NER) models, three publicly available datasets previously used in the literature were identified.
+For the task of benchmarking both existing and new Danish NER models, three publicly available datasets previously used in the literature were identified.
 
 \paragraph{Danish Universal Dependencies}
 Danish Universal Dependencies of Danish Dependency Treebank (UD-DDT) is a grammatically annotated dataset produced by converting the Danish Dependency Treebank corpus \cite{kromann2003ddt} to the Universal Dependency annotation format \cite{johann2015udddt}.
@@ -97,7 +96,7 @@ The dataset consists of 5512 sentences and 100,733 characters from the Danish PA
 UD-DDT is split into training, development and test sets consisting of 4383, 564 and 565 sentences, respectively.
 Two NER annotations of this dataset are considered.
 \begin{itemize}
-    \item \emph{DaNE} is a 2020 NER annotation of the entire UD-DDT into four categories PER(son), ORG(anisation), LOC(ation), MISC(ellaneous) performed once by a linguist and once by non-linguists for the Alexandra Institute \cite[Sec. 4]{hvingelby2020dane}.
+    \item \emph{DaNE} is a 2020 NER annotation of the entire UD-DDT into four categories PER(son), ORG(anisation), LOC(ation), MISC(ellaneous) performed once by a linguist and once by a team of non-linguists for the Alexandra Institute \cite[Sec. 4]{hvingelby2020dane}.
     The categories are described in closer detail in Section \ref{subsec:annoschemes}.
     \item A NER annotation of the development and test subsets of UD-DDT into the same four entity categories was performed by Barbara Plank in 2019 \cite{plank2019neural}.
     A subset of the training data was also annotated.
@@ -107,10 +106,10 @@ Two NER annotations of this dataset are considered.
 \paragraph{Wikipedia Annotations}
 Pan et al. performed an automatic NER annotation of a Wikipedia corpus in 2017 by transferring English NER of the categories PER, ORG, LOC to 281 languages including Danish \cite{pan2017wikiann}.
 This dataset is known as \emph{WikiANN} (Wikipedia Annotations) and the Danish version includes 40000 sentences.
-Pan et al. consider this a "silver-standard" annotation due to its automatic generation which they label Knowledge Base mining \cite[1946]{pan2017wikiann}.
+Pan et al. consider this a "silver-standard annotation" due to its automatic generation which they label Knowledge Base mining \cite[1946]{pan2017wikiann}.
 The balanced training, development and test splits from Rahimi et al. are used \cite{rahimi2019transfer}.
 
-\paragraph{Summary}
+\paragraph{Comparison}
 These three NER-annotated datasets were used and a summary of their counts is shown in Table~\ref{tab:daNERdata}.
 DaNE is considered the main public Danish NER dataset, as it is produced with the highest degree of expert supervision and used for training most of the models compared in Section~\ref{sec:exidan}.
 However, as shown on on Table \ref{tab:danedist} and Figure \ref{fig:dadatadist}, DaNE and Plank suffer from uneven label distributions in the different subsets.
