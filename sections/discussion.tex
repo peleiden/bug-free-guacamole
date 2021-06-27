@@ -41,29 +41,29 @@ These are mostly made up of entity embeddings which are subjected to layer norma
 
 \subsection{Effect of More Pretraining}
 \label{subsec:effmore}
-How more pretraining affects the language understanding of the model can be hard to quantify.
-Obviously, there is the loss and by extension the top $ k $ accuracy, but these follow directly from the pretraining task and are not direct measures of language understanding.
-High scores may also indicate overfitting, especially on small datasets.
+The goal of the pretraining is to infuse the model with general language understanding, but it is not immediately clear how to measure such an abstract concept.
+The simplest idea is naturally the loss and by extension the top $ k $ accuracies, but this approach is not exempt of issues:
+Without a validation set, overfitting can be disguised as improvement (especially on small datasets), or perhaps decreases in loss come from the decoder part of the masked language modelling, which is irrelevant to downstream tasks.
 
 One way to glimpse into the pretraining black box is to observe the performance of downstream language tasks on a number of checkpoints produced during the pretraining.
-Such a checkpoint was produced just after model initialization and following that after every fifth epoch for a total of 32 checkpoints from the main model.
-At every checkpoint, fine-tuning was performed using the hyperparameters from Table \ref{tab:baseline-hyper}.
+Such a checkpoint was produced just after model initialization and following that at roughly every fifth epoch for a total of 32 checkpoints.
+At every checkpoint, fine-tuning and evaluation on DaNE was performed using the hyperparameters from Table \ref{tab:baseline-hyper}.
 The result is shown in Figure \ref{fig:running}.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.8\textwidth]{running}
+    \includegraphics[width=.9\textwidth]{running}
     \caption{Fine-tuning results on DaNE using different pretraining checkpoints.}
     \label{fig:running}
 \end{figure}\noindent
-At least for NER, extra pretraining only yields improved results up to five epochs -- or maybe even less.
-After the first five epochs, fine-tuning performance is stagnant.
-In fact, the performance curve mirrors that of the masked subword accuracy of the MLM (see Table \ref{fig:pretrain-acc}).
-Also, there is hardly any correlation between the performance and the masked entity accuracy.
-This surprising result indicates that NER task primarily relies on the knowledge gained from the BERT part of the model.
+This result shows that pretraining definitely is necessary to get good performance on NER.
+Somewhat surprisingly, however, after five epochs -- or maybe even less -- additional pretraining does not improve downstream results even slightly.
+In fact, the curve almost perfectly mirrors the masked subword accuracy form Figure \ref{fig:pretrain-acc}, indicating that the model primarily relies on its BERT subset for NER.
 
-\begin{enumerate}
-    \item Adressér dette ret problematisk resultat bedre
-\end{enumerate}
+It must be noted that NER is just one downstream task and that other such tasks may see more benefit from additional pretraining.
+However, another explanation may be more probable:
+That the Danish Wikipedia is so small that it only takes a few epochs for DaLUKE to learn what it can from it -- especially given that Wikipedia made up an albeit small but still notable part of da-BERT's training data, so it already has been seen \cite{botxo2019dabert}.
+That would also help explain the much faster convergence of subword accuracy compared to entity accuracy.
+The pretraining dataset only has a little over 100 million subword tokens (see Table \ref{tab:metadata}) and 7.2 million entity annotations -- not exactly much for a model with 270 million parameters and an architecture with a well-known near insatiable thirst for data.
 
 \subsection{Baseline}
 For a baseline model, the main model is retrained using only 50 epochs, but otherwise using the same hyperparameters, shown in Table \ref{tab:pretrain-hyper}.
