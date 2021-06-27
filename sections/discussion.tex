@@ -954,7 +954,10 @@ For this reason, a confusion matrix (Table \ref{tab:pred-true-confmat}) is const
             & MISC & 0  & 0    & 16  & 114 & 29  \\
             & O    & 5  & 0    & 8   & 14  & 9,197
     \end{tabular}
-    \caption{Predicted labels versus the true labels on the DaNE test set.}
+    \caption{
+        Predicted labels versus the true labels on the DaNE test set.
+        Note that this count is done on word level, so entities spanning multiple words appear multiple times in the table.
+    }
     \label{tab:pred-true-confmat}
 \end{table}\noindent
 From the table, there are two major sources for errors:
