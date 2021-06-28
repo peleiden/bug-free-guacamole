@@ -2,12 +2,13 @@
 \documentclass[main.tex]{subfiles}
 
 \begin{document}
+\lhead{Data}
 \chapter{Methods}
 \lhead{Methods}
 \label{chap:methods}
 
 \section{Benchmarking Named Entity Recognition}
-\subsection{Evaluation of NER}
+\subsection{Evaluation of Named Entity Recognition}
 \label{subsec:nereval}
 As explained in Section \ref{subsec:annoschemes}, all datasets used in this project supply an annotation label in IOB format \cite{ramshaw1995IOB} for each word in each sequence.
 Comparing a sequence of true annotations and predictions, there are a number of potential error patterns as both the span and the type of the entity are to be guessed, see Table~\ref{tab:eval}.
@@ -16,7 +17,7 @@ Comparing a sequence of true annotations and predictions, there are a number of 
     \centering
     \begin{tabular}{l|llllll}
         Sentence                    & Gaul & is & divided & into & three & parts.\\
-        True annoation              & B-LOC & O & O & O & O & O \\\hline
+        True annotation             & B-LOC & O & O & O & O & O \\\hline
         I (TP): Complete match      & B-LOC & O & O & O & O & O \\
         II (FP): Spurious entity    & B-LOC & O & O & O & O & B-MISC \\
         III (FN): Missing entity    & O     & O & O & O & O & O \\
@@ -208,18 +209,18 @@ For pretraining, DaLUKE also employs linear warmup for the first 6\pro\ of param
 This results in a more aggressive decrease in learning rate after the warmup period but a slightly higher learning rate in the final steps compared to STLR.
 This was used as the amount of available compute was not known in advance, and this approach would work well with both early stopping and continued training.
 The learning rate development is shown on Figure \ref{fig:lr}.
-\begin{figure}
+
+\begin{figure}[H]
     \centering
     \includegraphics[width=.6\textwidth]{lr}
     \caption{Learning rate during the pretraining.}
     \label{fig:lr}
 \end{figure}\noindent
-
 Following Yamada et al., we do not update the parameters of the weights transferred from da-BERT for the first half of the training.
+
 \paragraph{Accuracy measures}
 To measure the performance of the pretraining model, the accuracies of word and entity predictions were calculated throughout the training.
 Due to the size of the classification problem, especially regarding entities, top $ k $ accuracies were calculated - that is, whether the true token was among the $ k $ tokens given the highest probability by the model.
-Top 1, 3, 5, and 10 accuracies were calculated for both the masked word and masked entity task using every example that the model trains on, while top 25 and 50 were calculated using one twentieth of examples for computational efficiency.
 
 \subsection{Fine-tuning DaLUKE for Named Entity Recognition}%
 \label{sub:fine-tune-ner}
@@ -260,9 +261,6 @@ The search is performed by repeating the training procedure with all combination
     \item Dropout (final, linear layer) $\in\{0.025, 0.1\}$
     \item Whether to use class-weighted loss $\in\{\text{Yes}, \text{No}\}$
 \end{enumerate}
-For each combination, the resulting model was evaluated on the development set, shown in Table~\ref{tab:hyperres}, and the hyperparameters with the highest average F1 score were chosen.
-The final model was produced by fine-tuning again to limit selection bias.
-The chosen hyperparameters are reported in Table~\ref{tab:main-hyper} together with the used hyperparameters that were not tested.
 \begin{table}[H]
     \centering
     \small
@@ -280,6 +278,9 @@ The chosen hyperparameters are reported in Table~\ref{tab:main-hyper} together w
     \caption{Hyperparameters used for fine-tuning DaLUKE for NER.}
     \label{tab:main-hyper}
 \end{table}\noindent
+For each combination, the resulting model was evaluated on the development set, shown in Table~\ref{tab:hyperres}, and the hyperparameters with the highest average F1 score were chosen.
+The final model was produced by fine-tuning again to limit selection bias.
+The chosen hyperparameters are reported in Table~\ref{tab:main-hyper} together with the used hyperparameters that were not tested.
 
 \subsection{Implementation Details and Open Source Software}%
 \label{sub:oss}
@@ -335,7 +336,7 @@ For comparison, Yamada et al. trained LUKE using 16 V100s for 30 days. \cite{yam
 
 We measured the time needed to train for one epoch on different cluster configurations.
 The results are shown on Figure \ref{fig:runtime}.
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[width=.7\textwidth]{runtime}
     \caption{

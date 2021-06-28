@@ -2,6 +2,7 @@
 \documentclass[main.tex]{subfiles}
 
 \begin{document}
+\lhead{Results}
 \chapter{Experiments and Discussion}
 \lhead{Experiments and Discussion}
 \label{chap:discussion}
@@ -15,6 +16,14 @@ As the experiments were trained on a $ 1\times$A100 configuration, which exhibit
 \subsection{The Parameter Population}
 The first model analysis is a global view of the DaLUKE parameters.
 Figure \ref{fig:weight-dist} shows the model parameter value distribution before and after pretraining divided by whether a given parameter was initialized from da-BERT.
+
+Two observations stand out:
+Firstly, DaLUKE-exclusive parameters, which consist of entity embeddings and the entity part of the decoder, are spread out.
+This includes the notable spike at the left figure that comes from biases and layer normalizations being initialized to 0.
+Secondly, the shared parameters are more or less unchanged in their distribution.
+This makes sense, as they are already trained, hence further training on similar data with a similar task should not result in any significant change.
+Furthermore, all parameters from da-BERT (barring the three sets of DaLUKE-exclusive query matrices) are not changed for the first half of the training.
+When they finally are unlocked, both the loss and learning rate have dropped significantly, resulting in less change.
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{weights}
@@ -28,14 +37,6 @@ Figure \ref{fig:weight-dist} shows the model parameter value distribution before
     }
     \label{fig:weight-dist}
 \end{figure}\noindent
-Two observations stand out:
-Firstly, DaLUKE-exclusive parameters, which consist of entity embeddings and the entity part of the decoder, are spread out.
-This includes the notable spike at the left figure that comes from biases and layer normalizations being initialized to 0.
-Secondly, the shared parameters are more or less unchanged in their distribution.
-This makes sense, as they are already trained, hence further training on similar data with a similar task should not result in any significant change.
-Furthermore, all parameters from da-BERT (barring the three sets of DaLUKE-exclusive query matrices) are not changed for the first half of the training.
-When they finally are unlocked, both the loss and learning rate have dropped significantly, resulting in less change.
-
 It is noted that the new DaLUKE parameters after training form a distribution appearing Gaussian.
 These are mostly made up of entity embeddings subjected to layer normalizations which we suspect to be influential on this shape.
 
@@ -52,7 +53,7 @@ At every checkpoint, fine-tuning and evaluation on DaNE was performed using the 
 The result is shown in Figure \ref{fig:running}.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.9\textwidth]{running}
+    \includegraphics[width=\textwidth]{running}
     \caption{Fine-tuning results on DaNE using different pretraining checkpoints.}
     \label{fig:running}
 \end{figure}\noindent
@@ -818,7 +819,7 @@ The true, underlying dimensionality of the representations also seems high as th
 
 \begin{figure}[H]
     \centering
-        \includegraphics[width=0.7\linewidth]{full-geo/pca_matrix}
+    \includegraphics[width=.9\linewidth]{full-geo/pca_matrix}
     \caption{
         The first four components visualized against each other from PCA performed on all 975,312 possible entity spans in the DaNE training data.
         Spans in grey are annotated entities in the dataset.
@@ -830,7 +831,7 @@ For the reductions in the positive label-only dataset, even more meaningful stru
 
 \begin{figure}[H]
     \centering
-        \includegraphics[width=0.7\linewidth]{pos-geo/pca_matrix}
+    \includegraphics[width=.9\linewidth]{pos-geo/pca_matrix}
     \caption{
         The first four components visualized against each other from PCA performed on only the 4,003 entity spans that are annotated to a NE class in the DaNE training data.
         Class separation is observed in multiple of the components, exemplifying why the NER classification problem is solved well by DaLUKE which only requires few epochs to distinguish classes.

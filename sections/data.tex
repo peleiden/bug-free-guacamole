@@ -2,6 +2,7 @@
 \documentclass[main.tex]{subfiles}
 
 \begin{document}
+\lhead{Theory and State of the Art}
 \chapter{Data}
 \lhead{Data}
 \label{chap:data}
@@ -163,7 +164,7 @@ Previous literature has highlighted the scarcity of accessible, gold-standard, D
 \subsection{CoNLL-2003}
 The shared task for the 2003 Conference on Computational Natural Language Learning (CoNLL) was NER for which annotations on English Reuters news wire articles were performed by researchers \cite{tjang2003conll}.
 This corpus consists of 1393 articles that were divided into training, development and test sets as seen in Table~\ref{tab:conll2003}.
-The dataset is the central benchmark in English NER \cite[Sec. 4.3]{yamada2020luke} and has a competitive history with over 50 models submitted to the performance leaderboard at Papers With Code\footnotemark.
+The dataset is the central benchmark in English NER \cite[Sec. 4.3]{yamada2020luke} and has a competitive history with over 50 models submitted to the performance leaderboard at Papers With Code \footnotemark.
 \footnotetext{
     See 
     \url{
@@ -190,30 +191,25 @@ The dataset is the central benchmark in English NER \cite[Sec. 4.3]{yamada2020lu
 \label{subsec:annoschemes}
 The DaNE and Plank sets refer to the CoNLL-2003 as their reference annotation scheme \cite[Sec. 4]{hvingelby2020dane} \cite[Sec. 2.1]{plank2019neural}.
 WikiANN follows the same categories, excluding MISC.
-All datasets follow the Inside-outside-beginning (IOB) format that ascribes a word the "I-X" tag if it is inside a named entity of type X, "B-X" if it begins the X entity, and "O" if it is outside named entities (e.g. the null class).
-An example is shown in Table~\ref{tab:iob-ex}.
+All datasets follow the Inside-outside-beginning (IOB) format that ascribes a word the "I-X" tag if it is inside a named entity of type X, "B-X" if it begins the entity, and "O" if it is outside named entities (e.g. the null class).
 This format proposed by Ramshaw and Marcus in 1995 is widely used but does allow entities to be nested or to overlap \cite{ramshaw1995IOB}.
 
 \begin{table}[H]
     \centering
     \begin{tabular}{l|llllll}
-        Text              & Antonio & Vivaldi & came & from & Venice\\\hline
+        Text example      & Antonio & Vivaldi & came & from & Venice\\\hline
         IOB annotation    & B-PER   & I-PER   &  O   & O    & B-LOC   \\
     \end{tabular}
-    \caption{
-        IOB annotates entities on the word level, using B and I to clarify whether the word begins or is inside an NE.
-    }
-    \label{tab:iob-ex}
 \end{table}\noindent
 The definition of the annotation categories are given in the CoNLL-2003 guidelines\footnotemark~and are summarized here:
-\footnotetext{
-    These are available here: \url{https://www.clips.uantwerpen.be/conll2003/ner/annotation.txt} (visited on Februrary 27, 2021)
+    \footnotetext{
+        These are available at \url{clips.uantwerpen.be/conll2003/ner/annotation.txt}. Visited February 27, 2021.
 }
 \begin{itemize}
     \item LOC: Geographical regions, natural locations, and public and commercial places. Also includes abstract places.
     \item PER: Names, aliases of people, animals, and fictional characters.
     \item ORG: Companies, brands, government bodies, movements, clubs, and subdivisions thereof.
-    \item MISC: Titles of media, nationalities, languages, religions, ideologies, wars, slogans, eras, but also both adjectives and word combinations that are derived from one of the other tags.
+    \item MISC: Titles of media, nationalities, languages, religions, ideologies, wars, slogans, eras, and adjectives and word combinations that are derived from one of the other tags.
 \end{itemize}
 To end the introduction of the data, some examples of NEs in each testing dataset are shown.
 Note that the all-important context of the words is not shown here.
