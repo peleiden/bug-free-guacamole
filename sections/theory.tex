@@ -13,10 +13,10 @@ Secondly, a \emph{fine-tuning}, or downstream training, is performed in which th
 
 
 \section{Named Entity Recognition}
-Natural language processing has the broad goal of algorithmically understanding languages such as English and Danish.
-To quantify this abstract ideal, understanding is often measured in performance on a set of well-defined language challenges that are expected to require general language knowledge.
-One such challenge is the task of recognizing \emph{named entities} (NEs), real-world objects with rigid definitions such as specific persons, locations, organizations, events, products, etc.
-The problem of NER is to produce an algorithm that can, given a string of characters designating a document of natural language, return an \emph{annotation} which ascribes, to each word in the document, both whether the word is a part of a NE, and what category of NE the word corresponds to \cite{wiki2021ner}.
+NLP has the broad goal of algorithmically understanding languages such as Danish or English.
+To quantify this abstract ideal, understanding is often measured in performance on a set of well-defined challenges that are expected to require general language knowledge.
+One such challenge is the task of recognizing \emph{named entities} (NE), real-world objects with rigid definitions such as specific persons, locations, organizations, events, products, etc.
+The problem of NER is to produce an algorithm that can, given a string of characters designating a document of natural language, return an \emph{annotation} that ascribes, to each word in the document, both whether the word is a part of a NE, and what category of NE the word corresponds to \cite{wiki2021ner}.
 For the string
 \[
     \text{
@@ -273,7 +273,7 @@ These transfer learned weights are kept fixed for the first half of the training
 \label{subsubsec:entityaware}
 Additionally, Yamada et al. present an entity-related change to the BERT encoder architecture in the query mechanism of the attention scorer \cite[Sec. 3.2]{yamada2020luke}.
 
-For the attention between token $i$ and token $j$ with the representations $\mathbf x_i, \mathbf x_j$, a core part of the normal transformer attention mechanism is to compute the following scalar:
+For the attention between token $i$ and token $j$ with the respective representations $\mathbf x_i$ and $\mathbf x_j$, a core part of the normal transformer attention mechanism is to compute the following scalar:
 \begin{equation}
     q_{ij} = \mathbf x_j^\top \mathbf Q \mathbf x_i,
 \end{equation}
