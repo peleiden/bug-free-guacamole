@@ -1082,7 +1082,7 @@ From examining the examples where the models differ, DaLUKE seems to employ the 
     \label{tab:daberterrors}
 \end{table}\noindent
 The same comparison is made to DaCy large which achieves higher performance than DaLUKE -- especially driven by improvements in organization and miscellaneous classes.
-Here, the biggest differences lie in cases where the models have to discern between these two classes and  null class, seen at Table~\ref{tab:dacycompare}.
+Here, the biggest differences lie in cases where the models have to discern between these two classes and the null class, seen at Table~\ref{tab:dacycompare}.
 
 % 2021-06-19 16:29:26.614    INFO        Confusion matrix with DaLUKE results ↓ and results from DaCyLarge-DaNE →
 % 2021-06-19 16:58:11.740    INFO             | LOC | PER | ORG | MISC | O
@@ -1111,7 +1111,7 @@ Here, the biggest differences lie in cases where the models have to discern betw
 Examples where DaCy large is right, but DaLUKE wrong, are shown at Table~\ref{tab:dacyex}.
 The initial explanation of DaCy large's edge over DaLUKE was the use of a BERT large-sized transformer, adding flexibility to the model, theoretically allowing higher-level language features to be learned compared to the base size model used by DaLUKE.
 From the examples, more reasons are identified.
-One cause is the use of the case-sensitive byte-pair encoding tokenizer of RoBERTa \cite{conneau2020unsupervised} which we speculate helps to discover more entities, relating to the high recall of DaCy (83.7\pro versus the 81.2\pro of DaLUKE).
+One cause is the use of the case-sensitive byte-pair encoding tokenizer of RoBERTa \cite{conneau2020unsupervised} which we speculate helps to discover more entities, relating to the high recall of DaCy (83.7\pro\ versus the 81.2\pro\ of DaLUKE).
 Another interesting pattern lies in the strength of the multilingual model used by DaCy correctly predicting entities in foreign languages.
 
 \begin{table}[H]
@@ -1165,16 +1165,16 @@ We see promise in this approach of lightly sprinkling some explicit knowledge on
 The results are, in our estimation, solid and encouraging.
 DaLUKE did not, however, sweep away the classic language modeling approach and was intercepted for the NER crown by the larger model presented in DaCy.
 Some parts of the pretraining approach also seemed misguided on the small dataset.
-To further understand the DaLUKE performance, the results from other downstream tasks than NER would be of great interest, including coreference resolution on the Dacoref dataset \cite{kromann2004cdt, danlp2021} or dependency parsing on the Danish Dependency Treebank \cite{kromann2003ddt}.
-It would also improve the insight to pretrain DaLUKE with a subset of the corpus left out as a testing set.
+To further understand the DaLUKE performance, results from other downstream tasks than NER would be of great interest, including coreference resolution on the Dacoref dataset \cite{kromann2004cdt, danlp2021} or dependency parsing on the Danish Dependency Treebank \cite{kromann2003ddt}.
+It would also improve insight to pretrain DaLUKE with a subset of the corpus left out as a testing set.
 Some further changes which have the potential to improve performance are proposed.
 
 \paragraph{Data}
 As in any deep learning project, we end up crying out for more data.
 Multiple of the pretraining experiments presented in Section~\ref{sec:pretrainpls} show signs of the model overfitting to the limited Danish Wikipedia.
-An immediate idea is to include the Norweigan Wikipedia as the language (in \emph{bokmål}) is syntactically, and vocabulary-wise similar to Danish.
-There are some technical issues such as the choice of tokenizer, but also the entity modeling, as the same entity might be spelled differently in both languages.
-While the Norwegian Wikipedia has 156M words \footnotemark compared to the 81M of the Danish Wikipedia, this might be too little to dramatically change the results.
+An immediate idea is to include the Norweigan Wikipedia as the primary language, \emph{bokmål}, is syntactically, and vocabulary-wise similar to Danish.
+There are some technical issues such as the choice of tokenizer and entity modeling, as the same entity might be spelled differently in both languages.
+While the Norwegian Wikipedia has 156M words\footnotemark compared to the 81M of the Danish Wikipedia, this might be too little to dramatically change the results.
 \footnotetext{Norwegian Wikipedia statistics: \url{https://no.wikipedia.org/wiki/Spesial:Statistikk}}
 
 A more impactful improvement could be found from our dataset augmentation idea, though it did not improve results for the Danish Wikipedia.
@@ -1189,12 +1189,11 @@ The primary, open dataset in which we see promise for automated annotation is th
 
 Access to closed datasets such as news articles and internal documents could also be a way to increase the available data.
 However, such documents are closed for a reason.
-In most cases, suppliers of closed documents would have an interest in not risking that these documents could be backward engineered from the model.
+In most cases, suppliers of closed documents would have an interest in not risking that these documents could be reverse engineered from the model.
 For this, methods such as differential privacy \cite{GONG2020131} could play a role.
 
 Finally, investigating biases in the pretraining dataset could provide insight into why performance is better on some categories than others (see Table \ref{tab:DaNE}).
 Obviously, Wikipedia does not categorize articles by the four CoNLL-2003 categories, but many articles are still categorized into larger groups that could light a path to putting all or most articles into the CoNLL boxes.
-Such an investigation would be especially important if automatically annotated datasets are incorporated.
 
 \paragraph{Modeling}
 Motivated by the impressive success of DaCy, the most direct model improvement is to use the multilingual RoBERTa \cite{conneau2020unsupervised} instead of the Danish BERT \cite{botxo2019dabert}.
@@ -1215,9 +1214,9 @@ We imagine a hierarchical token that uses the article classification of Wikipedi
 \end{figure}\noindent
 
 \paragraph{Ethics}
-As with all applications of AI, there are significant ethical concerns.
+As with many applications of AI, there are significant ethical concerns.
 High-performing language models capable of generating convincing text can be used for automating the production of spam and other deceitful internet content.
-For instance, OpenAI claimed that GPT-2 \cite{Radford2019gpt2} generated problematic articles so easily that its release was considerably delayed \footnote{\url{https://www.technologyreview.com/2019/08/29/133218/openai-released-its-fake-news-ai-gpt-2/}. Visited June 26, 20201.}.
+For instance, OpenAI claimed that GPT-2 \cite{Radford2019gpt2} generated problematic articles so easily that its release was considerably delayed\footnote{\url{https://www.technologyreview.com/2019/08/29/133218/openai-released-its-fake-news-ai-gpt-2/}. Visited June 26, 20201.}.
 Incorporating knowledge in language models might allow bad actors better control over this production, requiring monitoring of the potentially harmful consequences of effective NLP.
 
 Another concern is that of unintended offensive or politically charged language.
