@@ -47,7 +47,7 @@ The SOTA on English NER benchmarks moves quickly, but almost all algorithms curr
 
 \paragraph{Word embeddings}
 Word embeddings are one of the most ubiquitous tools in the NLP toolbox and come in many variants, all sharing the general idea of mapping a word token to a real-valued vector representation corresponding to a semantic condensation of the word.
-When using the term \emph{embeddings}, we refer to the static, decontextualized representations such as the \emph{fasttext}-based, 300-dimensional, Danish embeddings released by Edouard Grave et al. \cite{grave2018learning}.
+When using the term \emph{embeddings}, we refer to the static, un-contextualized representations such as the \emph{fasttext}-based, 300-dimensional, Danish embeddings released by Edouard Grave et al. \cite{grave2018learning}.
 
 One of the challenges in language modeling is that many words change their meaning completely depending on the context in which they appear.
 Consider, for instance, the sentences ''The mouse and the elephant'' and ''Please left-click using the mouse''.
@@ -234,7 +234,7 @@ An input example for LUKE consists both of a sequence of words and a set of enti
 \end{itemize}
 For use of LUKE, the text sequence is tokenized into $m$ subword tokens using the normal tokenizer of RoBERTa, the transformer on which LUKE is based.
 The entities are converted to $n$ entity tokens; integer values corresponding to indices in a vocabulary of known, named entities.
-The positions of the entities are included in the further inference as \emph{position ids}.
+The positions of the entities are included in the further inference as \emph{position IDs}.
 
 \paragraph{Embeddings}
 The subword tokens are passed through the same, static word embedding architecture as that of BERT which outputs $m$ vectors of dimension $H$, one for each subword.
@@ -341,9 +341,9 @@ All possible spans over the entire sequence (or $n$-grams) are calculated and sa
 Spans longer than 16 words and spans that cross sentence boundaries are discarded.
 Each span along with the text in which it appears is saved as a NER example.
 
-An example is forward passed through LUKE by marking the candidate entity with the [MASK] entity id.
+An example is forward passed through LUKE by marking the candidate entity with the [MASK] entity ID.
 For each named entity candidate, the computed representation of this [MASK] entity and the CWR's of the first and last word tokens in the span are concatenated.
-[MASK] is used as NE candidate as this entity id was used for a similar prediction task in the pretraining.
+[MASK] is used as NE candidate as this entity ID was used for a similar prediction task in the pretraining.
 For NER, only [MASK] and [PAD] are used out of all the entity embeddings that LUKE contains.
 
 The combined representation from the pretrained model is then given to a single linear layer that learns to classify the candidate as either a non-entity or one of the classes in the dataset.
