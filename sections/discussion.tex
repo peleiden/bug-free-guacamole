@@ -14,7 +14,7 @@ The experiments were trained primarily on a $ 1\times$A100 configuration.
 Due to its negative effect on runtime on A100's (see Figure \ref{fig:runtime}), AMP is not used for any of the following experiments.
 \subsection{The Parameter Population}
 The first model analysis is a global view of the DaLUKE parameters.
-Figure \ref{fig:weight-dist} shows the model parameter value distribution before and after pretraining divided by whether or not a given parameter was initialized from da-BERT.
+Figure \ref{fig:weight-dist} shows the model parameter value distribution before and after pretraining divided by whether a given parameter was initialized from da-BERT.
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{weights}
@@ -43,7 +43,7 @@ These are mostly made up of entity embeddings which are subjected to layer norma
 \label{subsec:effmore}
 The goal of the pretraining is to infuse the model with general language understanding, but it is not immediately clear how to measure such an abstract concept.
 The simplest idea is naturally the loss and by extension the top $ k $ accuracies, but this approach is not exempt of issues:
-Without a validation set, overfitting can be disguised as improvement (especially on small datasets), or perhaps decreases in loss come from the decoder part of the masked language modelling, which is irrelevant to downstream tasks.
+Without a validation set, overfitting can be disguised as improvement (especially on small datasets), or perhaps decreases in loss come from the decoder part of the masked language modeling, which is irrelevant to downstream tasks.
 
 One way to glimpse into the pretraining black box is to observe the performance of downstream language tasks on a number of checkpoints produced during the pretraining.
 Such a checkpoint was produced just after model initialization and following that at roughly every fifth epoch for a total of 32 checkpoints.
@@ -153,7 +153,7 @@ The results of the baseline experiment together with the following experiments a
 \subsection{Entity-aware Self-attention}
 \label{subsec:selfatt}
 The entity-aware self-attention mechanism, one of Yamada et al.'s key contributions to the transformer, was used for our pretraining task.
-An experiment using the traditional attention, which does not discrimante between word and entity tokens, was performed.
+An experiment using the traditional attention, which does not discriminate between word and entity tokens, was performed.
 % is the addition of query matrices for relations between entities and words.
 % They do not use these extra matrices in the pretraining but instead let them be learned during downstream tasks, initializing them to the word-to-word matrices of RoBERTa.
 % They perform ablation studies on multiple datasets, showing an improvement in every case over original attention.
@@ -297,7 +297,7 @@ In order to test this hypothesis, a pretraining is conducted without initializin
 \end{table}\noindent
 It is immediately clear from Table \ref{tab:nobert-mlm} that this model performs noticeably better at both the masked word and masked entity tasks than other models so far.
 That is despite even starting from 0 in the masked word task (see Figure \ref{fig:nobert-acc}).
-Because of this, good NER performance could reasonbly be expected.
+Because of this, good NER performance could reasonably be expected.
 This did not happen - in fact, results were much worse than the baseline.
 % 2021-06-12 12:20:54.130    INFO                      precision    recall  f1-score   support
 
@@ -340,7 +340,7 @@ From Figure \ref{fig:nobert-acc}, the initialization seems to provide two things
 \end{itemize}
 This stabilization effect is supported by the stable distribution of parameters inherited from da-BERT shown at Figures \ref{fig:weight-dist}.
 It should be noted that because no weights came from da-BERT, no weights were ever locked throughout the pretraining in this experiment.
-A similar experiment with weights unlocked and initialization from da-BERT showed pretraining accuracies much closer to the baseline, indicating that the reguralizing effect is indeed the use of da-BERT.
+A similar experiment with weights unlocked and initialization from da-BERT showed pretraining accuracies much closer to the baseline, indicating that the regularizing effect is indeed the use of da-BERT.
 \begin{enumerate}
     \item Lav et appendiks-afsnit til dette eksperiment
 \end{enumerate}
@@ -730,7 +730,7 @@ Conclusively, this idea did not benefit our main results, a testament to the rob
 
 \subsection{Feature Usage}%
 \label{sub:Feature Usage}
-An entity candidate forward passed through the final, classifying layer in the NER model is comprised of the concatenation of word representations of first and final subword tokens, and, novelly for LUKE, a contextual representation of the entity span.
+An entity candidate forward passed through the final, classifying layer in the NER model consists of the concatenation of word representations of first and final subword tokens, and, novelly for LUKE, a contextual representation of the entity span.
 Two fine-tuning experiments are performed by altering this entity feature approach by observing the performance when the subword token and entity representations are used individually.
 
 \begin{table}[H]
@@ -1119,7 +1119,7 @@ Here, the biggest differences lies in cases where the models have to discern bet
 Examples where DaCy Large is right, but DaLUKE wrong, are shown at Table~\ref{tab:dacyex}.
 The initial explanation of DaCy Large's edge over DaLUKE was the use of a BERT large-sized transformer, adding flexibility to the model, theoretically allowing higher level language features to be learned compared to the base size model used by DaLUKE.
 From the examples, more reasons are identified.
-One cause is the use of the case sensitive byte-pair encoding tokenizer of RoBERTa \cite{conneau2020unsupervised} which we speculate helps discovering more entities, relating to the high recall of DaCy (83.7\pro versus the 81.2\pro of DaLUKE).
+One cause is the use of the case-sensitive byte-pair encoding tokenizer of RoBERTa \cite{conneau2020unsupervised} which we speculate helps to discover more entities, relating to the high recall of DaCy (83.7\pro versus the 81.2\pro of DaLUKE).
 Another interesting pattern lies in the strength of the multilingual model used by DaCy correctly predicting entities in foreign languages.
 
 \begin{table}[H]
@@ -1190,7 +1190,7 @@ Much needed entirely new LUKE pretraining datasets could be produced from raw te
 Such lower standard annotations used to achieve extra data might be necessary for continued improvement in low-resource languages such as Danish but should be used carefully and with an analysis of the trade off between quality and quantity of data.
 Other automatic annotaters than simple pattern matching might also be beneficial as the field of entity linking has been applied to Wikipedia \cite{brochier2021wikilink} including ready-to-use tools such as the Danish version of DBpedia Spotlight \cite{isem2013daiber}.
 It might hold that the quality of the entity annotations is not all-important, in which case tools that link entire sentences or paragraphs to entities without localizing them exactly might be used.
-The entity potition ids could then be omitted.
+The entity position ids could then be omitted.
 Here, Danish tools for explicit semantic analysis \cite{hansen2017esa} could help.
 
 The primary, open dataset for which we see promise in automated annotation is the recently published Danish Gigaword corpus which includes documents that are more diverse in domain and dialect than the Danish Wikipedia \cite{derc2021giga}.
@@ -1224,7 +1224,7 @@ We imagine a hierarchical token that uses the article classification of Wikipedi
 
 \paragraph{Ethics}
 As with all applications of AI, there are significant ethical concerns.
-Hihg-performing language models capable of generating convincing text can be used for automating the production of spam and other deceitful internet content.
+High-performing language models capable of generating convincing text can be used for automating the production of spam and other deceitful internet content.
 For instance, OpenAI claimed that GPT-2 \cite{Radford2019gpt2} generated problematic articles so easily that its release was considerably delayed \footnote{\url{https://www.technologyreview.com/2019/08/29/133218/openai-released-its-fake-news-ai-gpt-2/}. Visited June 26, 20201.}.
 Incorporating knowledge in language models might allow bad actors better control over this production, requiring monitoring of the potential harmful consequences of effective NLP.
 
@@ -1234,6 +1234,6 @@ As the internet has no shortage of hate, the models will naturally learn these p
 Such behaviour has for instance been observed with GPT-3 \cite{brown2020language}, the largest language model in existence as of writing\footnote{\url{https://www.technologyreview.com/2020/10/23/1011116/chatbot-gpt3-openai-facebook-google-safety-fix-racist-sexist-language-ai/}. Visited June 26, 2021.}.
 One solution could be the use of NLP methods such as hate speech detection, as done for Danish by Sigurbergsson and Derczynski \cite{sigurbergsson-derczynski-2020-offensive}.
 However, these problems of language models can also be seen in a larger AI safety context as an alignment problem \cite{taylor2020alignment}:
-How do we guarantee that the implicit values of these automated systems are compatible with the our engineering goals of benefiting society?
+How do we guarantee that the implicit values of these automated systems are compatible with our engineering goals of benefiting society?
 
 \end{document}

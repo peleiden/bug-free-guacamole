@@ -160,7 +160,7 @@ The reproduction was performed using Python version 3.7.10 and the dependency ve
 
 \subsection{Pretraining Methodology and Hyperparameters}%
 \label{sub:dalpre}
-Our pretraining approach followed the one used by Yamada et al, as described in Section \ref{subsec:lukepre}, with four key differences:
+Our pretraining approach followed the one used by Yamada et al., as described in Section \ref{subsec:lukepre}, with four key differences:
 \begin{enumerate}
     \item
         Entity-aware self-attention was used in the pretraining, as this is expected to positively impact the modeling of knowledge.
@@ -223,7 +223,7 @@ Top 1, 3, 5, and 10 accuracies are calculated for both the masked word and maske
 
 \subsection{Fine-tuning DaLUKE for Named Entity Recognition}%
 \label{sub:fine-tune-ner}
-The fine-tuning of DaLUKE largely followed that of LUKE, described in section \ref{sec:LUKE}.
+The fine-tuning of DaLUKE largely followed that of LUKE, described in Section \ref{sec:LUKE}.
 The main DaLUKE NER model was produced by fine-tuning on DaNE.
 
 After each epoch, the model was evaluated on the development split of the dataset.
@@ -237,7 +237,7 @@ Howard and Ruder have also shown that the slanted triangle approach for fine-tun
 \paragraph{Loss}
 Due to the nature of the $ n $-grams, only very few spans actually cover entities, making the O class dominate the dataset.
 For instance, in the training set of DaNE, the O class accounts for 99.3\pro\ of spans and the entity counts are not balanced.
-This motivated us to implement class frequency-weighted, the performance of which is discussed in section \ref{subsec:lossexp}.
+This motivated us to implement class frequency-weighted, the performance of which is discussed in Section \ref{subsec:lossexp}.
 
 The class-weighted loss $ l_w $ was calculated similarly to the unweighted loss in equation \eqref{eq:crossentropyloss}:
 \begin{equation}\label{eq:w-crossentropyloss}
@@ -258,9 +258,9 @@ The search is performed by repeating the training procedure with all combination
     \item Batch size $\in\{8, 16\}$
     \item Peak learning rate $\in\{10^{-5}, 5\ctp{-5}\}$
     \item Dropout (final, linear layer) $\in\{0.025, 0.1\}$
-    \item Whether or not to use class-weighted loss $\in\{\text{Yes}, \text{No}\}$
+    \item Whether to use class-weighted loss $\in\{\text{Yes}, \text{No}\}$
 \end{enumerate}
-For each combination, the resulting model was evaluated on the development set, shown in Table~\ref{tab:hyperres}, and the hyperparameters with highest average F1 score was chosen.
+For each combination, the resulting model was evaluated on the development set, shown in Table~\ref{tab:hyperres}, and the hyperparameters with the highest average F1 score was chosen.
 The final model was produced by fine-tuning again to limit selection bias.
 The chosen hyperparameters are reported on Table~\ref{tab:main-hyper} together with the used hyperparameters that were not tested.
 \begin{table}[H]
@@ -300,7 +300,7 @@ We highly appreciate this, and our original plan was to base our implementation 
 However, we quickly ran into a number of issues with this approach, as getting all dependencies installed with the correct versions on our computing cluster proved to be a very challenging task.
 To solve this, we forked the repository and updated both Python and several of the dependencies to newer versions, but this in itself required significant code rewrites.
 When that worked, we started pretraining, which presented more mysterious issues:
-Training on a single GPU worked, but two GPU's slowed training by a factor of three, and three or more GPU's simply did not work.
+Training on a single GPU worked, but two GPUs slowed training by a factor of three, and three or more GPUs simply did not work.
 Due to limited GPU availability, cryptic error messages, and an almost complete lack of documentation, debugging once again became difficult.
 
 These reasons compelled us to reimplement the model and training from scratch,  which also allowed fitting the software to our specific needs.
@@ -319,7 +319,7 @@ However, as Figure \ref{fig:runtime} shows, AMP works as intended when training 
 
 AMP works by automatically casting parts of the model to half precision rather than the usual single precision.
 Some layers are more sensitive than others to precision.
-For instance, linear layers are always casted to half precision, but the loss is calculated using single precision.
+For instance, linear layers are always cast to half precision, but the loss is calculated using single precision.
 Due to the smaller precision, underflow in the gradients is a risk.
 This is handled by scaling up the loss and then scaling down the gradients accordingly.
 \cite{pytorchamp}

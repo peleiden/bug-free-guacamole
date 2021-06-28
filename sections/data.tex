@@ -44,7 +44,7 @@ Finally, the pretraining dataset is the set of all examples from all articles.
 \label{subsec:entaug}
 % For the purposes of the discussing the motivation and effects of our data preprocessing, we will use the terms true/false positive/negative about the entity annotations.
 % In order for the binary terms to make sense, annotations and no annotations are considered positive and negative, respectively, with only their existense being relevant.
-One limitation of Wikipedia as a pretraining dataset is that hyperlinks are rarely repeated, even if the same article is refenced multiple times on a page.
+One limitation of Wikipedia as a pretraining dataset is that hyperlinks are rarely repeated, even if the same article is referenced multiple times on a page.
 This results in false negatives where entities are not annotated.
 
 In order to augment the entity annotations, we perform preprocessing on Wikipedia prior to pretraining.
@@ -57,11 +57,11 @@ Our preprocessing consists of the following two steps applied article-wise:
 \end{enumerate}
 Many hyperlinks span only the first part of a given word.
 For instance, this allows the words "Wind mills" to link to the article "Wind mill", even if they do not match exactly.
-When matching, such cases are annotated as we expect it to remove a large number of false negatives, while introducing relatively few false positives.
+When matching, such cases are annotated as we expect it to remove numerous false negatives, while introducing relatively few false positives.
 Not annotating titles shorter than three characters prevents the article on "A" to be linked at every word starting with "A".
-We also only match titles already linked in the articles, as we assume that any article that should be linked to has already been linked at least once.
+We also only match titles already linked in the articles, as we assume that any article that should be linked to, has already been linked at least once.
 This further reduces the number of false positives.
-Whether this has a positive effect on learning is subject to an experiment presented in Section~\ref{subsec:dataexp}.
+Whether this has a positive effect on learning, is subject to an experiment presented in Section~\ref{subsec:dataexp}.
 
 Table \ref{tab:metadata} shows how these augmentation steps change the properties of the dataset.
 \begin{table}[H]
@@ -112,7 +112,7 @@ The balanced training, development and test splits from Rahimi et al. are used \
 \paragraph{Comparison}
 These three NER-annotated datasets were used and a summary of their counts is shown in Table~\ref{tab:daNERdata}.
 DaNE is considered the main public Danish NER dataset, as it is produced with the highest degree of expert supervision and used for training most of the models compared in Section~\ref{sec:exidan}.
-However, as shown on on Table \ref{tab:danedist} and Figure \ref{fig:dadatadist}, DaNE and Plank suffer from uneven label distributions in the different subsets.
+However, as shown on Table \ref{tab:danedist} and Figure \ref{fig:dadatadist}, DaNE and Plank suffer from uneven label distributions in the different subsets.
 As most model training assumes that the training data has the same distribution as the true distribution, this could cause evaluations on the test sets to give a poor approximation of real-world performance.
 Previous literature has highlighted the scarcity of accessible, gold-standard, Danish NER as a limitation in the field \cite[Sec. 2.1]{plank2019neural}.
 \begin{table}[H]

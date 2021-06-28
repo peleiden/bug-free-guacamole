@@ -26,7 +26,7 @@
 \end{table}
 Yamada et al. report micro avg. F1 scores of 94.3\pro\ and 93.3\pro\ for LUKE large and base, respectively \cite{yamada2020luke}.
 In both cases, the reported scores are within two standard deviations on observed F1 scores, which were estimated on training repetition.
-This is expected and we conclude that the reproduction was successful.
+This is expectable, and we conclude that the reproduction was successful.
 However, the variability of fine-tuning is also highlighted here and will be discussed in Section~\ref{sec:fine-tuning-exp}.
 % However, it also highlights the variability of the fine-tuning.
 % With margins between top-performing models being as small as they are \cite{pwc21ner}, whoever can claim SOTA may well come down to who got the luckiest seeds.
@@ -142,7 +142,7 @@ We conclude, when comparing with the June 2021 DaNLP NER table\footnotemark \cit
 \footnotetext{
     Table is available at \url{github.com/alexandrainst/danlp/blob/master/docs/docs/tasks/ner.md} and was compared at the 27/6, 2021 at commit SHA \code{584d5c7}.
 }
-Taking these results at face value, DaLUKE fails to achieve SOTA on DaNE, being beaten only by DaCy large, but suprassing da-BERT on which it is based.
+Taking these results at face value, DaLUKE fails to achieve SOTA on DaNE, being beaten only by DaCy large, but surpassing da-BERT on which it is based.
 However, when considering the approximate uncertainties estimates, the small test set makes these conclusions baseless, instead identifying a \emph{group} of transformer based NER models leading the scoreboard.
 
 Still, the considerable improvements in some categories when comparing to da-BERT is taken as an encouragement, suggesting that the extra pretraining and entity understanding indeed has added some knowledge to the model.
@@ -234,7 +234,7 @@ When fine-tuned on DaNE, DaLUKE achieves SOTA on WikiANN and slightly tops DaCy 
 This is unexpected given that DaLUKE was beaten on the DaNE test set.
 It may indicate a better generalization ability, which, if true, is indeed a desirable property.
 However, less exciting reasons for this behaviour may well be more likely.
-With Plank, the difference is miniscule and clearly within random error.
+With Plank, the difference is minuscule and clearly within random error.
 The performance discrepancy on WikiANN appears surely significant, but may be explained even less exciting:
 DaLUKE is pretrained directly on similar, annotated Wikipedia data, compromising the principle that the training and test sets should be strictly disjoint.
 
