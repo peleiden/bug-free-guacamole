@@ -32,7 +32,7 @@ a correct result could be
     \item and all other words are not part of named entities.
 \end{itemize}
 There are multiple ambiguities in this formulation of the problem, but this is a common issue for the problem, as the set of NE types varies between benchmarks.
-Furthermore, the very definition of a NE is unsettled with possible answers including proper nouns, rigid designators and unique identifiers \cite[Sec. 4]{marrero2013ner}.
+Furthermore, the very definition of a NE is unsettled with possible answers including proper nouns, rigid designators, and unique identifiers \cite[Sec. 4]{marrero2013ner}.
 For the benchmarks used in this project, the NE categories and annotation formats are introduced in Section~\ref{sec:nerdata} while the evaluation of the performance of NER algorithms is discussed in Section~\ref{subsec:nereval}.
 
 NER is not just used as a benchmark for language understanding:
@@ -42,7 +42,7 @@ Researchers argue, however, that the task is not yet solved as statistical algor
 
 The SOTA on English NER benchmarks moves quickly, but almost all algorithms currently (June 2021) achieving high scores in common benchmarks are deep neural networks and of the transformer architecture in particular \cite{ruder21ner, pwc21ner}.
 
-\section{Embeddings, Tokenization and the Transformer}
+\section{Embeddings, Tokenization, and the Transformer}
 \label{sec:transformers}
 
 \paragraph{Word embeddings}
@@ -50,14 +50,14 @@ Word embeddings are one of the most ubiquitous tools in the NLP toolbox and come
 When using the term \emph{embeddings}, we refer to the static, decontextualized representations such as the \emph{fasttext}-based, 300-dimensional, Danish embeddings released by Edouard Grave et al. \cite{grave2018learning}.
 
 One of the challenges in language modeling is that many words change their meaning completely depending on the context in which they appear.
-Consider for instance, the sentences ''The mouse and the elephant'' and ''Please left-click using the mouse''.
+Consider, for instance, the sentences ''The mouse and the elephant'' and ''Please left-click using the mouse''.
 ''mouse'' appears identically in both sentences, but with widely different meanings, which static embeddings have a hard time modeling.
 In the latent space of the embeddings, one would expect ''mouse'' to be close to other species from the animal kingdom, but also close to computer parts.
 This would in turn cause computer parts to be placed close to animals, which is not ideal.
 This issue with embeddings is where the transformer comes in.
 
 \paragraph{The Transformer}
-Introduced by Ashish Vaswani et al. in 2017 \cite{vaswani2017att}, the goal of the transformer is to produce \emph{contextualized word representations} (CWR) given static, but learned embeddings.
+Introduced by Ashish Vaswani et al. in 2017 \cite{vaswani2017att}, the goal of the transformer is to produce \emph{contextualized word representations} (CWR) given static but learned embeddings.
 CWR's are similar to embeddings in that they are real-valued vector representations of words, but they also take the document context into account
 
 Transformers are not the first attempt to solve this problem of producing effective CWR's.
@@ -73,7 +73,7 @@ Instead of sequentially letting each token update the state, the relevance of al
 
 The transformer uses an encoder-decoder structure with the encoder producing the CWR's.
 The encoder is made of several attention blocks feeding into each other with feed forward networks and layer normalizations in between.
-Each of the attention blocks are each made up of three, learnable components: the query, key, and value matrices.
+Each of the attention blocks is made up of three, learnable components: the query, key, and value matrices.
 The word embeddings are structured in a single matrix with token embeddings in the rows and are multiplied sequentially with the three matrices before the attention scores are calculated.
 This allows every token to be considered simultaneously, independently, and equally, solving both the described issues.
 \cite{vaswani2017att}
@@ -85,7 +85,7 @@ This allows every token to be considered simultaneously, independently, and equa
     \label{fig:transformer}
     \caption{
         On the left, a simple visualization of an attention block, a single component computing representations, is shown.
-        The right image exemplifies attention between all words in as the BERT encoder computes it.
+        The right image exemplifies attention between all words as the BERT encoder computes it.
         \protect\footnotemark
     }
 \end{figure}\noindent
@@ -94,17 +94,17 @@ This allows every token to be considered simultaneously, independently, and equa
     The right is a product of the Tensor2Tensor visualization tool produced by Llion Jones and used for BERT by Jesse Vig in ''Deconstructing BERT'', \url{https://towardsdatascience.com/deconstructing-bert-part-2-visualizing-the-inner-workings-of-attention-60a16d86b5c1}.
     Both visited 27/6 2021.
 }
-Models based directly on the transformer have been trained on very large corpora to produce English language models such as BERT (\emph{Bidirectional Encoder Representations from Transformers}) \cite{devlin2019bert}, RoBERTa \cite{liu2019roberta} and GPT-3 \cite{brown2020language} that have achieved SOTA in several downstream language tasks.
+Models based directly on the transformer have been trained on very large corpora to produce English language models such as BERT (\emph{Bidirectional Encoder Representations from Transformers}) \cite{devlin2019bert}, RoBERTa, \cite{liu2019roberta} and GPT-3 \cite{brown2020language} that have achieved SOTA in several downstream language tasks.
 BERT is the first model to use the masking pretraining objective as it is employed by e.g. RoBERTa and LUKE.
-Early transformer based models such as OpenAI's GPT \cite{rashford2018gpt} use a unidirectional pretraining task, letting only tokens appearing to the left of the token to predict have any impact.
+Early transformer-based models such as OpenAI's GPT \cite{rashford2018gpt} use a unidirectional pretraining task, letting only tokens appearing to the left of the token to predict have any impact.
 BERT instead masks some tokens in the given sequence and allows all tokens to attend to all other tokens when predicting the masked ones -- this is what is known as a masked language model (MLM).
-BERT achieved SOTA on a large amount of downstream tasks such as the important question answering task and has been described as revolutionary for its impact on NLP \cite{raj2019bert}.
+BERT achieved SOTA many downstream tasks such as the important question answering task and has been described as revolutionary for its impact on NLP \cite{raj2019bert}.
 Figure \ref{fig:transformer} visualizes the BERT concepts.
 
 \paragraph{Tokenization}
 The input for these language models must naturally be sequences of words.
-A naïve approach is to regard all unique words seen in corpus as tokens.
-However, the fact that multiple possible augmentations of same word can be met, makes this a suboptimal method.
+A naïve approach is to regard all unique words seen in the corpus as tokens.
+However, the fact that multiple possible augmentations of the same word can be met, makes this a suboptimal method.
 A verb, for example, still carries much of the same meaning between conjugations, but the naïve solution would require learning an embedding for each form.
 While this might be solved by lemmatizing words to their stems, this introduces a problem of information loss.
 
@@ -125,16 +125,16 @@ Both word embeddings and transformers are used frequently in Danish NLP.
 Word embeddings are used as they are a core component of many NLP pipelines.
 In the large, open source NLP frameworks \emph{SpaCy} \cite{honnibal2020spacy} and \emph{Flair} \cite{akbik2019flair}, which also release pretrained Danish models, the embeddings interact with different, ever-improving language models.
 This has successfully resulted in SOTA on multiple Danish NLP tasks.
-The Alexandra Institute, a Denmark based AI research and development organization, release versions of both Flair and SpaCy fine-tuned on a number of benchmarks, including NER, and acquire close to SOTA performance using these.
-The benchmarks, results and fine-tuned Danish models are released as a part of their open source DaNLP project gathering resources for Danish NLP \cite{danlp2021}.
-Another application of exsting NLP frameworks was performed by Kenneth Enevoldsen, Center of Humanities Computing, Aarhus University in releasing the model \emph{DaCy}, based on version 3 of SpaCy \cite{enevoldsen2020dacy}.
+The Alexandra Institute, a Denmark based AI research and development organization, release versions of both Flair and SpaCy fine-tuned on multiple benchmarks, including NER, and acquire close to SOTA performance using these.
+The benchmarks, results, and fine-tuned Danish models are released as a part of their open source DaNLP project gathering resources for Danish NLP \cite{danlp2021}.
+Another application of existing NLP frameworks was performed by Kenneth Enevoldsen, Center of Humanities Computing, Aarhus University in releasing the model \emph{DaCy}, based on version 3 of SpaCy \cite{enevoldsen2020dacy}.
 
 In Danish, the most significant, pretrained language model is in our estimation a Danish version of BERT, released by the company BotXO in 2019 \cite{botxo2019dabert}.
 This model, in the following called \emph{da-BERT}, is produced by pretraining the base version of BERT \cite{devlin2019bert} on 10 GB of Danish text predominantly acquired from web scrapes.
 The da-BERT model has been fine-tuned on most Danish benchmarks in the DaNLP project and consistently yields top results \cite{danlp2021, hvingelby2020dane}.
 The model and its tokenizer are trained on lowercased text.
 
-Another, more recent, Danish transformer is the adaption of the more resource efficient language model Electra to Danish under the name Ælæctra by Malte Hømark-Bertelsen, KMD and Aarhus University \cite{bertelsen2020lctra}.
+Another, more recent, Danish transformer is the adaption of the more resource-efficient language model Electra to Danish under the name Ælæctra by Malte Hømark-Bertelsen, KMD and Aarhus University \cite{bertelsen2020lctra}.
 NER fine-tuned versions of Ælæctra and some multilingual transformers have been released by Ekstra Bladet Analyse under the project \emph{NER for Danish} (NERDA) \cite{kjeldgaard2020nerda}.
 
 Of this plethora of Danish language models and NLP frameworks, the current (June 2021) SOTA on central NER benchmarks is, according to DaNLP, the 2021 newcomer DaCy.
@@ -146,14 +146,14 @@ These results are reproduced and compared with DaLUKE in the project.
 The NER benchmark will be presented in Section \ref{subsec:daNERdata}, the reproduction method in Section \ref{sec:exidan}, and the results in Section \ref{sec:nerres}.
 
 Finally, the NLP scene of a language is much more than the public, pretrained models:
-The available rule-based tools, corpora and other language resources are instrumental in developing practical NLP pipelines.
+The available rule-based tools, corpora, and other language resources are instrumental in developing practical NLP pipelines.
 One pipeline supplying multiple of these resources is the IT University of Copenhagen project DKIE, also including a NER model \cite{derc2014dkie}.
 A 2019 paper by NLP researchers at the same university surveyed the availability of such tools and highlight a lack of practical resources and datasets \cite{kirkedal2019lacunae}.
 Other overviews of Danish NLP resources include those published by the Alexandra Institute at DaNLP \cite{danlp2021} and the comprehensive list maintained by Finn Årup Nielsen, DTU Compute \cite{arup21awesome}.
 
 \section{Deep, Knowledge-enhanced NLP}
-The combination of statistical methods and explicit human crafted domain knowledge was the SOTA in many NLP tasks in the 1990's and up into the 2000's \cite[Sec. 22.5]{russell2016ai}.
-As with most other fields of AI, the emergence of performant deep learning methods disrupted NLP in the 2010's, popularizing the methodology of using deep LM's \cite{otter18dlnlp}.
+The combination of statistical methods and explicit human-crafted domain knowledge was the SOTA in many NLP tasks in the 1990s and up into the 2000s \cite[Sec. 22.5]{russell2016ai}.
+As with most other fields of AI, the emergence of performant deep learning methods disrupted NLP in the 2010s, popularizing the methodology of using deep LM's \cite{otter18dlnlp}.
 This approach rarely includes any modeling of knowledge that is not induced implicitly by the contextual representations generated during pretraining on an unannotated text corpus.
 
 The Defense Advanced Research Projects Agency (DARPA) identify the future wave of AI as one of \emph{contextual adaption}; a combination of deep learning for perception and latent representations and symbolic modeling methods \cite{darpa17ai}.
@@ -169,7 +169,7 @@ The query from the knowledge graph is encoded into knowledge embeddings which ar
 The model was during training required to fill in randomly masked NE's entities in given sequences using the KG.
 ERNIE was not evaluated on named entity recognition in the original paper, but was evaluated on the \emph{General Language Understanding Evaluation} (GLUE) benchmark \cite{wang2018glue}, where it did not outperform BERT.
 
-Later in 2019, a similar idea was proposed in \emph{Knowledge Enhanced Contextual Word Representations} where the model \emph{KnowBert} \cite{peters2019knowbert} was shown to outperform ERNIE and BERT in knowledge related tasks, though GLUE and NER was not tested.
+Later in 2019, a similar idea was proposed in \emph{Knowledge Enhanced Contextual Word Representations} where the model \emph{KnowBert} \cite{peters2019knowbert} was shown to outperform ERNIE and BERT in knowledge related tasks, though GLUE and NER were not tested.
 Here, the key addition was the Knowledge Attention and Recontextualization (KAR) component which allows information to be retrieved from multiple KG's of different forms such as WordNET and Wikipedia and represented within the BERT encoder.
 
 In KnowBert, though the KAR weights were trained, the KG was only used for encoding fixed facts for the model.
@@ -196,12 +196,12 @@ These models achieve good performance; WKLM surpasses BERT and ERNIE on some que
 However, the 2020 article \emph{K-Adapter: Infusing Knowledge into Pre-Trained Models with Adapters} \cite{wang2020kadapter} raises a concern with the approach.
 According to the authors, the idea of knowledge-augmenting the pretraining task and then updating the entire model limits the ability to inject versatile knowledge and sets up a heterogeneous learning problem resulting in entangled parameters that are hard to investigate.
 The model \emph{K-Adapter} instead uses ''adapters'', add-ons for the transformer structure, which are pretrained for different knowledge tasks while the base RoBERTa parameters are not updated.
-The resulting model outperforms BERT, WKLM, ERNIE, KEPLER and KnowBERT on central knowledge related tasks.
+The resulting model outperforms BERT, WKLM, ERNIE, KEPLER, and KnowBERT on central knowledge related tasks.
 
 Another issue, raised more recently, with this jungle of knowledge-enhanced models is that they do not unify generative and discriminative tasks, limiting their generalizability to fewer downstream tasks.
 This is voiced in \emph{KgPLM: Knowledge-guided Language Model Pretraining via Generative and Discriminative Learning} \cite{he2020kgplm} where the model KgPLM, pretrained by both generating masked entities and discriminating replaced ones, is proposed as a solution.
 
-Which of the knowledge-enhanced models result in the best general performance for practitioners is beyond the scope of this project, as the continuous improvement of many of the models and large amount of different benchmarks used in the articles make direct comparisons of general language understanding ability challenging.
+Which of the knowledge-enhanced models results in the best general performance for practitioners is beyond the scope of this project, as the continuous improvement of many of the models and large amount of different benchmarks used in the articles make direct comparisons of general language understanding ability challenging.
 On all benchmarks tested by the LUKE team \cite{yamada2020luke}, none of the above models have presented higher scores than LUKE \cite[Sec. 4]{yamada2020luke}.
 
 
@@ -210,7 +210,7 @@ On all benchmarks tested by the LUKE team \cite{yamada2020luke}, none of the abo
 LUKE, Language Understanding with Knowledge-based Embeddings, is a language model introduced by Yamada et al. in October 2020 \cite{yamada2020luke}.
 As the model is applied in this project, key properties of the architecture and pretraining methodology are presented in this section.
 
-As other new models, LUKE builds on the BERT transformer architecture \cite{devlin2019bert}, adding a knowledge-enhancing pretraining task.
+Like other new models, LUKE builds on the BERT transformer architecture \cite{devlin2019bert}, adding a knowledge-enhancing pretraining task.
 But the LUKE encoder does not only produce CWR's; 
 \emph{entities} are also represented by the encoder by mapping each entity to the same latent space as the words.
 In the pretraining of LUKE, entities correspond to Wikipedia articles.
@@ -250,11 +250,11 @@ The produced word and entity embeddings are concatenated to a matrix $\in \RR^{(
 
 \paragraph{Transformer}
 The embeddings of words and entities are forward passed through a transformer operating on the entire sequences of embeddings without distinction between words and entities.
-This component is dubbed the encoder and, after $N$ attention blocks with same input and output dimensionality, outputs the final contextualized $H$-dimensional representations:
+This component is dubbed the encoder and, after $N$ attention blocks with the same input and output dimensionality, outputs the final contextualized $H$-dimensional representations:
 The first $m$ correspond to words and the last $n$ to entities.
 The main LUKE model, LUKE large, has, following BERT, $N=24$ and $H=1024$.
 
-After the computation of the representations, the model can be extended with a decoder consisting of bi-directional classifications heads for pretraining, or it can be extended with a linear layer for downstream tasks.
+After the computation of the representations, the model can be extended with a decoder consisting of bi-directional classification heads for pretraining, or it can be extended with a linear layer for downstream tasks.
 \begin{figure}[H]
     \centering
         \input{imgs/luke_tikz.tex}
@@ -268,7 +268,7 @@ After the computation of the representations, the model can be extended with a d
 \paragraph{Transfer Learning}
 The word/entity duality of LUKE means that a large part of the model performs the same task as the conventional word-based language models.
 For this reason, the word embeddings in LUKE follow the BERT architecture, and Yamada et al. initialize these embeddings to those found in RoBERTa.
-In the pretraining of Yamada et al., the encoder of LUKE is also equivalent with that of BERT and is initialized using the weights of RoBERTa.
+In the pretraining of Yamada et al., the encoder of LUKE is also equivalent to that of BERT and is initialized using the weights of RoBERTa.
 
 
 \paragraph{Entity-aware Self-attention}

@@ -57,7 +57,7 @@ However, the variability of fine-tuning is also highlighted here and will be dis
 The loss shown on Figure \ref{fig:loss} mirrors the accuracy with masked subword loss converging quickly, after which falling entity loss becomes the driving factor behind the falling total loss.
 The masked subwords and masked entity accuracies are shown on Figure \ref{fig:pretrain-acc}.
 The former converges quickly, achieving close to top accuracy in less than a tenth of the full training time, while the latter keeps improving throughout the training.
-That the masked language modeling performance from BERT is quickly maximized is, however, perhaps not surprising, as many of the relevant weights are initialized from an already trained model which has been pretrained on the exact same task.
+That the masked language modeling performance from BERT is quickly maximized is, however, perhaps not surprising, as many of the relevant weights are initialized from an already trained model which has been pretrained on the same task.
 
 \begin{table}[H]
     \centering
@@ -117,8 +117,8 @@ That the masked language modeling performance from BERT is quickly maximized is,
         \caption{
             Results of Danish NER models of the DaNE \cite{hvingelby2020dane} testing dataset consisting of 565 sentences.
             $\pm$ on the average F1's is notation for the approximate $95\pro$ confidence interval calculated using \eqref{eq:ci}.
-        Missing numbers is due to a number of models not being trained on the MISC annotations.
-        We see the transformer based models dominate the scores, spearheaded by the large implementation of DaCy.
+        Missing numbers is due to some models not being trained on the MISC annotations.
+        We see the transformer-based models dominate the scores, spearheaded by the large implementation of DaCy.
         }
         \label{tab:DaNE}
 \end{table}\noindent
@@ -140,10 +140,10 @@ That the masked language modeling performance from BERT is quickly maximized is,
 \end{figure}\noindent
 We conclude, when comparing with the June 2021 DaNLP NER table\footnotemark \cite{danlp2021}, that the results of all NER results previously reported on DaNE are successfully reproduced with most  scores corresponding exactly and a few varying within a percentage point.
 \footnotetext{
-    Table is available at \url{github.com/alexandrainst/danlp/blob/master/docs/docs/tasks/ner.md} and was compared at the 27/6, 2021 at commit SHA \code{584d5c7}.
+    Table is available at \url{github.com/alexandrainst/danlp/blob/master/docs/docs/tasks/ner.md} and was compared on 27/6, 2021 at commit SHA \code{584d5c7}.
 }
-Taking these results at face value, DaLUKE fails to achieve SOTA on DaNE, being beaten only by DaCy large, but surpassing da-BERT on which it is based.
-However, when considering the approximate uncertainties estimates, the small test set makes these conclusions baseless, instead identifying a \emph{group} of transformer based NER models leading the scoreboard.
+Taking these results at face value, DaLUKE fails to achieve SOTA on DaNE, being beaten only by DaCy large but surpassing da-BERT on which it is based.
+However, when considering the approximate uncertainties estimates, the small test set makes these conclusions baseless, instead identifying a \emph{group} of transformer-based NER models leading the scoreboard.
 
 Still, the considerable improvements in some categories when comparing to da-BERT is taken as an encouragement, suggesting that the extra pretraining and entity understanding indeed has added some knowledge to the model.
 The improvements of DaLUKE compared to da-BERT are examined further in the following chapter.
@@ -226,7 +226,7 @@ Ultimately, DaLUKE performs at a high level and shows promise for entity modelin
         \end{center}
         \caption{
             Results of Danish NER models on the WikiANN \cite{pan2017wikiann, rahimi2019transfer} test set consisting of 10,000 sentences.
-            This large dataset containing $\sim 14\ctp3$ entities results in small finite sample uncertainties on model performance making DaLUKE appear as a clear winner on this Wikipedia-based dataet.
+            This large dataset containing $\sim 14\ctp3$ entities results in small finite sample uncertainties on model performance making DaLUKE appear as a clear winner on this Wikipedia-based dataset.
         }
         \label{tab:WikiANN}
 \end{table}

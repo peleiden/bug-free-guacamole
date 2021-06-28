@@ -26,7 +26,7 @@ Following BERT \cite{devlin2019bert}, the first and last tokens are always [CLS]
 Sequences are cut short if necessary to prevent hyperlinks spanning two sequences.
 All sequences contain text from at most one paragraph in an article.
 
-Word spans over tokens is also saved, as the MLM pretraining task is done on a full word level.
+Word spans over tokens are also saved, as the MLM pretraining task is done on a full word level.
 Subword and entity tokens are masked using the [MASK] token.
 The [UNK] special token is reserved for subwords that are not part of the tokenizer's vocabulary.
 
@@ -47,16 +47,16 @@ Finally, the pretraining dataset is the set of all examples from all articles.
 One limitation of Wikipedia as a pretraining dataset is that hyperlinks are rarely repeated, even if the same article is referenced multiple times on a page.
 This results in false negatives where entities are not annotated.
 
-In order to augment the entity annotations, we perform preprocessing on Wikipedia prior to pretraining.
+In order to augment the entity annotations, we perform preprocessing on Wikipedia before pretraining.
 Our preprocessing consists of the following two steps applied article-wise:
 \begin{enumerate}
     \item Collect the set of mentioned articles including the title of the article itself.
     Only include titles of at least three characters.
-    \item For each title, check if it matches a sequence of characters following a whitespace, while ignoring casing.
+    \item For each title, check if it matches a sequence of characters following a whitespace while ignoring casing.
     If there is a match, annotate and go to next whitespace.
 \end{enumerate}
 Many hyperlinks span only the first part of a given word.
-For instance, this allows the words "Wind mills" to link to the article "Wind mill", even if they do not match exactly.
+For instance, this allows the words "Windmills" to link to the article "Windmill", even if they do not match exactly.
 When matching, such cases are annotated as we expect it to remove numerous false negatives, while introducing relatively few false positives.
 Not annotating titles shorter than three characters prevents the article on "A" to be linked at every word starting with "A".
 We also only match titles already linked in the articles, as we assume that any article that should be linked to, has already been linked at least once.
@@ -107,7 +107,7 @@ Two NER annotations of this dataset are considered.
 Pan et al. performed an automatic NER annotation of a Wikipedia corpus in 2017 by transferring English NER of the categories PER, ORG, LOC to 281 languages including Danish \cite{pan2017wikiann}.
 This dataset is known as \emph{WikiANN} (Wikipedia Annotations) and the Danish version includes 40000 sentences.
 Pan et al. consider this a "silver-standard annotation" due to its automatic generation which they label Knowledge Base mining \cite[1946]{pan2017wikiann}.
-The balanced training, development and test splits from Rahimi et al. are used \cite{rahimi2019transfer}.
+The balanced training, development, and test splits from Rahimi et al. are used \cite{rahimi2019transfer}.
 
 \paragraph{Comparison}
 These three NER-annotated datasets were used and a summary of their counts is shown in Table~\ref{tab:daNERdata}.
@@ -139,7 +139,7 @@ Previous literature has highlighted the scarcity of accessible, gold-standard, D
         Dev.            &111    &166     &90     &113 \\
         Test            &96     &180     &161    &121
     \end{tabular}
-    \caption{Number of entities by category and data split in DaNE.}
+    \caption{The number of entities by category and data split in DaNE.}
     \label{tab:danedist}
 \end{table}\noindent
 
@@ -156,7 +156,7 @@ Previous literature has highlighted the scarcity of accessible, gold-standard, D
     \end{minipage}
     \caption{
         Distribution of entity labels in the three Danish NER datasets.
-        Notably, DaNE and Plank do not have the same distributions in the three datasubsets, with e.g. LOC being under-represented in the DaNE test set and MISC being over-represented in the Plank test set.
+        Notably, DaNE and Plank do not have the same distributions in the three datasets, with e.g. LOC being under-represented in the DaNE test set and MISC being over-represented in the Plank test set.
         WikiANN is the only dataset that has the same distribution in all three subsets.
     }
     \label{fig:dadatadist}
@@ -192,7 +192,7 @@ The dataset is the central benchmark in English NER \cite[Sec. 4.3]{yamada2020lu
 \label{subsec:annoschemes}
 The DaNE and Plank sets refer to the CoNLL-2003 as their reference annotation scheme \cite[Sec. 4]{hvingelby2020dane} \cite[Sec. 2.1]{plank2019neural}.
 WikiANN follows the same categories, excluding MISC.
-All datasets follow the Inside-outside-beginning (IOB) format that ascribes a word the "I-X" tag if it is inside a named entity of type X, "B-X" if it begins the X entity and "O" if it is outside named entities (e.g. the null class).
+All datasets follow the Inside-outside-beginning (IOB) format that ascribes a word the "I-X" tag if it is inside a named entity of type X, "B-X" if it begins the X entity, and "O" if it is outside named entities (e.g. the null class).
 An example is shown in Table~\ref{tab:iob-ex}.
 This format proposed by Ramshaw and Marcus in 1995 is widely used but does allow entities to be nested or to overlap \cite{ramshaw1995IOB}.
 
@@ -212,7 +212,7 @@ The definition of the annotation categories are given in the CoNLL-2003 guidelin
     These are available here: \url{https://www.clips.uantwerpen.be/conll2003/ner/annotation.txt} (collected 27/02-2021)
 }
 \begin{itemize}
-    \item LOC: Geographical regions, natural locations and public and commercial places. Also includes abstract places.
+    \item LOC: Geographical regions, natural locations, and public and commercial places. Also includes abstract places.
     \item PER: Names, aliases of people, animals, and fictional characters.
     \item ORG: Companies, brands, government bodies, movements, clubs, and subdivisions thereof.
     \item MISC: Titles of media, nationalities, languages, religions, ideologies, wars, slogans, eras, but also both adjectives and word combinations that are derived from one of the other tags.
