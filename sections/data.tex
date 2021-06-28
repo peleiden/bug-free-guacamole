@@ -12,22 +12,22 @@ For the pretraining of LUKE, a corpus of entity-annotated text is needed.
 Entity annotations consist of two things: The word span and the name of the entity.
 No text is written directly with such annotations in mind.
 However, some texts such as news articles often contain embedded hyperlinks that implicitly provide the word spans, but these often point to other articles rather than specific items.
-On Wikipedia, this is not the case, as hyperlinks point to articles on specific topics, which makes it useful for LUKE's pretraining task.
+On Wikipedia, this is not the case, as hyperlinks point to articles on specific topics, which makes it suitable for LUKE's pretraining task.
 Given its size, Wikipedia is thus a particularly useful pretraining dataset.
 
 As of June 23rd, the Danish Wikipedia has 267,408 content pages containing a total of 81,822,460 words\footnote{\url{https://da.wikipedia.org/wiki/Speciel:Statistik}. Visited June 23, 2021.}.
-The Danish Wikipedia from March 1st, 2021, which is marginally smaller, is used for building the dataset.
+The Danish Wikipedia from March 1st, 2021, which is marginally smaller, was used for building the DaLUKE dataset.
 Yamada et al. limit the entity vocabulary to the 500,000 most often linked pages \cite{yamada2020luke}.
-As the Danish Wikipedia is only roughly 2.5\pro\ the size of the English Wikipedia, no limit on the entity vocabulary is imposed to preserve data.
+As the Danish Wikipedia is only roughly 2.5\pro\ the size of the English Wikipedia, no limit on the entity vocabulary was imposed, to preserve data.
 
 Every article is a sequence of words with embedded hyperlinks.
-These are split into sequences of at most 512 tokens using BotXO's Danish BERT tokenizer, and the token spans of the hyperlinks are saved.
-Following BERT \cite{devlin2019bert}, the first and last tokens are always [CLS] and [SEP], respectively, with the remaining 510 tokens coming directly from the tokenizer.
-Sequences are cut short if necessary to prevent hyperlinks spanning two sequences.
+These were split into sequences of at most 512 tokens using BotXO's Danish BERT tokenizer, and the token spans of the hyperlinks were saved.
+Following BERT \cite{devlin2019bert}, the first and last tokens were always [CLS] and [SEP], respectively, with the remaining 510 tokens coming directly from the tokenizer.
+Sequences were cut short if necessary to prevent hyperlinks spanning two sequences.
 All sequences contain text from at most one paragraph in an article.
 
-Word spans over tokens are also saved, as the MLM pretraining task is done on a full word level.
-Subword and entity tokens are masked using the [MASK] token.
+Word spans over tokens were also saved, as the MLM pretraining task was done on a full word level.
+Subword and entity tokens were masked using the [MASK] token.
 The [UNK] special token is reserved for subwords that are not part of the tokenizer's vocabulary.
 
 %TODO Make sure itemize is not broken up with a page
@@ -38,17 +38,15 @@ Thus, an entry in the dataset -- called an example -- consists of the following:
     \item An array of two-tuples containing the start and end indices for every entity
     \item An array of two-tuples containing the start and end indices for every full word
 \end{itemize}
-Finally, the pretraining dataset is the set of all examples from all articles.
+Finally, the pretraining dataset was the set of all examples from all articles.
 
 \subsection{Entity Augmentations}
 \label{subsec:entaug}
-% For the purposes of the discussing the motivation and effects of our data preprocessing, we will use the terms true/false positive/negative about the entity annotations.
-% In order for the binary terms to make sense, annotations and no annotations are considered positive and negative, respectively, with only their existense being relevant.
 One limitation of Wikipedia as a pretraining dataset is that hyperlinks are rarely repeated, even if the same article is referenced multiple times on a page.
-This results in false negatives where entities are not annotated.
+This results in false negatives -- cases where entities are not annotated as such.
 
-In order to augment the entity annotations, we perform preprocessing on Wikipedia before pretraining.
-Our preprocessing consists of the following two steps applied article-wise:
+In order to augment the entity annotations, we performed preprocessing on Wikipedia before pretraining.
+Our preprocessing consisted of the following two steps applied article-wise:
 \begin{enumerate}
     \item Collect the set of mentioned articles including the title of the article itself.
     Only include titles of at least three characters.
@@ -56,12 +54,12 @@ Our preprocessing consists of the following two steps applied article-wise:
     If there is a match, annotate and go to next whitespace.
 \end{enumerate}
 Many hyperlinks span only the first part of a given word.
-For instance, this allows the words "Windmills" to link to the article "Windmill", even if they do not match exactly.
-When matching, such cases are annotated as we expect it to remove numerous false negatives, while introducing relatively few false positives.
-Not annotating titles shorter than three characters prevents the article on "A" to be linked at every word starting with "A".
-We also only match titles already linked in the articles, as we assume that any article that should be linked to, has already been linked at least once.
-This further reduces the number of false positives.
-Whether this has a positive effect on learning, is subject to an experiment presented in Section~\ref{subsec:dataexp}.
+For instance, this allows the word "Windmills" to link to the article "Windmill".
+When matching, such cases were annotated as we expected it to remove numerous false negatives, while introducing relatively few false positives.
+Not annotating titles shorter than three characters prevented the article on "A" to be linked at every word starting with "A".
+We also only matched titles already linked in the articles, as we assumed that any article that should be linked to, had already been linked at least once.
+This should further reduce the number of false positives.
+Whether this had a positive effect on learning, is subject to an experiment presented in Section~\ref{subsec:dataexp}.
 
 Table \ref{tab:metadata} shows how these augmentation steps change the properties of the dataset.
 \begin{table}[H]
@@ -75,8 +73,8 @@ Table \ref{tab:metadata} shows how these augmentation steps change the propertie
     \end{tabular}
     \caption{
         Statistics for both datasets.
-        The discrepancy in entity vocabulary size is explained by adding links that point to the article in which the link occurs.
-        This means that some articles, which are never linked to, have links in the augmented dataset, leading to them being included in the entity vocabulary.
+        The increase in entity vocabulary size is explained by adding links that point to the article in which the link occurs.
+        This means that some articles, which are never linked to, have links in the augmented dataset, causing to be included in the entity vocabulary.
         The increased number of subword tokens and examples comes from not including sentences without entities, of which there are fewer in the augmented dataset.
     }
     \label{tab:metadata}
@@ -91,7 +89,7 @@ Table \ref{tab:metadata} shows how these augmentation steps change the propertie
 For the task of benchmarking both existing and new Danish NER models, three publicly available datasets previously used in the literature were identified.
 
 \paragraph{Danish Universal Dependencies}
-Danish Universal Dependencies of Danish Dependency Treebank (UD-DDT) is a grammatically annotated dataset produced by converting the Danish Dependency Treebank corpus \cite{kromann2003ddt} to the Universal Dependency annotation format \cite{johann2015udddt}.
+Universal Dependencies of Danish Dependency Treebank (UD-DDT) is a grammatically annotated dataset produced by converting the Danish Dependency Treebank corpus \cite{kromann2003ddt} to the Universal Dependency annotation format \cite{johann2015udddt}.
 The dataset consists of 5512 sentences and 100,733 characters from the Danish PAROLE corpus containing book, newspaper and journal literature from 1983-1992 \cite{christensen1998parole}.
 UD-DDT is split into training, development and test sets consisting of 4383, 564 and 565 sentences, respectively.
 Two NER annotations of this dataset are considered.
@@ -104,9 +102,9 @@ Two NER annotations of this dataset are considered.
 \end{itemize}
 
 \paragraph{Wikipedia Annotations}
-Pan et al. performed an automatic NER annotation of a Wikipedia corpus in 2017 by transferring English NER of the categories PER, ORG, LOC to 281 languages including Danish \cite{pan2017wikiann}.
-This dataset is known as \emph{WikiANN} (Wikipedia Annotations) and the Danish version includes 40000 sentences.
-Pan et al. consider this a "silver-standard annotation" due to its automatic generation which they label Knowledge Base mining \cite[1946]{pan2017wikiann}.
+Pan et al. performed an automatic NER annotation of a Wikipedia corpus in 2017 by transferring English NER of the categories PER, ORG, and LOC to 281 languages including Danish \cite{pan2017wikiann}.
+This dataset is known as \emph{WikiANN} (Wikipedia Annotations) and the Danish version includes 40,000 sentences.
+Pan et al. consider this a "silver-standard annotation" due to its automatic generation which they label knowledge base mining \cite[1946]{pan2017wikiann}.
 The balanced training, development, and test splits from Rahimi et al. are used \cite{rahimi2019transfer}.
 
 \paragraph{Comparison}
@@ -114,7 +112,7 @@ These three NER-annotated datasets were used and a summary of their counts is sh
 DaNE is considered the main public Danish NER dataset, as it is produced with the highest degree of expert supervision and used for training most of the models compared in Section~\ref{sec:exidan}.
 However, as shown on Table \ref{tab:danedist} and Figure \ref{fig:dadatadist}, DaNE and Plank suffer from uneven label distributions in the different subsets.
 As most model training assumes that the training data has the same distribution as the true distribution, this could cause evaluations on the test sets to give a poor approximation of real-world performance.
-Previous literature has highlighted the scarcity of accessible, gold-standard, Danish NER as a limitation in the field \cite[Sec. 2.1]{plank2019neural}.
+Previous literature has highlighted the scarcity of accessible, gold-standard, Danish NER data as a limitation in the field \cite[Sec. 2.1]{plank2019neural}.
 \begin{table}[H]
     \centering
     \begin{tabular}{l|rrr|rrrr}
@@ -139,7 +137,7 @@ Previous literature has highlighted the scarcity of accessible, gold-standard, D
         Dev.            &111    &166     &90     &113 \\
         Test            &96     &180     &161    &121
     \end{tabular}
-    \caption{The number of entities by category and data split in DaNE.}
+    \caption{The number of NEs by category and data split in DaNE.}
     \label{tab:danedist}
 \end{table}\noindent
 
@@ -163,7 +161,7 @@ Previous literature has highlighted the scarcity of accessible, gold-standard, D
 \end{figure}\noindent
 
 \subsection{CoNLL-2003}
-The shared task for the 2003 Conference on Computational Natural Language Learning (CoNLL) was language-independent NER for which annotations on English Reuters news wire articles were performed by researchers \cite{tjang2003conll}.
+The shared task for the 2003 Conference on Computational Natural Language Learning (CoNLL) was NER for which annotations on English Reuters news wire articles were performed by researchers \cite{tjang2003conll}.
 This corpus consists of 1393 articles that were divided into training, development and test sets as seen in Table~\ref{tab:conll2003}.
 The dataset is the central benchmark in English NER \cite[Sec. 4.3]{yamada2020luke} and has a competitive history with over 50 models submitted to the performance leaderboard at Papers With Code\footnotemark.
 \footnotetext{
@@ -183,7 +181,7 @@ The dataset is the central benchmark in English NER \cite[Sec. 4.3]{yamada2020lu
     \end{tabular}
     \caption{
         Dataset counts for the canonical NER dataset CoNLL-2003.
-        Note the more even distribution between entity classes when compared to the Danish NER datasets shown at Table~\ref{tab:daNERdata}, highlighting the difference in entities between short news texts and more general-purpose literature.
+        We note multiple differences in NE distributions compared to the Danish NER datasets shown at Table~\ref{tab:daNERdata} and take this as an indication of the different corpus backgrounds.
     }
     \label{tab:conll2003}
 \end{table}
@@ -209,7 +207,7 @@ This format proposed by Ramshaw and Marcus in 1995 is widely used but does allow
 \end{table}\noindent
 The definition of the annotation categories are given in the CoNLL-2003 guidelines\footnotemark~and are summarized here:
 \footnotetext{
-    These are available here: \url{https://www.clips.uantwerpen.be/conll2003/ner/annotation.txt} (collected 27/02-2021)
+    These are available here: \url{https://www.clips.uantwerpen.be/conll2003/ner/annotation.txt} (visited on Februrary 27, 2021)
 }
 \begin{itemize}
     \item LOC: Geographical regions, natural locations, and public and commercial places. Also includes abstract places.
@@ -217,7 +215,7 @@ The definition of the annotation categories are given in the CoNLL-2003 guidelin
     \item ORG: Companies, brands, government bodies, movements, clubs, and subdivisions thereof.
     \item MISC: Titles of media, nationalities, languages, religions, ideologies, wars, slogans, eras, but also both adjectives and word combinations that are derived from one of the other tags.
 \end{itemize}
-To end the introduction of the data, some examples of named entities in each testing dataset are shown.
+To end the introduction of the data, some examples of NEs in each testing dataset are shown.
 Note, that the all-important context of the words is not shown here.
 \begin{itemize}
     \item DaNE: helvede (LOC), Holland (LOC), Astrid Lindgren (PER), Odense Teater (ORG), det danske rigsfællesskab (ORG), afghansk (MISC), Camel (MISC)

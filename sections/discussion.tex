@@ -706,7 +706,7 @@ These issues cast doubt on the generalizability of NER.
 \subsection{Class-weighted Loss}
 \label{subsec:lossexp}
 Cross entropy loss weighted by the number of training examples in each class was speculated to improve performance on the class-imbalanced NER task in which 99.3\pro\ of spans are not entities.
-In the hyperparameter search, all combinations of learning hyperparameters were also tried with this weighting of loss defined in formula \eqref{eq:w-crossentropyloss}.
+In the hyperparameter search, all combinations of learning hyperparameters were also tried with this weighting of loss defined in eq. \eqref{eq:w-crossentropyloss}.
 From the results at Table~\ref{tab:hyperres}, no general improvement could be seen when weighting, and the best combinations were slightly worse when using this approach.
 However, two experiments with suboptimal hyperparameters of high learning rate, high dropout, and low weight decay resulted in the model degenerating to predicting the positive entity classes much too often as seen from Table~\ref{tab:clsgood}.
 Interestingly, this problem was mitigated when using class-weighted loss, an unintuitive result in our estimation as we expected this weighting to motivate more positive predictions.

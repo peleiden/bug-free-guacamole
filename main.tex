@@ -45,11 +45,11 @@
     {\large \today\par}
 \end{titlepage}
 \begin{abstract}
-    The advent of deep learning has led to significant advances in the field of natural language processing in recent years, but many models, while good at modeling natural language, lack explicit knowledge, making tasks involving real-world, factual entities challenging.
+    The advent of deep learning has led to significant advances in the field of natural language processing in recent years, but many models, while good at modeling language, lack explicit knowledge, making tasks involving real-world, factual entities challenging.
     LUKE, proposed by Yamada et al. in October 2020, is a transformer-based architecture that explicitly models entities, allowing it to achieve state of the art on several benchmarks, including named entity recognition (NER).
-    In this report, LUKE's NER results are reproduced along with leading Danish NER results, and an open source Danish LUKE, DaLUKE, is produced and released in two versions:
-    Firstly, a pretrained model for producing contextualized word and entity representations.
-    Secondly, a model is presented which is trained on the central Danish NER dataset, DaNE, achieving close to state of the art and slightly outperforming BotXO's Danish BERT.
+    In this report, LUKE's English NER results are reproduced along with leading Danish NER results, and an open source Danish LUKE, DaLUKE, is produced.
+    Firstly, a general, pretrained model for producing contextualized word and entity representations is released.
+    Secondly, a model is presented which is trained on the central Danish NER dataset, DaNE, achieving close to state of the art and slightly outperforming BotXO's Danish BERT, though within margin or error.
     Several ablation studies are conducted to explore what effects different techniques have on performance.
     Finally, an open source software package, \code{daluke}, is released with the goal of making knowledge-based deep learning for Danish easy to use.
 \end{abstract}
@@ -59,13 +59,13 @@ This project has been completed to fulfil the requirements to obtain the bachelo
 Per author, the project was assigned a workload of 15 ECTS corresponding to approximately 420 working hours.
 The software presented in the project is available at \code{\href{https://github.com/peleiden/daLUKE}{github.com/peleiden/daluke}}.
 
-We are incredibly grateful for the large amount of help we received from DTU and the broader Danish natural language processing community.
+We are incredibly grateful for the large amount of help we received from DTU and broadly from Danish natural language processing practitioners.
 Obligatory mentions include Rasmus Arpe and Martin Nielsen from Danspeech, Finn Årup Nielsen from DTU Compute, and Kasper Lindskou and Lukas Nielsen from Ekstra Bladet Analyse for valuable advice, especially on data concerns.
 We are also grateful for the help of Ikuya Yamada, Studio Ousia for publishing LUKE and openly answering all our questions on modeling details.
 
 A special thank you goes out to Johannes Kruse for continuous feedback and insight.
 All of our three supervisors gave us invaluable guidance and encouragement crucial for the project.
-We would never have learned so much about this exciting field without the ever insisting ambition of Lars Kai Hansen.
+We would never have learned so much about this exciting field without the ambition and motivation of Lars Kai Hansen.
 
 Finally, we note that this project presents text examples in Danish that are not translated to English.
 A report meant for a broader audience would require such translations.

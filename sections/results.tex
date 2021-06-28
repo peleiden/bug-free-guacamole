@@ -48,16 +48,16 @@ However, the variability of fine-tuning is also highlighted here and will be dis
     \centering
     \includegraphics[width=\textwidth]{pretrain-acc}
     \caption{
-    Masked subwords and masked entity accuracy throughout pretraining.
+    Masked words and masked entity accuracy throughout pretraining.
     The curves are smoothed with a rolling average.
     The frequency of exact correct word guesses quickly rests at 20-25\pro\ while the new task of entity masking starts from 0 and takes time to learn.
     }
     \label{fig:pretrain-acc}
 \end{figure}\noindent
-The loss shown on Figure \ref{fig:loss} mirrors the accuracy with masked subword loss converging quickly, after which falling entity loss becomes the driving factor behind the falling total loss.
-The masked subwords and masked entity accuracies are shown on Figure \ref{fig:pretrain-acc}.
+The loss shown on Figure \ref{fig:loss} mirrors the accuracy with masked word loss converging quickly, after which falling entity loss becomes the driving factor behind the falling total loss.
+The masked words and masked entity accuracies are shown on Figure \ref{fig:pretrain-acc}.
 The former converges quickly, achieving close to top accuracy in less than a tenth of the full training time, while the latter keeps improving throughout the training.
-That the masked language modeling performance from BERT is quickly maximized is, however, perhaps not surprising, as many of the relevant weights are initialized from an already trained model which has been pretrained on the same task.
+That the MLM performance from BERT is quickly maximized is, however, perhaps not surprising, as many of the relevant weights were initialized from an already trained model which has been pretrained on the same task.
 
 \begin{table}[H]
     \centering
@@ -68,7 +68,7 @@ That the masked language modeling performance from BERT is quickly maximized is,
     \end{tabular}
     \caption{
         The main pretrained model performance in the last of 150 epochs.
-        We note that the model has learned to guess masked entities consistently as the correct entity very often is one of within top 50 guesses.
+        We note that the model has learned to guess masked entities consistently as the correct entity very often is one of the top 50 guesses.
     }
     \label{tab:mainpre}
 \end{table}\noindent
@@ -111,13 +111,13 @@ That the masked language modeling performance from BERT is quickly maximized is,
     DaNLP spaCy   & DaNE      & 73.8 $\pm 4$         & 76.1          & 71.5          & 75.7         $\pm 4$         & 76.0          & 87.8          & 59.6          & 66.1 \\
     DaNLP Flair   & DaNE      & --                   & --            & --            & 81.8         $\pm 4$         & 84.8          & 93.2          & 63.0          & -- \\
     Polyglot      & Wikipedia & --                   & --            & --            & 64.2         $\pm 4$         & 65.0          & 78.7          & 39.3          & -- \\
-    daner         & ITU CDT   & --                   & --            & --            & 56.5         $\pm 5$         & 59.4          & 70.4          & 28.3          & --
+    daner         & ITU DDT   & --                   & --            & --            & 56.5         $\pm 5$         & 59.4          & 70.4          & 28.3          & --
                 \end{tabular}
         \end{center}
         \caption{
             Results of Danish NER models of the DaNE \cite{hvingelby2020dane} testing dataset consisting of 565 sentences.
-            $\pm$ on the average F1's is notation for the approximate $95\pro$ confidence interval calculated using \eqref{eq:ci}.
-        Missing numbers is due to some models not being trained on the MISC annotations.
+            $\pm$ on the average F1's is notation for the approximate $95\pro$ confidence interval calculated using eq. \eqref{eq:ci}.
+        Missing numbers are due to some models not being trained on the MISC annotations.
         We see the transformer-based models dominate the scores, spearheaded by the large implementation of DaCy.
         }
         \label{tab:DaNE}
@@ -142,8 +142,8 @@ We conclude, when comparing with the June 2021 DaNLP NER table\footnotemark \cit
 \footnotetext{
     Table is available at \url{github.com/alexandrainst/danlp/blob/master/docs/docs/tasks/ner.md} and was compared on 27/6, 2021 at commit SHA \code{584d5c7}.
 }
-Taking these results at face value, DaLUKE fails to achieve SOTA on DaNE, being beaten only by DaCy large but surpassing da-BERT on which it is based.
-However, when considering the approximate uncertainties estimates, the small test set makes these conclusions baseless, instead identifying a \emph{group} of transformer-based NER models leading the scoreboard.
+Taking these results at face value, DaLUKE fails to achieve SOTA on DaNE, being beaten only by DaCy large but surpassing da-BERT, on which it is based.
+However, when considering the approximate uncertainty estimates, the small test set makes these conclusions baseless, instead identifying a \emph{group} of transformer-based NER models leading the scoreboard.
 
 Still, the considerable improvements in some categories when comparing to da-BERT is taken as an encouragement, suggesting that the extra pretraining and entity understanding indeed has added some knowledge to the model.
 The improvements of DaLUKE compared to da-BERT are examined further in the following chapter.
@@ -186,7 +186,7 @@ Ultimately, DaLUKE performs at a high level and shows promise for entity modelin
                         DaNLP spaCy   & DaNE           & 64.1          $\pm 5$& 55.9          & 75.1          & 72.7         $\pm 5$& 72.7          & 88.3            & 46.5          & 12.3 \\
                         DaNLP Flair   & DaNE           & --                   & --            & --            & 76.2         $\pm 4$& 80.2          & 94.4            & 36.1          & -- \\
                         Polyglot      & Wikipedia      & --                   & --            & --            & 64.1         $\pm 5$& 69.7          & 78.4            & 24.7          & -- \\
-                        daner         & ITU CDT        & --                   & --            & --            & 59.8         $\pm 5$& 58.2          & 73.6            & 26.1          & --
+                        daner         & ITU DDT        & --                   & --            & --            & 59.8         $\pm 5$& 58.2          & 73.6            & 26.1          & --
                 \end{tabular}
         \end{center}
         \caption{
@@ -221,7 +221,7 @@ Ultimately, DaLUKE performs at a high level and shows promise for entity modelin
                         DaNLP spaCy     & DaNE      & 59.6         $\pm 0.1$ & 58.5          & 60.6          & 68.7          & 71.6          & 38.8 \\
                         DaNLP Flair     & DaNE      & 65.0         $\pm 0.1$ & 70.7          & 60.2          & 70.1          & 74.4          & 43.7 \\
                         Polyglot        & Wikipedia & 62.9         $\pm 0.1$ & 66.3          & 58.2          & 72.4          & 69.2          & 35.3 \\
-                        daner           & ITU CDT   & 46.6         $\pm 0.1$ & 51.5          & 42.5          & 56.2          & 54.5          & 14.8
+                        daner           & ITU DDT   & 46.6         $\pm 0.1$ & 51.5          & 42.5          & 56.2          & 54.5          & 14.8
                 \end{tabular}
         \end{center}
         \caption{
@@ -230,12 +230,12 @@ Ultimately, DaLUKE performs at a high level and shows promise for entity modelin
         }
         \label{tab:WikiANN}
 \end{table}
-When fine-tuned on DaNE, DaLUKE achieves SOTA on WikiANN and slightly tops DaCy Large on Plank.
+When fine-tuned on DaNE, DaLUKE achieves SOTA on WikiANN and slightly tops DaCy large on Plank.
 This is unexpected given that DaLUKE was beaten on the DaNE test set.
 It may indicate a better generalization ability, which, if true, is indeed a desirable property.
 However, less exciting reasons for this behaviour may well be more likely.
 With Plank, the difference is minuscule and clearly within random error.
-The performance discrepancy on WikiANN appears surely significant, but may be explained even less exciting:
+The performance discrepancy on WikiANN appears surely significant, but may have an even less interesting reason:
 DaLUKE is pretrained directly on similar, annotated Wikipedia data, compromising the principle that the training and test sets should be strictly disjoint.
 
 \end{document}

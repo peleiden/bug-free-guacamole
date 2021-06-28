@@ -43,9 +43,9 @@ Using the terminology of Table~\ref{tab:eval}, these measures are below defined 
     \label{eq:precrec}
     \text{Precision} = \frac{\text{\# case I}}{\text{\# case I} + \text{\# case II}},\quad \text{Recall} = \frac{\text{\# case I}}{\text{\# case I} + \text{\# case III}}.
 \end{equation}
-From these class-level metrics, global values of precision and recall were reported using the \emph{micro average}, that is, by aggregating the number of prediction outcomes (I, II, III) across classes before using formulae \eqref{eq:precrec}.
+From these class-level metrics, global values of precision and recall were reported using the \emph{micro average}, that is, by aggregating the number of prediction outcomes (I, II, III) across classes before using eq. \eqref{eq:precrec}.
 In the report, every reference to an average of metrics over NER classes refers to this micro average.
-Thus, using this approach, the error types IV, V and VI are not discriminated\footnotemark.
+Thus, using this approach, the error types IV, V and VI are not treated explicitly.\footnotemark.
 \footnotetext{
     Using this approach, the cases IV and VI in Table~\ref{tab:eval} would for the evaluation of the LOC class be treated as case III and for the evaluation of the ORG class be treated as case II.
     V would, similarly, be counted as both a case II and III for ORG.
@@ -61,10 +61,10 @@ The reported scores were obtained using a Python sequence evaluation library \ci
 
 Two of the three used datasets contains MISC annotations, and existing literature disagrees on whether to consider this class in evaluations, with DaNLP arguing
 ''We are only reporting the scores on the LOC, ORG, and PER entities as the MISC category has limited practical use'' \cite[Sec. ''Benchmarks'' in NER page]{danlp2021}.
-We, however, trained all models with the MISC annotation and also include it in our evaluations, as we focus less on the practical implication of the measure and more on its connection to language understanding.
+We, however, trained all models with the MISC annotation and also included it in our evaluations, as we focus less on the practical application of the measure and more on its connection to language understanding.
 When comparing with models trained without MISC, a non-MISC average F1 score is also reported (by treating all MISC predictions as null class predictions).
 
-When comparisons are made between model average F1 scores, an approximate 95\pro\ confidence interval is reported (every time $\pm$ is used).
+When comparisons are made between model average F1 scores, an approximate 95\pro\ confidence interval is reported (every time $\pm$ was used).
 This is calculated using the normality approximation for binomial observations \cite[Method 7.3]{brockhoff2018stat}, which gives, when denoting the true avg. F1 score $f$ and the $n$ sample estimate thereof $\hat f$, that
 \begin{equation}
     \label{eq:ci}
@@ -81,7 +81,7 @@ This is calculated using the normality approximation for binomial observations \
     \approx 95\pro,
 \end{equation}
 where $z_{0.975}$ is the 97.5\pro\ standard normal distribution percentile.
-For the sample size $n$, the number of true entities\footnotemark in the dataset is used -- this is $558$ for DaNE, $390$ for Plank and $13698$ for WikiANN.
+For the sample size $n$, the number of true entities\footnotemark\ in the dataset is used -- this is $558$ for DaNE, $390$ for Plank and $13698$ for WikiANN.
 \footnotetext{
     Here, the number of true, entire entity spans in each class is used, not the number of words annotated with the class; a unit used for other analysis in the discussion.
     The latter would overstate the number of independent observations as two words in the same entity share much information.
@@ -89,7 +89,6 @@ For the sample size $n$, the number of true entities\footnotemark in the dataset
 
 \subsection{Fine-tuning English LUKE}
 Yamada et al. benchmark LUKE on named entity recognition using the CoNLL-2003 dataset \cite{yamada2020luke}.
-
 Reproduction of these results was attempted by obtaining the pretrained LUKE models from Yamada et al.'s software repository.
 The same hyperparameters as Yamada et al. were used and are shown along with the technical details in Table~\ref{tab:params}.
 
@@ -126,19 +125,19 @@ The fine-tuning procedure was repeated five times for each of the two released L
 Nine publicly available Danish NER models usable by NLP practitioners were collected and evaluated on the testing datasets of the three Danish NER annotations, considered in Section \ref{subsec:daNERdata}:
 DaNE, Plank and WikiANN.
 
-Most of the models were found through DaNLP \cite{danlp2021} and a number of them are introduced in Section \ref{sec:nlpda}.
+Most of the models were found through DaNLP \cite{danlp2021}, and a number of them were introduced in Section \ref{sec:nlpda}.
 
 \setlist{itemsep=.5em}
 \begin{itemize}
     \item \textbf{DaNLP da-BERT}: The da-BERT model \cite{botxo2019dabert} fine-tuned for NER on DaNE by DaNLP.
-    \item \textbf{NERDA m-BERT}: The multilingual BERT base released by the original Google Research BERT team \cite{devlin2019bert} fine-tuned by NERDA \cite{kjeldgaard2020nerda} on DaNE.
-    \item \textbf{NERDA Ælæctra}: The transformer Ælæctra, released by Malte Højmark-Bertelsen, \cite{bertelsen2020lctra} fine-tuned by NERDA on DaNE.
+    \item \textbf{NERDA m-BERT}: The multilingual BERT base released by the Google Research BERT team \cite{devlin2019bert} fine-tuned by NERDA \cite{kjeldgaard2020nerda} on DaNE.
+    \item \textbf{NERDA Ælæctra}: The transformer Ælæctra, released by Malte Højmark-Bertelsen \cite{bertelsen2020lctra}, fine-tuned by NERDA on DaNE.
     \item \textbf{DaCy}: An adaption of version 3 of the SpaCy framework \cite{honnibal2020spacy} to Danish by Kenneth Enevoldsen including fine-tuning of on DaNE \cite{enevoldsen2020dacy}.
         Both the medium and large versions are benchmarked, using the base and large multilingual RoBERTa \cite{conneau2020unsupervised} models, respectively.
-        This 2021 model, large version, is the currently reported state of the art.
+        This 2021 model, large version, is the currently reported state of the art \cite{enevoldsen2020dacy, danlp2021}.
     \item \textbf{DaNLP spaCy}: SpaCy, version 2, adapted to Danish by DaNLP and fine-tuned on DaNE.
     \item \textbf{DaNLP Flair}: The Flair framework \cite{akbik2019flair} also adapted to Danish by DaNLP and fine-tuned on DaNE.
-    \item \textbf{Polyglot}: A NLP framework supporting a wide range of tasks in many languages including NER in 40 different languages.
+    \item \textbf{Polyglot}: An NLP framework supporting a wide range of tasks in many languages including NER in 40 different languages.
         The NER model is fine-tuned using automatic, language-agnostic annotations generated from Wikipedia and Freebase link structures \cite{rfou2015polyglot}.
     \item \textbf{daner (DKIE Stanford CRF)}: An application of the Stanford CoreNLP Conditional Random Field (CRF) NER classifier \cite{manning2014corenlp} released by Leon Derczynski as a part of the DKIE project \cite{derc2014dkie}.
     The model was trained on NER annotations produced at ITU on the Danish Dependency Treebank (DDT) corpus \cite{kromann2003ddt}.
@@ -170,21 +169,21 @@ Our pretraining approach followed the one used by Yamada et al., as described in
     \item
         The model followed the architecture of BERT base instead of BERT large, and weights were initialized from BotXO's da-BERT \cite{botxo2019dabert} as no Danish RoBERTa or BERT large is available.
         An ablation study on this transfer learning from da-BERT is introduced in Section~\ref{subsec:dabertexp}.
-        Because of this, token embeddings and contextualized representations both reside in a 768-dimensional latent space rather than the 1024 dimensions used by LUKE.
+        Because of this, token embeddings and contextualized representations both reside in a 768-dimensional latent space rather than the 1024 dimensions used by LUKE large.
         DaLUKE also has 12 attention blocks rather than 24.
         \cite[Sec. 3.4]{yamada2020luke}
     \item
         The entity vocabulary, consisting of all mentioned Wikipedia articles, was limited in the English LUKE for computational efficiency \cite[Sec. 3.4]{yamada2020luke}.
         We do not perform such limiting as the number of mentioned Wikipedia articles is much smaller in the Danish corpus.
-        An experiment of limiting the vocabulary is explained in Section~\ref{subsec:entvocexp}.
+        An experiment of limiting the vocabulary is discussed in Section~\ref{subsec:entvocexp}.
 \end{enumerate}
-Due to the memory-intensive nature of the transformer architecture, we followed Yamada et al. and used gradient accumulation over multiple subbatches within each batch, that is, each parameter update consists of multiple forward passes of the model.
+Due to the memory-intensive nature of the transformer architecture, we followed Yamada et al. and used gradient accumulation over multiple subbatches within each batch, meaning that each parameter update consists of multiple forward passes of the model.
 
-As with LUKE, the cross entropy loss is calculated using \eqref{eq:crossentropyloss} for each classification task, with the only difference being that the final loss is the average rather than the sum of the individual task losses.
+As with LUKE, the cross entropy loss is calculated using eq. \eqref{eq:crossentropyloss} for each classification task, with the only difference being that the final loss is the average rather than the sum of the individual task losses.
 This effectively scales the loss and does not affect the learning if the learning rate is adjusted accordingly.
 
 The hyperparameters used for pretraining are shown in Table \ref{tab:pretrain-hyper}.
-These were chosen based on informal experiments, as structured hyperparameter search was not within time frame.
+These were chosen based on informal experiments, as structured hyperparameter search was not possible within the time frame of this project.
 \begin{table}[H]
     \centering
     \begin{tabular}{l|r}
@@ -203,7 +202,7 @@ These were chosen based on informal experiments, as structured hyperparameter se
     \end{tabular}
     \caption{Hyperparameters used for DaLUKE pretraining.}\label{tab:pretrain-hyper}
 \end{table}\noindent
-LUKE follows BERT and increases its learning rate linearly from 0 to the peak learning rate followed by a linear decrease to 0 for the rest of the learning rate - the slanted triangle learning rate (STLR). \cite{devlin2019bert, yamada2020luke, howardruder2018universal}
+LUKE follows BERT and increases its learning rate linearly from 0 to the peak learning rate followed by a linear decrease to 0 for the rest of the training - the slanted triangle learning rate (STLR). \cite{devlin2019bert, yamada2020luke, howardruder2018universal}
 
 For pretraining, DaLUKE also employs linear warmup for the first 6\pro\ of parameter updates, after which it decreases polynomially with a power of $ \sqrt{3} $ to a final learning rate at $10\pro$ of peak learning rate.
 This results in a more aggressive decrease in learning rate after the warmup period but a slightly higher learning rate in the final steps compared to STLR.
@@ -217,9 +216,9 @@ The learning rate development is shown on Figure \ref{fig:lr}.
 \end{figure}\noindent
 
 \paragraph{Accuracy measures}
-To measure the performance of the pretraining model, the accuracies of word and entity predictions are calculated throughout the training.
-Due to the size of the classification problem, especially regarding entities, top $ k $ accuracies are calculated - that is, if the true token was among the $ k $ tokens given the highest probability by the model.
-Top 1, 3, 5, and 10 accuracies are calculated for both the masked word and masked entity task using every example that the model trains on, while top 25 and 50 are calculated using one twentieth of examples for computational efficiency.
+To measure the performance of the pretraining model, the accuracies of word and entity predictions were calculated throughout the training.
+Due to the size of the classification problem, especially regarding entities, top $ k $ accuracies were calculated - that is, whether the true token was among the $ k $ tokens given the highest probability by the model.
+Top 1, 3, 5, and 10 accuracies were calculated for both the masked word and masked entity task using every example that the model trains on, while top 25 and 50 were calculated using one twentieth of examples for computational efficiency.
 
 \subsection{Fine-tuning DaLUKE for Named Entity Recognition}%
 \label{sub:fine-tune-ner}
@@ -231,15 +230,15 @@ When a better score than the so far best checkpoint was found, this was overwrit
 The best checkpoint of the model was used for evaluation on the test set.
 
 \paragraph{Learning rate}
-Unlike in the pretraining, we did as Yamada et al. and used a slanted triangle learning rate \cite{yamada2020luke}.
-Howard and Ruder have also shown that the slanted triangle approach for fine-tuning tasks improves results compared to a linear decaying learning rates without warmup \cite{howardruder2018universal}.
+Unlike in the pretraining, we did as Yamada et al. and used a STLR \cite{yamada2020luke}.
+Howard and Ruder have also shown that the STLR approach for fine-tuning tasks improves results compared to a linear decaying learning rates without warmup \cite{howardruder2018universal}.
 
 \paragraph{Loss}
-Due to the nature of the $ n $-grams, only very few spans do correspond to entities, making the O class dominate the dataset.
-For instance, in the training set of DaNE, the O class accounts for 99.3\pro\ of spans and the entity counts are not balanced.
-This motivated us to implement class frequency-weighted, the performance of which is discussed in Section \ref{subsec:lossexp}.
+Due to the nature of the $ n $-grams, only very few spans correspond to entities, making the O class dominate the dataset.
+For instance, in the training set of DaNE, the O class accounts for 99.3\pro\ of spans, and the entity counts are not balanced.
+This motivated us to implement class frequency-weighted loss, the performance of which is discussed in Section \ref{subsec:lossexp}.
 
-The class-weighted loss $ l_w $ was calculated similarly to the unweighted loss in equation \eqref{eq:crossentropyloss}:
+The class-weighted loss $ l_w $ was calculated similarly to the unweighted loss in eq. \eqref{eq:crossentropyloss}:
 \begin{equation}\label{eq:w-crossentropyloss}
     l_w = \frac{1}{\sum_{j=1}^{C} w_j}
     \sum_{i=1}^N w_{c_i} \left(
@@ -262,7 +261,7 @@ The search is performed by repeating the training procedure with all combination
 \end{enumerate}
 For each combination, the resulting model was evaluated on the development set, shown in Table~\ref{tab:hyperres}, and the hyperparameters with the highest average F1 score were chosen.
 The final model was produced by fine-tuning again to limit selection bias.
-The chosen hyperparameters are reported on Table~\ref{tab:main-hyper} together with the used hyperparameters that were not tested.
+The chosen hyperparameters are reported in Table~\ref{tab:main-hyper} together with the used hyperparameters that were not tested.
 \begin{table}[H]
     \centering
     \small
@@ -277,7 +276,7 @@ The chosen hyperparameters are reported on Table~\ref{tab:main-hyper} together w
         Weight decay                    & $ 0.01 $\\
         Loss weighting                  & No
     \end{tabular}
-    \caption{Hyperparameters used for fine-tuning DaLUKE for named entity recognition.}
+    \caption{Hyperparameters used for fine-tuning DaLUKE for NER.}
     \label{tab:main-hyper}
 \end{table}\noindent
 
@@ -296,26 +295,26 @@ For instructions, see the readme file on the repository.
 
 \paragraph{Implementation}
 Yamada et al. have made their code\footnote{\url{https://github.com/studio-ousia/luke}. Visited June 11, 2021.} freely available under the Apache License 2.0 \cite{apachelicense}.
-We highly appreciate this, and our original plan was to base our implementation on this.
+We highly appreciate this, and our original plan was to use their code.
 However, we quickly ran into problems with this approach, as getting all dependencies installed with the correct versions on our computing cluster proved to be a very challenging task.
 To solve this, we forked the repository and updated both Python and several of the dependencies to newer versions, but this in itself required significant code rewrites.
 When that worked, we started pretraining, which presented more mysterious issues:
 Training on a single GPU worked, but two GPUs slowed training by a factor of three, and three or more GPUs simply did not work.
-Due to limited GPU availability, cryptic error messages, and an almost complete lack of documentation, debugging once again became difficult.
+Due to limited GPU availability, cryptic error messages, and a lack of documentation, debugging once again became difficult.
 
 These reasons compelled us to reimplement the model and training from scratch,  which also allowed fitting the software to our specific needs.
-The forked LUKE repository, available at \url{https://github.com/peleiden/luke}, is used for parts of the dataset preparation, but everything else has been reimplemented.
-Our code is inspired by the original LUKE code, but we have made efforts to make it more approachable focusing on code readability.
+The forked LUKE repository, available at \url{https://github.com/peleiden/luke}, is used for parts of the pretraining dataset preparation, but everything else has been reimplemented.
+Our code is inspired by the original LUKE code, but we have made efforts to make it more approachable focusing on code readability and documentation.
 
 Rewriting code bases always carries a risk of introducing bugs.
-Despite borrowing heavily from Yamada et al., we did introduce some in the code that had to be fixed, forcing multiple restarts of the training.
+Despite borrowing heavily from Yamada et al., we did introduce some errors in the code that had to be fixed, forcing multiple restarts of the training.
 These ranged from domain-specific ones such as accidentally leaving category pages in the entity vocabulary to general errors such as copying pointers instead of the memory stored at them.
 Our answer to iron these out was unit testing of modular code, but we still have work to do in expanding test coverage.
 
 \paragraph{Floating Point Precision}
-The model was trained using PyTorch Automatic Mixed Precision (AMP) \cite{pytorchamp}, which -- ideally, at least -- should decrease training time with little to no penalty to accuracy \cite{huang2020amp}.
+The model was trained with PyTorch Automatic Mixed Precision (AMP) \cite{pytorchamp}, which -- ideally, at least -- should decrease training time with little to no penalty to accuracy \cite{huang2020amp}.
 This is partially due to half-precision calculations being simpler, and partially due to the lower memory requirements, allowing larger subbatches and thus better GPU utilization.
-However, as Figure \ref{fig:runtime} shows, AMP works as intended when training on NVIDIA Tesla V100's, but had the opposite effect when training on NVIDIA A100's.
+However, as Figure \ref{fig:runtime} shows, AMP works as intended when training on NVIDIA Tesla V100s, but had the opposite effect when training on NVIDIA A100s.
 
 AMP works by automatically casting parts of the model to half-precision rather than the usual single precision.
 Some layers are more sensitive than others to precision.
@@ -325,8 +324,8 @@ This is handled by scaling up the loss and then scaling down the gradients accor
 \cite{pytorchamp}
 
 \paragraph{Distributed Training and Runtime}
-As transformer training requires significant compute, distributing the training over multiple GPUs can yield significant speedups.
-Especially given the parallelizable nature of the transformer compared to recurrent neural network variations \cite{vaswani2017att}, training should scale fairly well on multiple GPUs.
+As transformer training requires significant compute, distributing the training over multiple GPUs can yield considerable speedups.
+Especially given the parallelizable nature of the transformer compared to recurrent neural network variations, training should scale fairly well on multiple GPUs \cite{vaswani2017att}.
 
 The pretraining took roughly a week.
 Due to varying GPU availability, varying numbers of A100s and V100s were used for pretraining and the experiments in section \ref{sec:pretrainpls}.
