@@ -5,15 +5,15 @@
 \chapter{Conclusion}
 \lhead{Conclusion}
 We present DaLUKE, a Danish version of the LUKE \cite{yamada2020luke}, a general-purpose language model for producing contextualized word and entity representations.
-It is fine-tuned on a number of Danish named entity recognition (NER) datasets and achieves close to state of the art on DaNE, the primary Danish NER dataset.
-A number of Danish NER results are reproduced with a number of close top contenders.
+It is fine-tuned on three Danish named entity recognition (NER) datasets and achieves close to state of the art on DaNE, the primary Danish NER dataset.
+Many Danish NER results are reproduced revealing a group of close top contenders.
 On raw scores, DaLUKE is superseded by DaCy Large \cite{enevoldsen2020dacy}, but beats DaNLP's fine-tuned version of BotXO's Danish BERT \cite{danlp2021, botxo2019dabert}, suggesting that the knowledge-based additions of Yamada et al. \cite{yamada2020luke} do indeed raise the performance of the model.
 Furthermore, both released LUKE models (large and base) are fine-tuned on the CoNLL-2003 NER dataset \cite{tjang2003conll}, and the results reported by Yamada et al. are reproduced.
 
 Both the general-purpose pretrained and the fine-tuned DaLUKE are made publicly available under the open source MIT license \cite{mitlicense} along with a \code{pip} installable package, \code{daluke}, that allows for easy use and integration into existing code bases.
 
 Using DaNE as a benchmark, it was found that entity-aware self-attention and a complete entity vocabulary help learning, and that especially transfer learning is important to the performance of the model.
-Without transfer learning, the model seems to overfit on the pretraining dataset, which is a concern with small datasets as risks being the case on low-resource languages like Danish.
+Without transfer learning, the model seems to overfit to the pretraining dataset, which is a concern with small datasets as risks being the case for low-resource languages like Danish.
 Our data-engineering, however, gave an example of how changes in pretraining datasets may have unintuitive consequences and should be applied carefully.
 
 The NER fine-tuning, used as a benchmark for language understanding, was found to be sensitive to hyperparameters and random number generator seeds, requiring broader analysis of Danish language models.
