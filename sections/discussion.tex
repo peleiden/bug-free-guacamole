@@ -12,6 +12,7 @@ To investigate what affects pretraining effectiveness, several ablation studies 
 Unless stated otherwise, the main hyperparameters from Table \ref{tab:pretrain-hyper} are used, but with 50 epochs due to limited compute.
 The experiments were trained primarily on a $ 1\times$A100 configuration.
 Due to its negative effect on runtime on A100's (see Figure \ref{fig:runtime}), AMP is not used for any of the following experiments.
+
 \subsection{The Parameter Population}
 The first model analysis is a global view of the DaLUKE parameters.
 Figure \ref{fig:weight-dist} shows the model parameter value distribution before and after pretraining divided by whether a given parameter was initialized from da-BERT.
@@ -66,6 +67,7 @@ That would also help explain the much faster convergence of subword accuracy com
 The pretraining dataset only has a little over 100 million subword tokens (see Table \ref{tab:metadata}) and 7.2 million entity annotations -- not exactly much for a model with 270 million parameters and an architecture with a well-known near insatiable thirst for data.
 
 \subsection{Baseline}
+\label{subsec:baseline}
 For a baseline model, the main model is retrained using only 50 epochs, but otherwise using the same hyperparameters, shown in Table \ref{tab:pretrain-hyper}.
 This allows for a comparison to ablation studies where compute resources did not allow a full 150 epoch pretraining.
 
@@ -340,7 +342,8 @@ From Figure \ref{fig:nobert-acc}, the initialization seems to provide two things
 \end{itemize}
 This stabilization effect is supported by the stable distribution of parameters inherited from da-BERT shown at Figures \ref{fig:weight-dist}.
 It should be noted that because no weights came from da-BERT, no weights were ever locked throughout the pretraining in this experiment.
-A similar experiment with weights unlocked and initialization from da-BERT showed pretraining accuracies much closer to the baseline, indicating that the regularizing effect is indeed the use of da-BERT.
+A similar experiment with weights unlocked and initialization from da-BERT showed pretraining accuracies much closer to the baseline though with somewhat higher entity prediction accuracy, indicating that the regularizing effect is indeed the use of da-BERT.
+The details of this experiment are listed in Appendix \ref{sec:nofix}.
 
 \subsection{Entity Vocabulary Size}
 \label{subsec:entvocexp}

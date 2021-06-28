@@ -20,10 +20,11 @@ The model, \emph{Language Understanding Using Knowledge Embeddings} (LUKE), was 
 The model had in total seen training from 160 GB of text\footnotemark~and achieved state of the art (SOTA) results on classic NLP tasks such as named entity recognition (NER).
 \footnotetext{This includes all training that affected the final model weights and thus also the data used to pretrain RoBERTa \cite[Sec. 3.2]{liu2019roberta}, the weights of which was used for initializing most of the LUKE weights. Counting only the data used for LUKE itself, the number is not directly reported but was found to be around 7 GB from our experiments with the English LUKE data pipeline.}
 For Danish, the amount of suitable data for this technique is about 40 times smaller\footnotemark.
+It is the goal of our project to present a maximally performant and open source Danish LUKE for use of Danish NLP practitioners while also taking this challenge as a case study of deep natural language processing for low resource languages.
+
 \footnotetext{
     The pretraining method uses the special format of Wikipedia. The English Wikipedia dump used by LUKE contained 3.5 billion words \cite[App. A]{yamada2020luke}, while the Danish Wikipedia consists of 81 million words.
 }
-It is the goal of our project to present a maximally performant and open source Danish LUKE for use of Danish NLP practitioners while also taking this challenge as a case study of deep natural language processing for low resource languages.
 
 \section{The Project}%
 \label{sec:project}

@@ -1,15 +1,64 @@
+% !TeX spellcheck = en_GB
 \documentclass[main.tex]{subfiles}
 
 \begin{document}
 \chapter{Result Details}
 \lhead{Appendix}
-\section{Fine-tuning hyperparameter search results}
+
+\section{Experiment: No Weight Fixing in Pretraining}
+\label{sec:nofix}
+This experiment was conducted as an ablation study on the locking of da-BERT weights.
+All hyperparameters are the same as in the baseline experiment, described in Section \ref{subsec:baseline}, with the exception that the weights from da-BERT were unlocked for the entire pretraining.
+
+\begin{table}[H]
+    \centering
+    \small
+    \begin{tabular}{l|l|cccccc}
+        Model                           & Top $k$ accuracy [\pro]  & $k=1$  & $k=3$ & $k=5$ & $k=10$ & $k=25$ & $k=50$\\\hline
+        \multirow{2}{*}{Baseline}       & Masked words             & 24.4  & 31.2 & 34.6 & 39.9  & 47.7  & 53.7 \\
+        & Masked entities          & 37.7  & 48.7 & 53.6 & 60.3  & 68.7  & 75.0
+    \end{tabular}
+    \caption{
+        The top $k$ accuracy of the model with no parameter fixing in the 50'th and last epoch.
+    }
+    \label{tab:nofix-mlm}
+\end{table}\noindent
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{no-fix-acc}
+    \caption{Development of masked language and masked entities when all weights are unlocked for the entire pretraining.}
+\end{figure}\noindent
+
+%2021-06-28 09:58:10.885    INFO                      precision    recall  f1-score   support
+%
+%LOC     0.8529    0.9062    0.8788        96
+%MISC     0.7358    0.6446    0.6872       121
+%ORG     0.8168    0.6646    0.7329       161
+%PER     0.9489    0.9278    0.9382       180
+%
+%micro avg     0.8524    0.7867    0.8183       558
+%macro avg     0.8386    0.7858    0.8093       558
+%weighted avg     0.8481    0.7867    0.8143       558
+\begin{table}[H]
+    \centering
+    \small
+    \begin{tabular}{l|ccccc|c|c}
+        \multirow{2}{*}{Model}  & \multicolumn{5}{c|}{F1 [\pro]} & Precision [\pro]               & Recall [\pro]               \\
+        & Avg. & LOC & PER & ORG & MISC      & Avg.                           & Avg.                         \\ \hline
+        No weight fixing & 81.8 & 87.9 & 93.8 & 73.3 & 68.7 & 85.2 & 78.7
+    \end{tabular}
+    \caption{The fine-tuning results of the weight unlocking pretraining experiment.}
+    \label{tab:nofix}
+\end{table}\noindent
+
+\section{Fine-tuning Hyperparameter Search Results}
 \label{sec:hyperres}
 
 \begin{table}[H]
     \footnotesize
     \begin{tabular}{lllll|rrr}
-        Batch size & Learning rate & Weight decay & Dropout & Loss weight & F1    &  Precision & Recall\\\hline
+        Batch size & Learning rate & Weight decay & Dropout & Loss weight & F1 [\%]    &  Precision & Recall\\\hline
         8& 1\ctp{-5}& 0.01& 0.025& Yes       & 73.06 &  62.82 &  87.29\\
         8& 1\ctp{-5}& 0.01& 0.025& No        & 73.53 &  62.87 &  88.54\\
         8& 1\ctp{-5}& 0.01& 0.1& Yes         & 73.52 &  63.17 &  87.92\\
@@ -44,7 +93,7 @@
         16& 5\ctp{-5}& 0.05& 0.1& No         & 82.94 &  76.45 &  90.62
     \end{tabular}
     \caption{
-        The results of hyperparameter search with micro average percentages for the metrics reported.
+        The results of hyperparameter search with micro average percentages for the metrics reported on the DaNE test set.
     }
     \label{tab:hyperres}
 \end{table}
@@ -54,7 +103,7 @@
 
 \begin{figure}[H]
     \centering
-        \includegraphics[width=0.7\linewidth]{full-geo/tsne}
+        \includegraphics[width=0.8\linewidth]{full-geo/tsne}
     \caption{
         $t$-SNE performed on a 100K random subset of the full$\sim$ 1M possible entity spans in the training set of DaNE.
     }
@@ -63,7 +112,7 @@
 
 \begin{figure}[H]
     \centering
-        \includegraphics[width=0.7\linewidth]{full-geo/umap}
+        \includegraphics[width=0.8\linewidth]{full-geo/umap}
     \caption{
         UMAP performed on a 100K random subset of the full $\sim$ 1M possible entity spans in the DaNE training set.
     }
@@ -72,7 +121,7 @@
 
 \begin{figure}[H]
     \centering
-        \includegraphics[width=\linewidth]{full-geo/variance_explained}
+        \includegraphics[width=.8\linewidth]{full-geo/variance_explained}
     \caption{
         Variance explained by principal components found by PCA on full DaNE training dataset.
     }
@@ -81,7 +130,7 @@
 
 \begin{figure}[H]
     \centering
-        \includegraphics[width=\linewidth]{pos-geo/variance_explained}
+        \includegraphics[width=.8\linewidth]{pos-geo/variance_explained}
     \caption{
         Variance explained by principal components found by PCA on the dataset including positive labels.
     }
