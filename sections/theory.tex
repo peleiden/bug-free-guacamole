@@ -267,7 +267,7 @@ After the computation of the representations, the model can be extended with a d
 The word/entity duality of LUKE means that a large part of the model performs the same task as the conventional word-based LMs.
 For this reason, the word embeddings in LUKE follow the BERT architecture, and Yamada et al. initialize these embeddings to those found in RoBERTa.
 In the pretraining of Yamada et al., the encoder of LUKE is also equivalent to that of BERT and is initialized using the weights of RoBERTa.
-
+These transfer learned weights are kept fixed for the first half of the training.
 
 \paragraph{Entity-aware Self-attention}
 \label{subsubsec:entityaware}
@@ -322,8 +322,6 @@ The total loss is calculated as the sum of individual losses for both tasks.
 
 Yamada et al. \cite{yamada2020luke} use weight decay for the entire model, except for bias and layer normalizations.
 According to Krogh and Hertz \cite{krogh1991weight}, the regularization induced by weight decay improves generalizability in feed-forward networks.
-% This is due to the suppression of irrelevant parameters, letting the smallest possible parameters solve the problems.
-% Larger parameters naturally lead to larger sensitivity to noise and thus poorer generalization.
 
 \paragraph{Entity Mask Prediction Head}
 For the entity pretraining task, LUKE is equipped with another classifier structure in addition to the MLM prediction head inherited from BERT.

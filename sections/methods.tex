@@ -215,6 +215,7 @@ The learning rate development is shown on Figure \ref{fig:lr}.
     \label{fig:lr}
 \end{figure}\noindent
 
+Following Yamada et al., we do not update the parameters of the weights transferred from da-BERT for the first half of the training.
 \paragraph{Accuracy measures}
 To measure the performance of the pretraining model, the accuracies of word and entity predictions were calculated throughout the training.
 Due to the size of the classification problem, especially regarding entities, top $ k $ accuracies were calculated - that is, whether the true token was among the $ k $ tokens given the highest probability by the model.
