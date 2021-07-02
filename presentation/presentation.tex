@@ -2,6 +2,7 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[danish]{babel}
+\graphicspath{{../imgs/}}
 
 \usetheme{Ilmenau}
 \usecolortheme{beaver}
@@ -31,52 +32,81 @@
 %Kom hurtigt frem til resultater
 %Hav repræsentationen med
 
+% Asger: Hvad er problemet? og Hvordan gik det?
+% Søren: Hvordan vil vi løse det? og Hvad har vi lært?
+
 \begin{frame}
     \frametitle{Fremlæggelsen}
     \footnotesize
     \tableofcontents
 \end{frame}
 
-\section{Introduktion}
-\subsection{Hvorfor er problemet interessant?}
-\subsection{Hvad har andre gjort?}
-
-\section{Teori og metode}
-\subsection{NLP: Nederen, langvarig pine}
-\subsection{Transformeren og Lukas}
-\subsection{Datasæt}
-\subsection{Vores modifikationer}
-
-\section{Resultater og eksperimenter}
-\subsection{Reproduktion kortere end mænd med små hænder}
-\subsection{Hovedresultat}
-\subsection{Étslidesgennemgang af resultater}
-
-\section{Diskussion}
-\subsection{Validitet af resultater: Kan DaNLP finde ud af statistik?}
-\subsection{Hvad har vi lært? Ingenting}
-\subsection{Videre arbejde}
+\section{Hvad er problemet?}
+\begin{frame}
+    % 1
+    \frametitle{Sprogforståelse mangler viden og generaliseringsevne til lavressourcesprog}
+\end{frame}
 
 \begin{frame}
-    \frametitle{Lyt til os}
-    Her følger de vise ord
-    \begin{definition}
-        Sprog er en social konstruktion
-    \end{definition}
-    \begin{example}
-        ipsum dolor
-    \end{example}
-    \begin{block}{Hej K}
-        Big K is big
-    \end{block}
-    \begin{itemize}
-        \pause
-        \item Hej
-        \pause
-        \item med
-        \pause
-        \item dig
-    \end{itemize}
+    % 1
+    \frametitle{Navngiven entitetsgenkendelse (NER)}
+\end{frame}
+
+\section{Hvordan vil vi løse det?}
+\begin{frame}
+    % 2
+    \frametitle{Hvad gør Lukas anderledes?}
+\end{frame}
+
+\begin{frame}
+    % 3
+    \frametitle{Prætræning af DaLUKE}
+\end{frame}
+
+\section{Hvordan gik det?}
+\begin{frame}
+    % 3
+    \frametitle{NER på dansk}
+\end{frame}
+
+\begin{frame}
+    % 3
+    \frametitle{Entitetsbevidst selvopmærksomhed}
+\end{frame}
+
+\begin{frame}
+    % 3
+    \frametitle{Transferlæring}
+\end{frame}
+
+\begin{frame}
+    % 2
+    \frametitle{Datasætmodifikationer}
+\end{frame}
+
+\section{Hvad har vi lært?}
+
+\begin{frame}
+    % 2
+    \frametitle{NER er tilfældigt}
+    % Lille sample
+    % RNG
+    % Krydsvalidering
+\end{frame}
+
+\begin{frame}
+    % 3
+    \frametitle{Repræsentationer}
+\end{frame}
+
+\begin{frame}
+    % 3
+    \frametitle{Forudsigelseseksempler}
+\end{frame}
+
+\begin{frame}
+    % 1
+    \frametitle{Afslutning med maskot}
 \end{frame}
 
 \end{document}
