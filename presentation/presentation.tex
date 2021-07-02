@@ -61,10 +61,13 @@
     \begin{itemize}
         \item På trods af grammatisk korrekt og idiomatisk tekst ved modeller ikke, hvad de taler om\footnotemark
         \item Det forsøges løst med viden
-        \item I lavresourcesprog fungerer det også som en udvidelse af datasæt
-        \item Fx er den engelske Wikipedia $ \sim 40 $ gange større end den danske
+        \item I lavresourcesprog fungerer det også som en udvidelse af datasæt -- Fx er den engelske Wikipedia $ \sim 40 $ gange større end den danske
     \end{itemize}
-    \footnotetext{\url{https://www.technologyreview.com/2020/08/22/1007539/gpt3-openai-language-generator-artificial-intelligence-ai-opinion}}
+    \begin{example}
+        \footnotesize
+        GPT-3: You poured yourself a glass of cranberry juice, but then you absentmindedly poured about a teaspoon of grape juice into it. It looks okay. You try sniffing it, but you have a bad cold, so you can’t smell anything. You are very thirsty. So \textbf{you drink it. You are now dead.}
+    \end{example}
+    \footnotetext{\tiny Visited July 2, 2021. \url{https://www.technologyreview.com/2020/08/22/1007539/gpt3-openai-language-generator-artificial-intelligence-ai-opinion}}
 \end{frame}
 
 \begin{frame}
@@ -75,6 +78,7 @@
         \item Praktiske anvendelser som informationssøgning, spørgsmålsbesvarelse og anonymisering
     \end{itemize}
     \begin{example}
+        \footnotesize
         "Cæsar marcherede mod Rom og trodsede dermed det romerske senat."\\
         "Cæsar": person\\
         "Rom": sted\\
@@ -162,7 +166,8 @@
         \column{0.55\textwidth}
         \begin{figure}[H]
             \centering
-            \includegraphics[width=\textwidth]{loss-fine}
+            \includegraphics<1>[width=0.8\textwidth]{datadist_dane}
+            \includegraphics<2>[width=\textwidth]{loss-fine}
         \end{figure}
     \end{columns}
 \end{frame}
@@ -179,7 +184,20 @@
             \item Uden brug i prætræning falder fine-tuningsresultater med 2,8 procentpoint
         \end{itemize}
         \column{0.4\textwidth}
-        
+        \begin{table}[H]
+            \centering
+            \footnotesize
+            \begin{tabular}{l c}
+                &Delord + entiteter\\
+                \begin{tabular}{@{}l@{}}Delord + \\ entiteter\end{tabular}&$ Q $
+            \end{tabular}\vspace{1cm}
+            \begin{tabular}{l c c}
+                &	Delord&Entiteter	\\
+                Delord&$ Q_{w2w} $	&$ Q_{w2e} $	\\
+                Entiteter&$ Q_{e2w} $	&$ Q_{e2e} $
+            \end{tabular}
+            \caption{Entitetsmodellering med og uden entitetsbevidst selvopmærksomhed}
+        \end{table}\noindent
     \end{columns}
 \end{frame}
 
@@ -221,11 +239,19 @@
 \section{Hvad har vi lært?}
 
 \begin{frame}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=.4\textwidth]{types-of-ml}
+    \end{figure}\noindent
+\end{frame}
+
+\begin{frame}
     % 2
     \frametitle{NER-resultater er usikre}
     % Lille sample
     % RNG
     % Krydsvalidering
+    
 \end{frame}
 
 \begin{frame}
