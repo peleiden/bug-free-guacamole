@@ -2,6 +2,10 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[danish]{babel}
+\usepackage{tikz}
+\definecolor{Plum}{rgb}{0.56, 0.27, 0.52}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.markings}
 \graphicspath{{../imgs/}}
 
 \usetheme{Ilmenau}
@@ -78,15 +82,69 @@
     \end{example}
 \end{frame}
 
+\tikzstyle{every picture}+=[remember picture]
+\tikzstyle{every path}=[<->,shorten <=1pt]
+
+\newcommand{\nw}[2]{
+    \tikz[baseline=(#2.base), inner sep = 0pt]{\node (#2) {\underline{#1}};}
+}
+
 \section{Hvordan vil vi løse det?}
 \begin{frame}
     % 2
-    \frametitle{Hvad gør Lukas anderledes?}
+    \frametitle{LUKE tilfører viden til sprogmodeller}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{itemize}
+            \item Transformer-opmærksomhed modellerer ord-kontekst
+            \item<2-> LUKE [Yam+20] regner også opmærksomhed over \emph{navngivne entiteter}
+        \end{itemize}
+        \column{0.5\textwidth}
+            \uncover<2->{
+                \begin{tabular}{c|c}
+                    Entitet       & ID\\\hline
+                    $\vdots$      & $\vdots$\\
+                    New York City & \texttt 5\\
+                    Christian 4.  & \texttt 6\\
+                    $\vdots$      & $\vdots$
+                \end{tabular}
+            }
+    \end{columns}
+    \begin{example}
+        \footnotesize
+        \only<1>{
+            \nw{Fredag}{1} \nw{rykkede}{2} Syd- og Sønderjyllands \nw{Politi}{3} ud til Sønderborg \nw{Lufthavn}{4}.
+            \begin{tikzpicture}[overlay]
+                \path[->,blue!60,thick](1) edge [out=-90, in=-90] (2);
+                \path[->,blue,very thick](3) edge [out=-90, in=-90] (4);
+            \end{tikzpicture}
+        }
+        \only<2>{
+            \nw{Fredag}{1} \nw{rykkede}{2} \nw{Syd- og Sønderjyllands Politi}{3} ud til \nw{Sønderborg Lufthavn}{4}.
+            \begin{tikzpicture}[overlay]
+                \path[->,blue!60,thick](1) edge [out=-90, in=-90] (2);
+                \path[->,red, very thick](3) edge [out=-90, in=-90] (4);
+            \end{tikzpicture}
+        }
+    \end{example}
+
 \end{frame}
 
 \begin{frame}
     % 3
-    \frametitle{Prætræning af DaLUKE}
+    \frametitle{En prætrænet, frit tilgængelig DaLUKE}
+    \begin{figure}[H]
+        \centering
+        \input{../imgs/daluke_tikz.tex}
+    \end{figure}\noindent
+    % \begin{itemize}
+    %     \item Egen software
+    %     \item Ingredienser
+    %         \subitem Initialisér 
+    %     \item Dansk Wikipedia giver entiteter
+    %     \item Dansk BERT [Bot19] giver ord-transformer
+    %     \item Diskriminerer mellem ord og entiteter i opmærksomhed
+    % \end{itemize}
 \end{frame}
 
 \section{Hvordan gik det?}
@@ -121,7 +179,7 @@
 \end{frame}
 
 \begin{frame}
-    % 3
+    % 2
     \frametitle{Transferlæring}
     \begin{columns}
         \column{0.4\textwidth}
@@ -159,7 +217,7 @@
 
 \begin{frame}
     % 2
-    \frametitle{NER er tilfældigt}
+    \frametitle{NER-resultater er usikre}
     % Lille sample
     % RNG
     % Krydsvalidering
@@ -167,17 +225,17 @@
 
 \begin{frame}
     % 3
-    \frametitle{Repræsentationer}
+    \frametitle{Entiteter fanger sprogforståelse}
 \end{frame}
 
 \begin{frame}
     % 3
-    \frametitle{Forudsigelseseksempler}
+    \frametitle{Kontekst og viden i eksempler}
 \end{frame}
 
 \begin{frame}
     % 1
-    \frametitle{Afslutning med maskot}
+    \frametitle{Vejen til AI, der forstår dansk}
 \end{frame}
 
 \end{document}
