@@ -3,6 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[danish]{babel}
 \usepackage{tikz}
+\usepackage{mathtools}
 \definecolor{Plum}{rgb}{0.56, 0.27, 0.52}
 \usetikzlibrary{arrows}
 \usetikzlibrary{decorations.markings}
@@ -145,7 +146,7 @@
     \begin{columns}
         \column{0.33\textwidth}
         \begin{itemize}
-            \item Ny softwarepakke
+            \item Trænet med ny softwarepakke
             \item Ingredienser
                 \begin{itemize}
                     \item Dansk Wikipedia $\rightarrow$ entiteter
@@ -159,10 +160,27 @@
             \centering
             \input{../imgs/daluke_tikz.tex}
         \end{figure}\noindent
-
         \begin{example}
             \footnotesize
-            Skjult maskér
+            \begin{overlayarea}{\textwidth}{1cm}
+                \only<1>{
+                Krøyer studerede på Kunstakademiet.
+                }
+                \only<2>{
+                    $
+                    \underbrace{\text{\textcolor{blue}{Krøyer}}}_{\mathclap{{\text{\textcolor{red}{P. S. Krøyer}}}}}
+                    \text{ \textcolor{blue}{studerede på} } 
+                    \underbrace{\text{\textcolor{blue}{Kunstakademiet}}}_{\mathclap{\text{\textcolor{red}{Det Kongelige Danske Kunstakademi}}}}
+                    $.
+                }
+                \only<3>{
+                    $
+                    \underbrace{\text{\textcolor{blue}{Krøyer}}}_{\mathclap{{\text{\textcolor{red}{[MASK]}}}}}
+                    \text{ \textcolor{blue}{[MASK] på} } 
+                    \underbrace{\text{\textcolor{blue}{Kunstakademiet}}}_{\mathclap{\text{\textcolor{red}{Det Kongelige Danske Kunstakademi}}}}
+                    $.
+                }
+            \end{overlayarea}
         \end{example}
     \end{columns}
 \end{frame}
@@ -182,8 +200,10 @@
         \column{0.55\textwidth}
         \begin{figure}[H]
             \centering
-            \includegraphics<1>[width=0.8\textwidth]{datadist_dane}
-            \includegraphics<2>[width=\textwidth]{loss-fine}
+            \begin{overlayarea}{\textwidth}{4cm}
+                \only<1>{\includegraphics[width=0.8\textwidth]{datadist_dane}}
+                \only<2>{\includegraphics[width=\textwidth]{loss-fine}}
+            \end{overlayarea}
         \end{figure}
     \end{columns}
 \end{frame}
