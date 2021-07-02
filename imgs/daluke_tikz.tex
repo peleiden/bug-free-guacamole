@@ -1,4 +1,4 @@
-\begin{tikzpicture}[shorten >=1pt,->,draw=black!90]
+\begin{tikzpicture}[shorten >=1pt,->,draw=black!90, scale=0.5, every node/.style={scale=0.5}]
 \tikzstyle{every pin edge}=[<-,shorten <=1pt]
 \tikzstyle{path} = [ultra thick]
 \tikzstyle{neuron}=[circle,fill=black!25,minimum size=17pt,inner sep=0pt]
@@ -9,26 +9,26 @@
 
 \tikzstyle{annot} = [text width=10em, text centered]
 
-\node[annot] (I) at (-2, 0) {\footnotesize Text sequence with annotated entities};
+\node[annot] (I) at (-2, 0) {\footnotesize Wikipediatekst med entiteter};
 
 \node[word neuron] (T-W) at (0, 2) {};
 \node[entity neuron] (T-E) at (0, -2) {};
-\node[annot, above of=T-W, node distance=1 cm] {Word tokenizer};
-\node[annot, below of=T-E, node distance=1 cm] {Entity tokenizer};
+\node[annot, above of=T-W, node distance=1 cm] {Ord-tokenizer};
+\node[annot, below of=T-E, node distance=1 cm] {Entitetsordbog};
 
 \path (I) edge (T-W);
 \path (I) edge (T-E);
 
 \node[word neuron] (E-W) at (4, 2) {};
 \node[entity neuron] (E-E) at (4, -2) {};
-\node[annot, above of=E-W, node distance=1 cm] {Word embeddings};
-\node[annot, below of=E-E, node distance=1 cm] {Entity embeddings};
+\node[annot, above of=E-W, node distance=1 cm] {Ord-embeddings};
+\node[annot, below of=E-E, node distance=1 cm] {Entetitsembeddings};
 
 \path (T-W) edge (E-W);
 \path (T-E) edge (E-E);
 
-\node[annot] at (2, 2.25) {\footnotesize $m$ subword IDs};
-\node[annot, text width=5em] at (2, -2) {\footnotesize $n$ entity and position IDs};
+\node[annot] at (2, 2.25) {\footnotesize $m$ delord-ID'er};
+\node[annot, text width=5em] at (2, -2) {\footnotesize $n$ entitets- og pos.-ID'er};
 
 \node[rectangle, draw = black,
     text = white,
@@ -36,7 +36,7 @@
     fill = Plum,
     minimum width = 4cm,
     minimum height = 2cm
-    ] (T) at (6,0) {Transformer:\\\(24\times\text{attention}\)};
+    ] (T) at (6,0) {Transformer:\\\(12\times\text{opmærksomhed}\)};
 
 \path (E-W) edge (T);
 \path (E-E) edge (T);
@@ -57,4 +57,6 @@
 };
 \path (T) edge (8.75, 0);
 
+\node[annot, text width=4em] (F) at (11, 0) {Gæt skjulte ord og entiteter};
+\path (9.75, 0) edge (F);
 \end{tikzpicture}

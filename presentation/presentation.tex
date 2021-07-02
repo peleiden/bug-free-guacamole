@@ -12,7 +12,8 @@
 \usecolortheme{beaver}
 \uselanguage{Danish}
 \languagepath{Danish}
-\usepackage{xcolor}
+
+\setbeamerfont{itemize/enumerate subbody}{size=\scriptsize}
 
 \newcommand{\unit}[1]{\ensuremath{\:\text{#1}}}
 \newcommand{\pro}{\ensuremath{\unit{\%{}}}}
@@ -21,6 +22,10 @@
 \expandafter\def\expandafter\insertshorttitle\expandafter{%
   \insertshorttitle\hfill%
   \insertframenumber\,/\,\inserttotalframenumber}
+
+\setbeamertemplate{itemize item}[square]
+\setbeamertemplate{itemize subitem}[circle]
+\setbeamertemplate{enumerate item}[square]
 
 \title{DaLUKE}
 \subtitle{
@@ -86,8 +91,6 @@
     \end{example}
 \end{frame}
 
-\tikzstyle{every picture}+=[remember picture]
-\tikzstyle{every path}=[<->,shorten <=1pt]
 
 \newcommand{\nw}[2]{
     \tikz[baseline=(#2.base), inner sep = 0pt]{\node (#2) {\underline{#1}};}
@@ -97,6 +100,8 @@
 \begin{frame}
     % 2
     \frametitle{LUKE tilfører viden til sprogmodeller}
+    \tikzstyle{every picture}+=[remember picture]
+    \tikzstyle{every path}=[<->,shorten <=1pt]
     \begin{columns}
         \column{0.5\textwidth}
         \begin{itemize}
@@ -137,18 +142,29 @@
 \begin{frame}
     % 3
     \frametitle{En prætrænet, frit tilgængelig DaLUKE}
-    \begin{figure}[H]
-        \centering
-        \input{../imgs/daluke_tikz.tex}
-    \end{figure}\noindent
-    % \begin{itemize}
-    %     \item Egen software
-    %     \item Ingredienser
-    %         \subitem Initialisér 
-    %     \item Dansk Wikipedia giver entiteter
-    %     \item Dansk BERT [Bot19] giver ord-transformer
-    %     \item Diskriminerer mellem ord og entiteter i opmærksomhed
-    % \end{itemize}
+    \begin{columns}
+        \column{0.33\textwidth}
+        \begin{itemize}
+            \item Ny softwarepakke
+            \item Ingredienser
+                \begin{itemize}
+                    \item Dansk Wikipedia $\rightarrow$ entiteter
+                    \item Dansk BERT [Bot19] $\rightarrow$ transformer
+                    \item Diskriminerer mellem ord og entiteter
+                \end{itemize}
+        \end{itemize}
+
+        \column{0.67\textwidth}
+        \begin{figure}[H]
+            \centering
+            \input{../imgs/daluke_tikz.tex}
+        \end{figure}\noindent
+
+        \begin{example}
+            \footnotesize
+            Skjult maskér
+        \end{example}
+    \end{columns}
 \end{frame}
 
 \section{Hvordan gik det?}
