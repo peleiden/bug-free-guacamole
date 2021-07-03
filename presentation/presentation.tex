@@ -4,6 +4,8 @@
 \usepackage[danish]{babel}
 \usepackage{tikz}
 \usepackage{mathtools}
+\usepackage{multirow}
+\usepackage{anyfontsize}
 \definecolor{Plum}{rgb}{0.56, 0.27, 0.52}
 \usetikzlibrary{arrows}
 \usetikzlibrary{decorations.markings}
@@ -194,8 +196,7 @@
         \column{0.45\textwidth}
         \begin{itemize}
             \item Fire kategorier: LOC, PER, ORG og MISC
-            \item Hovedmodel: Prætrænet i 150 epoker og fine-tunet i 15.
-            Opnår 82,9\pro\ med MISC og 85,2 uden -- andenplads på DaNLP's liste
+            \item Optimerer hyperparametre på val. og giver den 15 epoker på træningssæt
         \end{itemize}
         \column{0.55\textwidth}
         \begin{figure}[H]
@@ -206,6 +207,29 @@
             \end{overlayarea}
         \end{figure}
     \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{NER på dansk}
+    \begin{table}[H]
+        \fontsize{6pt}{8pt}\selectfont
+            \begin{center}
+                    \begin{tabular}{l l | c c c c | c c c c}
+                        \multirow{2}{*}{Model} & \multirow{2}{*}{Trænet på} & \multicolumn{4}{c|}{Micro-middel [\pro]} & \multicolumn{4}{c}{Klasse-F1 [\pro]}\\
+                        &         & F1                   & Prec.         & Rec.          & F1 {\tiny\textdiscount MISC} & LOC            & PER            & ORG            & MISC \\\hline
+        DaLUKE        & DaNE      & 82.9 $\pm 3$         & 84.7          & 81.2          & 85.2         $\pm 3$         & \textbf{87.0} & \textbf{94.2} & 73.2          & 74.6 \\\hline
+        DaNLP da-BERT & DaNE      & --                   & --            & --            & 84.0         $\pm 3$         & 83.9          & 92.8          & 73.0          & -- \\
+        NERDA m-BERT  & DaNE      & 79.2 $\pm 3$         & 82.1          & 76.5          & 81.7         $\pm 4$         & 83.5          & 92.6          & 66.9          & 70.3 \\
+        NERDA Ælæctra & DaNE      & 70.6 $\pm 4$         & 76.1          & 65.8          & 74.5         $\pm 4$         & 77.3          & 86.9          & 56.2          & 56.4 \\
+        DaCy medium   & DaNE      & 78.3 $\pm 3$         & 78.3          & 78.3          & 80.5         $\pm 4$         & 84.0          & 90.4          & 66.2          & 70.1 \\
+        DaCy large    & DaNE      & \textbf{84.9} $\pm 3$& \textbf{86.2} & \textbf{83.7} & \textbf{86.9}$\pm 3$         & 85.3          & \textbf{94.2} & \textbf{79.0} & \textbf{78.1} \\
+        DaNLP spaCy   & DaNE      & 73.8 $\pm 4$         & 76.1          & 71.5          & 75.7         $\pm 4$         & 76.0          & 87.8          & 59.6          & 66.1 \\
+        DaNLP Flair   & DaNE      & --                   & --            & --            & 81.8         $\pm 4$         & 84.8          & 93.2          & 63.0          & -- \\
+        Polyglot      & Wikipedia & --                   & --            & --            & 64.2         $\pm 4$         & 65.0          & 78.7          & 39.3          & -- \\
+        daner         & ITU DDT   & --                   & --            & --            & 56.5         $\pm 5$         & 59.4          & 70.4          & 28.3          & --
+                    \end{tabular}
+            \end{center}
+    \end{table}
 \end{frame}
 
 \begin{frame}
@@ -278,6 +302,9 @@
 \begin{frame}
     % 2
     \frametitle{NER-resultater er usikre}
+    \begin{itemize}
+        \item 558 entiteter i testsæt $\Rightarrow \pm 3\pro$
+    \end{itemize}
     % Lille sample
     % RNG
     % Krydsvalidering
