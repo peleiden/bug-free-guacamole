@@ -379,6 +379,24 @@
 \begin{frame}
     % 3
     \frametitle{Kontekst og viden i modellen}
+    \begin{itemize}
+        \item<1-> Modellen bruger facts fra hele sætningen til forudsigelse
+        \item<2-> Entitetsannoteringer gør det lettere at gætte skjulte ord
+        \item<3-> Entitetstype afhænger af kontekst
+    \end{itemize}
+    \begin{example}
+
+        % Professor i astrofysik, [MASK] [MASK], udtaler til avisen, at den nye måling sandsynligvis ikke er en fejl. Observationen af dobbeltstjerne-systemet var usædvanlig klar og foregik over længere tid. Han har i sine 30 år på Københavns Universitet ikke set noget lignende.
+        % Han: Bo Møller
+        % Hun: Bente Møller
+        % Harvard University: Peteran (Michael, John Brown var også på listen)
+
+        % "Det Kgl. Bibliotek forvalter Danmarks største tekstsamling, der strækker sig fra middelalderen til det nyeste litteratur."
+        % ORG
+
+        % "Du kan tage havnebussen til Det Kgl. Bibliotek og så tage videre med bussen."
+        % LOC
+    \end{example}
 \end{frame}
 
 \begin{frame}
@@ -393,7 +411,7 @@
         \begin{figure}[H]
             \centering
                 \href{https://github.com/peleiden/daLUKE}{
-                \includegraphics[width=.7\linewidth]{daluke-mascot}
+                    \includegraphics[width=.7\linewidth]{daluke-mascot}
                 }
         \end{figure}\noindent
         \end{itemize}
