@@ -382,21 +382,27 @@
         \column{0.5\textwidth}
     \begin{itemize}
         \uncover<1->{\item Modellen bruger fakta fra hele sætningen til forudsigelse}
-        \uncover<2->{\item Entitetsannoteringer gør det lettere at gætte skjulte ord}
-        \uncover<3->{\item Entitetstype afhænger af kontekst}
+        % \uncover<4->{\item Entitetsannoteringer gør det lettere at gætte skjulte ord}
+        \uncover<4->{\item Entitetstype afhænger af kontekst}
     \end{itemize}
         \column{0.5\textwidth}
     \begin{example}
         \footnotesize
-        \only<1>{
-        ''Professor i astrofysik, [MASK] [MASK], udtaler til avisen, at den nye måling sandsynligvis ikke er en fejl. Observationen af dobbeltstjerne-systemet var usædvanlig klar og foregik over længere tid. Han har i sine 30 år på Københavns Universitet ikke set noget lignende.''
+        \only<1-3>{
+        ''
+        Professor i astrofysik, \emph{[MASK] [MASK]}, udtaler til avisen, at den nye måling sandsynligvis ikke er en fejl. Observationen af dobbeltstjerne-systemet var usædvanlig klar og foregik over længere tid.
+        \temporal<2>{Han}{\textbf{Hun}}{\textbf{Han}}
+        har i sine 30 år på
+        \alt<3>{\textbf{Harvard University}}{Københavns Universitet}
+        ikke set noget lignende.
+        ''
         \begin{itemize}
-            \item Han: Bo Møller
-            \item Hun: Bente Møller
-            \item Harvard University: Peteran %Michael, John Brown var også på listen
+            \only<1>{\item Bo Møller, Peter Møller, Jakobsen}
+            \only<2>{\item Bente Møller, Katrine Møller, Mette Holm}
+            \only<3>{\item Peteran, Michael Brown, John Brown}
         \end{itemize}
         }
-        \only<3>{
+        \only<4>{
             ''\textbf{Det Kgl. Bibliotek} forvalter Danmarks største tekstsamling, der strækker sig fra middelalderen til det nyeste litteratur.''
         \begin{itemize}
             \item ORG
