@@ -379,24 +379,36 @@
 \begin{frame}
     % 3
     \frametitle{Kontekst og viden i modellen}
+    \begin{columns}
+        \column{0.5\textwidth}
     \begin{itemize}
-        \item<1-> Modellen bruger facts fra hele sætningen til forudsigelse
-        \item<2-> Entitetsannoteringer gør det lettere at gætte skjulte ord
-        \item<3-> Entitetstype afhænger af kontekst
+        \uncover<1->{\item Modellen bruger fakta fra hele sætningen til forudsigelse}
+        \uncover<2->{\item Entitetsannoteringer gør det lettere at gætte skjulte ord}
+        \uncover<3->{\item Entitetstype afhænger af kontekst}
     \end{itemize}
+        \column{0.5\textwidth}
     \begin{example}
-
-        % Professor i astrofysik, [MASK] [MASK], udtaler til avisen, at den nye måling sandsynligvis ikke er en fejl. Observationen af dobbeltstjerne-systemet var usædvanlig klar og foregik over længere tid. Han har i sine 30 år på Københavns Universitet ikke set noget lignende.
-        % Han: Bo Møller
-        % Hun: Bente Møller
-        % Harvard University: Peteran (Michael, John Brown var også på listen)
-
-        % "Det Kgl. Bibliotek forvalter Danmarks største tekstsamling, der strækker sig fra middelalderen til det nyeste litteratur."
-        % ORG
-
-        % "Du kan tage havnebussen til Det Kgl. Bibliotek og så tage videre med bussen."
-        % LOC
+        \footnotesize
+        \only<1>{
+        ''Professor i astrofysik, [MASK] [MASK], udtaler til avisen, at den nye måling sandsynligvis ikke er en fejl. Observationen af dobbeltstjerne-systemet var usædvanlig klar og foregik over længere tid. Han har i sine 30 år på Københavns Universitet ikke set noget lignende.''
+        \begin{itemize}
+            \item Han: Bo Møller
+            \item Hun: Bente Møller
+            \item Harvard University: Peteran %Michael, John Brown var også på listen
+        \end{itemize}
+        }
+        \only<3>{
+            ''\textbf{Det Kgl. Bibliotek} forvalter Danmarks største tekstsamling, der strækker sig fra middelalderen til det nyeste litteratur.''
+        \begin{itemize}
+            \item ORG
+        \end{itemize}
+            ''Du kan tage havnebussen til \textbf{Det Kgl. Bibliotek} og så tage videre med bussen.''
+         \begin{itemize}
+             \item LOC
+         \end{itemize}
+        }
     \end{example}
+    \end{columns}
 \end{frame}
 
 \begin{frame}
@@ -418,7 +430,7 @@
         \column{0.5\textwidth}
         \begin{figure}[H]
             \centering
-                \includegraphics[width=.7\linewidth]{types-of-ml}
+                \includegraphics[width=.7\linewidth]{types-of-m}
         \end{figure}\noindent
     \end{columns}
 \end{frame}
