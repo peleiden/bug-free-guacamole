@@ -302,34 +302,106 @@
 \begin{frame}
     % 2
     \frametitle{NER-resultater er usikre}
-    \begin{itemize}
-        \item 558 entiteter i testsæt $\Rightarrow \pm 3\pro$
-    \end{itemize}
-    % Lille sample
-    % RNG
-    % Krydsvalidering
-    
+    \begin{columns}
+        \column{0.4\textwidth}
+        \begin{itemize}
+            \item 558 entiteter i testsæt $\Rightarrow \pm 3\pro$ på topresultater
+            \item Udvælgelsesbias for parametriserede metoder
+            \item<2-> Træningsprocessens indeterminisme giver også usikkerhed
+            \item<3-> Datasættets fordeling ikke uden bias
+        \end{itemize}
+        \column{0.6\textwidth}
+        \begin{figure}[H]
+            \centering
+            \begin{overlayarea}{\textwidth}{4cm}
+                \only<2>{
+                    \begin{table}[H]
+                        \footnotesize
+                        \centering
+                        \begin{tabular}{l|ccc}
+                            \multirow{2}{*}{Seed}  & \multicolumn{1}{c}{F1 [\pro]} & Præcision [\pro]               & Recall [\pro]               \\
+                                               & Avg.  & Avg.                          & Avg.                        \\ \hline
+                        1                      & 83.7  & 88.7                          & 79.2                        \\
+                        2                      & 81.5  & 83.9                          & 79.3                       \\
+                        3                      & 84.5  & 86.9                          & 82.2                       \\
+                        4                      & 81.3  & 83.8                          & 79.0                       \\
+                        5                      & 82.4  & 84.9                          & 80.1                       \\\hline
+                        Middel                 & 82.7  & 85.6& 80.0\\
+                        Std.                   & 1.4   & 2.1& 1.3
+                        \end{tabular}
+                        \caption{RNG-tilfældighed}
+                    \end{table}\noindent
+                }
+                \only<3>{
+                    \begin{table}[H]
+                        \footnotesize
+                        \centering
+                        \begin{tabular}{l|ccc}
+                            \multirow{2}{*}{Del}  & \multicolumn{1}{c}{F1 [\pro]} & Præcision [\pro]               & Recall [\pro]               \\
+                                                & Avg. & Avg.                           & Avg.                        \\ \hline
+                                        1     &  89.1 & 89.8 & 88.5\\
+                                        2     &  86.1 & 88.2 & 88.1\\
+                                        3     &  86.9 & 88.3 & 85.5\\
+                                        4     &  87.4 & 87.8 & 87.1\\
+                                        5     &  87.6 & 88.1 & 87.1\\\hline
+                                        Middel&  87.4 & 88.4 & 87.3\\
+                                        Std.  &  1.1  & 0.8  & 1.7
+                        \end{tabular}
+                        \caption{
+                            Tilfældighed i datasæt-opdeling
+                        }
+                    \end{table}\noindent
+                }
+                \only<4>{
+                    \begin{figure}[H]
+                    \centering
+                    \includegraphics[width=.6\textwidth]{danlp-tab}
+                        \caption{Resultater fra DaNLP [Bro+21]. Er lignende for DaNE [Hvi+20]}
+                    \end{figure}\noindent
+                }
+            \end{overlayarea}
+        \end{figure}
+    \end{columns}
 \end{frame}
 
 \begin{frame}
     % 3
     \frametitle{Entiteter fanger sprogforståelse}
+    \begin{figure}[H]
+        \centering
+            \includegraphics<1>[width=.6\linewidth]{pos-geo/pca_matrix}
+            \includegraphics<2>[width=.9\linewidth]{pos-geo/tsne}
+            \includegraphics<3>[width=.9\linewidth]{pos-geo/umap}
+    \end{figure}\noindent
 \end{frame}
 
 \begin{frame}
     % 3
-    \frametitle{Kontekst og viden i eksempler}
+    \frametitle{Kontekst og viden i modellen}
 \end{frame}
 
 \begin{frame}
     % 1
     \frametitle{Vejen til AI, der forstår dansk}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{itemize}
+            \item Brugbar og god til NER
+            \item Dataknaphed ikke løst
+            \item Metoden kan gøres bedre
+        \begin{figure}[H]
+            \centering
+                \href{https://github.com/peleiden/daLUKE}{
+                \includegraphics[width=.7\linewidth]{daluke-mascot}
+                }
+        \end{figure}\noindent
+        \end{itemize}
+        \column{0.5\textwidth}
+        \begin{figure}[H]
+            \centering
+                \includegraphics[width=.7\linewidth]{types-of-m.jpg}
+        \end{figure}\noindent
+    \end{columns}
 \end{frame}
 
-\begin{frame}
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=.4\textwidth]{types-of-ml}
-    \end{figure}\noindent
-\end{frame}
 \end{document}
