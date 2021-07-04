@@ -95,23 +95,21 @@
     \end{example}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Sprogmodellers todeling}
-    Sprogmodeller som BERT og LUKE er opdelt i to:
-    \begin{itemize}
-        \item En prætrænet model, encoderen, der har lært generel sprogforståelse, men i sig selv ikke har nogen praktisk anvendelse
-        \item Viden er en stor fordel i NER
-        \item En fine-tuningsudvidelse, der målrettes en specifik opgave, fx NER. Typisk ét lineært lag
-    \end{itemize}
-    Dokument $ \to $ Encoder $ \to $ Fine-tuningsudvidelse $ \to $ Forudsigelse
-\end{frame}
-
-
 \newcommand{\nw}[2]{
     \tikz[baseline=(#2.base), inner sep = 0pt]{\node (#2) {\underline{#1}};}
 }
 
 \section{Hvordan vil vi løse det?}
+\begin{frame}
+    \frametitle{Sprogmodellen}
+    Moderne, dyb AI til sprogbehandling (NLP) er ofte todelt:
+    \begin{itemize}
+        \item En prætrænet model (encoder) indfanger generel sprogforståelse i vektorer
+        \item En specifik, fine-tunet anvendt målrettet på opgave som NER
+    \end{itemize}
+    Dokument $ \to $ Encoder $ \to $ Fine-tuningsudvidelse $ \to $ Forudsigelse
+\end{frame}
+
 \begin{frame}
     % 2
     \frametitle{LUKE tilfører viden til sprogmodeller}
