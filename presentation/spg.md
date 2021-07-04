@@ -1,0 +1,7 @@
+- Transformere i detaljer
+- PCA
+- UMAP (intuitivt)
+- F1, præcision og genkald
+- Adam ift. SGD
+- Weight decay
+- Tokenizer generelt
