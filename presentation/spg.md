@@ -1,7 +1,7 @@
-- Transformere i detaljer
-- PCA
-- UMAP (intuitivt)
-- F1, præcision og genkald
+- Transformere i detaljer https://www.youtube.com/watch?v=4Bdc55j80l8 https://www.youtube.com/watch?v=OyFJWRnt_AY
+- PCA https://en.wikipedia.org/wiki/Principal_component_analysis
+- UMAP (intuitivt) https://umap-learn.readthedocs.io/en/latest/
+- F1, præcision og genkald https://datagroomr.com/precision-recall-and-f1-explained-in-plain-english/
 - Adam ift. SGD
 - Weight decay
 - Tokenizer generelt
