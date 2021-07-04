@@ -35,7 +35,7 @@
 \subtitle{
     Den danske sprogmodel med vidensmodellering
 }
-\author[Søren Holm, Asger Schultz]{Søren Winkel Holm, Asger Laurits Schultz}
+\author[Søren Holm, Asger Schultz]{Søren Winkel Holm og Asger Laurits Schultz}
 \institute[DTU]{Danmarks Tekniske Universitet}
 \date{7. juli 2021}
 
@@ -83,15 +83,17 @@
     % 1
     \frametitle{Navngiven entitetsgenkendelse (NER)}
     \begin{itemize}
-        \item Mål: Finde fastdefinerede, verdslige objekter i et dokument
+        \item Mål: Finde fastdefinerede, virkelige objekter i et dokument
         \item Praktiske anvendelser som informationssøgning, spørgsmålsbesvarelse og anonymisering
     \end{itemize}
     \begin{example}
         \footnotesize
         "Cæsar marcherede mod Rom og trodsede dermed det romerske senat."\\
-        "Cæsar": person\\
-        "Rom": sted\\
-        "det romerske senat": organisation
+        \begin{itemize}
+            \item "Cæsar": person
+            \item "Rom": sted
+            \item "det romerske senat": organisation
+        \end{itemize}
     \end{example}
 \end{frame}
 
@@ -232,7 +234,7 @@
 
 \begin{frame}
     \frametitle{NER på dansk}
-    DaLUKE er den næstbedste danske NER-model på DaNE -- dog med betydelig usikkerhed
+    DaLUKE er den næstbedste danske NER-model på DaNE ved punktestimat
     \begin{table}[H]
         \fontsize{6pt}{8pt}\selectfont
             \begin{center}
@@ -253,65 +255,6 @@
             \end{center}
     \end{table}
 \end{frame}
-
-\begin{frame}
-    % 3
-    \frametitle{Entitetsbevidst selvopmærksomhed}
-    \tikzstyle{every picture}+=[remember picture]
-    \tikzstyle{every path}=[<->,shorten <=1pt]
-    \begin{itemize}
-        \item Transformerudvidelse, der modellerer entitets-entitets- og ord-entitets-forhold direkte
-        \item{} [Yam+20] viser bedre resultater i fine-tuningsopgaver
-        \item Uden brug i prætræning falder fine-tuningsresultater med 2,8 procentpoint
-    \end{itemize}
-    \begin{example}
-        \footnotesize
-        \nw{Fredag}{1} \nw{rykkede}{2} \nw{Syd- og Sønderjyllands Politi}{3} ud til \nw{Sønderborg Lufthavn}{4}.
-        \begin{tikzpicture}[overlay]
-            \path[->,blue!60,thick](1) edge [out=-90, in=-90] (2);
-            \path[->,red, very thick](3) edge [out=-90, in=-90] (4);
-            \path[->,purple!80, very thick](2) edge [out=-90, in=-90] (3);
-        \end{tikzpicture}
-    \end{example}
-\end{frame}
-
-\begin{frame}
-    % 2
-    \frametitle{Transferlæring}
-    \begin{columns}
-        \column{0.4\textwidth}
-        \begin{itemize}
-            \item Hvad hvis man ikke initialiserede fra den danske BERT?
-            \item Langt bedre præcision i prætræning - tyder på overfitting
-            \item Fine-tuning ligger 11,4 procentpoint under baseline
-            \item Transferlæring virker stabiliserende og regulariserende
-        \end{itemize}
-        \column{0.6\textwidth}
-        \begin{figure}[H]
-            \centering
-            \includegraphics[width=.85\textwidth]{baseline-acc}
-            \includegraphics[width=.85\textwidth]{nobert-acc}
-            \caption{Øverst: Baseline. Nederst: Ingen transferlæring}
-        \end{figure}\noindent
-    \end{columns}
-\end{frame}
-
-\begin{frame}
-    % 2
-    \frametitle{Datasætmodifikationer}
-    \begin{itemize}
-        \item Datasæt udvides med ekstra entiteter automatisk: $ 47\pro $ flere
-        \item Uden dem fås 0,6 procentpoint højere; dog lille forskel ift. varians
-        \item I LUKE beskæres entitetsordforrådet til de mest brugte. Hvilken effekt har det i DaLUKE?
-        \item 0,2 procentpoint lavere med færre entiteter
-    \end{itemize}
-    \begin{example}
-        "Arkæologi er studiet af tidligere tiders {\color{red}menneske}lige {\color{red}aktivitet}, primært gennem studiet af {\color<2>{blue}menneske}ts materielle levn. Langt det meste af al {\color<2>{blue}menneske}lig {\color<2>{blue}aktivitet} foregik, før vi lærte at skrive, så {\color<2>{blue}arkæologi} er den vigtigste metode til at studere ældre {\color<2>{blue}menneske}skabte samfund."
-    \end{example}
-\end{frame}
-
-\section{Hvad har vi lært?}
-
 
 \begin{frame}
     % 2
@@ -376,6 +319,70 @@
             \end{overlayarea}
         \end{figure}
     \end{columns}
+\end{frame}
+\begin{frame}
+    % 3
+    \frametitle{Entitetsbevidst selvopmærksomhed}
+    \tikzstyle{every picture}+=[remember picture]
+    \tikzstyle{every path}=[<->,shorten <=1pt]
+    \begin{itemize}
+        \item Transformerudvidelse, der modellerer entitets-entitets- og ord-entitets-forhold direkte
+        \item{} [Yam+20] viser bedre resultater i fine-tuningsopgaver
+        \item Uden brug i prætræning falder fine-tuningsresultater med 2,8 procentpoint
+    \end{itemize}
+    \begin{example}
+        \footnotesize
+        \nw{Fredag}{1} \nw{rykkede}{2} \nw{Syd- og Sønderjyllands Politi}{3} ud til \nw{Sønderborg Lufthavn}{4}.
+        \begin{tikzpicture}[overlay]
+            \path[->,blue!60,thick](1) edge [out=-90, in=-90] (2);
+            \path[->,red, very thick](3) edge [out=-90, in=-90] (4);
+            \path[->,purple!80, very thick](2) edge [out=-90, in=-90] (3);
+        \end{tikzpicture}
+    \end{example}
+\end{frame}
+
+\begin{frame}
+    % 2
+    \frametitle{Transferlæring}
+    \begin{columns}
+        \column{0.4\textwidth}
+        \begin{itemize}
+            \item Hvad hvis man ikke initialiserede fra den danske BERT?
+            \item Langt bedre præcision i prætræning - tyder på overfitting
+            \item Fine-tuning ligger 11,4 procentpoint under baseline
+            \item Transferlæring virker stabiliserende og regulariserende
+        \end{itemize}
+        \column{0.6\textwidth}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=.85\textwidth]{baseline-acc}
+            \includegraphics[width=.85\textwidth]{nobert-acc}
+            \caption{Øverst: Baseline. Nederst: Ingen transferlæring}
+        \end{figure}\noindent
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    % 2
+    \frametitle{Datasætmodifikationer}
+    \begin{itemize}
+        \item Datasæt udvides med ekstra entiteter automatisk: $ 47\pro $ flere
+        \item Uden dem fås 0,6 procentpoint højere
+        \item I LUKE beskæres entitetsordforrådet til de mest brugte. Hvilken effekt har det i DaLUKE?
+        \item 0,2 procentpoint lavere med færre entiteter
+    \end{itemize}
+    \begin{example}
+        "Arkæologi er studiet af tidligere tiders {\color{red}menneske}lige {\color{red}aktivitet}, primært gennem studiet af {\color<2>{blue}menneske}ts materielle levn. Langt det meste af al {\color<2>{blue}menneske}lig {\color<2>{blue}aktivitet} foregik, før vi lærte at skrive, så {\color<2>{blue}arkæologi} er den vigtigste metode til at studere ældre {\color<2>{blue}menneske}skabte samfund."
+    \end{example}
+\end{frame}
+
+\section{Hvad har vi lært?}
+\begin{frame}
+    \frametitle{Modellens sandsynligheder}
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=\linewidth]{calibration}
+    \end{figure}\noindent
 \end{frame}
 
 \begin{frame}
