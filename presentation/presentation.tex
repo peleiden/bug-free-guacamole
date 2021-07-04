@@ -386,14 +386,20 @@
 
 \begin{frame}
     % 3
-    \frametitle{Entiteter fanger sprogforståelse}
+    \frametitle{Vektorer fanger sprogforståelse}
+    \begin{itemize}
+        \only<1-7>{\item Prætrænet model indeholder sproglig struktur}
+        \only<8->{\item Fine-tuning tilpasser vektorer til opgaven \only<9>{-- også på test.}}
+    \end{itemize}
     \begin{figure}[H]
         \centering
-        \only<1>{\includegraphics[width=.6\linewidth]{pos-geo/pca_matrix}}
+        \only<1>{\includegraphics[width=.5\linewidth]{pos-geo/pca_matrix}}
         \only<2->{
             \begin{tikzpicture}
                 \node[above right, inner sep=0] (image) at (0,0) {
-                    \includegraphics[width=.9\linewidth]{pos-geo/umap}
+                    \includegraphics<2-7>[width=.8\linewidth]{pos-geo/umap}
+                    \includegraphics<8>[width=.8\linewidth]{umap-finetuned}
+                    \includegraphics<9>[width=.8\linewidth]{umap-finetuned-test}
                 };
             % Create scope with normalized axes
                 \begin{scope}[
@@ -407,15 +413,15 @@
                     % \foreach \x in {0,1,...,10} { \node [below] at (\x,0) {\x}; }
                     % \foreach \y in {0,1,...,10} { \node [left] at (0,\y) {\y};}
 
-                \draw<3->[stealth-, thick, black] (2.5,8.5) -- ++(0.5,0.25)
+                \draw<3-7>[stealth-, thick, black] (2.5,8.5) -- ++(0.5,0.25)
                     node[right,black,fill=white]{\small Danmark};
-                \draw<4->[stealth-, thick, black] (4.7, 8.2) -- ++(0.5,0)
+                \draw<4-7>[stealth-, thick, black] (4.7, 8.2) -- ++(0.5,0)
                     node[right,black,fill=white]{\small København};
-                \draw<5->[stealth-, thick, black] (6.3, 7) -- ++(0.5,0)
+                \draw<5-7>[stealth-, thick, black] (6.3, 7) -- ++(0.5,0)
                     node[right,black,fill=white]{\small EF};
-                \draw<6->[stealth-, thick, black] (6.8, 3) -- ++(0.5,0)
+                \draw<6-7>[stealth-, thick, black] (6.8, 3) -- ++(0.5,0)
                     node[right,black,fill=white]{\small Hafnia};
-                \draw<7>[stealth-, thick, black] (5.8, 1.8) -- ++(0.5,0)
+                \draw<7-7>[stealth-, thick, black] (5.8, 1.8) -- ++(0.5,0)
                     node[right,black,fill=white]{\small Balkan};
                 \end{scope}
             \end{tikzpicture}
