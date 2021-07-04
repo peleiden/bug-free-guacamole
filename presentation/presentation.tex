@@ -33,7 +33,7 @@
 
 \title{DaLUKE}
 \subtitle{
-    Den Dansktalende Sprogmodel MED VIDEN
+    Den danske sprogmodel med vidensmodellering
 }
 \author[Søren Holm, Asger Schultz]{Søren Winkel Holm, Asger Laurits Schultz}
 \institute[DTU]{Danmarks Tekniske Universitet}
@@ -83,7 +83,7 @@
     % 1
     \frametitle{Navngiven entitetsgenkendelse (NER)}
     \begin{itemize}
-        \item Mål: Finde strengt definerede verdslige objekter i et dokument
+        \item Mål: Finde fastdefinerede, verdslige objekter i et dokument
         \item Praktiske anvendelser som informationssøgning, spørgsmålsbesvarelse og anonymisering
     \end{itemize}
     \begin{example}
@@ -93,6 +93,16 @@
         "Rom": sted\\
         "det romerske senat": organisation
     \end{example}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Sprogmodellers todeling}
+    Sprogmodeller som BERT og LUKE er opdelt i to:
+    \begin{itemize}
+        \item En prætrænet model, encoderen, der har lært generel sprogforståelse, men i sig selv ikke har nogen praktisk anvendelse
+        \item En fine-tuningsudvidelse, der målrettes en specifik opgave, fx NER. Typisk ét lineært lag
+    \end{itemize}
+    Dokument $ \to $ Encoder $ \to $ Fine-tuningsudvidelse $ \to $ Forudsigelse
 \end{frame}
 
 
@@ -208,6 +218,7 @@
         \begin{itemize}
             \item Fire kategorier: LOC, PER, ORG og MISC
             \item Optimerer hyperparametre på val. og giver den 15 epoker på træningssæt
+            \item Model evalueres på valideringssæt efter hver epoke, og den bedste model gemmes
         \end{itemize}
         \column{0.55\textwidth}
         \begin{figure}[H]
@@ -222,6 +233,7 @@
 
 \begin{frame}
     \frametitle{NER på dansk}
+    DaLUKE er den næstbedste danske NER-model på DaNE -- dog med betydelig usikkerhed
     \begin{table}[H]
         \fontsize{6pt}{8pt}\selectfont
             \begin{center}
@@ -233,7 +245,7 @@
         NERDA m-BERT  & DaNE      & 79.2 $\pm 3$         & 82.1          & 76.5          & 81.7         $\pm 4$         & 83.5          & 92.6          & 66.9          & 70.3 \\
         NERDA Ælæctra & DaNE      & 70.6 $\pm 4$         & 76.1          & 65.8          & 74.5         $\pm 4$         & 77.3          & 86.9          & 56.2          & 56.4 \\
         DaCy medium   & DaNE      & 78.3 $\pm 3$         & 78.3          & 78.3          & 80.5         $\pm 4$         & 84.0          & 90.4          & 66.2          & 70.1 \\
-        DaCy large    & DaNE      & \textbf{84.9} $\pm 3$& \textbf{86.2} & \textbf{83.7} & \textbf{86.9}$\pm 3$         & 85.3          & \textbf{94.2} & \textbf{79.0} & \textbf{78.1} \\
+        DaCy large    & DaNE      & \textbf{84.9} $\pm 3$& \textbf{86.2} & \textbf{83.7} & \textbf{86.9} $\pm 3$         & 85.3          & \textbf{94.2} & \textbf{79.0} & \textbf{78.1} \\
         DaNLP spaCy   & DaNE      & 73.8 $\pm 4$         & 76.1          & 71.5          & 75.7         $\pm 4$         & 76.0          & 87.8          & 59.6          & 66.1 \\
         DaNLP Flair   & DaNE      & --                   & --            & --            & 81.8         $\pm 4$         & 84.8          & 93.2          & 63.0          & -- \\
         Polyglot      & Wikipedia & --                   & --            & --            & 64.2         $\pm 4$         & 65.0          & 78.7          & 39.3          & -- \\
@@ -246,30 +258,22 @@
 \begin{frame}
     % 3
     \frametitle{Entitetsbevidst selvopmærksomhed}
-    \begin{columns}
-        \column{0.6\textwidth}
-        \begin{itemize}
-            \item Transformerudvidelse, der modellerer entitets-entitets- og ord-entitets-forhold direkte
-            \item LUKE bruger ikke entitetsbevidst selvopmærksomhed i prætræningen, men DaLUKE gør
-            \item Bedre resultater dog påvist i diverse fine-tuningsopgaver
-            \item Uden brug i prætræning falder fine-tuningsresultater med 2,8 procentpoint
-        \end{itemize}
-        \column{0.4\textwidth}
-        \begin{table}[H]
-            \centering
-            \footnotesize
-            \begin{tabular}{l c}
-                &Delord + entiteter\\
-                \begin{tabular}{@{}l@{}}Delord + \\ entiteter\end{tabular}&$ Q $
-            \end{tabular}\vspace{0.5cm}
-            \begin{tabular}{l c c}
-                &	Delord&Entiteter	\\
-                Delord&$ Q_{w2w} $	&$ Q_{w2e} $	\\
-                Entiteter&$ Q_{e2w} $	&$ Q_{e2e} $
-            \end{tabular}
-            \caption{Entitetsmodellering med og uden entitetsbevidst selvopmærksomhed}
-        \end{table}\noindent
-    \end{columns}
+    \tikzstyle{every picture}+=[remember picture]
+    \tikzstyle{every path}=[<->,shorten <=1pt]
+    \begin{itemize}
+        \item Transformerudvidelse, der modellerer entitets-entitets- og ord-entitets-forhold direkte
+        \item{} [Yam+20] viser bedre resultater i fine-tuningsopgaver
+        \item Uden brug i prætræning falder fine-tuningsresultater med 2,8 procentpoint
+    \end{itemize}
+    \begin{example}
+        \footnotesize
+        \nw{Fredag}{1} \nw{rykkede}{2} \nw{Syd- og Sønderjyllands Politi}{3} ud til \nw{Sønderborg Lufthavn}{4}.
+        \begin{tikzpicture}[overlay]
+            \path[->,blue!60,thick](1) edge [out=-90, in=-90] (2);
+            \path[->,red, very thick](3) edge [out=-90, in=-90] (4);
+            \path[->,purple!80, very thick](2) edge [out=-90, in=-90] (3);
+        \end{tikzpicture}
+    \end{example}
 \end{frame}
 
 \begin{frame}
@@ -278,7 +282,7 @@
     \begin{columns}
         \column{0.4\textwidth}
         \begin{itemize}
-            \item Hvad hvis man ikke initialiserede fra da-BERT?
+            \item Hvad hvis man ikke initialiserede fra den danske BERT?
             \item Langt bedre præcision i prætræning - tyder på overfitting
             \item Fine-tuning ligger 11,4 procentpoint under baseline
             \item Transferlæring virker stabiliserende og regulariserende
