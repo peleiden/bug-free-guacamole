@@ -8,6 +8,7 @@
 \usepackage{anyfontsize}
 \definecolor{Plum}{rgb}{0.56, 0.27, 0.52}
 \usetikzlibrary{arrows}
+\usetikzlibrary{calc}
 \usetikzlibrary{decorations.markings}
 \graphicspath{{../imgs/}}
 
@@ -379,8 +380,37 @@
     \frametitle{Entiteter fanger sprogforståelse}
     \begin{figure}[H]
         \centering
-            \includegraphics<1>[width=.6\linewidth]{pos-geo/pca_matrix}
-            \includegraphics<2>[width=.9\linewidth]{pos-geo/umap}
+        \only<1>{\includegraphics[width=.6\linewidth]{pos-geo/pca_matrix}}
+        \only<2->{
+            \begin{tikzpicture}
+                \node[above right, inner sep=0] (image) at (0,0) {
+                    \includegraphics[width=.9\linewidth]{pos-geo/umap}
+                };
+            % Create scope with normalized axes
+                \begin{scope}[
+                    x={($0.1*(image.south east)$)},
+                    y={($0.1*(image.north west)$)}]
+
+                    % % Grid
+                    % \draw[lightgray,step=1] (image.south west) grid (image.north east);
+
+                    % % Axes' labels
+                    % \foreach \x in {0,1,...,10} { \node [below] at (\x,0) {\x}; }
+                    % \foreach \y in {0,1,...,10} { \node [left] at (0,\y) {\y};}
+
+                \draw<3->[stealth-, thick, black] (2.5,8.5) -- ++(0.5,0.25)
+                    node[right,black,fill=white]{\small Danmark};
+                \draw<4->[stealth-, thick, black] (4.7, 8.2) -- ++(0.5,0)
+                    node[right,black,fill=white]{\small København};
+                \draw<5->[stealth-, thick, black] (6.3, 7) -- ++(0.5,0)
+                    node[right,black,fill=white]{\small EF};
+                \draw<6->[stealth-, thick, black] (6.8, 3) -- ++(0.5,0)
+                    node[right,black,fill=white]{\small Hafnia};
+                \draw<7>[stealth-, thick, black] (5.8, 1.8) -- ++(0.5,0)
+                    node[right,black,fill=white]{\small Baltisk};
+                \end{scope}
+            \end{tikzpicture}
+        }
     \end{figure}\noindent
 \end{frame}
 
@@ -431,9 +461,9 @@
     \begin{columns}
         \column{0.5\textwidth}
         \begin{itemize}
+            \item Viden som løsning på dataknaphed?
             \item Brugbar og god til NER
-            \item Dataknaphed ikke løst
-            \item Metoden kan gøres bedre
+            \item Forbedringspotentiale
         \begin{figure}[H]
             \centering
                 \href{https://github.com/peleiden/daLUKE}{
