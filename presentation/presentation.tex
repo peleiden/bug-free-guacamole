@@ -123,15 +123,27 @@
             \item<2-> LUKE [Yam+20] regner også opmærksomhed over \emph{navngivne entiteter}
         \end{itemize}
         \column{0.5\textwidth}
-            \uncover<2->{
-                \begin{tabular}{c|c}
-                    Entitet       & ID\\\hline
-                    $\vdots$      & $\vdots$\\
-                    New York City & \texttt 5\\
-                    Christian 4.  & \texttt 6\\
-                    $\vdots$      & $\vdots$
-                \end{tabular}
-            }
+            \begin{overlayarea}{\textwidth}{3.5cm}
+                \only<1>{
+                    \begin{figure}[H]
+                        \centering
+                            \includegraphics[width=.4\linewidth]{vaswani-attention}
+                            \caption{\footnotesize Opmærksomhed [Vas+17]}
+                    \end{figure}\noindent
+                }
+                \only<2->{
+                    \begin{table}[H]
+                    \begin{tabular}{c|c}
+                        Entitet       & ID\\\hline
+                        $\vdots$      & $\vdots$\\
+                        New York City & \texttt 5\\
+                        Christian 4.  & \texttt 6\\
+                        $\vdots$      & $\vdots$
+                    \end{tabular}
+                    \caption{\footnotesize Entitets-ordforråd}
+                    \end{table}
+                }
+            \end{overlayarea}
     \end{columns}
     \begin{example}
         \footnotesize
