@@ -116,6 +116,7 @@
     \frametitle{LUKE tilfører viden til sprogmodeller}
     \tikzstyle{every picture}+=[remember picture]
     \tikzstyle{every path}=[<->,shorten <=1pt]
+    \vspace{-1cm}
     \begin{columns}
         \column{0.5\textwidth}
         \begin{itemize}
@@ -123,11 +124,11 @@
             \item<2-> LUKE [Yam+20] regner også opmærksomhed over \emph{navngivne entiteter}
         \end{itemize}
         \column{0.5\textwidth}
-            \begin{overlayarea}{\textwidth}{3.5cm}
+            \begin{overlayarea}{\textwidth}{4cm}
                 \only<1>{
                     \begin{figure}[H]
                         \centering
-                            \includegraphics[width=.4\linewidth]{vaswani-attention}
+                            \includegraphics[width=.5\linewidth]{vaswani-attention}
                             \caption{\footnotesize Opmærksomhed [Vas+17]}
                     \end{figure}\noindent
                 }
@@ -162,7 +163,6 @@
             \end{tikzpicture}
         }
     \end{example}
-
 \end{frame}
 
 \begin{frame}
@@ -392,7 +392,7 @@
     \frametitle{Modellens sandsynligheder}
     \begin{figure}[H]
         \centering
-            \includegraphics[width=\linewidth]{calibration}
+            \includegraphics[width=.8\linewidth]{calibration}
     \end{figure}\noindent
 \end{frame}
 
