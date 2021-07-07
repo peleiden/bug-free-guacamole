@@ -115,7 +115,7 @@
     % 2
     \frametitle{LUKE tilfører viden til sprogmodeller}
     \tikzstyle{every picture}+=[remember picture]
-    \tikzstyle{every path}=[<->,shorten <=1pt]
+    \tikzstyle{every path}=[<-,shorten <=1pt]
     \vspace{-1cm}
     \begin{columns}
         \column{0.5\textwidth}
@@ -335,7 +335,7 @@
     % 3
     \frametitle{Entitetsbevidst selvopmærksomhed}
     \tikzstyle{every picture}+=[remember picture]
-    \tikzstyle{every path}=[<->,shorten <=1pt]
+    \tikzstyle{every path}=[<-,shorten <=1pt]
     \begin{itemize}
         \item Transformerudvidelse, der modellerer entitets-entitets- og ord-entitets-forhold direkte
         \item{} [Yam+20] viser bedre resultater i fine-tuningsopgaver
@@ -348,6 +348,7 @@
             \path[->,blue!60,thick](1) edge [out=-90, in=-90] (2);
             \path[->,red, very thick](3) edge [out=-90, in=-90] (4);
             \path[->,purple!80, very thick](2) edge [out=-90, in=-90] (3);
+            \path[->,purple!80, very thick](3) edge [out=-90, in=-90] (1);
         \end{tikzpicture}
     \end{example}
 \end{frame}
